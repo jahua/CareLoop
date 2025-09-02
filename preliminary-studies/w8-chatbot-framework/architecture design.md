@@ -66,21 +66,84 @@ The opportunity lies in developing personality-aware conversational systems that
 
 ### 3.1 Pipeline Overview
 
-The system operates through a compact, end-to-end pipeline: **ingest → detect → calibrate → smooth → regulate → generate → verify**. Each turn begins with ingesting the user message, normalizing it, and updating a rolling conversation window. The detection phase assigns per-turn OCEAN scores with confidences through either a small classifier over message embeddings for low latency, or a few-shot LLM classifier when flexibility matters. Calibration follows through confidence calibration techniques such as temperature scaling to ensure thresholds remain meaningful across different contexts.
+The system operates through a compact, end-to-end pipeline: **ingest → detect → smooth → regulate → generate → verify → checkpoint**. Each turn begins with ingesting the user message, normalizing it, and updating a rolling conversation window. The detection phase assigns per-turn OCEAN scores with confidences through LLM-based personality assessment from the conversation context.
 
-The smoothing stage produces stable personality estimates using exponential moving averages or majority voting over the last k turns, with the agent remaining neutral until stability is reached. Regulation then converts these stabilized traits into a communication policy, while generation composes replies using only dialog context and the policy plan through a "quote-and-bound" approach. Finally, verification checks both policy adherence and dialog grounding, triggering a single refine pass if needed before delivery.
+**Raw detection:**
+   ṗ_t = F(m_t^u, 𝓗_{1:t−1})
+
+**EMA update (confidence-weighted):**
+   p̂_t = (1 − α_t) · p̂_{t−1} + α_t · ṗ_t
+
+**Notes:** clip p̂_t ∈ [−1,1]^5; optional per-turn delta cap to avoid abrupt changes.
+
+The smoothing stage produces stable personality estimates using exponential moving averages or majority voting over 𝓗, with the agent remaining neutral until stability is reached. Regulation then converts these stabilized p̂_t into a communication policy, while generation composes replies using only dialog context and the policy plan through a "quote-and-bound" approach. Finally, verification checks both policy adherence and dialog grounding, triggering a single refine pass if needed before delivery.
 
 ### 3.2 Core Components and Mathematical Formulation
 
-The detection and calibration components utilize structured prompts or compact classifiers to output per-trait scores with calibrated confidences. Temporal smoothing ensures gradual, predictable style changes through the formal relationship \( \hat{P}_t = D_t(\hat{P}_{t-1}, m_u^t, C_{1:t-1}) \), where \( \hat{P}_t \) represents the personality estimate at turn \( t \), \( D_t \) is the detection function, \( m_u^t \) is the user message, and \( C_{1:t-1} \) captures the conversation history.
+The detection components utilize structured prompts to output per-trait scores with confidences. Temporal smoothing ensures gradual, predictable style changes through EMA updates (see formulation above), where p̂_t represents the personality estimate at turn t, ṗ_t is the raw detection output, and 𝓗 captures the dialog history window.
 
-The regulation and policy planning component represents traits as a vector \( \hat{t} \in \mathbb{R}^5 \) and computes style controls \( s = \mathrm{clip}(W\hat{t} + b) \) across dimensions including empathy/warmth, formality, directness versus hedging, assertiveness, verbosity, and question/statement ratio. A lightweight rule layer resolves conflicts, such as when high Openness combined with low Extraversion favors exploratory questions with gentle pacing rather than rapid back-and-forth exchanges.
+The regulation and policy planning component represents traits as p̂_t ∈ ℝ⁵ and computes style controls s = clip(W·p̂_t + b) across dimensions including empathy/warmth, formality, directness versus hedging, assertiveness, verbosity, and question/statement ratio. A lightweight rule layer resolves conflicts, such as when high Openness combined with low Extraversion favors exploratory questions with gentle pacing rather than rapid back-and-forth exchanges.
 
-Generation operates through a quote-and-bound approach, drafting replies by paraphrasing or quoting recent turns while avoiding novel factual claims. The verification component performs dual checks: policy adherence through heuristics or style classifiers, and dialog grounding to ensure every assertion is entailed by recent turns. If either check fails, a single refine pass adjusts tone or removes novel claims. The system maintains OCEAN as the sole persistent memory across turns and sessions, with optional decay over time.
+Generation operates through a quote-and-bound approach, drafting replies by paraphrasing or quoting recent turns while avoiding novel factual claims. The verification component performs dual checks: policy adherence through heuristics or style classifiers, and dialog grounding to ensure every assertion is entailed by recent turns. If either check fails, a single refine pass adjusts tone or removes novel claims. The system maintains p̂_t as the sole persistent memory across turns and sessions, with optional decay over time.
 
-### 3.3 Runtime Controls and Extensibility
+### 3.3 Pipeline Module Cards
 
-Runtime controls include confidence thresholds for acting on detections, smoothing window and decay rate parameters, and caps on per-turn style changes to maintain stability. The system's extensibility allows for parallel tiny classifiers to sanity-check extreme detections, learned OCEAN-to-policy mappings in place of linear controls, and locale-specific style packs with lightweight safety and refusal prompts.
+**Ingest**
+- Purpose: Normalize user input and update dialog history
+- Inputs: Raw user message m_t^u, previous dialog history 𝓗_{1:t-1}
+- Outputs: Normalized message, updated 𝓗_{1:t}
+- Core logic: Text normalization, history window management, salient quote extraction
+- Edge cases / Metrics: Handle empty messages, truncate long inputs; track window size
+
+**Detect**
+- Purpose: Infer personality traits from current context
+- Inputs: Normalized message m_t^u, dialog history 𝓗_{1:t-1}
+- Outputs: Raw personality vector ṗ_t, confidence scores
+- Core logic: LLM-based OCEAN scoring with structured prompts
+- Edge cases / Metrics: Low-confidence detection, contradictory signals; accuracy, confidence calibration
+
+**Smooth**
+- Purpose: Stabilize personality estimates over time
+- Inputs: Raw detection ṗ_t, previous estimate p̂_{t-1}, confidence α_t
+- Outputs: Smoothed personality vector p̂_t
+- Core logic: EMA update with confidence weighting, clipping to [-1,1]^5
+- Edge cases / Metrics: Cold start (no history), conflicting updates; convergence rate, stability
+
+**Regulate**
+- Purpose: Convert personality traits into communication policies
+- Inputs: Smoothed personality vector p̂_t
+- Outputs: Style controls s, policy plan
+- Core logic: Zurich Model mapping, conflict resolution, linear transformation s = clip(W·p̂_t + b)
+- Edge cases / Metrics: Extreme trait combinations, policy conflicts; consistency, adaptation quality
+
+**Generate**
+- Purpose: Compose personality-adapted responses
+- Inputs: Policy plan s, dialog history 𝓗, user message
+- Outputs: Draft response
+- Core logic: Quote-and-bound generation (dialog only, no new facts), personality-guided style adaptation
+- Edge cases / Metrics: Insufficient context, style conflicts; grounding rate, policy adherence
+
+**Verify**
+- Purpose: Ensure response quality and safety
+- Inputs: Draft response, policy plan s, dialog history 𝓗
+- Outputs: Final response or refinement trigger
+- Core logic: Policy adherence check, dialog grounding verification, safety filters
+- Edge cases / Metrics: Policy violations, hallucinations; pass rate, refinement frequency
+
+**Checkpoint**
+- Purpose: Persist conversation state for continuity
+- Inputs: Updated 𝓗, personality state p̂_t, metadata
+- Outputs: Persistent state, audit logs
+- Core logic: State serialization, audit trail generation, retention policy enforcement
+- Edge cases / Metrics: Storage failures, corruption; persistence rate, recovery time
+
+### 3.4 Implementation Requirements and Framework Choice
+
+The pipeline requires several core capabilities: **deterministic orchestration** with explicit node sequencing, **checkpointed state** for reproducible conversations, **conditional flow** for policy gates and refinement triggers, **observability** with step-level tracing and prompt versioning, and **prompt utilities** for structured LLM interactions.
+
+**LangGraph + LangChain** provides one practical implementation satisfying these needs. LangGraph handles stateful orchestration with built-in checkpointing, while LangChain supplies prompt utilities and LLM adapters. This combination enables future extensions including LLM swapping, parallel tiny detectors for sanity checking, and multilingual style packs.
+
+Runtime controls include confidence thresholds for p̂_t updates, 𝓗 size parameters, per-turn delta caps for stability, and refinement budgets. The modular design supports learned p̂_t-to-policy mappings and locale-specific configurations while preserving the core seven-step pipeline.
 
 ## 4. Design Principles
 
@@ -90,11 +153,11 @@ The system ensures decisions are reproducible and traceable for audit purposes w
 
 ### 3.2 Auditability and Compliance
 
-Comprehensive logging captures OCEAN detections, mappings, and regulation decisions with timestamps and confidences, alongside complete data lineage tracking. Built-in hooks support consent management, retention policies, and HIPAA/GDPR requirements. A continuous evaluation loop monitors tone, coherence, detection accuracy, and regulation effectiveness for ongoing quality assurance, ensuring the system meets regulatory standards for healthcare applications.
+Comprehensive logging captures p̂_t detections, mappings, and regulation decisions with timestamps and confidences, alongside complete data lineage tracking. Built-in hooks support consent management, retention policies, and compliance requirements. A continuous evaluation loop monitors tone, coherence, detection accuracy, and regulation effectiveness for ongoing quality assurance.
 
 ### 3.3 Adaptability and Personalization
 
-Personality updates occur in real time through EMA or majority smoothing techniques, with neutral defaults maintained until stability is achieved. Contextual regulation leverages current traits and conversation history to adjust communication style appropriately. The modular architecture supports pluggable detectors and regulators for current needs while enabling seamless future upgrades, including multilingual capabilities and multimodal cue integration.
+Personality updates occur in real time through EMA or majority smoothing techniques, with neutral defaults maintained until stability is achieved. Contextual regulation leverages current p̂_t and 𝓗 to adjust communication style appropriately. The modular architecture supports pluggable detectors and regulators for current needs while enabling seamless future upgrades.
 
 ## 4. Framework Selection
 
@@ -169,7 +232,7 @@ The comprehensive analysis revealed clear advantages for the LangGraph + LangCha
 
 ### 4.5 Chosen Stack: LangGraph + LangChain
 
-The selected stack combines LangGraph and LangChain for a prompt-only, OCEAN-regulated chatbot architecture. This combination provides explicit orchestration where graph nodes and edges mirror the processing loop, making each step visible, testable, and replayable. Built-in checkpointing persists the rolling history, smoothed OCEAN vector, and current policy plan, ensuring that restarts and scale-out operations maintain behavioral consistency.
+The selected stack combines LangGraph and LangChain for a prompt-only, p̂_t-regulated chatbot architecture. This combination provides explicit orchestration where graph nodes and edges mirror the processing loop, making each step visible, testable, and replayable. Built-in checkpointing persists 𝓗, smoothed p̂_t, and current policy plan, ensuring that restarts and scale-out operations maintain behavioral consistency.
 
 Clean control flow emerges through conditional routes that encode policy gates and single-pass refinements without ad-hoc branching logic. First-class observability includes tracing, step-level timings, I/O snapshots, and prompt/version pinning that facilitate debugging, A/B testing, and audit processes. The mature LangChain ecosystem provides stable prompt and message utilities alongside adapters for future tool integration including translation services, safety filters, and retrieval systems, all without requiring architectural redesign.
 
@@ -179,21 +242,21 @@ The stack maintains low lock-in and high extensibility, allowing for LLM swappin
 
 ### 5.1 Requirements Mapping to Framework Capabilities
 
-The chosen framework stack directly addresses key system requirements through specific capabilities. Deterministic decision traces emerge through explicit nodes/edges combined with checkpointed state, enabling deterministic replays of every conversational turn. Single personality memory management with OCEAN smoothing utilizes shared state with EMA/majority updates, incorporating clamps and delta caps to prevent behavioral whiplash.
+The chosen framework stack directly addresses key system requirements through specific capabilities. Deterministic decision traces emerge through explicit nodes/edges combined with checkpointed state, enabling deterministic replays of every conversational turn. Single personality memory management with p̂_t smoothing utilizes shared state with EMA/majority updates (per formulation in Section 3.1), incorporating clamps and delta caps to prevent behavioral whiplash.
 
 Policy enforcement operates through pre/post hooks around generation processes, where the verify node gates delivery or triggers refinement passes. Low latency and stable user experience result from short contexts using salient windows, prompt caching, bounded retries and timeouts, and optional parallel detection capabilities. Scalability and resilience emerge through stateless workers with shared storage, autoscaling based on queue depth, circuit breakers, and graceful degradation to neutral communication styles.
 
-Deep observability encompasses per-node traces, prompt/version registries, scenario replays, and style-adherence audits alongside grounding verification. Future growth capabilities include drop-in tools for safety filters, translators, and retrieval systems via LangChain integration, while preserving the core OCEAN processing loop unchanged.
+Deep observability encompasses per-node traces, prompt/version registries, scenario replays, and style-adherence audits alongside grounding verification. Future growth capabilities include drop-in tools for safety filters, translators, and retrieval systems via LangChain integration, while preserving the core p̂_t processing loop unchanged.
 
 ### 5.2 Per-Turn Processing Pipeline
 
-Each conversational turn follows an eight-step processing pipeline. Ingestion normalizes input and updates rolling history, maintaining N turns plus salient quotes. Detection utilizes LLM inference for OCEAN traits with confidence scores and optional evidence. Smoothing applies EMA or majority updates to the OCEAN vector while setting stability flags. Regulation maps OCEAN traits to style controls, generating concise policy plans encompassing warmth, directness, assertiveness, pacing, and question-to-statement ratios.
+Each conversational turn follows a seven-step processing pipeline: **ingest → detect → smooth → regulate → generate → verify → checkpoint**. Ingestion normalizes input and updates 𝓗, maintaining N turns plus salient quotes. Detection utilizes LLM inference for p̂_t with confidence scores and optional evidence. Smoothing applies EMA or majority updates to p̂_t while setting stability flags. Regulation maps p̂_t to style controls, generating concise policy plans encompassing warmth, directness, assertiveness, pacing, and question-to-statement ratios.
 
-Generation composes dialog-bounded replies using policy plans through quote-and-bound techniques that avoid introducing new facts. Verification checks policy adherence and grounding, accepting responses or triggering single refinement passes. Delivery returns final replies with minimal metadata, while checkpointing persists history, OCEAN states, policy configurations, flags, and timing information for future reference and audit purposes.
+Generation composes dialog-bounded replies using policy plans through quote-and-bound techniques that avoid introducing new facts. Verification checks policy adherence and grounding, accepting responses or triggering single refinement passes. Checkpointing persists 𝓗, p̂_t states, policy configurations, flags, and timing information for future reference and audit purposes.
 
 ### 5.3 Performance and Risk Management
 
-Performance targets include P95 latencies of 2.5 seconds without refinement and 5 seconds with single refinement passes. Configuration parameters include stability thresholds (τ), smoothing windows (k), per-turn delta caps, maximum question limits, and refinement budgets. Risk mitigation strategies address multiple failure modes: misclassification through self-consistency checks, confidence-weighted EMA, and neutral behavior until stability; style oscillation through delta caps and hysteresis on policy switches; provider timeouts through retry/backoff mechanisms and circuit breakers with neutral fallbacks; and regression prevention through prompt/version pinning, canary deployments, and nightly scenario replays.
+Performance targets include P95 latencies of 2.5 seconds without refinement and 5 seconds with single refinement passes. Configuration parameters include stability thresholds (τ), 𝓗 size, per-turn delta caps, maximum question limits, and refinement budgets. Risk mitigation strategies address multiple failure modes: misclassification through self-consistency checks, confidence-weighted EMA, and neutral behavior until stability; style oscillation through delta caps and hysteresis on policy switches; provider timeouts through retry/backoff mechanisms and circuit breakers with neutral fallbacks; and regression prevention through prompt/version pinning, canary deployments, and nightly scenario replays.
 
 ## 6. Operational Constraints and Clinical Considerations
 
@@ -258,9 +321,9 @@ The core processing layer contains the personality detection, regulation engine,
 
 The personality-adaptive pipeline implements a deterministic flow that ensures reproducible behavior essential for clinical applications. The pipeline begins with user input processing and session state retrieval, maintaining continuity across conversation turns and enabling the system to build comprehensive understanding of patient needs and preferences.
 
-Personality detection operates through a sophisticated OCEAN scoring system that combines real-time inference with cumulative logic and confidence assessment. This approach addresses the fundamental challenge of personality uncertainty in conversational AI by providing multiple assessment layers that can refine understanding over time. The regulation engine implements Zurich Model integration with conflict resolution and prompt construction capabilities, translating detected personality traits into specific behavioral adaptations that enhance therapeutic effectiveness.
+Personality detection operates through a sophisticated p̂_t scoring system that combines real-time inference with cumulative logic and confidence assessment. This approach addresses the fundamental challenge of personality uncertainty in conversational AI by providing multiple assessment layers that can refine understanding over time. The regulation engine implements Zurich Model integration with conflict resolution and prompt construction capabilities, translating detected p̂_t into specific behavioral adaptations that enhance conversation effectiveness.
 
-The RAG engine provides hierarchical indexing with intelligent query routing and comprehensive citation tracking, ensuring that all information provided to patients is properly sourced and verifiable. This capability is critical for healthcare applications where accuracy and credibility directly impact patient trust and therapeutic outcomes. Response generation integrates all system components to create personalized, contextually appropriate responses that maintain personality consistency while ensuring clinical appropriateness and safety.
+Response generation integrates all system components to create personalized, contextually appropriate responses that maintain personality consistency while ensuring safety and appropriateness through the **ingest → detect → smooth → regulate → generate → verify → checkpoint** pipeline.
 
 **Core Pipeline Flow Diagram**
 
@@ -329,11 +392,11 @@ The RAG engine provides hierarchical indexing with intelligent query routing and
 
 #### 4.3 Submodule Specifications
 
-The personality detection module implements real-time OCEAN trait inference using LLM prompts with structured output validation, ensuring reliable and consistent personality assessment. The cumulative logic approach uses a rolling window methodology for trait refinement, with configurable confidence thresholds that prevent premature state changes while enabling adaptation to evolving patient characteristics. Context integration incorporates conversation history, user preferences, and behavioral patterns to create comprehensive personality profiles that enhance therapeutic personalization.
+The personality detection module implements real-time p̂_t inference using LLM prompts with structured output validation, ensuring reliable and consistent personality assessment. The cumulative logic approach uses a rolling window methodology for trait refinement, with configurable confidence thresholds that prevent premature state changes while enabling adaptation to evolving user characteristics. Context integration incorporates 𝓗 and behavioral patterns to create comprehensive personality profiles.
 
-The regulation engine module implements Zurich Model integration through sophisticated mapping of OCEAN traits to motivational domains including security, arousal, and affiliation. This theoretical foundation provides scientifically validated approaches to behavioral adaptation that go beyond simple trait matching. The module includes conflict resolution mechanisms for handling situations where different personality traits may suggest conflicting regulation strategies, ensuring consistent and coherent behavioral adaptation.
+The regulation engine module implements Zurich Model integration through sophisticated mapping of p̂_t to motivational domains including security, arousal, and affiliation. This theoretical foundation provides scientifically validated approaches to behavioral adaptation that go beyond simple trait matching. The module includes conflict resolution mechanisms for handling situations where different personality traits may suggest conflicting regulation strategies, ensuring consistent and coherent behavioral adaptation.
 
-The RAG engine implements hierarchical indexing with multi-level document structures that enable precise retrieval at appropriate detail levels. Query routing intelligence directs queries to appropriate knowledge sources based on context and user traits, while comprehensive citation tracking ensures complete provenance information for all retrieved content. Dynamic retrieval strategies adapt to personality traits and conversation context, providing information in formats and detail levels that match individual patient preferences and needs.
+The generation module composes responses using only dialog context and personality-adapted communication policies, ensuring all outputs remain grounded in the conversation history without external knowledge dependencies.
 
 #### 4.4 Supporting Technologies
 
@@ -351,7 +414,7 @@ The system employs LlamaIndex's ChatEngine for conversational RAG turns with ses
 To strengthen determinism, auditability, and resilience, we adopt the following LangGraph patterns:
 
 - **Persistent Checkpointing**: Use a checkpointer (e.g., Postgres/Redis) keyed by `session_id` to create immutable, replayable checkpoints per node, tagged with prompt/version metadata and consent flags for HIPAA/GDPR audit trails.
-- **Typed State with Reducers**: Define a strongly typed state (e.g., OCEAN vector, confidence, evidence log) with reducer semantics that clamp cumulative updates to {−1, 0, +1} and preserve provenance (turn indices, snippets).
+- **Typed State with Reducers**: Define a strongly typed state (e.g., p̂_t, confidence, evidence log) with reducer semantics that clamp cumulative updates to {−1, 0, +1} and preserve provenance (turn indices, snippets).
 - **Subgraphs and Middleware**: Compose D–R–E as subgraphs and insert safety as cross-cutting middleware (pre/post-LLM) to centralize PII redaction, moderation, and escalation.
 - **Conditional Edges**: Encode clinical policies as edges (confidence gating; violation → refusal/escalation; RAG outage → conservative branch) to realize graceful degradation deterministically.
 - **Parallel Retrieval**: Fan-out to multiple retrievers (guidelines, institutional protocols, recency index) and merge by safety-criticality to reduce latency and improve coverage.
@@ -409,29 +472,27 @@ Minimal client metrics including latency and token counts are collected for perf
 
 ### 5. Implementation Strategy
 
-#### 5.1 Development Phases and Healthcare Focus
+#### 5.1 Development Phases
 
-The implementation strategy follows a phased approach that prioritizes healthcare-specific requirements while enabling iterative development and validation. Phase 1 focuses on core LangGraph pipeline implementation with basic OCEAN detection and Zurich Model regulation, establishing the foundation for personality-aware interaction. This phase includes comprehensive testing and validation to ensure that the basic personality detection and regulation capabilities meet healthcare safety and effectiveness requirements.
+The implementation strategy follows a phased approach that prioritizes dialog-only requirements while enabling iterative development and validation. Phase 1 focuses on core LangGraph pipeline implementation implementing the **ingest → detect → smooth → regulate → generate → verify → checkpoint** pipeline with basic p̂_t detection and Zurich Model regulation. This phase includes comprehensive testing and validation to ensure that the basic personality detection and regulation capabilities meet safety and effectiveness requirements.
 
-Phase 2 implements RAG integration using LlamaIndex and hierarchical indexing specifically designed for healthcare knowledge management. This phase addresses the critical requirement for accurate, up-to-date medical information that can be retrieved and presented in personality-appropriate formats. Phase 3 develops the Next.js client with streaming support and citation display, ensuring that patients receive information in accessible formats with proper attribution and source verification.
-
-Phase 4 implements the evaluation framework and ethics guardrails essential for healthcare applications, including comprehensive quality metrics, safety monitoring, and compliance validation. Phase 5 focuses on performance optimization and production deployment, ensuring that the system can operate reliably in clinical environments with appropriate monitoring, alerting, and maintenance capabilities.
+Phase 2 develops the Next.js client with streaming support, ensuring that users receive responses in accessible formats with proper conversation continuity. Phase 3 implements the evaluation framework and ethics guardrails, including comprehensive quality metrics, safety monitoring, and compliance validation. Phase 4 focuses on performance optimization and production deployment, ensuring that the system can operate reliably with appropriate monitoring, alerting, and maintenance capabilities.
 
 #### 5.4 Architectural Decision Records (ADRs)
 
-To ensure transparency and reproducibility of design trade-offs, we summarize key ADRs relevant to healthcare deployment:
+To ensure transparency and reproducibility of design trade-offs, we summarize key ADRs relevant to deployment:
 
-- ADR-1 Orchestration: Adopt LangGraph as the orchestration backbone with LangChain components for D–R–E composition. Rationale: deterministic state machines and checkpointing for auditability; Alternatives: intent-centric stacks (Rasa/Dialogflow) lack LLM-native control; Risk: added complexity mitigated by templates and tests.
-- ADR-2 LLM Choice: Use a clinically conservative, instruction-tuned LLM with reliable function-calling (e.g., GPT-4 class) behind an abstraction enabling substitution with vetted open models. Rationale: structured outputs and stable behavior; Risk: vendor dependency mitigated by interface parity tests.
-- ADR-3 Safety Integration: Implement pre/post-model hooks for PII redaction, toxicity moderation, hallucination checks, and escalation. Rationale: defense-in-depth beyond model safety; Risk: latency overhead offset by clinical requirements.
-- ADR-4 Deployment Environment: Target Kubernetes with service mesh (mTLS), policy-as-code (OPA/Gatekeeper), and centralized secrets (Vault/KMS). Rationale: isolation and scale in regulated settings; Risk: ops complexity mitigated via IaC and CI/CD.
-- ADR-5 Compliance & Observability: Immutable audit logs, LangSmith/OpenTelemetry traces, RBAC on logs, consent and retention enforced at gateway/state. Rationale: HIPAA/GDPR alignment; Risk: telemetry sensitivity mitigated by minimization and consent flags.
-- ADR-6 Data Layer: PostgreSQL+pgvector for embeddings, Redis for checkpoints, object storage for artifacts, all encrypted at rest/in transit. Rationale: reliability and auditability; Risk: administration overhead mitigated by managed services.
+- ADR-1 Orchestration: Adopt LangGraph as the orchestration backbone with LangChain components for **ingest → detect → smooth → regulate → generate → verify → checkpoint** pipeline composition. Rationale: deterministic state machines and checkpointing for auditability; Alternatives: intent-centric stacks lack LLM-native control; Risk: added complexity mitigated by templates and tests.
+- ADR-2 LLM Choice: Use an instruction-tuned LLM with reliable function-calling (e.g., GPT-4 class) behind an abstraction enabling substitution with open models. Rationale: structured outputs and stable behavior; Risk: vendor dependency mitigated by interface parity tests.
+- ADR-3 Safety Integration: Implement pre/post-model hooks for PII redaction, toxicity moderation, hallucination checks, and escalation. Rationale: defense-in-depth beyond model safety; Risk: latency overhead offset by requirements.
+- ADR-4 Deployment Environment: Target standard deployment with containerization and centralized secrets management. Rationale: isolation and scale; Risk: ops complexity mitigated via IaC and CI/CD.
+- ADR-5 Observability: Immutable audit logs, LangSmith/OpenTelemetry traces, access control on logs. Rationale: system transparency; Risk: telemetry sensitivity mitigated by minimization.
+- ADR-6 Data Layer: PostgreSQL for session storage, Redis for checkpoints, object storage for artifacts. Rationale: reliability and auditability; Risk: administration overhead mitigated by managed services.
 
-#### 5.5 Requirements-to-Framework Mapping (Compliance and Auditability)
+#### 5.5 Requirements-to-Framework Mapping
 
-- HIPAA/GDPR auditability → LangGraph checkpoints per node with immutable IDs; structured logs contain OCEAN vectors, confidences, Zurich mappings, citations, and safety actions; access gated by RBAC and purpose limitation.
-- Data minimization and consent → Consent flags stored in session state gate RAG inclusion and telemetry; PII redaction executes in pre-LLM hooks; retention policies enforced via lifecycle jobs.
+- Auditability → LangGraph checkpoints per node with immutable IDs; structured logs contain p̂_t vectors, confidences, Zurich mappings, and safety actions; access gated by RBAC and purpose limitation.
+- Data minimization and consent → Consent flags stored in session state gate telemetry; PII redaction executes in pre-LLM hooks; retention policies enforced via lifecycle jobs.
 - Reproducibility → Deterministic node execution with versioned prompts and schemas; replay capability links final responses to checkpoint IDs.
 - Safety governance → Evaluator-based refusals and escalation paths implemented as explicit edges; red-team harness exercises safety subgraph.
 
@@ -440,36 +501,34 @@ To ensure transparency and reproducibility of design trade-offs, we summarize ke
 - Trait uncertainty and discretization: {−1, 0, +1} simplifies control but may omit nuance; future work includes calibrated Bayesian updates while preserving auditability.
 - Cultural and contextual variability: Regulation strategies may not transfer across populations; plan stratified evaluations and culture-aware priors.
 - Safety drift and model updates: Periodic regression testing and policy versioning required to prevent drift.
-- Human-in-the-loop integration: Operational pathways for clinician escalation must be validated prospectively in situ.
+- Human-in-the-loop integration: Operational pathways for supervisor escalation must be validated prospectively.
 
 #### 5.7 Transition to Chapter X+1
 
-The next chapter operationalizes this justification into an implementable artifact. It details the graph topology, state schemas, safety hooks, RAG integration, deployment choices (Kubernetes, CI/CD, policy gates), and validation harnesses that reproduce the V4 outcomes under clinical audit constraints, thereby demonstrating how the proposed architecture is concretely realized.
+The next chapter operationalizes this justification into an implementable artifact. It details the graph topology, state schemas, safety hooks, deployment choices (containerization, CI/CD, policy gates), and validation harnesses that demonstrate how the proposed **ingest → detect → smooth → regulate → generate → verify → checkpoint** pipeline is concretely realized.
 
-#### 5.2 Technology Stack and Healthcare Integration
+#### 5.2 Technology Stack
 
-The technology stack is specifically selected to support healthcare application requirements while maintaining the flexibility needed for research and development. LangGraph serves as the primary orchestration framework, providing stateful control and modularity essential for complex healthcare conversations. LangChain provides the component library and integration ecosystem needed for production deployment, including extensive support for vector databases, LLM providers, and evaluation tools.
+The technology stack is specifically selected to support dialog-only conversational AI while maintaining the flexibility needed for research and development. LangGraph serves as the primary orchestration framework, providing stateful control and modularity essential for the **ingest → detect → smooth → regulate → generate → verify → checkpoint** pipeline. LangChain provides the component library needed for production deployment, including support for LLM providers and evaluation tools.
 
-The retrieval system uses LlamaIndex with pgvector/PostgreSQL for hierarchical RAG capabilities, enabling efficient storage and retrieval of healthcare knowledge while maintaining the performance characteristics required for real-time conversational AI. The serving infrastructure combines FastAPI backend services with Redis/PostgreSQL for memory management and LangSmith/OpenTelemetry for comprehensive tracing and monitoring.
+The serving infrastructure combines FastAPI backend services with Redis/PostgreSQL for session management and LangSmith/OpenTelemetry for comprehensive tracing and monitoring. The client/UI layer implements Next.js chat interfaces providing accessibility while maintaining security and privacy standards.
 
-The client/UI layer implements Next.js chat interfaces designed specifically for healthcare applications, providing multi-platform accessibility while maintaining security and privacy standards. The implementation includes features essential for healthcare contexts including secure authentication, privacy protection, and accessibility features that ensure the system can serve diverse patient populations.
+#### 5.3 Risk Mitigation and Safety
 
-#### 5.3 Risk Mitigation and Healthcare Safety
+Risk mitigation strategies address application requirements, including version management through dependency pinning and comprehensive regression testing for critical pipeline nodes. Hallucination prevention is implemented through dialog grounding verification and evaluator-based refusals, ensuring that users receive only conversation-grounded responses.
 
-Risk mitigation strategies specifically address healthcare application requirements, including version management through dependency pinning and comprehensive regression testing for critical nodes. Hallucination prevention is implemented through enforced RAG grounding and evaluator-based refusals, ensuring that patients receive only accurate, verified information.
-
-Safety and compliance gaps are addressed through comprehensive hooks for content moderation, PII redaction, and audit logging that meets healthcare regulatory requirements. The system implements graceful degradation strategies for real-time dialogues, ensuring that service interruptions don't compromise patient safety or therapeutic continuity.
+Safety gaps are addressed through comprehensive hooks for content moderation, PII redaction, and audit logging. The system implements graceful degradation strategies for real-time dialogues, ensuring that service interruptions don't compromise conversation continuity.
 
 ### 6. Conclusion
 
-This chapter has presented a comprehensive methodology and system architecture for developing personality-aware conversational AI systems specifically designed for healthcare applications. The methodology builds upon the proven V4 system framework while extending it to address the unique requirements of clinical deployment and regulatory compliance.
+This chapter has presented a comprehensive methodology and system architecture for developing personality-aware conversational AI systems designed as dialog-only, prompt-only chatbots. The methodology builds upon proven frameworks while focusing on the **ingest → detect → smooth → regulate → generate → verify → checkpoint** pipeline.
 
-The chosen LangGraph + LangChain stack provides the necessary orchestration capabilities while maintaining the modularity and auditability required for healthcare applications. The architecture's three-tier design ensures clear separation of concerns while enabling seamless integration between components, creating a foundation that supports both research experimentation and production deployment.
+The chosen LangGraph + LangChain stack provides the necessary orchestration capabilities while maintaining the modularity and auditability required for production applications. The architecture's three-tier design ensures clear separation of concerns while enabling seamless integration between components.
 
-The implementation strategy outlines a phased approach that prioritizes healthcare safety and effectiveness while enabling iterative development and validation. This approach ensures that each component can be thoroughly tested and validated before integration, reducing risks in clinical deployment while maintaining the flexibility needed for ongoing research and development.
+The implementation strategy outlines a phased approach that prioritizes safety and effectiveness while enabling iterative development and validation. This approach ensures that each component can be thoroughly tested and validated before integration.
 
-The next chapter will detail the concrete implementation of this architecture, including specific code examples, configuration details, and comprehensive testing results. This implementation will demonstrate how the theoretical framework and architectural decisions translate into deployable systems that can provide personalized, safe, and effective conversational AI support in healthcare settings.
+The next chapter will detail the concrete implementation of this architecture, including specific code examples, configuration details, and comprehensive testing results. This implementation will demonstrate how the theoretical framework and architectural decisions translate into deployable dialog-only systems.
 
-In particular, Chapter X+1 provides: (i) an end-to-end LangGraph topology for the D–R–E pipeline; (ii) ADR expansions on LLM selection, safety integration, deployment, and compliance; (iii) healthcare-specific microservices patterns on Kubernetes with CI/CD and policy gates; and (iv) validation results tied to V4 (98.33% detection accuracy; 34% conversational quality improvement), including effect sizes and KPI-to-clinical-requirement mapping.
+**Future Work**: External knowledge integration (RAG), multimodal capabilities, and advanced tool integration may be considered for future versions while maintaining the core dialog-only pipeline architecture.
 
 
