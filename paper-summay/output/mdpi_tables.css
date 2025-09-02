@@ -1,0 +1,27 @@
+/* MDPI Healthcare Table Styles */
+table {
+    font-size: 8pt !important;
+    font-family: "Times New Roman", serif !important;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    font-size: 8pt !important;
+    font-family: "Times New Roman", serif !important;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    font-size: 8pt !important;
+}
+
+/* Ensure all table content uses font size 8 */
+table * {
+    font-size: 8pt !important;
+}

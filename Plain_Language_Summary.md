@@ -1,0 +1,7 @@
+### Plain-Language Summary (180 words)
+
+Many older adults feel lonely, which can harm their health. AI chatbots can help by offering everyday conversation and support, but most respond the same way to everyone. Our study shows that chatbots can do better by adapting to a person’s personality.
+
+We built a system that detects five personality traits (openness, conscientiousness, extraversion, agreeableness, and emotional stability) from what a person writes. After each message, the system updates its guess and adjusts the chatbot’s style. For example, if someone seems anxious, the chatbot speaks more calmly and offers reassurance. If someone is curious and motivated, it brings new ideas and structured next steps. This design follows a well-known psychology model that focuses on three needs: feeling safe, social connection, and the right level of stimulation.
+
+In short, conversations with the adaptive chatbot were more emotionally fitting and helpful than with a non-adaptive version—about a one‑third improvement in key measures. While our tests used simulated personalities and short chats, the results suggest real promise for elder care, mental health support, and digital companionship. Next steps include testing with real users, ensuring privacy and safety, and integrating the approach into clinical workflows.
