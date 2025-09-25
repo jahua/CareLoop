@@ -1,0 +1,79 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.1.2">
+  <diagram name="Page-1" id="29fAgLNKw_3qc4UjfIgy">
+    <mxGraphModel dx="1542" dy="2001" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-9" value="Data and Infrastructure Layer" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="870" width="760" height="208" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-10" value="Core Processing Layer" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="560" width="754" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-11" value="API Gateway Layer" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="320" width="750" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;shape=arrow;entryX=0.504;entryY=-0.015;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="jD9fVzRoz2RDKt0FuneP-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="857" y="310" as="targetPoint" />
+            <mxPoint x="860" y="250" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-12" value="Client Layer - NextJS" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;fontStyle=1;aspect=fixed;sketch=0;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;prIcon=node;align=center;" vertex="1" parent="1">
+          <mxGeometry x="572.5" y="120" width="575" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-16" value="Auth and Routing" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="535" y="409" width="183" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-17" value="Rate Limiting" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="768" y="409" width="156" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-18" value="Request Validation" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="974" y="409" width="193" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-19" value="Personality Detection" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="500" y="658" width="213" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-20" value="Regulation Engine" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="752" y="604" width="188" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-21" value="Response Generation" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="974" y="658" width="210" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-22" value="Safety and Ethics" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="500" y="740" width="190" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-23" value="Evaluation Engine" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="743" y="740" width="187" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-24" value="Session Management" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="977" y="740" width="207" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-26" value="Session Store" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="986" width="154" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-27" value="Observability and Monitoring" style="whiteSpace=wrap;strokeWidth=2;fontFamily=Verdana;" vertex="1" parent="1">
+          <mxGeometry x="718" y="980" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-33" value="&lt;span style=&quot;font-family: Verdana;&quot;&gt;Vector DB - pgvector&lt;/span&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="555" y="965" width="80" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-38" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;fillColor=#FF6A00;strokeColor=none;shape=mxgraph.alibaba_cloud.openapi_explorer;" vertex="1" parent="1">
+          <mxGeometry x="833.3" y="350" width="47.400000000000006" height="47.400000000000006" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-39" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=light-dark(#7AA116, #e9690e);strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_sitewise_asset_model;" vertex="1" parent="1">
+          <mxGeometry x="813.5" y="670" width="65" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-40" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;fillColor=#FF6A00;strokeColor=none;shape=mxgraph.alibaba_cloud.dms_data_management_service;" vertex="1" parent="1">
+          <mxGeometry x="832" y="900" width="45.9" height="47.400000000000006" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.498;entryY=-0.01;entryDx=0;entryDy=0;entryPerimeter=0;shape=arrow;" edge="1" parent="1" source="jD9fVzRoz2RDKt0FuneP-11" target="jD9fVzRoz2RDKt0FuneP-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jD9fVzRoz2RDKt0FuneP-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.495;entryY=0.002;entryDx=0;entryDy=0;entryPerimeter=0;shape=arrow;" edge="1" parent="1" source="jD9fVzRoz2RDKt0FuneP-10" target="jD9fVzRoz2RDKt0FuneP-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

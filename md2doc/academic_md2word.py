@@ -132,7 +132,7 @@ def convert_md_to_docx(md_file, docx_file, template_file=None, img_dir=None, com
                     
                     # Add the numbered point with the current section counter
                     paragraph = doc.add_paragraph(style='List Number')
-                    run = paragraph.add_run(f"{point_number}. {point_label}:")
+                    run = paragraph.add_run("{0}. {1}:".format(point_number, point_label))
                     run.bold = True
                     
                     # Add the rest of the text
@@ -284,11 +284,11 @@ def convert_md_to_docx(md_file, docx_file, template_file=None, img_dir=None, com
         
         # Save document
         doc.save(docx_file)
-        print(f"Successfully converted {md_file} to {docx_file} with academic formatting")
+        print("Successfully converted {0} to {1} with academic formatting".format(md_file, docx_file))
         return True
     
     except Exception as e:
-        print(f"Error converting {md_file} to {docx_file}: {e}")
+        print("Error converting {0} to {1}: {2}".format(md_file, docx_file, e))
         import traceback
         traceback.print_exc()
         return False
@@ -701,13 +701,13 @@ def main(input_file, output_file, template, img_dir, output_dir, edit_original, 
         with open(input_file, 'w', encoding='utf-8') as f:
             f.write(edited_content)
         
-        print(f"Updated inline numbering in {input_file}")
+        print("Updated inline numbering in {0}".format(input_file))
     
     if not output_file:
         # Generate output file name based on input file
         input_basename = os.path.basename(input_file)
         input_name, _ = os.path.splitext(input_basename)
-        output_file = os.path.join(output_dir, f"{input_name}.docx")
+        output_file = os.path.join(output_dir, "{0}.docx".format(input_name))
     
     # Create output directory if it doesn't exist
     output_dir_path = os.path.dirname(output_file)
@@ -754,7 +754,7 @@ def edit_markdown_numbering(content):
                 nonlocal counter
                 num = counter
                 counter += 1
-                return f"{num}. {match.group(2)}:"
+                return "{0}. {1}:".format(num, match.group(2))
             
             updated_content = re.sub(
                 r'(\d+)\.\s+([A-Z][a-zA-Z]+):',

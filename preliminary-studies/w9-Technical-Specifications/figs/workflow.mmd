@@ -1,0 +1,7 @@
+flowchart TD
+    A[User message] --> B[Ingest]
+    B --> C[Detect OCEAN (discrete)]
+    C --> D[Parse JSON / threshold]
+    D --> E[Regulate → directives]
+    E --> F[Generate grounded reply]
+    F --> G[Format output]

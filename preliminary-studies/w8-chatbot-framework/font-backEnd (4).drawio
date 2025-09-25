@@ -1,0 +1,75 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.1.2">
+  <diagram name="Page-1" id="81yH1fYG4tgIlu9NA_pP">
+    <mxGraphModel dx="1932" dy="2001" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-82" value="HTTP SSE" style="curved=1;startArrow=none;endArrow=block;exitX=0.995;exitY=0.489;rounded=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="gzjPWB8uBsm71g5LPkXl-70" target="gzjPWB8uBsm71g5LPkXl-64">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-83" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="20" y="20" width="324" height="754" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-70" value="NextJS Client" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-83">
+          <mxGeometry width="324" height="754" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-71" value="C2" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-83">
+          <mxGeometry x="25" y="20" width="274" height="332" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-72" value="" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-83">
+          <mxGeometry x="50" y="387" width="224" height="332" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-73" value="Chat" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-72">
+          <mxGeometry x="73" y="43" width="93" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-74" value="Session" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-72">
+          <mxGeometry x="64" y="147" width="111" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-75" value="Accessibility" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-72">
+          <mxGeometry x="46" y="251" width="149" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-76" value="API" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-83">
+          <mxGeometry x="120" y="55" width="83" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-77" value="State" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-83">
+          <mxGeometry x="113" y="159" width="98" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-78" value="Errors" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-83">
+          <mxGeometry x="111" y="263" width="102" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-84" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="470" y="20" width="329" height="754" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-64" value="FastAPI Backend" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-84">
+          <mxGeometry width="329" height="754" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-65" value="" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-84">
+          <mxGeometry x="50" y="35" width="229" height="332" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-66" value="Sessions" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-65">
+          <mxGeometry x="64" y="43" width="118" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-67" value="Checkpoint" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-65">
+          <mxGeometry x="53" y="147" width="140" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-68" value="Observability" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-65">
+          <mxGeometry x="46" y="251" width="154" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-69" value="B1" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-84">
+          <mxGeometry x="25" y="402" width="279" height="332" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-79" value="Chat API" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-84">
+          <mxGeometry x="105" y="437" width="120" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-80" value="LangGraph" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-84">
+          <mxGeometry x="96" y="541" width="136" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="gzjPWB8uBsm71g5LPkXl-81" value="Auth Security" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="gzjPWB8uBsm71g5LPkXl-84">
+          <mxGeometry x="87" y="645" width="156" height="54" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

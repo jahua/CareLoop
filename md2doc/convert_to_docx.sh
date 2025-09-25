@@ -51,7 +51,7 @@ mkdir -p "$DOCOUTPUT_DIR"
 
 # Run the conversion script
 echo "Converting $INPUT_FILE to $DOCOUTPUT_DIR/$INPUT_NAME.docx"
-python "$SCRIPT_DIR/academic_md2word.py" "$INPUT_FILE" "$DOCOUTPUT_DIR/$INPUT_NAME.docx" $TEMPLATE_ARG $EDIT_ORIGINAL $COMPACT_MODE
+python3 "$SCRIPT_DIR/academic_md2word.py" "$INPUT_FILE" "$DOCOUTPUT_DIR/$INPUT_NAME.docx" $TEMPLATE_ARG $EDIT_ORIGINAL $COMPACT_MODE
 
 # Check the result
 if [ $? -eq 0 ]; then
