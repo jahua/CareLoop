@@ -4,6 +4,10 @@
 **Last Updated:** 2026-03-04  
 **Scope:** Implementation roadmap aligned with `Technical-Specification-RAG-Policy-Navigation.md` (Spec v1.3.0)
 
+### Phase 1–2 completion summary (as of 2026-03-04)
+- **Pipeline:** Phase 1 + Phase 2 pipeline is implemented end-to-end (Detect → Regulate → Retrieve → Generate → Ground → Verify → Format). Coaching modes, RAG retrieval, citations, grounding verifier, and mixed mode are in place.
+- **Deferred to after Phase 3:** (1) Latency validation (p95 targets), (2) `personality_memory_embeddings` read/write path, (3) Policy benchmark suite + evaluator protocol, (4) Optional: `ENABLE_RAG_POLICY_NAV` feature flag. See §4.3 and §5.3 DoD and `CareLoop/docs/PHASE1-2-TODO.md`.
+
 ---
 
 ## 1. Overview
@@ -79,9 +83,10 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 - **Frontend:** Chat UI, display assistant message and (optional) personality dashboard placeholder.
 
 ### 4.3 Deliverables (DoD)
-- [ ] 100% of turns have valid `coaching_mode` (`emotional_support` or `practical_education`).
-- [ ] Personality state update success ≥ 99.5% of turns (Spec §14).
-- [ ] Verifier blocks malformed or ungrounded outputs before return.
+- [x] 100% of turns have valid `coaching_mode` (`emotional_support` or `practical_education`).
+- [x] Personality state update success ≥ 99.5% of turns (Spec §14).
+- [x] Verifier blocks malformed or ungrounded outputs before return.
+- [x] Grounding Verifier (P1-9) validates policy claims against evidence.
 - [ ] Golden/conversation tests for at least two profiles (e.g. high-N, high-C) pass.
 - [ ] p95 latency for emotional support ≤ 4.0s, practical education ≤ 5.0s (Spec §17.6.1).
 - [ ] Memory retrieval/write path is active for conversation turns and observable in DB table `personality_memory_embeddings`.

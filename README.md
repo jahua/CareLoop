@@ -1,5 +1,7 @@
 # CareLoop – Phase 0 & Phase 1 MVP
 
+**Repository:** [github.com/jahua/CareLoop](https://github.com/jahua/CareLoop)
+
 Phase 0: infrastructure, contracts, chat shell, N8N skeleton, DB schema.  
 Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Response → Respond). Personality state and coaching mode are returned and shown in the UI.
 
