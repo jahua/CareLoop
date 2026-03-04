@@ -1,11 +1,35 @@
 ---
-description: Canonical CareLoop repository and sync reference
+description: Canonical CareLoop repository - ALWAYS use this repo for CareLoop code
 alwaysApply: true
 ---
 
-# CareLoop repository
+# CareLoop Repository Rule
 
-- **Canonical repo:** [https://github.com/jahua/CareLoop](https://github.com/jahua/CareLoop)
-- **Local path in this workspace:** `CareLoop/` (under the thesis project root).
-- When pushing CareLoop changes, use the CareLoop repo. If the thesis project uses a different remote (e.g. thesis-papeer), CareLoop can be synced to or developed against `https://github.com/jahua/CareLoop` as the canonical CareLoop codebase.
-- Reference the repo in README, docs, or clone instructions as: `git clone https://github.com/jahua/CareLoop.git`
+## Canonical Repository
+
+**ALWAYS use:** https://github.com/jahua/CareLoop
+
+## Git Operations
+
+- **Local path:** `CareLoop/` (under thesis project root)
+- **Remote:** `origin` → `https://github.com/jahua/CareLoop.git`
+- **Push:** Always push CareLoop changes to `github.com/jahua/CareLoop`, NOT to `thesis-papeer`
+- **Clone:** `git clone https://github.com/jahua/CareLoop.git`
+
+## Important
+
+1. CareLoop is a **separate git repository** nested inside the thesis project
+2. Changes to `CareLoop/` should be committed and pushed within the CareLoop directory
+3. The thesis-papeer repo tracks CareLoop as a directory but CareLoop has its own git history
+4. When asked to push CareLoop changes, always `cd CareLoop && git push origin main`
+
+## Quick Reference
+
+```bash
+# Push CareLoop changes
+cd CareLoop && git add -A && git commit -m "message" && git push origin main
+
+# Check CareLoop remote
+cd CareLoop && git remote -v
+# Should show: origin https://github.com/jahua/CareLoop.git
+```
