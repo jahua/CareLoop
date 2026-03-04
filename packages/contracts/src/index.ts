@@ -107,7 +107,7 @@ export function parseFinalResponseOutput(data: unknown): FinalResponseOutput {
 export const safeParseInboundRequest = InboundRequestSchema.safeParse.bind(InboundRequestSchema);
 export const safeParseFinalResponseOutput = FinalResponseOutputSchema.safeParse.bind(FinalResponseOutputSchema);
 
-export type { OceanScores, ConfidenceScores, PersonalityStateSnapshot, DetectionOutput } from "./ema.js";
+export type { OceanScores, ConfidenceScores, PersonalityStateSnapshot } from "./ema.js";
 export {
   applyEMA,
   isStable,
