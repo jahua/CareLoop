@@ -1,0 +1,51 @@
+---
+description: How to organize code, data, nested docs, and memory in this project
+alwaysApply: true
+---
+
+# Project Organization: Code, Data, Docs, Memory
+
+## 1. Code organization
+
+- **App / product code** lives under a clear product root (e.g. `CareLoop/` or `pmt/MVP/`). Prefer the structure from the technical spec when building CareLoop:
+  - `apps/` — frontend (e.g. Next.js), gateway
+  - `services/` — personality, RAG, generation, verification
+  - `workflows/` or `workflows/n8n/` — orchestrator exports and contracts
+  - `packages/` — shared contracts, config, shared libs
+  - `infra/` — docker, k8s, env templates
+- **One concern per directory**: do not mix frontend, backend, and workflows in the same folder.
+- **Shared contracts** (request/response DTOs, zod schemas) live in a single place (e.g. `packages/contracts`) and are imported; do not duplicate contract definitions across services.
+- **Naming**: `PascalCase` for types/classes, `camelCase` for variables/functions, `SCREAMING_SNAKE_CASE` for env constants (per Technical Specification).
+
+## 2. Data organization
+
+- **Secrets and env**: Only in env vars or a secret manager; use `.env.example` (no secrets) and never commit real secrets. Document required vars in the same folder or in a top-level README.
+- **Schema and migrations**: Keep DB schema (SQL or ORM migrations) next to the service or in a dedicated `database/` or `db/` folder under the product root; e.g. `CareLoop/infra/database/` or `pmt/MVP/database/`.
+- **Fixtures and test data**: Under `**/fixtures/`, `**/test-data/`, or `**/seeds/`; do not put production-like secrets in fixtures.
+- **Generated or downloaded data** (corpus, embeddings, exports): Prefer a single root such as `data/` or `corpus/` at product level, and add it to `.gitignore` unless it is small and safe to version.
+
+## 3. Nested docs and specs
+
+- **Specs and design**: One folder per product or theme (e.g. `CareLoop/`). Keep the main spec and roadmap there: `Technical-Specification-*.md`, `ROADMAP.md`.
+- **Nested docs**: Use subfolders for deeper structure (e.g. `CareLoop/docs/`, `CareLoop/docs/decisions/`), not long flat lists of markdown files. Prefer a single README per folder that links to key docs.
+- **Naming**: Use clear, consistent names: `UPPERCASE-WITH-DASHES.md` or `Title-Case-With-Dashes.md` for important docs; avoid spaces in filenames for scripts and tooling.
+- **Cross-references**: Link to other docs with relative paths (`./ROADMAP.md`, `../Technical-Specification-*.md`). When the spec references another doc (e.g. `pmt/Preliminary-Study-V2.7.6.md`), keep that path accurate.
+
+## 4. Memory and persistent context
+
+- **Cursor rules** (`.cursor/rules/*.mdc`): Store project-wide conventions, coding standards, and organization rules here. One concern per rule; use `alwaysApply` only for rules that must apply everywhere.
+- **RULE.md / AGENTS.md**: Use at repo or product root to describe how humans and AI should work in this repo (e.g. “Always follow CareLoop Technical Specification for new features”). Prefer one RULE.md or AGENTS.md at the thesis project root; for multiple products, one per product root is acceptable.
+- **Decisions and context**: For lasting architectural or product decisions, write them in a doc (e.g. `CareLoop/docs/decisions/`) or in the main spec and link from README or RULE.md so they are part of “memory” for future sessions.
+- **Do not** rely on chat history as the only memory: anything that must persist for future work should live in a rule, RULE.md/AGENTS.md, or a versioned doc.
+
+## Quick reference
+
+| What | Where |
+|------|--------|
+| App code | `apps/`, `services/`, `workflows/`, `packages/` under product root |
+| Contracts | `packages/contracts` (single source of truth) |
+| Env / secrets | `.env.example` only in repo; real secrets in env / secret manager |
+| DB schema / migrations | `database/` or `db/` under product or infra |
+| Specs and roadmaps | Product folder root (e.g. `CareLoop/*.md`) |
+| Nested docs | `docs/` or `docs/<topic>/` under product |
+| Project conventions and memory | `.cursor/rules/*.mdc`, `RULE.md` or `AGENTS.md` |

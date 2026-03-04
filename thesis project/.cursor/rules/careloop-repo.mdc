@@ -1,0 +1,11 @@
+---
+description: Canonical CareLoop repository and sync reference
+alwaysApply: true
+---
+
+# CareLoop repository
+
+- **Canonical repo:** [https://github.com/jahua/CareLoop](https://github.com/jahua/CareLoop)
+- **Local path in this workspace:** `CareLoop/` (under the thesis project root).
+- When pushing CareLoop changes, use the CareLoop repo. If the thesis project uses a different remote (e.g. thesis-papeer), CareLoop can be synced to or developed against `https://github.com/jahua/CareLoop` as the canonical CareLoop codebase.
+- Reference the repo in README, docs, or clone instructions as: `git clone https://github.com/jahua/CareLoop.git`
