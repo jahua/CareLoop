@@ -1,0 +1,9 @@
+[
+  {
+    "source_id": "example_federal_2025",
+    "title": "Example policy page",
+    "url": "https://www.example.admin.ch/policy",
+    "content": "Your scraped or pasted full text here. It will be split into chunks of about 200-400 tokens with 15% overlap. Each document needs source_id, title, url, content, and optional metadata (e.g. authority_tier, jurisdiction, canton).",
+    "metadata": { "authority_tier": 1, "jurisdiction": "Federal", "canton": "Federal" }
+  }
+]

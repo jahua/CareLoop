@@ -341,6 +341,8 @@ Phase 2 established evidence-grounded policy navigation. Phase 3 will strengthen
 - Security hardening and privacy controls
 - Operational SLO monitoring and alerting
 
+**Phase 3 progress (2026-03-04):** Correlation IDs are in place: the chat API generates or accepts `request_id` (body or `x-request-id` header), passes it to the N8N workflow; the workflow carries it through Ingest and Format Response; error responses include `request_id` for tracing. See `CareLoop/docs/PHASE3-TODO.md`.
+
 The grounding verifier architecture provides the foundation for the broader verification and safety systems required in Phase 3.
 
 ---

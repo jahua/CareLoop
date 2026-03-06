@@ -1,191 +1,514 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { useChatStore } from "@/store/chat";
+import ChatMessage from "@/components/ChatMessage";
+import ChatInput from "@/components/ChatInput";
+import PersonalityPanel from "@/components/PersonalityPanel";
+import PersonalityInsights from "@/components/PersonalityInsights";
+import DataActions from "@/components/DataActions";
+import SessionSidebar from "@/components/SessionList";
+import StatusDot from "@/components/StatusDot";
+import ConversationStarters from "@/components/ConversationStarters";
+import SplashScreen from "@/components/SplashScreen";
+import AgentsDashboard from "@/components/AgentsDashboard";
+import PipelineInfo from "@/components/PipelineInfo";
+import type { Message, HealthStatus } from "@/components/types";
+import { fetchSessionHistory } from "@/lib/api";
+import { touchRecentSession } from "@/lib/session-storage";
 
-type Message = { role: "user" | "assistant"; content: string };
-type Ocean = Record<string, number>;
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function bundleToMessages(
+  turns: Array<{ turn_index: number; user_msg: string; assistant_msg: string | null }>
+): Message[] {
+  const out: Message[] = [];
+  for (const t of turns) {
+    out.push({ role: "user", content: t.user_msg });
+    out.push({ role: "assistant", content: t.assistant_msg ?? "", turn_index: t.turn_index });
+  }
+  return out;
+}
+
+const useGateway =
+  typeof process !== "undefined" &&
+  (process.env.NEXT_PUBLIC_USE_GATEWAY === "true" || process.env.NEXT_PUBLIC_USE_GATEWAY === "1");
 
 export default function ChatPage() {
-  const [sessionId, setSessionId] = useState<string>("");
-  useEffect(() => {
-    setSessionId(crypto.randomUUID());
-  }, []);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [personalityState, setPersonalityState] = useState<{
-    ocean: Ocean;
-    stable?: boolean;
-    ema_applied?: boolean;
-  } | null>(null);
-  const [coachingMode, setCoachingMode] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const sendMessage = useCallback(async () => {
-    const text = input.trim();
-    if (!text || !sessionId) return;
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: text }]);
-    setLoading(true);
-    setError(null);
+  const store = useChatStore();
+  const {
+    sessionId, messages, input, loading, error, personality, coachingMode,
+    chatMode, healthStatus, feedbackByIndex, agents, activeTab, splashDone,
+  } = store;
+
+  const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [feedbackThankIndex, setFeedbackThankIndex] = useState<number | null>(null);
+  const [streamingText, setStreamingText] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [panelTab, setPanelTab] = useState<"traits" | "insights" | "agents">("traits");
+
+  /* ── Session init ── */
+  useEffect(() => {
+    const fromUrl = searchParams.get("session_id");
+    if (fromUrl && UUID_RE.test(fromUrl)) {
+      store.setSessionId(fromUrl);
+      return;
+    }
+    if (!sessionId) store.setSessionId(crypto.randomUUID());
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── Persist to recent sessions ── */
+  useEffect(() => {
+    if (!sessionId) return;
+    const firstUserMsg = messages.find((m) => m.role === "user")?.content;
+    touchRecentSession(sessionId, messages.length, firstUserMsg);
+  }, [sessionId, messages.length, messages]);
+
+  /* ── Auto-scroll ── */
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading, streamingText]);
+
+  /* ── Health check ── */
+  useEffect(() => {
+    const check = () => {
+      fetch("/api/health")
+        .then((r) => {
+          if (!r.ok) return "offline" as HealthStatus;
+          return r.json().then((d) => (d.ok === true ? "healthy" : "degraded") as HealthStatus);
+        })
+        .catch(() => "offline" as HealthStatus)
+        .then(store.setHealthStatus);
+    };
+    check();
+    const id = setInterval(check, 30000);
+    return () => clearInterval(id);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── Load history ── */
+  useEffect(() => {
+    if (!sessionId || historyLoaded || messages.length > 0) return;
+    let cancelled = false;
+    fetchSessionHistory(sessionId)
+      .then((bundle) => {
+        if (cancelled || !bundle) return;
+        const msgs = bundleToMessages(bundle.turns);
+        if (msgs.length > 0) store.setMessages(msgs);
+        const lastPs = bundle.personality_states[bundle.personality_states.length - 1];
+        if (lastPs?.ocean_json && typeof lastPs.ocean_json === "object") {
+          store.setPersonality({
+            ocean: lastPs.ocean_json as Record<string, number>,
+            stable: lastPs.stable,
+            ema_applied: true,
+          });
+        }
+      })
+      .finally(() => { if (!cancelled) setHistoryLoaded(true); });
+    return () => { cancelled = true; };
+  }, [sessionId, historyLoaded, messages.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ── Typewriter streaming effect ── */
+  const typewriterReveal = useCallback((fullText: string, msg: Message) => {
+    let i = 0;
+    const step = Math.max(1, Math.floor(fullText.length / 60));
+    setStreamingText("");
+    const interval = setInterval(() => {
+      i = Math.min(i + step, fullText.length);
+      setStreamingText(fullText.slice(0, i));
+      if (i >= fullText.length) {
+        clearInterval(interval);
+        setStreamingText(null);
+        store.addMessage(msg);
+      }
+    }, 20);
+  }, [store]);
+
+  /* ── Send message ── */
+  const sendMessage = useCallback(async (text?: string) => {
+    const msgText = (text ?? input).trim();
+    if (!msgText || !sessionId) return;
+    const startedAt = Date.now();
+    store.setInput("");
+    store.addMessage({ role: "user", content: msgText, timestamp: new Date().toISOString() });
+    store.setLoading(true);
+    store.setError(null);
+
+    store.updateAgentStatus("Coordinator", "processing");
+    store.updateAgentStatus("Detector", "processing");
+
     try {
       const turnIndex = messages.length + 1;
-      const res = await fetch("/api/chat", {
+      const modelTier = chatMode === "simple" ? "light" : chatMode === "detailed" ? "heavy" : "medium";
+      // Send recent conversation history so the LLM has multi-turn context
+      const recentMessages = messages.slice(-10).map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
+
+      const url = useGateway ? "/api/gateway/chat" : "/api/chat";
+      const body = useGateway
+        ? {
+            session_id: sessionId, turn_index: turnIndex, message: msgText,
+            messages: recentMessages,
+            context: { language: "en", canton: "ZH" },
+            routing_hints: { model_tier: modelTier, ...(chatMode === "simple" ? { workflow: "simple" as const } : {}) },
+          }
+        : {
+            session_id: sessionId, turn_index: turnIndex, message: msgText,
+            messages: recentMessages,
+            context: { language: "en", canton: "ZH", model_tier: modelTier },
+            workflow: chatMode === "simple" ? "simple" : undefined,
+          };
+
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          session_id: sessionId,
-          turn_index: turnIndex,
-          message: text,
-          context: { language: "en", canton: "ZH" },
-        }),
+        body: JSON.stringify(body),
       });
+
+      store.updateAgentStatus("Detector", "active");
+      store.updateAgentStatus("Generator", "processing");
+
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({}));
-        const msg = errBody?.error || errBody?.message || `HTTP ${res.status}`;
+        const msg =
+          (typeof errBody?.error === "object" ? errBody.error?.message : null) ??
+          errBody?.error ?? errBody?.message ?? `HTTP ${res.status}`;
         throw new Error(msg);
       }
+
       const data = await res.json();
-      const content =
-        data?.message?.content ?? data?.content ?? null;
+      const content = data?.message?.content ?? data?.content ?? null;
+
+      store.updateAgentStatus("Generator", "active");
+      store.updateAgentStatus("Verifier", "active");
+      store.updateAgentStatus("Coordinator", "active");
+
       if (content == null || content === "") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content:
-              "No reply from N8N. Open N8N (http://localhost:5678) and activate careloop-simplified.json.",
-          },
-        ]);
-      } else {
-        setMessages((prev) => [...prev, { role: "assistant", content }]);
-      }
-      if (data?.personality_state) {
-        setPersonalityState({
-          ocean: data.personality_state.ocean ?? {},
-          stable: data.personality_state.stable,
-          ema_applied: data.personality_state.ema_applied,
+        store.addMessage({
+          role: "assistant",
+          content: "No reply from N8N. Open N8N (http://localhost:5678) and activate the workflow.",
         });
+      } else {
+        const latencyMs = Date.now() - startedAt;
+        const citations =
+          (data?.policy_navigation as { citations?: Array<{ source_id: string; title: string; url: string }> } | undefined)
+            ?.citations ??
+          (Array.isArray((data as { citations?: unknown })?.citations)
+            ? (data as { citations: Array<{ source_id: string; title: string; url: string }> }).citations
+            : undefined);
+
+        const pipelineStatus = data?.pipeline_status as Record<string, string> | undefined;
+        const stageTimings = Array.isArray(data?.stage_timings)
+          ? (data.stage_timings as Array<{ stage: string; ms: number }>)
+          : undefined;
+
+        const assistantMsg: Message = {
+          role: "assistant",
+          content,
+          turn_index: turnIndex,
+          request_id: data?.request_id,
+          timestamp: new Date().toISOString(),
+          latency_ms: latencyMs,
+          citations: citations?.length ? citations : undefined,
+          pipeline: {
+            mode_confidence: typeof data?.mode_confidence === "number" ? data.mode_confidence : undefined,
+            mode_routing_reason: typeof data?.mode_routing_reason === "string" ? data.mode_routing_reason : undefined,
+            pipeline_status: pipelineStatus,
+            stage_timings: stageTimings,
+          },
+        };
+
+        typewriterReveal(content, assistantMsg);
       }
-      if (data?.coaching_mode) setCoachingMode(data.coaching_mode);
+
+      if (data?.personality_state) {
+        const ps = data.personality_state as {
+          ocean?: Record<string, number>;
+          stable?: boolean;
+          ema_applied?: boolean;
+          confidence_scores?: Record<string, number>;
+        };
+        const newPs = {
+          ocean: ps.ocean ?? {},
+          stable: ps.stable,
+          ema_applied: ps.ema_applied,
+          confidence_scores: ps.confidence_scores,
+        };
+        store.setPersonality(newPs);
+        if (ps.ocean) store.addPersonalitySnapshot(ps.ocean);
+      }
+      if (data?.coaching_mode) store.setCoachingMode(data.coaching_mode);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Request failed";
-      setError(msg);
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: `Error: ${msg}` },
-      ]);
+      store.setError(msg);
+      store.addMessage({ role: "assistant", content: `Error: ${msg}` });
+      store.updateAgentStatus("Coordinator", "error");
     } finally {
-      setLoading(false);
+      store.setLoading(false);
+      setTimeout(() => {
+        for (const a of ["Detector", "Generator", "Verifier", "Regulator", "Coordinator"]) {
+          store.updateAgentStatus(a, "idle");
+        }
+      }, 2000);
     }
-  }, [input, sessionId, messages.length]);
+  }, [input, sessionId, messages.length, chatMode, store, typewriterReveal]);
+
+  /* ── Feedback ── */
+  const sendFeedback = useCallback(
+    async (messageIndex: number, thumbs: "up" | "down") => {
+      const msg = messages[messageIndex];
+      if (!msg || msg.role !== "assistant" || msg.turn_index == null || !sessionId) return;
+      if (feedbackByIndex[messageIndex]) return;
+      store.setFeedback(messageIndex, thumbs);
+      setFeedbackThankIndex(messageIndex);
+      setTimeout(() => setFeedbackThankIndex(null), 2500);
+      try {
+        await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            turn_index: msg.turn_index,
+            request_id: msg.request_id ?? undefined,
+            thumbs_up_down: thumbs,
+          }),
+        });
+      } catch {
+        store.clearFeedback(messageIndex);
+      }
+    },
+    [messages, sessionId, feedbackByIndex, store]
+  );
+
+  /* ── Session navigation ── */
+  const handleSelectSession = useCallback(
+    (id: string) => {
+      if (id === sessionId) return;
+      store.resetSession(id);
+      setHistoryLoaded(false);
+      router.push(`/?session_id=${encodeURIComponent(id)}`);
+    },
+    [router, sessionId, store]
+  );
+
+  const handleNewChat = useCallback(() => {
+    const newId = crypto.randomUUID();
+    store.resetSession(newId);
+    setHistoryLoaded(true);
+    router.push("/");
+  }, [router, store]);
+
+  const handleDataDeleted = useCallback(() => {
+    store.resetSession(crypto.randomUUID());
+    setHistoryLoaded(true);
+  }, [store]);
+
+  const handleStarterSelect = useCallback(
+    (prompt: string) => {
+      sendMessage(prompt);
+    },
+    [sendMessage]
+  );
+
+  /* ── Splash guard ── */
+  if (!splashDone) {
+    return <SplashScreen onDone={store.setSplashDone} />;
+  }
+
+  const msgCount = messages.length;
+  const shortId = sessionId ? sessionId.slice(0, 8) : "";
 
   return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: 24 }}>
-      <h1 style={{ marginBottom: 16 }}>CareLoop</h1>
-      <p style={{ color: "#666", marginBottom: 24 }}>
-        Phase 1 MVP. Session: {sessionId ? `${sessionId.slice(0, 8)}…` : "—"}
-        {coachingMode && (
-          <span style={{ marginLeft: 12 }}>
-            · Mode: <strong>{coachingMode}</strong>
+    <div className="careloop-app">
+      {/* ── Left sidebar ── */}
+      <SessionSidebar
+        currentSessionId={sessionId}
+        onSelectSession={handleSelectSession}
+        onNewChat={handleNewChat}
+      />
+
+      {/* ── Center ── */}
+      <main className="careloop-center">
+        {/* Toolbar */}
+        <div className="careloop-toolbar">
+          <StatusDot status={healthStatus} />
+          <span className="careloop-toolbar__title">
+            {shortId && (
+              <button
+                type="button"
+                className="careloop-copy-id"
+                onClick={() => navigator.clipboard.writeText(sessionId)}
+                title="Copy session ID"
+                style={{ marginRight: 8 }}
+              >
+                {shortId}…
+              </button>
+            )}
+            {msgCount > 0 && `${msgCount} messages`}
           </span>
-        )}
-      </p>
-      {personalityState && (
-        <div
-          style={{
-            marginBottom: 16,
-            padding: 12,
-            background: "#f0f7ff",
-            borderRadius: 8,
-            fontSize: 13,
-          }}
-        >
-          <strong>OCEAN</strong> O:{personalityState.ocean.O?.toFixed(2)} C:
-          {personalityState.ocean.C?.toFixed(2)} E:
-          {personalityState.ocean.E?.toFixed(2)} A:
-          {personalityState.ocean.A?.toFixed(2)} N:
-          {personalityState.ocean.N?.toFixed(2)}
-          {personalityState.stable != null && (
-            <span style={{ marginLeft: 8 }}>
-              · stable: {String(personalityState.stable)}
+
+          <div className="careloop-toolbar__badges">
+            {useGateway && <span className="careloop-badge careloop-badge--gateway">Gateway</span>}
+            {coachingMode && (
+              <span className="careloop-badge careloop-badge--mode">
+                {coachingMode.replace(/_/g, " ")}
+              </span>
+            )}
+          </div>
+
+          <div className="careloop-mode-select">
+            {(["simple", "standard", "detailed"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                className={`careloop-mode-select__btn ${chatMode === m ? "careloop-mode-select__btn--active" : ""}`}
+                onClick={() => store.setChatMode(m)}
+              >
+                {m.charAt(0).toUpperCase() + m.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Banners */}
+        {healthStatus === "offline" && (
+          <div className="careloop-banner careloop-banner--warning" role="alert">
+            <span className="careloop-banner__text">
+              Service unavailable. Check API and N8N are running.
             </span>
+            <button type="button" className="careloop-banner__btn" onClick={() => store.setHealthStatus("unknown")}>
+              Dismiss
+            </button>
+          </div>
+        )}
+        {error && (
+          <div className="careloop-banner careloop-banner--error" role="alert">
+            <span className="careloop-banner__text">{error}</span>
+            <button type="button" className="careloop-banner__btn" onClick={() => store.setError(null)}>
+              Dismiss
+            </button>
+          </div>
+        )}
+
+        {/* Messages */}
+        <div className="careloop-messages">
+          {messages.length === 0 && !loading && (
+            <div className="careloop-messages__empty">
+              <p className="careloop-messages__empty-title">Start a conversation</p>
+              <p className="careloop-messages__empty-desc">
+                The assistant adapts to your personality and shows insights as you chat.
+              </p>
+              <ConversationStarters onSelect={handleStarterSelect} />
+            </div>
+          )}
+
+          <AnimatePresence initial={false}>
+            {messages.map((m, i) => (
+              <motion.div
+                key={`msg-${i}`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <ChatMessage
+                  message={m}
+                  index={i}
+                  feedback={feedbackByIndex[i]}
+                  onFeedback={sendFeedback}
+                  showThanks={feedbackThankIndex === i}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          {/* Streaming reveal */}
+          {streamingText != null && (
+            <motion.div
+              className="careloop-msg careloop-msg--assistant"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="careloop-msg__bubble">
+                <span className="careloop-msg__text">{streamingText}</span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Loading dots (before streaming starts) */}
+          {loading && streamingText == null && (
+            <motion.div
+              className="careloop-msg careloop-msg--assistant"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <div className="careloop-msg__bubble">
+                <div className="careloop-typing" aria-label="Thinking">
+                  <span /><span /><span />
+                </div>
+                <span className="careloop-typing-label">Thinking…</span>
+              </div>
+            </motion.div>
+          )}
+          <div ref={messagesEndRef} aria-hidden="true" />
+        </div>
+
+        <ChatInput
+          value={input}
+          onChange={store.setInput}
+          onSend={() => sendMessage()}
+          disabled={loading}
+          placeholder="Type a message…"
+        />
+      </main>
+
+      {/* ── Right panel (tabbed) ── */}
+      <aside className="careloop-panel">
+        <div className="careloop-panel__tabs">
+          <button
+            type="button"
+            className={`careloop-panel__tab ${panelTab === "traits" ? "careloop-panel__tab--active" : ""}`}
+            onClick={() => setPanelTab("traits")}
+          >
+            Traits
+          </button>
+          <button
+            type="button"
+            className={`careloop-panel__tab ${panelTab === "insights" ? "careloop-panel__tab--active" : ""}`}
+            onClick={() => setPanelTab("insights")}
+          >
+            Insights
+          </button>
+          <button
+            type="button"
+            className={`careloop-panel__tab ${panelTab === "agents" ? "careloop-panel__tab--active" : ""}`}
+            onClick={() => setPanelTab("agents")}
+          >
+            Agents
+          </button>
+        </div>
+
+        <div className="careloop-panel__tab-content">
+          {panelTab === "traits" && (
+            <>
+              <PersonalityPanel personality={personality} />
+              <DataActions sessionId={sessionId} onDeleted={handleDataDeleted} />
+            </>
+          )}
+          {panelTab === "insights" && (
+            <PersonalityInsights personality={personality} />
+          )}
+          {panelTab === "agents" && (
+            <AgentsDashboard agents={agents} />
           )}
         </div>
-      )}
-      <div
-        style={{
-          border: "1px solid #ddd",
-          borderRadius: 8,
-          minHeight: 320,
-          padding: 16,
-          marginBottom: 16,
-          background: "#fafafa",
-        }}
-      >
-        {messages.length === 0 && (
-          <p style={{ color: "#888" }}>Send a message to start.</p>
-        )}
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            style={{
-              textAlign: m.role === "user" ? "right" : "left",
-              marginBottom: 12,
-            }}
-          >
-            <span
-              style={{
-                display: "inline-block",
-                padding: "8px 12px",
-                borderRadius: 8,
-                maxWidth: "85%",
-                background: m.role === "user" ? "#e3f2fd" : "#f5f5f5",
-              }}
-            >
-              {m.content}
-            </span>
-          </div>
-        ))}
-        {loading && (
-          <p style={{ color: "#888", fontSize: 14 }}>Thinking…</p>
-        )}
-      </div>
-      {error && (
-        <p style={{ color: "#c62828", fontSize: 14, marginBottom: 8 }}>
-          {error}
-        </p>
-      )}
-      <div style={{ display: "flex", gap: 8 }}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Type a message…"
-          style={{
-            flex: 1,
-            padding: "10px 12px",
-            borderRadius: 8,
-            border: "1px solid #ccc",
-          }}
-        />
-        <button
-          type="button"
-          onClick={sendMessage}
-          disabled={loading}
-          style={{
-            padding: "10px 20px",
-            borderRadius: 8,
-            border: "none",
-            background: "#1976d2",
-            color: "white",
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
-        >
-          Send
-        </button>
-      </div>
-    </main>
+      </aside>
+    </div>
   );
 }

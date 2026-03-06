@@ -1,0 +1,82 @@
+# Prestations complémentaires AVS/AI — Canton de Genève
+# Source : https://www.ge.ch/prestations-complementaires-avsai
+# Canton : GE | Langue : fr | Thème : PC/EL, Ergänzungsleistungen
+# Consulté : 2026-03-05
+
+## Qu'est-ce que les prestations complémentaires (PC) ?
+
+Les prestations complémentaires (PC) à l'AVS et à l'AI sont des aides financières pour les personnes à l'AVS ou à l'AI avec de bas revenus.
+
+## Pour qui ?
+
+Les PC AVS/AI sont destinées aux personnes :
+- ayant une rente AVS ou AI, ou touchant des indemnités journalières AI pendant au moins 6 mois
+- résidant en Suisse (PCF) et à Genève (PCC)
+- depuis plus de dix ans pour les ressortissants de pays hors Union européenne ou AELE
+
+## Conditions de fortune
+
+- Moins de 100'000 francs pour une personne seule
+- Moins de 200'000 francs pour un couple
+- Moins de 50'000 francs pour un enfant
+(Ces montants n'incluent pas la propriété servant d'habitation)
+
+Revenus insuffisants pour couvrir les besoins vitaux (loyer, primes d'assurance-maladie, montants forfaitaires de référence, etc.)
+
+## Ce à quoi donnent droit les PC
+
+- Réductions importantes des primes d'assurance-maladie, voire prise en charge totale
+- Aides financières (selon calcul)
+- Remboursements de frais médicaux
+- Abonnement TPG à prix très réduit
+- Exonération de la redevance radio/TV (pour bénéficiaires des PCF)
+
+## Prestations complémentaires cantonales (PCC) genevoises
+
+En plus des PCF (fédérales), Genève verse des PCC :
+- Jusqu'à **6'827 francs/an** pour une personne seule
+- Jusqu'à **10'952 francs/an** pour une personne invalide à plus de 70%
+- Jusqu'à **10'024 francs/an** pour un couple
+- Jusqu'à **17'115 francs/an** pour un couple de personnes invalides à plus de 70%
+
+## Comment déposer une demande
+
+1. Remplir le formulaire de demande de PC AVS/AI :
+   https://www.ge.ch/document/formulaire-demande-prestations-complementaires-avs/ai
+
+2. Joindre les justificatifs nécessaires :
+   https://www.ge.ch/document/liste-documents-justificatifs-fournir-demander-pc-avs/ai
+
+3. Envoyer le dossier complet au **Service des prestations complémentaires (SPC)**
+
+## Service des prestations complémentaires (SPC) — Contact
+
+**Adresse :**
+Service des prestations complémentaires
+Route de Chêne 54
+Case postale 6375
+1211 Genève 6
+
+**Téléphone :** 022 546 16 00
+
+**Heures d'ouverture (accueil et téléphone) :** Lundi–Vendredi 08h30–14h30
+
+## Important (changement depuis le 1er janvier 2025)
+
+Le SPC n'est plus compétent pour verser de l'aide sociale en complément des PC AVS/AI pour les personnes vivant à domicile. Si vous avez besoin d'aide sociale complémentaire, veuillez vous rendre dans un **Centre d'action sociale (CAS) de l'Hospice général**.
+
+Pour les personnes vivant en institution, le SPC reste compétent.
+
+## Changements à annoncer
+
+Vous devez annoncer sans délai tout changement concernant :
+- Adresse, loyer, composition du ménage
+- Revenus (rentes AVS/AI, salaires, etc.)
+- Fortune (héritages, donations, ventes immobilières, etc.)
+- Séjours hors du canton de plus de 3 mois
+- Mariage, séparation, divorce, décès
+
+## Simulateur
+
+Un simulateur de la Confédération est disponible pour estimer les PC fédérales :
+https://www.ahv-iv.ch/fr/Assurances-sociales/Prestations-complémentaires-PC/Calculateur-de-prestations-complémentaires

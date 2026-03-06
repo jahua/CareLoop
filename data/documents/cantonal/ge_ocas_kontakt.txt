@@ -1,0 +1,49 @@
+# Contact & Adresses — OCAS Genève
+# Source : https://www.ocas.ch/ai/particuliers/rente-ai (section adresse)
+# Canton : GE | Langue : fr | Thème : Contact, Adresse, Heures d'ouverture
+# Consulté : 2026-03-05
+
+## Office cantonal des assurances sociales (OCAS) — Siège
+
+**Adresse :**
+Office cantonal des assurances sociales
+Rue des Gares 12
+Case postale 2696
+1211 Genève 2
+
+**Plan d'accès :** https://www.ocas.ch/sites/default/files/2020-07/Internet_plan_acces_OCAS_2020.pdf
+
+**Heures de réception :**
+Du lundi au vendredi, de 09h00 à 16h00
+
+## Domaines couverts par l'OCAS
+
+L'OCAS gère et coordonne quatre régimes d'assurance :
+- **AI** (Assurance-invalidité)
+- **AVS** (Assurance-vieillesse et survivants)
+- **AF** (Allocations familiales)
+- **APG** (Allocations pour perte de gain)
+
+## Service des prestations complémentaires (SPC) — EL/PC
+
+**Adresse :**
+Service des prestations complémentaires
+Route de Chêne 54
+Case postale 6375
+1211 Genève 6
+
+**Téléphone :** 022 546 16 00
+**Heures d'ouverture :** Lundi–Vendredi 08h30–14h30
+
+## E-démarches & formulaires (OCAS)
+
+- Demande de prestations AI (adultes / rente) : https://www.ocas.ch/demarches-et-formulaires/demande-de-prestations-ai-pour-adultes-mesures-professionnelles-rente
+- Formulaire de communication — détection précoce (adultes) : https://www.ocas.ch/demarches-et-formulaires/formulaire-de-communication-pour-adultes-detection-precoce
+- Demande d'allocation pour impotent (adultes) : https://www.ocas.ch/demarches-et-formulaires/demande-de-prestations-ai-pour-adultes-allocation-pour-impotent
+- Demande de PC AVS/AI (SPC Genève) : https://www.ge.ch/document/formulaire-demande-prestations-complementaires-avs/ai
+- Changement d'adresse rente AVS/AI : https://www.ocas.ch/demarches-et-formulaires/annonce-de-changement-dadresse-rente-avsai
+
+## Rapports médicaux (pour les médecins)
+
+- Rapport médecin généraliste (e-démarche) : https://www.ocas.ch/rm
+- Rapport médecin spécialiste (e-démarche) : https://www.ocas.ch/rms

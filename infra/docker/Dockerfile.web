@@ -3,10 +3,22 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY apps/web/package.json ./
-RUN npm install
+# Copy root package files for workspace resolution
+COPY package.json package-lock.json ./
 
-COPY apps/web ./
+# Copy all workspace packages needed by web
+COPY packages/contracts ./packages/contracts
+COPY apps/web ./apps/web
+
+# Install all dependencies (workspace-aware)
+RUN npm install --workspace=web --include-workspace-root \
+  --no-audit --no-fund --prefer-offline \
+  --fetch-retries=5 --fetch-retry-factor=2 \
+  --fetch-retry-mintimeout=20000 --fetch-retry-maxtimeout=120000 \
+  --fetch-timeout=300000
+
+WORKDIR /app/apps/web
+
 EXPOSE 3000
 ENV NODE_ENV=development
 CMD ["npm", "run", "dev", "--", "--hostname", "0.0.0.0"]

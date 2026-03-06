@@ -123,3 +123,22 @@ export {
   isCoachingMode,
   DEFAULT_COACHING_MODE,
 } from "./coaching-mode.js";
+
+/** Phase 3: structured error envelope (Spec §12) */
+export type {
+  ErrorCode,
+  ErrorStage,
+  StructuredError,
+  ErrorResponseEnvelope,
+} from "./errors.js";
+export {
+  ERROR_CODES,
+  ErrorCodeSchema,
+  ErrorStageSchema,
+  StructuredErrorSchema,
+  ErrorResponseEnvelopeSchema,
+  parseStructuredError,
+  safeParseStructuredError,
+  parseErrorResponseEnvelope,
+  safeParseErrorResponseEnvelope,
+} from "./errors.js";

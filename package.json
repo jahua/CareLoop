@@ -13,9 +13,20 @@
     "test:parse": "npm run test:parse --workspace=@careloop/contracts",
     "test:runtime:phase1": "node scripts/phase1-runtime-check.js",
     "test:golden:phase1": "node scripts/phase1-golden-check.js",
-    "test:intent:policy": "node scripts/policy-intent-check.js"
+    "test:intent:policy": "node scripts/policy-intent-check.js",
+    "seed:policy": "node scripts/setup-rag-db.js",
+    "chunk:policy": "node scripts/chunk-and-load-policy.js",
+    "job:corpus-freshness": "node scripts/corpus-freshness-check.js",
+    "job:source-recrawl": "node scripts/source-recrawl-reembed.js",
+    "job:stale-citation": "node scripts/stale-citation-detector.js",
+    "job:gateway-baseline-capture": "node scripts/gateway-baseline-capture.js",
+    "job:gateway-canary-check": "node scripts/gateway-canary-check.js",
+    "job:retrieval-smoke": "node scripts/retrieval-regression-smoke.js",
+    "job:retrieval-regression": "node scripts/retrieval-regression-runner.js",
+    "job:phase4-load-test": "node scripts/phase4-load-test.js"
   },
   "dependencies": {
+    "pdf-parse": "^2.4.5",
     "pg": "^8.19.0"
   }
 }

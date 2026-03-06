@@ -13,4 +13,8 @@ dist/
 .next/
 *.log
 database.sqlite
-*.tsbuildinfo
+*.tsbuildinfo# Phase 3 audit and feedback logs
+logs/
+*.audit.jsonl
+audit.jsonl
+feedback.jsonl

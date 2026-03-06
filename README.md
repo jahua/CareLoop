@@ -28,11 +28,10 @@ Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Respo
    npm run dev --workspace=web
    ```
 
-3. **Import N8N workflow**
+3. **Import N8N workflow(s)**
    - Open http://localhost:5678
-   - **Phase 0:** Import `CareLoop/workflows/n8n/careloop-phase0-skeleton.json`, activate.
-   - **Phase 1:** Import `CareLoop/workflows/n8n/careloop-phase1-mvp.json`, activate.  
-     (Phase 1 calls the Next.js EMA API; run Next.js on the host—see step 4.)
+   - **Full pipeline (Standard/Detailed):** Import and activate `workflows/n8n/careloop-phase1-2-postgres-mvp.json` (webhook `careloop-turn`).
+   - **Simple mode (optional):** Import and activate `workflows/n8n/careloop-turn-simple.json` (webhook `careloop-turn-simple`) to use the frontend “Simple” mode. See [docs/TWO-WORKFLOWS-AND-MODE-SWITCH.md](docs/TWO-WORKFLOWS-AND-MODE-SWITCH.md).
 
 4. **Run frontend** (only if you did not start the `web` service in Docker)
    ```bash
@@ -56,6 +55,10 @@ Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Respo
 
 **Keys and credentials:** See [docs/SECRETS-AND-CREDENTIALS.md](docs/SECRETS-AND-CREDENTIALS.md) for how we store and use secrets (env vars, N8N credential store, production secret managers).
 
+**No policy chunks in DB?** Policy corpus ingestion is part of **Phase 2**. To seed the IV policy chunks: `npm run seed:policy` (with DB running; set `DATABASE_URL` if needed). See [docs/POLICY-CORPUS-INGESTION.md](docs/POLICY-CORPUS-INGESTION.md).
+
+**Operations (Phase 3+):** Health check (`GET /api/health`), audit/feedback logs, data export/delete, and monitoring: see [docs/OPERATIONS-RUNBOOK.md](docs/OPERATIONS-RUNBOOK.md). Optional **gateway** entry: `POST /api/gateway/chat` (envelope, optional auth/rate limit, model_tier). **Background jobs:** `npm run job:corpus-freshness` (corpus check), `npm run job:retrieval-smoke` (one policy question → assert content + citations; set `BASE_URL` if needed). Phase 4 pilot: [docs/PHASE4-PILOT-CHECKLIST.md](docs/PHASE4-PILOT-CHECKLIST.md).
+
 ## DoD (Phase 0)
 
 - [x] Repo structure and contracts
@@ -71,4 +74,3 @@ Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Respo
 - Memory strategy: PostgreSQL audit + EMA state + vector retrieval (pgvector) for long-term personalization.
 - Workflow baseline: `workflows/n8n/careloop-phase1-2-postgres-mvp.json`.
 - Integration guide: `docs/GEMMA3-HYBRID-MEMORY.md`.
-# CareLoop

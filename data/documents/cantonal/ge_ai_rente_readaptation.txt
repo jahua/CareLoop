@@ -1,0 +1,77 @@
+# Rente AI & Réadaptation professionnelle — OCAS Genève
+# Source : https://www.ocas.ch/ai/particuliers/rente-ai
+#          https://www.ocas.ch/ai/particuliers/readaptation-professionnelle
+# Canton : GE | Langue : fr | Thème : AI rente, réadaptation
+# Consulté : 2026-03-05
+
+## Assurance-invalidité (AI) — Définition de l'invalidité
+
+Une personne est considérée comme invalide lorsqu'elle est dans l'incapacité totale ou partielle de gagner sa vie en raison d'une atteinte durable à sa santé. Cette atteinte peut être d'origine physique, psychique ou mentale, ou être consécutive à une affection congénitale, une maladie ou un accident.
+
+Les personnes qui sont dans l'incapacité d'accomplir leurs travaux habituels (tenir son ménage, etc.) peuvent également être considérées comme invalides.
+
+## Rente AI : Conditions d'octroi
+
+Le droit à une rente AI s'ouvre au plus tôt après un délai d'attente d'un an durant lequel votre incapacité de travail doit avoir été d'au moins 40% en moyenne. Il est également nécessaire qu'il y ait une incapacité de gain d'au moins 40% à l'issue de cette période.
+
+Toutes les possibilités de réadaptation professionnelle doivent avoir été épuisées avant que le droit à une rente d'invalidité ne soit envisagé.
+
+## Calcul du taux d'invalidité
+
+Si vous exercez une activité lucrative, l'AI calcule le taux d'invalidité en comparant le revenu que vous pourriez obtenir en bonne santé avec celui que vous êtes en mesure de réaliser malgré vos problèmes de santé (comparaison des revenus).
+
+Si vous n'exercez pas d'activité lucrative, l'AI évalue dans quelle mesure vos problèmes de santé vous empêchent d'accomplir vos travaux habituels (enquête à domicile).
+
+## Montant de la rente
+
+Le montant de votre rente dépend de :
+- le taux d'invalidité
+- le total de vos revenus
+- les années de cotisations
+- les bonifications pour tâches d'assistance ou éducatives
+
+### Système linéaire (droit né dès le 1er janvier 2022)
+
+Le système de rente est linéaire. Un taux d'invalidité inférieur à 40% ne donne pas droit à une rente. À partir de 70%, la rente est entière.
+
+### Ancien système (droit né avant 2022)
+
+L'ancien système de rente (quart, demi, trois-quarts, entière) reste applicable.
+
+## Dépôt de la demande de rente AI
+
+Le droit prend naissance au plus tôt six mois à partir du dépôt de la demande. Il est donc important de transmettre votre demande au plus tard dès que l'incapacité de travail a duré six mois.
+
+**Formulaire :** https://www.ocas.ch/demarches-et-formulaires/demande-de-prestations-ai-pour-adultes-mesures-professionnelles-rente
+
+## Obligations du rentier AI
+
+En tant que rentier AI, vous devez annoncer sans délai tout changement (état de santé, situation familiale ou professionnelle, changement de domicile, incarcération).
+
+Votre rente peut être révisée en tout temps sur demande ou d'office par l'OCAS.
+
+---
+
+## Réadaptation professionnelle
+
+### Objectif
+
+L'objectif est de vous permettre d'exercer une activité appropriée à votre problème de santé prolongé, tout en conservant ou acquérant une capacité à gagner un revenu durable.
+
+### Mesures disponibles
+
+- **Intervention précoce** : favoriser le maintien en emploi ou sur le marché du travail (quelques mois après la demande)
+- **Mesures de réinsertion** : augmenter progressivement la capacité de travail jusqu'à 50% (max. 12 mois)
+- **Orientation professionnelle** : évaluer votre profil et les activités compatibles avec votre santé
+- **Formation professionnelle initiale** : pour ceux n'ayant pas pu terminer une formation pour raisons de santé
+- **Reclassement** : nouvelle formation pour un poste plus adapté
+- **Placement à l'essai** : vérifier votre capacité de travail dans une activité appropriée
+- **Allocation d'initiation au travail** : versée à l'employeur si vous avez besoin d'une période d'apprentissage plus longue
+
+### Indemnités journalières
+
+Les indemnités journalières de l'AI garantissent un revenu durant la réadaptation professionnelle. Elles ne sont pas versées en phase d'intervention précoce.
+
+### Comment déposer une demande de réadaptation
+
+**Formulaire de communication (détection précoce):** https://www.ocas.ch/demarches-et-formulaires/formulaire-de-communication-pour-adultes-detection-precoce

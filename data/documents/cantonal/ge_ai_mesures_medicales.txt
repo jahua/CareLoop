@@ -1,0 +1,28 @@
+# Mesures médicales pour mineurs AI — OCAS Genève
+# Source : https://www.ocas.ch/ai/particuliers/mesures-medicales-pour-mineurs
+# Canton : GE | Langue : fr | Thème : Medizinische Massnahmen / Mesures médicales, AI, mineurs, infirmité congénitale
+# Consulté : 2026-03-05
+
+## À quoi servent les mesures médicales ?
+Les mesures médicales de l'AI permettent aux jeunes d’entreprendre ou de poursuivre une scolarité, une formation (en vue d’une activité lucrative) et d’accomplir des tâches quotidiennes.
+
+## Qui peut en bénéficier ?
+L'AI rembourse les frais médicaux des personnes âgées de **moins de 20 ans** lorsque certaines conditions sont remplies :
+1. **Infirmité congénitale :** L'AI prend en charge les mesures médicales nécessaires au traitement d'une maladie présente à la naissance (répertoriée dans la liste officielle), *indépendamment* de la capacité de gain future.
+2. **Réadaptation professionnelle :** L'AI peut prendre en charge des coûts qui visent directement la réadaptation professionnelle, même hors infirmité congénitale, pour préserver la capacité de gain. (Le traitement de la maladie elle-même incombe à l'assurance-maladie).
+
+## Quelles sont les mesures médicales prises en charge ?
+- Traitements médicaux ambulatoires ou hospitaliers (division commune uniquement)
+- Médicaments ordonnés par le médecin
+- Traitements de physiothérapie, ergothérapie, psychothérapie et soins pédiatriques à domicile
+- (Sauf exception) La logopédie et la thérapie psychomotrice ne sont pas prises en charge.
+
+**Avantage financier :** Contrairement à l'assurance-maladie, il n'y a **ni franchise ni participation aux frais (quote-part)**.
+
+## Comment déposer une demande à Genève (OCAS) ?
+Remplir le formulaire pour mineurs (Demande pour mineurs - mesures médicales, mesures d’ordre professionnel et moyens auxiliaires) :
+- Lien vers le formulaire : https://www.ocas.ch/demarches-et-formulaires/demande-pour-mineurs-mesures-medicales-mesures-dordre-professionnel-et
+
+## Factures et Rapports
+- Pour transmettre les factures des prestations AI : https://www.ocas.ch/demarches-et-formulaires/facture-prestations-ai
+- Les rapports médicaux initiaux et intermédiaires pour mineurs doivent être remplis par les professionnels de santé attitrés.

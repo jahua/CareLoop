@@ -1,0 +1,15 @@
+# Medizinische Massnahmen — IV-Stelle Kanton Bern
+# Quelle: https://www.ivbe.ch/de/prozesse/medizinische_massnahmen.html
+# Kanton: BE | Sprache: de | Thema: Medizinische Massnahmen, Geburtsgebrechen, Jugendliche
+# Abgerufen: 2026-03-05
+
+## Zuständigkeit und Alter
+Die IV übernimmt die Kosten für medizinische Behandlungen **vor dem 20. Altersjahr**. 
+Für Behandlungen nach dem 20. Altersjahr ist, je nach Situation, die Kranken- und Unfallversicherung oder die Militärversicherung zuständig.
+
+## Voraussetzungen für die Kostenübernahme durch die IV
+- **Ausrichtung auf die berufliche Eingliederung:** Mit der Behandlung muss die Erwerbsfähigkeit dauernd und wesentlich verbessert werden können.
+- **Anerkanntes Geburtsgebrechen liegt vor:** Liegt ein Geburtsgebrechen vor, übernimmt die IV die Kosten bis zum 20. Altersjahr. Die IV führt eine Liste mit allen medizinisch anerkannten Geburtsgebrechen.
+
+## Kostenübernahme (Kein Selbstbehalt)
+Im Gegensatz zur Krankenversicherung zahlt die IV die **vollen Kosten**. Die versicherten Personen schulden keine Franchise oder einen Selbstbehalt.

@@ -1,0 +1,222 @@
+{
+  "description": "Cantonal policy sources (input to your download process). Add or edit entries; format defined in DATA-FORMAT.md.",
+  "sources": [
+    {
+      "source_id": "zh_social_services",
+      "title": "Zürich – SVA Zürich (homepage)",
+      "url": "https://www.svazurich.ch/",
+      "canton": "ZH",
+      "scraped_pages": [
+        {
+          "source_id": "zh_iv_rente",
+          "title": "Zürich – IV-Rente (SVA Zürich)",
+          "url": "https://www.svazurich.ch/unsere-produkte/iv/unterstuetzung-im-alltag/iv-rente.html",
+          "local_file": "documents/cantonal/zh_iv_rente.txt",
+          "topics": ["IV", "IV-Rente", "Invaliditätsgrad", "Anmeldung"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "zh_iv_hilflosenentschaedigung",
+          "title": "Zürich – Hilflosenentschädigung IV (SVA Zürich)",
+          "url": "https://www.svazurich.ch/unsere-produkte/iv/unterstuetzung-im-alltag/hilflosenentschaedigung.html",
+          "local_file": "documents/cantonal/zh_iv_hilflosenentschaedigung.txt",
+          "topics": ["IV", "Hilflosenentschädigung", "HE", "Anmeldung", "Minderjährige"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "zh_el_zusatzleistungen",
+          "title": "Zürich – Ergänzungsleistungen / Zusatzleistungen (SVA Zürich)",
+          "url": "https://www.svazurich.ch/unsere-produkte/weitere-produkte/weitere-leistungen/ergaenzungsleistungen.html",
+          "local_file": "documents/cantonal/zh_el_zusatzleistungen.txt",
+          "topics": ["EL", "Ergänzungsleistungen", "Zusatzleistungen", "Krankheitskosten"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "zh_sva_kontakt",
+          "title": "Zürich – SVA Zürich Kontakt & Adressen",
+          "url": "https://www.svazurich.ch/iv",
+          "local_file": "documents/cantonal/zh_sva_kontakt.txt",
+          "topics": ["Kontakt", "Adresse", "Öffnungszeiten", "SVA Zürich"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "zh_iv_assistenzbeitrag",
+          "title": "Zürich – Assistenzbeitrag IV (SVA Zürich)",
+          "url": "https://www.svazurich.ch/unsere-produkte/iv/unterstuetzung-im-alltag/assistenzbeitrag-iv.html",
+          "local_file": "documents/cantonal/zh_iv_assistenzbeitrag.txt",
+          "topics": ["IV", "Assistenzbeitrag", "Unterstützung im Alltag", "Anmeldung"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "zh_iv_hilfsmittel",
+          "title": "Zürich – Hilfsmittel IV (SVA Zürich)",
+          "url": "https://www.svazurich.ch/unsere-produkte/iv/unterstuetzung-im-alltag/hilfsmittel-iv.html",
+          "local_file": "documents/cantonal/zh_iv_hilfsmittel.txt",
+          "topics": ["IV", "Hilfsmittel", "Unterstützung im Alltag", "Geburtsgebrechen"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "zh_iv_medizinische_massnahmen",
+          "title": "Zürich – Medizinische Massnahmen (SVA Zürich)",
+          "url": "https://www.svazurich.ch/unsere-produkte/iv/unterstuetzung-im-alltag/medizinische-massnahmen.html",
+          "local_file": "documents/cantonal/zh_iv_medizinische_massnahmen.txt",
+          "topics": ["IV", "Medizinische Massnahmen", "Minderjährige", "Geburtsgebrechen"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        }
+      ]
+    },
+    {
+      "source_id": "be_iv_canton",
+      "title": "Bern – IV-Stelle Kanton Bern (homepage)",
+      "url": "https://www.ivbe.ch/",
+      "canton": "BE",
+      "scraped_pages": [
+        {
+          "source_id": "be_iv_anmeldung",
+          "title": "Bern – IV Anmeldung & Verfahren",
+          "url": "https://www.ivbe.ch/de/prozesse/anmeldung.html",
+          "local_file": "documents/cantonal/be_iv_anmeldung.txt",
+          "topics": ["IV", "Anmeldung", "Verfahren", "Beschwerde"],
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "be_iv_geldleistungen",
+          "title": "Bern – IV Geld- & Sachleistungen (Rente, HE, EL, Assistenzbeitrag)",
+          "url": "https://www.ivbe.ch/de/prozesse/geldleistungen.html",
+          "local_file": "documents/cantonal/be_iv_geldleistungen.txt",
+          "topics": ["IV", "Invalidenrente", "Hilflosenentschädigung", "EL", "Assistenzbeitrag", "Hilfsmittel"],
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "be_iv_kontakt",
+          "title": "Bern – IV-Stelle Kontakt & Adressen",
+          "url": "https://www.ivbe.ch/de/kontakt/adressen_oeffnungszeiten.html",
+          "local_file": "documents/cantonal/be_iv_kontakt.txt",
+          "topics": ["IV", "Kontakt", "Adresse", "Öffnungszeiten"],
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "be_iv_invaliditaet",
+          "title": "Bern – Invalidität & Anspruch",
+          "url": "https://www.ivbe.ch/de/prozesse/invaliditaet.html",
+          "local_file": "documents/cantonal/be_iv_invaliditaet.txt",
+          "topics": ["IV", "Invalidität", "Anspruch", "Invaliditätsgrad"],
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "be_iv_eingliederung",
+          "title": "Bern – Früherfassung & Eingliederung",
+          "url": "https://www.ivbe.ch/de/prozesse/eingliederung.html",
+          "local_file": "documents/cantonal/be_iv_eingliederung.txt",
+          "topics": ["IV", "Eingliederung", "Früherfassung", "berufliche Massnahmen"],
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "be_iv_assistenzbeitrag",
+          "title": "Bern – Assistenzbeitrag",
+          "url": "https://www.ivbe.ch/de/situation/privatperson/unterstuetzung/assistenzbeitrag.html",
+          "local_file": "documents/cantonal/be_iv_assistenzbeitrag.txt",
+          "topics": ["IV", "Assistenzbeitrag", "Unterstützung im Alltag"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "be_iv_hilfsmittel",
+          "title": "Bern – Hilfsmittel",
+          "url": "https://www.ivbe.ch/de/situation/privatperson/hilfsmittel.html",
+          "local_file": "documents/cantonal/be_iv_hilfsmittel.txt",
+          "topics": ["IV", "Hilfsmittel"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "be_iv_medizinische_massnahmen",
+          "title": "Bern – Medizinische Massnahmen",
+          "url": "https://www.ivbe.ch/de/prozesse/medizinische_massnahmen.html",
+          "local_file": "documents/cantonal/be_iv_medizinische_massnahmen.txt",
+          "topics": ["IV", "Medizinische Massnahmen", "Geburtsgebrechen", "Jugendliche"],
+          "language": "de",
+          "fetched_at": "2026-03-05"
+        }
+      ]
+    },
+    {
+      "source_id": "ge_social_services",
+      "title": "Genève – OCAS / Office cantonal des assurances sociales (homepage)",
+      "url": "https://www.ocas.ch",
+      "canton": "GE",
+      "scraped_pages": [
+        {
+          "source_id": "ge_ai_rente_readaptation",
+          "title": "Genève – Rente AI & Réadaptation professionnelle",
+          "url": "https://www.ocas.ch/ai/particuliers/rente-ai",
+          "local_file": "documents/cantonal/ge_ai_rente_readaptation.txt",
+          "topics": ["AI", "Rente AI", "Invalidité", "Réadaptation professionnelle", "taux d'invalidité"],
+          "language": "fr",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "ge_ai_allocation_impotent",
+          "title": "Genève – Allocation pour impotent AI (Hilflosenentschädigung)",
+          "url": "https://www.ocas.ch/ai/particuliers/allocation-pour-impotent-ai",
+          "local_file": "documents/cantonal/ge_ai_allocation_impotent.txt",
+          "topics": ["AI", "Allocation pour impotent", "Hilflosenentschädigung", "mineur", "adulte"],
+          "language": "fr",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "ge_pc_el",
+          "title": "Genève – Prestations complémentaires AVS/AI (PC/EL)",
+          "url": "https://www.ge.ch/prestations-complementaires-avsai",
+          "local_file": "documents/cantonal/ge_pc_el.txt",
+          "topics": ["PC", "EL", "Ergänzungsleistungen", "SPC", "aide financière"],
+          "language": "fr",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "ge_ocas_kontakt",
+          "title": "Genève – Contact OCAS & SPC, adresses et formulaires",
+          "url": "https://www.ocas.ch/ai",
+          "local_file": "documents/cantonal/ge_ocas_kontakt.txt",
+          "topics": ["AI", "Contact", "Adresse", "formulaires", "SPC"],
+          "language": "fr",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "ge_ai_contribution_assistance",
+          "title": "Genève – Contribution d'assistance AI",
+          "url": "https://www.ocas.ch/ai/particuliers/contribution-dassistance",
+          "local_file": "documents/cantonal/ge_ai_contribution_assistance.txt",
+          "topics": ["AI", "Contribution d'assistance", "Assistenzbeitrag", "Aide à domicile"],
+          "language": "fr",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "ge_ai_moyens_auxiliaires",
+          "title": "Genève – Moyens auxiliaires AI",
+          "url": "https://www.ocas.ch/ai/particuliers/moyens-auxiliaires-ai",
+          "local_file": "documents/cantonal/ge_ai_moyens_auxiliaires.txt",
+          "topics": ["AI", "Moyens auxiliaires", "Hilfsmittel"],
+          "language": "fr",
+          "fetched_at": "2026-03-05"
+        },
+        {
+          "source_id": "ge_ai_mesures_medicales",
+          "title": "Genève – Mesures médicales (Mineurs)",
+          "url": "https://www.ocas.ch/ai/particuliers/mesures-medicales-pour-mineurs",
+          "local_file": "documents/cantonal/ge_ai_mesures_medicales.txt",
+          "topics": ["AI", "Mesures médicales", "Mineurs", "Infirmité congénitale"],
+          "language": "fr",
+          "fetched_at": "2026-03-05"
+        }
+      ]
+    }
+  ]
+}

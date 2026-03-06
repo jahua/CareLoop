@@ -90,6 +90,26 @@ CREATE TABLE IF NOT EXISTS policy_chunks (
 
 CREATE INDEX IF NOT EXISTS idx_policy_chunks_content_trgm ON policy_chunks USING gin (to_tsvector('english', content));
 
+-- Phase 3: optional audit log table (when compliance requires DB persistence)
+CREATE TABLE IF NOT EXISTS audit_log (
+  id BIGSERIAL PRIMARY KEY,
+  request_id TEXT NOT NULL,
+  session_id UUID NOT NULL,
+  turn_index INT NOT NULL,
+  coaching_mode TEXT,
+  pipeline_status JSONB DEFAULT '{}'::jsonb,
+  personality JSONB,
+  retrieval_ids TEXT[],
+  citation_count INT,
+  verifier_status TEXT,
+  input_hash TEXT,
+  turn_latency_ms INT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_audit_log_session_turn ON audit_log(session_id, turn_index);
+CREATE INDEX IF NOT EXISTS idx_audit_log_request ON audit_log(request_id);
+CREATE INDEX IF NOT EXISTS idx_audit_log_created ON audit_log(created_at);
+
 -- Seed Data for IV (Domain Pack A)
 INSERT INTO policy_chunks (source_id, chunk_id, title, content, url, metadata)
 VALUES 

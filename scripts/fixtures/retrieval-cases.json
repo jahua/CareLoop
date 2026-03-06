@@ -1,0 +1,37 @@
+[
+  {
+    "case_id": "pn-001",
+    "message": "What are the eligibility conditions for IV (Invalidity Insurance) in Switzerland?",
+    "context": { "language": "en", "canton": "ZH" },
+    "require_policy_mode": true,
+    "min_citations": 1
+  },
+  {
+    "case_id": "pn-002",
+    "message": "How do I register for IV?",
+    "context": { "language": "en", "canton": "ZH" },
+    "require_policy_mode": true,
+    "min_citations": 1
+  },
+  {
+    "case_id": "pn-003",
+    "message": "Where can I get the IV registration form?",
+    "context": { "language": "en", "canton": "ZH" },
+    "require_policy_mode": true,
+    "min_citations": 1
+  },
+  {
+    "case_id": "pn-explicit-004",
+    "message": "Please provide Zurich care subsidy eligibility criteria and cite official policy sources.",
+    "context": { "language": "en", "canton": "ZH" },
+    "expected_coaching_mode": "policy_navigation",
+    "min_citations": 1
+  },
+  {
+    "case_id": "pn-explicit-005",
+    "message": "List the exact steps and required documents for Zurich long-term care allowance application, with policy citations.",
+    "context": { "language": "en", "canton": "ZH" },
+    "expected_coaching_mode": "policy_navigation",
+    "min_citations": 1
+  }
+]

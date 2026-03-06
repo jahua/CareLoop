@@ -1,0 +1,14 @@
+[
+  {
+    "source_id": "zh_social_services",
+    "title": "Zurich supplementary benefits",
+    "url": "https://www.svazurich.ch/el",
+    "content": "Example plain text content. Replace with real fetched text. This array is the output standard for the download process and the input for chunk-and-load.",
+    "metadata": {
+      "authority_tier": 2,
+      "jurisdiction": "Canton",
+      "canton": "ZH",
+      "language": "de"
+    }
+  }
+]

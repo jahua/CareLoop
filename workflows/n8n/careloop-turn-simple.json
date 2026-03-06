@@ -1,0 +1,51 @@
+{
+  "name": "CareLoop Simple (Quick) Mode",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "careloop-turn-simple",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-simple-001",
+      "name": "Webhook Simple",
+      "type": "n8n-nodes-base.webhook",
+      "position": [0, 0],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Simple mode: quick reply without RAG/detection. Use when frontend sends workflow: 'simple' or model_tier: 'light'.\nconst raw = $input.first().json.body || $input.first().json || {};\nconst session_id = raw.session_id || '';\nconst request_id = raw.request_id || '';\nconst msg = (raw.message || '').trim() || 'Hello';\nreturn [{ json: {\n  session_id,\n  request_id,\n  coaching_mode: 'emotional_support',\n  message: { content: `I'm here to help. (Quick mode — for detailed policy or coaching, switch to Standard or Detailed.) You said: \"${msg.slice(0, 80)}${msg.length > 80 ? '…' : ''}\"` }\n}}];"
+      },
+      "id": "code-simple-001",
+      "name": "Simple Reply",
+      "type": "n8n-nodes-base.code",
+      "position": [220, 0],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "respond-simple-001",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [440, 0],
+      "typeVersion": 1.1
+    }
+  ],
+  "connections": {
+    "Webhook Simple": {
+      "main": [[{ "node": "Simple Reply", "type": "main", "index": 0 }]]
+    },
+    "Simple Reply": {
+      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": {},
+  "tags": []
+}

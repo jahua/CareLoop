@@ -1,0 +1,51 @@
+# Allocation pour impotent AI — OCAS Genève
+# Source : https://www.ocas.ch/ai/particuliers/allocation-pour-impotent-ai
+# Canton : GE | Langue : fr | Thème : Hilflosenentschädigung / Allocation pour impotent
+# Consulté : 2026-03-05
+
+## Qu'est-ce que l'allocation pour impotent AI ?
+
+Vous êtes considéré comme impotent si vous avez besoin d'une aide régulière et importante pour exécuter les actes ordinaires de la vie, à savoir :
+- se vêtir, se dévêtir
+- se lever, s'asseoir, se coucher
+- manger
+- faire sa toilette
+- aller aux toilettes
+- se déplacer
+- entretenir des contacts sociaux
+
+L'allocation est destinée aux mineurs et aux adultes jusqu'à l'âge de référence, domiciliés en Suisse. Elle sert à couvrir en partie les frais engendrés pour l'aide apportée par une autre personne.
+
+**Condition clé** : votre situation d'impotence doit durer depuis une année au moins sans interruption.
+
+## Droits en tant qu'adulte
+
+En tant qu'adulte, vous êtes considéré comme impotent si vous vivez à domicile et que vous avez besoin :
+- d'une surveillance personnelle permanente ; **OU**
+- de soins médicaux particulièrement astreignants ; **OU**
+- d'un accompagnement pour faire face aux nécessités de la vie (établir des contacts sociaux, éviter l'isolement, etc.) afin d'empêcher un placement en institution.
+
+Si vous résidez dans un home, le montant de l'allocation diffère. Le montant varie également en fonction de votre degré d'impotence.
+
+## Droits pour un mineur
+
+Un assuré mineur vivant à domicile a droit à une allocation pour impotent. Le montant est calculé par jour selon le degré d'impotence.
+
+Un **supplément pour soins intenses** est versé au mineur qui a besoin de soins durant 4 heures au moins chaque jour.
+
+En cas d'hospitalisation d'une durée d'au moins un mois civil entier, le versement est suspendu (sauf si la présence régulière des parents est confirmée indispensable par l'établissement).
+
+## Comment déposer une demande
+
+- **Adultes (18 ans et plus)** : Remplir le formulaire pour adultes et le transmettre en ligne ou par courrier postal.
+  Formulaire : https://www.ocas.ch/demarches-et-formulaires/demande-de-prestations-ai-pour-adultes-allocation-pour-impotent
+
+- **Mineurs** : Remplir la demande d'allocation pour mineurs et la transmettre en ligne ou par courrier postal.
+  Formulaire : https://www.ocas.ch/demarches-et-formulaires/demande-pour-mineurs-allocation-pour-impotent
+
+## Transmission des factures
+
+Trois moyens disponibles :
+1. **Facturation électronique** (recommandé) : plateforme Remboursement AI — https://ai-remboursement.ocas.ch/connexion
+2. E-démarches OCAS
+3. Courrier postal

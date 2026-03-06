@@ -1,6 +1,6 @@
 # Keys and Credentials
 
-How CareLoop stores and uses keys and credentials (aligned with Technical Specification §17.4).
+How CareLoop stores and uses keys and credentials (aligned with Technical Specification §17.4). For logging privacy and redaction (no PII in logs), see [PRIVACY-AND-REDACTION.md](PRIVACY-AND-REDACTION.md).
 
 ---
 

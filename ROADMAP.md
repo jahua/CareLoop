@@ -1,7 +1,7 @@
 # CareLoop Roadmap
 
-**Version:** 1.1.0  
-**Last Updated:** 2026-03-04  
+**Version:** 1.4.1  
+**Last Updated:** 2026-03-05  
 **Scope:** Implementation roadmap aligned with `Technical-Specification-RAG-Policy-Navigation.md` (Spec v1.3.0)
 
 ### Phase 1–2 completion summary (as of 2026-03-04)
@@ -87,7 +87,7 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 - [x] Personality state update success ≥ 99.5% of turns (Spec §14).
 - [x] Verifier blocks malformed or ungrounded outputs before return.
 - [x] Grounding Verifier (P1-9) validates policy claims against evidence.
-- [ ] Golden/conversation tests for at least two profiles (e.g. high-N, high-C) pass.
+- [x] Golden/conversation tests for at least two profiles (e.g. high-N, high-C) pass.
 - [ ] p95 latency for emotional support ≤ 4.0s, practical education ≤ 5.0s (Spec §17.6.1).
 - [ ] Memory retrieval/write path is active for conversation turns and observable in DB table `personality_memory_embeddings`.
 
@@ -117,11 +117,18 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 - [ ] Benchmark policy Q/A set meets target correctness (evaluator protocol).
 - [ ] Citation coverage and no critical hallucination in audit set.
 - [ ] p95 latency for policy_navigation ≤ 8.0s, mixed ≤ 9.0s (Spec §17.6.1).
-- [ ] RAG failure path returns safe fallback and clarification prompt; `retrieval=degraded` set (Spec §12).
+- [x] RAG failure path returns safe fallback and clarification prompt; `retrieval=degraded` set (Spec §12).
 
 ---
 
 ## 6. Phase 3: Reliability, Observability, and Security (Weeks 11–13)
+
+**Implementation report:** `CareLoop/docs/reports/Phase3-Reliability-Observability-Report.md`  
+**TODO list:** `CareLoop/docs/PHASE3-TODO.md`
+
+### Phase 3 completion summary (as of 2026-03-04)
+- **DoD 1–3 met:** Structured error envelopes (API + N8N pass-through), audit JSONL + optional `audit_log` DB write, correlation IDs, optional feedback (thumbs/score), redaction policy, health check, SLO/alert doc, security and data export/delete documentation.
+- **Remaining for production:** Export/delete API with auth; workflow stage latency → `performance_metrics`; gateway (P2) and model-tier router when needed.
 
 ### 6.1 Goals
 - Harden failure handling, logging, and audit.
@@ -139,14 +146,16 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 - **Security:** Secrets in env only; least privilege; retention/deletion aligned with Swiss FADP; consent for personality profiling (Spec §17.4).
 
 ### 6.3 Deliverables (DoD)
-- [ ] All failure paths return structured responses; no raw stack traces to clients.
-- [ ] Audit JSONL and correlation IDs available for every turn.
-- [ ] Optional feedback signals (e.g. thumbs up/down) captured for quality monitoring.
+- [x] All failure paths return structured responses; no raw stack traces to clients.
+- [x] Audit JSONL and correlation IDs available for every turn.
+- [x] Optional feedback signals (e.g. thumbs up/down) captured for quality monitoring.
 - [ ] If gateway is enabled: rollout plan followed (shadow → canary); success gate: no critical hallucination increase, stable or better benchmark scores (Spec §15.1.G).
 
 ---
 
 ## 7. Phase 4: Pilot Release and Evaluation (Weeks 14–16)
+
+**Checklist:** `CareLoop/docs/PHASE4-PILOT-CHECKLIST.md` (pillar test matrix, SLO targets, benchmark audit, load test, rollout).
 
 ### 7.1 Goals
 - Prepare for pilot deployment with real users (or internal testers).
@@ -171,13 +180,20 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 
 ## 8. Dependencies and References
 
-- **Technical spec:** `CareLoop/Technical-Specification-RAG-Policy-Navigation.md` (v1.2.0)
+- **Technical spec:** `CareLoop/Technical-Specification-RAG-Policy-Navigation.md` (v1.3.0)
 - **Requirements:** `pmt/Preliminary-Study-V2.7.6.md` (as referenced in spec)
 - **Contracts:** Defined in spec §6 (request, detection, retrieval, response); implement in `packages/contracts`
+- **Phase 3 TODO:** `CareLoop/docs/PHASE3-TODO.md` (reliability, observability, security)
+- **Operations runbook:** `CareLoop/docs/OPERATIONS-RUNBOOK.md` (env, health, audit, export/delete, monitoring, Phase 3→4)
+- **Frontend improvements:** `CareLoop/docs/FRONTEND-IMPROVEMENTS-TODO.md` (display, KPI/metrics, logs, user history, visual design; references `pmt/MVP/frontend` and `pmt/MVP/nextchat-personality-enhanced`)
 
 ---
 
 ## 9. Roadmap Changelog
 
-- **1.1.0:** Locked architecture to Gemma 3 (NVIDIA key) and hybrid external memory (PostgreSQL + EMA + pgvector).
+- **1.4.1:** Roadmap progress sync based on implementation evidence from `docs/PHASE1-2-TODO.md` and `docs/PHASE3-TODO.md`. Marked Phase 1 golden regression tests as completed and Phase 2 RAG degraded fallback DoD as completed. Updated roadmap timestamp.
+- **1.4.0:** Routing/intent/mode design doc (`docs/ROUTING-AND-INTENT-DESIGN.md`): clean separation — intent in N8N workflow (authoritative), model tier in gateway, workflow selection in gateway, API fallback demoted and renamed. Updated gateway, model-tier, two-workflows docs with cross-references. Phase 3 report §2.10 added. N8N `Enhanced Regulation` upgraded toward Spec §8.4.F with normalized thresholds, tie-break rules, and low-confidence clarification metadata. N8N now consumes `context.model_tier` with policy safety escalation (`light`→`medium`), dynamic retrieval top-k, and tier-aware generation params. Added stale citation detector job (`npm run job:stale-citation`) and source recrawl/re-embedding baseline job (`npm run job:source-recrawl`) with JSONL telemetry. Added gateway baseline capture (`npm run job:gateway-baseline-capture`), canary gate script (`npm run job:gateway-canary-check`), and gateway shadow response logging.
+- **1.3.0:** P2 gateway (shadow, optional auth `GATEWAY_API_KEY`, rate limit `GATEWAY_RATE_LIMIT_PER_MINUTE`, model_tier pass-through); model-tier router design (`docs/MODEL-TIER-ROUTER-DESIGN.md`); background jobs design + corpus-freshness script (`npm run job:corpus-freshness`); Phase 4 pilot checklist and pillar test matrix execution guide; Phase 3 report updated; stage latency / performance_metrics note in SLO doc.
+- **1.2.0:** Phase 3 core complete: DoD 1–3 done (error envelope, audit + optional DB, feedback, redaction, health, SLO/alert doc, export/delete doc). Added Phase 3 completion summary under §6; stub routes for data export/delete (501 until auth and DB wired).
+- **1.1.0:** Locked architecture to Gemma 3 (NVIDIA key) and hybrid external memory (PostgreSQL + EMA + pgvector). Dependencies updated to Spec v1.3.0; Phase 3 TODO link added.
 - **1.0.0:** Initial roadmap aligned with Technical Specification v1.2.0.

@@ -1,4 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { ErrorCode, ErrorStage } from "@careloop/contracts";
+
+/** Phase 3: structured error envelope (Spec §12). */
+function errorResponse(
+  error_code: ErrorCode,
+  message: string,
+  status: number,
+  options?: { stage?: ErrorStage; retryable?: boolean }
+): NextResponse {
+  return NextResponse.json(
+    {
+      success: false as const,
+      error: {
+        error_code,
+        message,
+        stage: options?.stage ?? "unknown",
+        retryable: options?.retryable ?? false,
+      },
+      timestamp: new Date().toISOString(),
+    },
+    { status }
+  );
+}
 
 const OCEAN_KEYS = ["O", "C", "E", "A", "N"] as const;
 const DEFAULT_ALPHA = 0.3;
@@ -67,9 +90,11 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as RequestBody;
     const { previous_state, ocean_history = [], detection_output, alpha = DEFAULT_ALPHA } = body;
     if (!detection_output?.ocean || !detection_output?.confidence) {
-      return NextResponse.json(
-        { error: "detection_output with ocean and confidence required" },
-        { status: 400 }
+      return errorResponse(
+        "validation_failed",
+        "detection_output with ocean and confidence required",
+        400,
+        { stage: "detection", retryable: false }
       );
     }
     const previous =
@@ -84,6 +109,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Request failed";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return errorResponse("internal_error", message, 500, { stage: "ema", retryable: true });
   }
 }
