@@ -1,0 +1,541 @@
+{
+  "name": "Personality Adaptive Chat Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Chat Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT get_latest_personality_state($1) as state_json",
+        "additionalFields": {
+          "queryParams": "={{ [$json.body.session_id] }}"
+        }
+      },
+      "id": "db-query-history",
+      "name": "Get Latest State",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [450, 300],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-personality-db",
+          "name": "Personality DB Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT role, text, created_at FROM get_session_history($1, 10) ORDER BY created_at ASC",
+        "additionalFields": {
+          "queryParams": "={{ [$json.body.session_id] }}"
+        }
+      },
+      "id": "db-query-turns",
+      "name": "Get Conversation History",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [450, 450],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-personality-db",
+          "name": "Personality DB Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Ingest and normalize user input\nconst body = $input.first().json.body;\nconst sessionId = body.session_id;\nconst message = body.message;\n\n// Get previous state and conversation history\nconst previousState = $input.all()[1].json?.[0]?.state_json || {\n  ocean: {O: 0, C: 0, E: 0, A: 0, N: 0},\n  stable: false,\n  turn_index: 0\n};\n\nconst conversationHistory = $input.all()[2].json || [];\n\n// Clean and normalize the message\nconst cleanMsg = message.trim().replace(/[\\r\\n]+/g, ' ').substring(0, 1000);\n\n// Build conversation context for LLM\nconst conversationContext = conversationHistory.map(turn => `${turn.role}: ${turn.text}`).join('\\n');\nconst fullContext = conversationContext + `\\nuser: ${cleanMsg}`;\n\n// Prepare data for next nodes\nreturn {\n  session_id: sessionId,\n  clean_msg: cleanMsg,\n  conversation_context: fullContext,\n  ocean_prev: previousState.ocean || {O: 0, C: 0, E: 0, A: 0, N: 0},\n  turn_index: (previousState.turn_index || 0) + 1,\n  history: conversationHistory\n};"
+      },
+      "id": "ingest-function",
+      "name": "Ingest & Normalize",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.JUGUANG_API_KEY}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-2.0-flash-exp"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Analyze this conversation to infer OCEAN personality traits. Return JSON only with this exact format: {\\\"ocean\\\": {\\\"O\\\": float, \\\"C\\\": float, \\\"E\\\": float, \\\"A\\\": float, \\\"N\\\": float}, \\\"trait_conf\\\": {\\\"O\\\": float, \\\"C\\\": float, \\\"E\\\": float, \\\"A\\\": float, \\\"N\\\": float}, \\\"evidence_quotes\\\": [string, ...]}. Values in [-1,1], confidence in [0,1]. Base analysis on conversation patterns, word choice, and communication style. No prose commentary.\"}, {\"role\": \"user\", \"content\": \"Conversation:\\n\" + $json.conversation_context}]"
+            },
+            {
+              "name": "response_format",
+              "value": "={\"type\": \"json_object\"}"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.3"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "detect-llm",
+      "name": "Personality Detection",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// EMA smoothing with confidence weighting\nconst detectionResult = JSON.parse($input.first().json.choices[0].message.content);\nconst rawOcean = detectionResult.ocean;\nconst traitConf = detectionResult.trait_conf;\nconst evidenceQuotes = detectionResult.evidence_quotes;\nconst oceanPrev = $input.all()[0].json.ocean_prev;\n\nconst smoothedOcean = {};\nlet stableCount = 0;\nconst STABILITY_THRESHOLD = 0.3;\nconst MAX_ALPHA = 0.4; // Maximum learning rate\nconst DELTA_CAP = 0.3; // Maximum change per turn\n\n// Apply EMA smoothing for each OCEAN trait\nfor (const trait of ['O', 'C', 'E', 'A', 'N']) {\n  // Confidence-weighted learning rate\n  const confidence = Math.max(0.1, Math.min(1.0, traitConf[trait] || 0.5));\n  const alpha = confidence * MAX_ALPHA;\n  \n  // Calculate new value with EMA\n  const prevValue = oceanPrev[trait] || 0;\n  const rawValue = Math.max(-1, Math.min(1, rawOcean[trait] || 0));\n  const uncappedNew = (1 - alpha) * prevValue + alpha * rawValue;\n  \n  // Apply delta cap to prevent sudden changes\n  const delta = uncappedNew - prevValue;\n  const cappedDelta = Math.max(-DELTA_CAP, Math.min(DELTA_CAP, delta));\n  const newValue = prevValue + cappedDelta;\n  \n  // Final clipping to [-1,1] range\n  smoothedOcean[trait] = Math.max(-1, Math.min(1, newValue));\n  \n  // Count stable traits (above threshold)\n  if (Math.abs(smoothedOcean[trait]) >= STABILITY_THRESHOLD) {\n    stableCount++;\n  }\n}\n\n// Personality is stable if at least 3 traits are above threshold\nconst isStable = stableCount >= 3;\n\nreturn {\n  ocean: smoothedOcean,\n  trait_conf: traitConf,\n  stable: isStable,\n  evidence_quotes: evidenceQuotes,\n  stable_count: stableCount\n};"
+      },
+      "id": "smooth-function",
+      "name": "Smooth Personality",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Map OCEAN traits to behavioral directives\nconst ocean = $input.first().json.ocean;\nconst stable = $input.first().json.stable;\n\nconst policyPlan = [];\n\n// Warmth dimension (Agreeableness + Extraversion influence)\nconst warmthScore = (ocean.A + ocean.E) / 2;\nif (warmthScore > 0.2) {\n  policyPlan.push('validate user concerns with warmth and empathy');\n} else if (warmthScore < -0.2) {\n  policyPlan.push('respond professionally and directly without excessive warmth');\n} else {\n  policyPlan.push('use a balanced, supportive tone');\n}\n\n// Directness dimension (Conscientiousness - Neuroticism)\nconst directnessScore = ocean.C - ocean.N;\nif (directnessScore > 0.3) {\n  policyPlan.push('use concise, direct language and clear statements');\n} else if (directnessScore < -0.3) {\n  policyPlan.push('use gentle hedging and softer, more tentative language');\n} else {\n  policyPlan.push('balance directness with sensitivity');\n}\n\n// Questioning style (Openness to experience)\nif (ocean.O > 0.3) {\n  policyPlan.push('ask one thoughtful, open-ended follow-up question');\n} else if (ocean.O < -0.3) {\n  policyPlan.push('focus on clear statements rather than exploratory questions');\n} else {\n  policyPlan.push('include one clarifying question if appropriate');\n}\n\n// Assertiveness (Extraversion + Conscientiousness, moderated by Agreeableness)\nconst assertivenessScore = (ocean.E + ocean.C) / 2;\nif (assertivenessScore > 0.4 && ocean.A > 0) {\n  policyPlan.push('offer specific, actionable suggestions confidently');\n} else if (assertivenessScore < -0.2) {\n  policyPlan.push('avoid imperative language and strong directives');\n} else {\n  policyPlan.push('provide gentle suggestions when appropriate');\n}\n\n// Length and pacing (Conscientiousness and Extraversion)\nconst paceScore = (ocean.C + ocean.E) / 2;\nif (paceScore > 0.3) {\n  policyPlan.push('keep responses moderately concise and well-structured');\n} else if (paceScore < -0.3) {\n  policyPlan.push('allow for more detailed, thoughtful responses');\n}\n\n// Ensure we don't exceed 4 directives and remove any undefined entries\nconst finalPolicyPlan = policyPlan.filter(p => p && p.length > 0).slice(0, 4);\n\nreturn {\n  policy_plan: finalPolicyPlan,\n  personality_scores: {\n    warmth: warmthScore,\n    directness: directnessScore,\n    assertiveness: assertivenessScore,\n    pace: paceScore\n  }\n};"
+      },
+      "id": "regulate-function",
+      "name": "Generate Policy",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.JUGUANG_API_KEY}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-2.0-flash-exp"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Generate a helpful response following these behavioral directives: \" + JSON.stringify($json.policy_plan) + \". CRITICAL REQUIREMENTS: 1) Only reference information explicitly mentioned in the conversation - do not introduce external facts or knowledge. 2) All statements must be grounded in the dialog context. 3) Cap questions at 1-2 maximum. 4) Keep response length appropriate (50-150 words typically). 5) Follow the personality-adapted directives while maintaining therapeutic helpfulness.\"}, {\"role\": \"user\", \"content\": \"Recent conversation:\\n\" + $json.conversation_context + \"\\n\\nGenerate an appropriate response that follows the behavioral directives and stays grounded in the conversation context.\"}]"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.7"
+            },
+            {
+              "name": "max_tokens",
+              "value": "=200"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "generate-llm",
+      "name": "Generate Response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1450, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Verify response for policy adherence and grounding\nconst draftReply = $input.first().json.choices[0].message.content.trim();\nconst policyPlan = $input.all()[0].json.policy_plan;\nconst conversationContext = $input.all()[0].json.conversation_context.toLowerCase();\n\nconst reasons = [];\nlet passesVerification = true;\n\n// Check for potential novel claims (basic heuristics)\nconst novelClaimIndicators = [\n  'research shows', 'studies indicate', 'experts say', 'according to',\n  'it is known that', 'science shows', 'data suggests', 'statistics show'\n];\n\nfor (const indicator of novelClaimIndicators) {\n  if (draftReply.toLowerCase().includes(indicator)) {\n    reasons.push(`Potential novel claim detected: \"${indicator}\"`);\n    passesVerification = false;\n  }\n}\n\n// Check question count\nconst questionCount = (draftReply.match(/\\?/g) || []).length;\nif (questionCount > 2) {\n  reasons.push(`Too many questions (${questionCount}), should be ≤2`);\n  passesVerification = false;\n}\n\n// Check response length (too short or too long)\nif (draftReply.length < 20) {\n  reasons.push('Response too short, may not be helpful');\n  passesVerification = false;\n} else if (draftReply.length > 300) {\n  reasons.push('Response too long, should be more concise');\n  passesVerification = false;\n}\n\n// Check for basic policy adherence (simplified)\nconst lowerReply = draftReply.toLowerCase();\n\n// Check warmth policy\nif (policyPlan.some(p => p.includes('warmth'))) {\n  const warmthIndicators = ['understand', 'feel', 'sounds', 'appreciate'];\n  if (!warmthIndicators.some(indicator => lowerReply.includes(indicator))) {\n    reasons.push('Response may lack required warmth and empathy');\n    passesVerification = false;\n  }\n}\n\n// Check directness policy\nif (policyPlan.some(p => p.includes('direct language'))) {\n  const hedgingWords = ['maybe', 'perhaps', 'might want to consider', 'you could try'];\n  if (hedgingWords.some(word => lowerReply.includes(word))) {\n    reasons.push('Response uses hedging language but policy requires directness');\n    passesVerification = false;\n  }\n}\n\n// Determine final decision\nconst decision = passesVerification ? 'accept' : 'refine';\n\nreturn {\n  draft_reply: draftReply,\n  decision: decision,\n  reasons: reasons,\n  verification_details: {\n    question_count: questionCount,\n    response_length: draftReply.length,\n    novel_claims_detected: reasons.filter(r => r.includes('novel')).length > 0\n  }\n};"
+      },
+      "id": "verify-function",
+      "name": "Verify Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1650, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.decision}}",
+              "operation": "equal",
+              "value2": "refine"
+            }
+          ]
+        }
+      },
+      "id": "if-node",
+      "name": "Decision Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1850, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.JUGUANG_API_KEY}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-2.0-flash-exp"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Fix this response based on these issues: \" + JSON.stringify($json.reasons) + \". ONLY make minimal adjustments to address the specific problems. Do not add new content or claims. Keep the response grounded in the original conversation context. Maintain the helpful and appropriate tone.\"}, {\"role\": \"user\", \"content\": \"Original response to fix:\\n\" + $json.draft_reply}]"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.3"
+            },
+            {
+              "name": "max_tokens",
+              "value": "=200"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "refine-llm",
+      "name": "Refine Response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1850, 450]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Format final API response\nconst allInputs = $input.all();\n\n// Get the final reply (either refined or original draft)\nconst finalReply = $json.choices ? \n  $json.choices[0].message.content.trim() : \n  allInputs.find(input => input.json.draft_reply)?.json.draft_reply || 'I apologize, but I encountered an issue generating a response.';\n\n// Collect data from previous nodes\nconst ingestData = allInputs.find(input => input.json.session_id)?.json || {};\nconst smoothData = allInputs.find(input => input.json.ocean)?.json || {};\nconst policyData = allInputs.find(input => input.json.policy_plan)?.json || {};\nconst verifyData = allInputs.find(input => input.json.decision)?.json || {};\n\n// Prepare response payload\nconst responsePayload = {\n  reply: finalReply,\n  session_id: ingestData.session_id,\n  turn_index: ingestData.turn_index,\n  policy_plan: policyData.policy_plan || [],\n  ocean_preview: smoothData.ocean || {O: 0, C: 0, E: 0, A: 0, N: 0},\n  personality_stable: smoothData.stable || false,\n  confidence_scores: smoothData.trait_conf || {},\n  evidence_quotes: smoothData.evidence_quotes || [],\n  verification: {\n    decision: verifyData.decision || 'accept',\n    reasons: verifyData.reasons || []\n  },\n  timings_ms: {\n    // These would be calculated from actual node execution times in a real implementation\n    detect: 800,\n    smooth: 50,\n    regulate: 30,\n    generate: 1200,\n    verify: 100,\n    total: 2180\n  },\n  execution_id: $workflow.id,\n  timestamp: new Date().toISOString()\n};\n\n// Also prepare the state object for database storage\nconst stateSnapshot = {\n  session_id: ingestData.session_id,\n  turn_index: ingestData.turn_index,\n  history: (ingestData.history || []).concat([\n    {role: 'user', text: ingestData.clean_msg, timestamp: new Date().toISOString()},\n    {role: 'assistant', text: finalReply, timestamp: new Date().toISOString()}\n  ]),\n  ocean: smoothData.ocean,\n  trait_conf: smoothData.trait_conf,\n  stable: smoothData.stable,\n  policy_plan: policyData.policy_plan,\n  flags: {\n    refined_once: verifyData.decision === 'refine',\n    neutral_fallback: false,\n    verification_passed: verifyData.decision === 'accept'\n  },\n  timings_ms: responsePayload.timings_ms,\n  last_updated: new Date().toISOString(),\n  execution_id: $workflow.id\n};\n\nreturn {\n  api_response: responsePayload,\n  state_snapshot: stateSnapshot\n};"
+      },
+      "id": "deliver-function",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [2050, 300]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": "turns",
+        "columns": "session_id,turn_index,role,text",
+        "additionalFields": {}
+      },
+      "id": "db-insert-user-turn",
+      "name": "Save User Turn",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [2250, 200],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-personality-db",
+          "name": "Personality DB Connection"
+        }
+      },
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": "turns",
+        "columns": "session_id,turn_index,role,text",
+        "additionalFields": {}
+      },
+      "id": "db-insert-assistant-turn",
+      "name": "Save Assistant Turn",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [2250, 300],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-personality-db",
+          "name": "Personality DB Connection"
+        }
+      },
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "table": "state_snapshots",
+        "columns": "session_id,turn_index,state_json,execution_id",
+        "onConflict": "ON CONFLICT (session_id, turn_index) DO UPDATE SET state_json = EXCLUDED.state_json, execution_id = EXCLUDED.execution_id",
+        "additionalFields": {}
+      },
+      "id": "db-save-state",
+      "name": "Save State Snapshot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [2250, 400],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-personality-db",
+          "name": "Personality DB Connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json.api_response}}"
+      },
+      "id": "webhook-response",
+      "name": "Return Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2450, 300]
+    }
+  ],
+  "connections": {
+    "webhook-trigger": {
+      "main": [
+        [
+          {
+            "node": "db-query-history",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "db-query-turns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-query-history": {
+      "main": [
+        [
+          {
+            "node": "ingest-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-query-turns": {
+      "main": [
+        [
+          {
+            "node": "ingest-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ingest-function": {
+      "main": [
+        [
+          {
+            "node": "detect-llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "detect-llm": {
+      "main": [
+        [
+          {
+            "node": "smooth-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "smooth-function": {
+      "main": [
+        [
+          {
+            "node": "regulate-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "regulate-function": {
+      "main": [
+        [
+          {
+            "node": "generate-llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate-llm": {
+      "main": [
+        [
+          {
+            "node": "verify-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verify-function": {
+      "main": [
+        [
+          {
+            "node": "if-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if-node": {
+      "main": [
+        [
+          {
+            "node": "deliver-function",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "refine-llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "refine-llm": {
+      "main": [
+        [
+          {
+            "node": "deliver-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deliver-function": {
+      "main": [
+        [
+          {
+            "node": "db-insert-user-turn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "db-insert-assistant-turn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "db-save-state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-insert-user-turn": {
+      "main": [
+        [
+          {
+            "node": "webhook-response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-insert-assistant-turn": {
+      "main": [
+        [
+          {
+            "node": "webhook-response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-save-state": {
+      "main": [
+        [
+          {
+            "node": "webhook-response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "1",
+  "id": "personality-chat-workflow",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

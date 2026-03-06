@@ -1,0 +1,2024 @@
+Writing Dissertations: A Guide
+
+Based on editions of the Publication Manual of the American
+Psychological Association up to and including the 7th
+
+Dr Gordon Millar
+
+Autumn 2020 Edition
+The author will appreciate any feedback on this document. This should be sent by email
+to gordon.millar@hslu.ch. Comment will help to improve future editions.
+
+Table of Contents
+Note
+
+3
+
+Preface
+
+4
+
+Organizing Your Ideas
+Length, Headings and Tone of the Work to be Produced
+
+5
+5
+
+Parts of Your Dissertation
+
+6
+
+Using English Appropriately and Correctly
+Punctuation and Capitalisation
+
+13
+14
+
+2.2
+
+Italicising and Abbreviating
+
+16
+
+2.3
+
+Quotations
+
+17
+
+2.4
+
+Numbers and Symbols
+
+18
+
+Tables and Figures
+Tables
+
+20
+20
+
+Figures
+
+21
+
+Footnotes and Appendices
+Footnotes
+
+24
+24
+
+Appendices
+
+24
+
+Reference Citations in the Text and Bibliography
+Reference Citations in the Text
+
+26
+26
+
+5.2
+
+Bibliography
+
+29
+
+5.3
+
+Other non-APA standards
+
+35
+
+6.
+
+The Abstract/Management Summary
+
+37
+
+7.
+7.1
+
+Final Submission
+Paper or bound submission
+
+38
+38
+
+Online or electronic submission
+
+39
+
+Presenting Your Dissertation
+
+40
+
+Bibliography
+
+42
+
+Appendix A: Declaration of Sole Authorship
+
+43
+
+Appendix B: Checklist for Dissertation Preparation
+
+44
+
+1.
+1.1
+1.2
+2.
+2.1
+
+3.
+3.1
+3.2
+4.
+4.1
+4.2
+5.
+5.1
+
+7.2
+8.
+
+2
+
+Note
+This guide uses the word “dissertation” and not “thesis”. In UK English, which
+the Lucerne University of Applied Sciences and Arts has adopted as standard,
+“thesis” is most often used for doctoral research reports and “dissertation” for
+bachelor’s and master’s final papers. In the University’s regulations and in everyday
+use, the German-language norm (i.e. “thesis” instead of “dissertation”) has
+established itself in the English used locally.
+
+3
+
+Preface
+With the introduction of taught-in-English degree programmes at bachelor’s
+and master’s level in 2008, there arose the need for a guide to be written for students
+required to write dissertations and research papers in English. At the time it was
+decided that the American Psychological Association (APA) style and referencing
+system would be chosen to serve as the basis for the taught-in-English dissertations
+and research papers guide. The present periodically revised document is based on
+the Publication Manual of the American Psychological Association, now in its
+seventh edition. The main reasons for this decision were the advantage of having one
+standard for the whole institution and the resulting ease of a common context for
+those colleagues with responsibility for teaching methodological skills.
+The user of this guide should not expect a one-to-one correspondence between
+the material presented here and what is in the relevant APA manuals. The reasons
+are as follows:
+•
+•
+
+•
+
+•
+
+The decision of the Lucerne University of Applied Sciences and Arts to use
+British rather than US English as its standard has obvious detailed
+implications for the use of APA and other standards.
+The APA Publication Manual is precisely that, a manual intended to
+provide guidance and standards for academics and researchers preparing
+their material for publication in research journals. The present guide is,
+however, primarily intended for use by students preparing dissertations
+and research papers which are, in many cases, unlikely to be published.
+Degree dissertations below doctoral level have a didactical character which
+must be recognised in the style guide relevant to their preparation. An
+example is to be found in the difference between the APA’s recommended
+form for an Introduction, which includes a statement of a hypothesis and
+discussion of relevant literature, and the guidance given here on the
+writing of a separate Literature Review.
+There are simply matters on which the APA standard makes no, or very
+little, comment, for instance on matters such as choice of font or length.
+
+Basing a dissertation-writing guide on a recognised style and referencing
+system is of most use with respect referencing. It is in this area, and with regard to
+the preparation of bibliographies, that this document attempts to make only strictly
+necessary departures from what the APA standard requires.
+It is appropriate to say a word on cultural differences. Writing for research
+purposes in English takes place within a cultural framework. Those who work in both
+the taught-in-English and in the taught-in-German environment will be aware of the
+differences between the two. Those more familiar with the one or the other may take
+exception to the advice offered in this guide. As with all matters, tolerance and
+adjustment on the part of the user are called for.
+Gordon Millar
+
+4
+
+1. Organizing Your Ideas
+In a practically oriented environment the process of research and the
+production of results are usually seen as useful. The writing up of a dissertation or
+research paper is often viewed as a tedious necessity, driven by the need to satisfy
+educational rather than profitable considerations. It is worth pausing to reflect that,
+if the results are not recorded then the work will very quickly be forgotten. If the
+research is not explained in the context of both relevant theory and the work of
+others in the field, it will lack credibility. If the explanation of the need for the
+research and recording of the results is not followed up by analysis and
+recommendations, then the value of what has been done will be left unexploited.
+Finally, if all these steps are not carried out in crisp and correct English, with sources
+not properly identified and referenced, and supporting tables, figures and
+appendices not integrated into the main thrust of the work, then the message will
+appear shoddy.
+Before you begin to write anything, you should consider the following factors:
+1.1 Length, Headings and Tone of the Work to be Produced
+1.11 Length. What is the normal length of the paper, dissertation, or article
+you are expected to write? In the English-speaking world this is measured not in
+terms of the number of pages, but rather in terms of the number of words. A degree
+dissertation, for example, is typically 12,000 to 15,000 words in length, excluding
+appendices, footnotes, tables, figures and references. A master’s level applied
+research paper may be less extensive at 8,000 to 12,000 words.
+1.12 Headings. When you have answered this question you will be in a
+position to sit down and construct an initial hierarchy of headings for the work. This
+“scaffolding” of initial headings should convey two elements of your report:
+a)
+b)
+
+the sequence of your ideas
+the levels of importance which you attach to any particular part of your
+material
+
+Your headings will help the reader to grasp the organisation of your writing. In
+comparison to academic writing in German, headings in English are often fewer in
+number. If you find yourself tempted to open up a level of sub-chapters with three
+digits after the decimal point (e.g. 2.335), then think again. The latest edition of
+APA recommends that no numbering be used with sections, but this
+guide has retained the older APA format and suggests up to two figures
+after the decimal point in section headings. Each chapter should start with the
+highest level of heading and should follow the same top-down progression, even if
+different sections make use of a different number of levels of heading.
+You will note that this guide, which is written in APA style, uses four levels.
+This hierarchy of headings based on the APA recommendations is as follows:
+5
+
+(Level 1):
+
+1. Centred, Bold, Uppercase and Lowercase Headings
+(Text begins as a new paragraph.)
+
+(Level 2):
+1.1. Left Justified, Bold, Uppercase and Lowercase Headings
+(Text begins as a new paragraph.)
+(Level 3):
+1.11. Indented, Bold, Uppercase and Lowercase Headings Ending
+With a Full Stop. (Text begins on the same line and continues as a regular
+paragraph.)
+(Level 4):
+Indented, bold, italicised, lowercase paragraph headings ending
+with a full stop. (Text begins on the same line and continues as a regular
+paragraph.)
+When selecting the levels of heading to use within a text, it is necessary to first
+identify the finest (lowest) level of subheading category. If there is one level, use
+Level 1 only; with two levels, use Levels 1 and 2; and with three levels, use Levels 1, 2
+and 3, and so on.
+Elements in a series are identified by letters within a paragraph (a), (b), (c) and
+by numbers at the beginning of separate paragraphs in a series of conclusions or
+steps.
+1.13 Tone. You are going to be engaged in what is known as academic or socialscientific writing. This means you should express yourself logically, rationally and
+directly. You should avoid ideas or accompanying language that is sensational or
+combative. This said, you should write your paper to be interesting and, in terms of
+its argument, compelling.
+1.2 Parts of Your Dissertation
+Your dissertation should include the following parts:
+•
+
+A cover page, which in the following order should state:
+1. The title of the work: the title should be a concise statement of the
+main topic and should identify the issues being investigated, relevant
+variables and the relationship between these elements. A title should be
+understandable when it alone is read. A good example might be: “Effects of
+Restricted Credit on Business Start-ups in Central Switzerland”.
+2. Author’s/Authors’ name(s): you should use your full first and
+family names(s).
+
+6
+
+3. (If necessary) Class and/or degree-course major.
+4. Name of the school and the degree course for which the
+dissertation is being written. This should take the following form:
+“Introductory/Project/Degree (delete as appropriate) Dissertation submitted
+as part of the requirements for the MSc in Business Administration at the
+School of Business, Lucerne University of Applied Sciences and Arts”
+5. Month and year.
+A cover page may include a suitable illustration. The best illustrations are
+thoughtful, low-key material that is connected with, or suggestive of the
+subject matter of your work. You should remember with this, and any
+other illustration, to include a reference to its source.
+•
+
+A title page, which should repeat the information on the cover page. It
+should, in addition, give the email address(es) of the author(s) and directly
+afterwards the first and family names of your supervisor(s), together with
+their relevant academic title(s), and business email address(es).
+
+•
+
+An abstract/management summary. This should be a brief,
+comprehensive summary of your work. It is intended to allow readers to
+survey the contents of your article quickly. You should ensure that the first
+paragraph contains a statement of the topic of the dissertation and its
+significance, as well as an indication of the major outcome of your
+research. Abstracts are often placed on databases and the first paragraph
+may be all the user of such a database reads. Many database users will be
+reluctant to scroll down and read the whole of your abstract if their
+attention is not caught by the first paragraph.
+Please note that an abstract/management summary is NOT the same as an
+introduction.
+At the end of the abstract/management summary you should include
+keywords. These should appear as a separate paragraph in lower case
+(apart from proper names), separated by commas and with no full stop at
+the end. They should be about five in number and introduced with the
+label Keywords: (in italics) at the start of the line.
+
+•
+
+A table of contents (including page numbers). This should quickly
+convey the organisation and structure of your material. Specifically:
+-
+
+The Table of Contents normally includes only Level 1 and
+Level 2 headings as the others are so-called paragraph headings.
+Chapter and sub-chapter titles should be expressive of the content of
+the relevant section of the work. Single-word titles usually fail to do
+this and should not be used.
+
+7
+
+-
+
+The numbering of chapters and sub-chapters begins and ends with
+the main body of your work. The Table of Contents, Preface,
+Bibliography, etc. are not numbered.
+The pages of all chapters, sub-chapters and other sections of the
+dissertation, including the appendices, should be consecutively
+numbered beginning with the title page.
+
+The table of contents may be followed by any or all of the following: a List
+of Illustrations, a List of Tables, a List of Interviews Held, and a
+List of Abbreviations Used. You may also include at this point a Note
+on any formal matter you consider to be important, for example on your
+use of subject-specific terminology.
+•
+
+A preface. The preface is an optional part of a dissertation which should
+not include the social-scientific or academic discussion of the topic. This is
+rather the place to include personal comments. These may be, for example,
+on:
+-
+
+•
+
+your personal reasons for your choice of subject
+your experiences during the process of producing your work
+the thanks you wish to express to those who have helped you
+
+An introduction which should:
+-
+
+introduce the problem and explain why it is important. You may wish
+to make use of a rhetorical question or two to do this: “Why is this
+topic worth pursuing” or “What does the commissioner of this project
+want to know?”
+
+-
+
+include what might be called the dissertation statement. This
+should say precisely what the aim of the work is. It should also
+introduce any related and relevant sub-topics. You may wish to
+rephrase the title of your dissertation to do this. So from “Effects of
+Restricted Credit on Business Start-ups in Central Switzerland” might
+come:
+“This dissertation seeks to assess the effect of tighter credit on the
+number and scale of new businesses which have been started up in
+Central Switzerland in the last nine months. A discussion of this topic
+naturally requires an analysis of the extent to which credit has
+become more difficult to acquire in the same period.”
+
+-
+
+offer a research question and, if appropriate, a hypothesis about
+the topic of the dissertation which the following work will either
+prove or disprove. Referring again to the topic mentioned in the
+previous point, a possible research question and related hypothesis
+might be:
+8
+
+Research question: “Are tighter credit conditions affecting the
+number and scale of business start-ups in Central Switzerland?”
+Hypothesis: “It is contended that the current credit situation is
+having no noticeable effect on business start-ups in Central
+Switzerland.”
+-
+
+give the reader useful indications on how the dissertation is
+organised, its division into chapters, its inclusion of appendices and
+its provision of bibliographical, diagrammatic and tabular
+information.
+
+•
+
+The Literature Review. In a practically oriented degree course
+literature reviews are often seen as “nice to have”. They are frequently
+described as unnecessary for the external commissioner of the work. A
+literature review is, however, most necessary to give you, as a writer,
+credibility. It does this because in the review you should provide a
+scholarly analysis of the work of others relevant to your subject. In this
+way you show that you are aware of the context your work is taking place
+in and that you have selected your desk-based sources with conscious care.
+Your literature review should not be exhaustive, but rather authoritative.
+In other words, you should review the most important relevant work of
+others. In reviewing the work of others, concentrate on their findings and
+conclusions, and any interesting methodological comparisons between
+their approach and yours. You can also make any necessary comments on
+any limitations in these sources.
+In your literature review you should be fair and avoid colourful,
+judgemental language. If there are areas of controversy, then state what
+the differences are and the questions that are left unanswered. Do not try
+to resolve social-scientific or academic disputes by giving personal
+opinions.
+Your literature review should finish by making one or both of two points
+clear. Firstly, if there is sufficient literature to make this possible, you
+should identify the “gap” that your work fits into. In other words you
+should establish the continuity between other previous work and what you
+are doing in your dissertation. Secondly, you should establish where deskbased research ends and where field research begins and is necessary.
+
+•
+
+Methods/Procedures. This part of your dissertation describes in detail
+how your study was conducted. You should make it possible for the reader
+to evaluate the appropriateness of the methods you used and therefore the
+reliability, validity and ethical standard of your results.
+If your study involves a piece of interview-based or qualitative research,
+you should explain the questions you put, the selection of your sample of
+interview partners, and the analytical methods you intend to use. If, on the
+other hand, you are doing a quantitative survey, you should describe the
+
+9
+
+survey instrument you used (e.g. the questionnaire), the size of the sample
+taken and the statistical methods you intend to apply.
+With any method you describe you should include a brief discussion of its
+advantages and drawbacks. With statistical methods in particular you
+should be clear about whether your work is intended to be representative
+and, if it is not, what steps you are taking to compensate and allow for this
+in your work. It is vital that your dissertation does not make
+claims or reach conclusions which go beyond what your
+methods and especially your sample warrant.
+•
+
+Results. In this section you should give the results of your research in
+such a way that they are clear and easily grasped overall by the reader.
+Tables, charts and other diagrammatic figures may help in achieving this.
+These should always be referred to and commented on in the
+text. Generally your results should be given in sufficient detail to support
+your conclusions.
+
+•
+
+Discussion/Conclusions. In this part of your dissertation you should
+give your reasoned opinions about the results you have detailed.
+Everything must be justified by the results, by a combination of relevant
+theory and results, or by a drawing together of your desk and field
+research. There should be no generalisations or speculations that lack this
+foundation. This section should not simply reach conclusions. There must
+be a discussion, or critique, of what has been carried out that leads up to
+such conclusions. If this section involves a repetition of the results to make
+it intelligible, then it may be sensible to combine it with your “Results”
+section, giving a “Results and Discussion/Conclusions” chapter.
+You should start this section by answering positively or negatively the
+problem posed in the dissertation statement, research question and
+hypothesis, if you included one, given in your introduction. At this point
+you should comment on the appropriateness of the methods you chose to
+use and the resultant validity, reliability and ethical acceptability of your
+results.
+You should end this discussion/conclusions part of your dissertation by
+commenting on the practical and theoretical importance of your findings.
+If this commentary is to be extensive, then it may be appropriate to adopt
+the order “Results and Discussion” and then “Conclusions”. Whether your
+comments on the importance of your findings are included in the same
+chapter as the discussion, or whether they stand alone as a “Conclusions”
+section, you should consider at this stage whichever of the following issues
+are relevant to your dissertation:
+-
+
+why the problem was important and what larger issues hinge on your
+findings
+the level of analysis and, in particular, how your findings can be
+linked to issues at a more complex level of study
+the extent to which your results agree with those of other researchers
+the extent to which your results are applicable in other fields
+10
+
+•
+
+Recommendations. In dissertations completed for an external sponsor
+or client this may be the part of your work that gets most attention. In
+contrast to the reserved, conditional and relative tone of your methods,
+findings and discussion/conclusions sections, the recommendations part
+of your work should be direct and decisive. You can afford to make
+justified choices here. You can also feel free to choose a form which makes
+clear how your recommendations could be implemented. This might not
+be a text, but, for example, a time chart with commentary. This part of
+your dissertation should be kept short and the reader should be able to
+grasp its contents quickly.
+With reference to the position of recommendations in a dissertation, they
+may be placed after the discussion/conclusions section, or after the
+discussion of the findings and before the conclusions to the whole work
+(which will then include reflection on its overall usefulness and importance
+– including, in this case, reflection on the recommendations).
+
+•
+
+Bibliography/References. All citations in the text of your dissertation
+must appear in the bibliography and all the works listed in your
+bibliography must be cited in the text. Your bibliography does not need to
+be exhaustive but rather succinct. It should include enough references to
+support your research and should not be padded out with items simply
+intended to impress.
+
+•
+
+Appendix/Appendices. This is the place to include material which
+would disturb the flow of your dissertation if it were included in your main
+text. Usually the reason is its bulk. Examples include detailed tables with
+the raw data of a questionnaire-based survey, or a list of questions used for
+a semi-structured interview with the answers of interview partners so
+entered as to disguise their identity. Other material which might be
+included in an appendix includes any special computer programme used,
+or a statistical test that may not be widely known. If there is more than one
+appendix they should be numbered. If you have several appendices, and
+especially if they are divided into sub-sections, then you should include a
+List of Appendices, either at the start of the Appendices section, or with
+other Lists after the Table of Contents.
+
+•
+
+Declaration of Sole Authorship. It may especially be a requirement of
+final degree dissertations to include a signed Affidavit or Declaration of
+Sole Authorship with each copy submitted for examination. You should
+use a recognised formula for this and it should appear on a separate page
+of its own. An example is included in Appendix A of this paper.
+
+To help readers orient themselves it is recommended to give each page a
+running header (in word-processing packages usually inserted in a small font size in
+the “Header” of the “Header and Footer” sections). The APA recommends the use of
+the first two or three words from a chapter or section title for such headers. So for the
+
+11
+
+next chapter of this guide “Using English” in the centre of the header of every page
+except the first page, in the form Using English, would be appropriate.
+
+12
+
+2. Using English Appropriately and Correctly
+
+This chapter begins with a general section on appropriate style and then goes on
+to consider detailed aspects such as punctuation, the use of italics and the correct
+way to write numerical information. For obvious reasons no attempt is made to
+provide an exhaustive guide to language issues, but rather to concentrate on those
+issues which experience shows often lead to doubt and difficulty.
+It has already been stated that there is a suitable tone for text which is academic
+or scientific in purpose. This is matched by style which is appropriate to expressing
+ideas, while at the same time removing bias and emotion as far as possible. The
+elements of such style are as follows:
+•
+
+•
+
+•
+
+•
+
+•
+
+Your text should make good use of thought units (the sentence, paragraph,
+sub-chapter or chapter) to achieve a continuity throughout. Various
+language tools exist to facilitate orderly writing. Punctuation acts like road
+signs, guiding the reader through the text at sentence level. Transitional
+words and discourse markers act like a map, signalling to the reader the
+connections between different parts of the text. Transitional words can
+include the use of a pronoun for a previously mentioned noun (as long as
+the referent is clear). Discourse markers can include time links (then,
+next), cause-effect links (therefore, as a result), addition links (in addition,
+similarly), and contrast links (conversely, whereas).
+Your text should read smoothly. Avoid ambiguity, sudden changes of topic
+or even tense, and abrupt beginnings or endings. One section of your
+dissertation should lead into another, the move from one to the other
+being signalled both forwards and, in the succeeding section, backwards.
+The reader should, in other words, be guided through the work.
+Use language economically. This can be achieved by using short, simple
+words and sentences where necessary. You should avoid jargon, wordiness
+and redundant expressions. Ruthlessly weed out colourful, judgemental
+and generalising adjectives and adverbs such as best, huge, most, widely,
+commonly, and extremely.
+Make sure every word is used for what you really mean. Feel is not a
+substitute for think and believe. Think and believe do not mean the same
+thing. Don’t use approximations such as practically all. Avoid the use of
+this, that, these and those with reference to something in a previous
+sentence that is unclear without a repetition of the referent (this test, those
+participants).
+In an attempt to sound objective do not use the third person (“The author
+decided to question 50 people” – referring to yourself). Equally do not
+practice anthropomorphism, the attribution of human characteristics to
+animals or inanimate objects (“The economic promotion office was
+persuaded to allow several of its employees to be interviewed”). Use we to
+refer only to yourself and your coauthors (I if you are the sole author) and
+not to describe wider indeterminate groups (“We are used in Central
+
+13
+
+•
+
+•
+
+•
+
+•
+
+Switzerland to a business-friendly economic climate” – meaning the
+citizens of the six Central Swiss cantons).
+A judicious mixture of I/we, the passive to focus on the object of a
+sentence (“The survey was sent to 100 firms in Central Switzerland”), and
+of sentences which use subjects other than the author as a referent (“This
+research covers start-ups of small and medium-sized enterprises in Central
+Switzerland”) helps to convey objectivity of approach.
+Use active rather than passive verb constructions as much as possible. This
+will also help you to avoid the so-called dangling modifier: “The
+participants were tested using this procedure” (poor) – “Using this
+procedure, I tested the participants” (much better, because it is clear that
+“I” and not “the participants” used the procedure).
+Avoid labelling people. Participants in a study tend to lose their
+individuality as they are categorised as its objects. The bankrupts, the
+start-ups, etc. are better described either using adjectival forms (“the
+bankrupt entrepreneurs”) or with a noun followed by a descriptive phrase
+(“the entrepreneurs who have recently started up businesses”).
+Use language which is free from gender bias. English offers a variety of
+ways to avoid statements such as: “When an individual businessman uses
+this kind of controlling policy, he is in a much stronger position to ...”.
+Examples include:
+“When an individual entrepreneur uses this kind of controlling policy,
+that person is in a much stronger position to ...”
+“When individual business people use this kind of controlling policy,
+they are in a much stronger position to ...”
+Statements that the use of “he” and “his” can be taken to include both
+masculine and feminine subjects are not acceptable in English. Likewise
+you should use “he and she” sparingly, and you should avoid clumsy forms
+such as “(s)he” and “he/she”. Instead use the possibilities English offers to
+express yourself in a gender-neutral fashion.
+
+2.1 Punctuation and Capitalisation
+2.11 The comma. Commas are used:
+•
+
+to separate elements (including before and and or) in a series of three or
+more items – “the turnover, profit, or tax liability”
+
+•
+
+to separate off non-defining clauses – “This was the author’s contention,
+which he published in a later paper.”
+
+•
+
+to set off the year in exact dates beginning with the month – November 25,
+1956 (but 25 November 1956)
+
+14
+
+•
+
+to separate groups of three digits in numbers of 1,000 or more
+
+2.12 The semicolon. Semicolons are used:
+•
+
+to separate elements in a series that already contain commas –
+“purchasing order 22 was lot one, lot seven, lot four; order 23 was lot two,
+lot seven, lot nine”
+
+2.13 The colon. Colons are used:
+•
+
+between a grammatically complete introductory clause (one that could
+function as a sentence) and a final phrase/clause that illustrates, extends
+or amplifies the preceding thought. If the clause following the colon is a
+complete sentence, then it begins with a capital letter.
+
+2.14 The dash. Dashes are used:
+•
+
+to indicate a sudden interruption in the continuity of a sentence (overuse
+can weaken the flow of your material). Please note that a hyphen (-) is used
+within a word and is not a dash (–), which is used within a sentence.
+
+2.15 Double quotation marks (when not used for quoting directly
+from a source). Double quotation marks are used:
+•
+
+to express irony, slang usage, or to mark an invented expression. In such
+cases quotation marks are only used the first time the word or term
+appears – the company’s “environmentally friendly” energy policy resulted
+in a higher carbon footprint than that of its competitors.
+
+•
+
+to set off the title of an article or a chapter in a book when it is mentioned
+in the text – Friendly’s 1992 article “Doing Business in a Recession” has
+become a seminal text in management literature.
+
+Double quotation marks should not be used:
+•
+
+to introduce a key or technical term. This should instead be italicised –
+The expression zero-based budgeting appears several times in this
+textbook.
+
+2.16 Parentheses. Parentheses are used:
+•
+
+to introduce an abbreviation – the Lucerne School of Business (HSLU-W)
+is situated in Central Switzerland
+
+15
+
+2.17 Brackets. Brackets are used:
+•
+to enclose parenthetical material that is already within parentheses – (The
+company’s results [adjusted for inflation] are to be found in Appendix D.)
+2.18 Capital (uppercase) letters in headings and titles.
+•
+
+Major words in headings, sub-headings, titles of books and articles
+mentioned in the text, in table titles, and in figures legends, are all
+capitalised. Conjunctions, articles (the, a, an), and short prepositions are
+not considered major words. All words of four letters or more are
+capitalised, as are verbs, nouns, adjectives and adverbs. With hyphenated
+words, both should be capitalised. The first word after a colon or a dash in
+a heading is capitalised.
+
+2.19 Lowercase letters.
+•
+
+The names of models, theories or hypotheses are not capitalised – the
+empirical law of effect; Smith’s notion of the invisible hand
+
+2.2 Italicising and Abbreviating
+2.21 Italics. Italics should be used for:
+•
+
+the introduction of a new, technical or key term or label (after a term has
+been used once it should not be italicised again) – the term selling long
+
+•
+
+letters, words or phrases used as linguistic examples – words such as
+profit and loss
+
+Italics should not be used for:
+•
+
+foreign words and abbreviations which are common in English – et al., visà-vis, a priori
+
+•
+
+mere emphasis (you should express this linguistically) - it is important to
+bear in mind (italics is not necessary)
+
+2.22 Abbreviations. Abbreviations should be used sparingly. The best rule of
+thumb is to use only generally recognised abbreviations and otherwise to abbreviate
+when considerable space can be saved and cumbersome repetition avoided. In all
+cases, the first time a term is used in the text it must be written out fully and
+immediately followed by the abbreviation in parentheses. Thereafter only the
+abbreviation should be used in the text (i.e. do not switch between the written-out
+and abbreviated forms of a term). It is suggested that this procedure is repeated
+afresh in each chapter.
+
+16
+
+A very few abbreviations are accepted as words (IQ, AIDS), in other words they
+do not need to be written out on first use.
+With Latin abbreviations (e.g., i.e., etc., vs.), these should only be used in
+parenthetical material. In the text English translations should be used (for example,
+that is, and so on, versus).
+Full stops should be used with Latin abbreviations and with the initials of
+names. They should not be used for capital letter abbreviations and acronyms (APA,
+EPA, NASA).
+Abbreviations which are not generally recognised, are not accepted as words,
+and are not from Latin should either be included in a List of Abbreviations, or where
+these others require lengthier explanation, they should be dealt with in a Note.
+2.3 Quotations
+Short quotations (fewer than 40 words) should be incorporated into the text
+and enclosed within double quotation marks. Longer quotations (more than 40
+words) should be set in a freestanding block of text. This should be indented 1.3 cm
+from the left-hand margin and should not be enclosed within quotation marks.
+If material in the original source was quoted, this should be set within single
+quotation marks within your quotation (which will be in double quotation marks as a
+whole) in a short quotation. Within a longer, indented quotation material quoted in
+the original source should be set in double quotation marks.
+If your quotation includes a citation, then this should be retained. The work
+which is cited within the quotation does not, however, require to be included in your
+bibliography (unless you cite it yourself elsewhere).
+The following changes may be made to quoted material without explanation:
+•
+•
+•
+
+The first letter of quoted material may be changed to an uppercase or
+lowercase letter.
+The punctuation mark at the end of a sentence may be changed to fit the
+syntax.
+Single quotation marks may be changed to double quotation marks and
+vice versa (see above).
+
+The following changes made to quoted material require an explanation:
+•
+
+•
+
+Use three spaced ellipsis points within a sentence to show that you have
+omitted material from the original source (. . .). Any omission between two
+sentences should be indicated with four points (the first is the full stop at
+the end of the preceding sentence). Do not use ellipsis points at the
+beginning or end of any quotation unless you need to emphasise that the
+quotation ends in mid-sentence.
+Use brackets, not parentheses, to enclose material (e.g. an explanation)
+inserted into a quotation by some person other than the original author.
+
+17
+
+•
+
+If you want to add emphasis within a quotation, then italicise the word(s)
+concerned and immediately afterwards insert within brackets the words
+[italics added].
+
+Otherwise quotations should follow the wording, spelling, and interior
+punctuation of the original source, even if this source is incorrect. If any incorrect
+element in the quotation might confuse readers, then you should insert [sic]
+immediately after the error.
+If you quote material originally written in a language other than English, then
+you should give the original text in double quotation marks followed by an English
+translation in parentheses.
+2.4 Numbers and Symbols
+2.41 Numbers. Arabic numbers are used to express:
+•
+•
+•
+•
+•
+•
+
+numbers of 10 and above
+numbers below 10 that are grouped for comparison with numbers of 10
+and above – 4 out of every 20 respondents
+numbers that immediately precede a unit of measurement – 8.5 cm
+numbers that represent time, ages, sample sizes, numbers of participants
+in a survey, scores on a scale, and exact sums of money – 2 weeks ago, 2year-olds, 5 participants, scored 4 on a 9-point scale, were paid £4 each
+numbers that denote a specific place in a numbered series, parts of books
+and tables, and each number in a list of four and more numbers – Trial 4;
+page 7; row 5; 1, 3, 4 and 8 words respectively
+all numbers in an abstract or management summary
+
+Words are used to express:
+•
+•
+•
+•
+•
+
+numbers below ten that do not represent precise measurements and that
+are grouped for comparison with numbers below 10 – two words that
+mean, five out of seven trials
+zero and one when not used in context with numbers 10 and above – zerobased budgeting
+numbers which begin a sentence, title or text heading
+common fractions – two-thirds majority
+commonly accepted terms – the Ten Commandments
+
+A combination of arabic numbers and words is used to express:
+•
+•
+
+rounded large numbers (starting with millions) – almost 4 million people
+back-to-back modifiers – twenty 6-year-olds
+
+18
+
+Plurals of numbers are written without an apostrophe – 1950s, fours and sixes
+2.42 Metric symbols. These should be written without full stops and in the
+plural without s or es. – 45 cm. In the case of litres, an uppercase L should be used
+for whole units (23 L) and a lowercase l for fractions of a litre (9 dl).
+2.43 The symbol for percent. The symbol for percent should be used only
+when it is preceded by a numeral. When a number is not given the word percentage
+should be used. – 8% of businesses; the percentage of businesses affected
+
+19
+
+3. Tables and Figures
+
+The following general rule will help you to decide how best to present your
+
+data:
+•
+•
+•
+
+if you have 3 or fewer numbers, use a sentence
+if you have from 4 to 20 numbers, use a table
+if you have more than 20 numbers, consider using a graph or figure
+instead of a table
+
+Whether you decide to use a table or a figure, you must comment on it in the
+text, that is explain the material without simply repeating it. Illustrations of any kind
+are never self-explanatory.
+When using statistical material you should include sufficient information to
+allow the reader to fully understand the analyses conducted and to appreciate the
+possible alternative explanations for the results of the analyses. What makes up
+sufficient information depends on the analytical approach selected. The more
+commonly known the approach, the less you need to explain it.
+3.1 Tables
+The following table shows the basic elements this form of illustration can have.
+It also shows the advantage of including derivative material (here the “Difference”
+columns) to help the reader more quickly grasp the information the table contains.
+Table 1
+Exam Results of Candidates With and Without Previous Work Experience
+Commercial school-leavers
+Result
+
+With
+
+Without
+
+Difference
+
+Grammar school-leavers
+With
+
+Without
+
+Difference
+
+6
+
+280
+
+240
+
+40
+
+281
+
+232
+
+49
+
+5
+
+297
+
+251
+
+46
+
+290
+
+264
+
+26
+
+4
+
+260
+
+301
+
+- 41
+
+255
+
+295
+
+- 40
+
+3
+
+195
+
+250
+
+- 55
+
+190
+
+230
+
+- 40
+
+Note. Grades have been rounded to the nearest whole.
+The following detailed points should be observed when working with tables:
+
+20
+
+•
+•
+•
+
+•
+•
+
+•
+•
+
+•
+
+The number and title (on the next line and in italics) of the table is placed
+above it. Titles of tables should be listed in a List of Tables with the page
+number on which they appear (see section 1.02 d).
+Tables should be consecutively numbered throughout your dissertation,
+regardless of the chapter they appear in. The number of the relevant table
+must be mentioned at least once in the comments on it in the text.
+Headings in the table follow the capitalisation rules for sentences. They
+should be telegraphic and not much wider than the information below.
+Every column (including the one furthest left) and row should have a
+heading.
+The relevant dimensions, currencies, and so on linked to numbers must be
+clearly stated in the respective headings.
+You should try to position your table in portrait form (similar to the
+orientation of this page). If you are forced to position it in landscape form,
+then it should appear in such a way that the page must be turned clockwise
+to view it. You should not reduce the size of the typeface or otherwise try to
+squeeze a table onto a page
+The APA recommends that vertical lines be used sparingly.
+Tables can have notes. A general note comes first. This starts with the word
+Note. in italics and refers to the table as a whole. It may also provide
+explanations of abbreviations, symbols, and so forth. An important use
+of this form of note is to give credit to the original author of a
+table that is reproduced in your dissertation (see section 4.01
+for the special form of words – do not include the phrase “Reprinted
+with permission” in a dissertation which is not to be published).
+Specific notes come second. These refer to a particular column, row, or
+individual entry (also known as a cell). They are referred to with
+superscript lowercase letters (e.g., a n=24, b This participant did not take
+the test., c All questionnaires were returned.).
+There are rules for the handling of empty cells. If data are not applicable
+such a cell should be left blank. If data could not be obtained or was not
+reported you should insert a dash and explain it in the general note to the
+table.
+
+3.2 Figures
+Figures should be simple, clear and exhibit continuity of style with each other
+across your dissertation. By figure is meant a variety of illustrations which are not
+tabular. These include graphs (line and bar), scatter plots, pie charts, diagrams, and
+photographs. You should choose the form of figure which best illustrates the
+information concerned and, if you can, vary your choice.
+The following detailed points should be observed when working with figures:
+•
+•
+•
+
+The text should augment but not duplicate what is in the figure.
+You should cut out detail which is not necessary.
+The lettering on the figure should be large and dark enough to be read.
+
+21
+
+•
+•
+
+•
+
+•
+
+Figures which might be compared or are equally important should be
+prepared to the same scale.
+The number of a figure is placed, with the title on the next line, above a
+figure. Both are placed outside the image part of the figure. Titles of figures
+should be listed in a List of Figures with the page number on which they
+appear (see section 1.02 d).
+A figure may include a legend, or key, which is usually placed within the
+image part of the figure. As it is an integral part of the figure, it should
+have the same kind and proportion of lettering as appear in the rest of the
+figure. Major words and the first word of any item should be capitalised.
+As with tables, general and specific notes may be placed below a figure.
+Credit should be given to the original author in a note if the
+figure is reproduced from another source (see section 4.01 for
+the special form of words – do not include the phrase “Reprinted with
+permission” in a dissertation which is not to be published).
+
+Figure 1
+Porter’s Five Forces Model
+
+Note. From “Porter’s Five Forces of Competitive Position Diagram”, by A. Chapman,
+2005, Free Management and Training Templates, Resources and Tools, p. 273
+(https://www.businessballs.com/portersfiveforcesdiagram.pdf).
+•
+
+Figures should be numbered consecutively throughout the text of your
+dissertation, regardless of the chapter in which they appear. In the text,
+figures should be referred to by their numbers and not as “the figure
+above” or “the figure on page 14”.
+22
+
+•
+
+•
+
+Labels for parts of a figure should be placed as close to the components
+they describe as possible. Remember to label both axes of a graph. Longer
+labels on the y (=vertical) axis should be written along the axis, not
+perpendicular to it.
+If a figure makes use of relative numbers, then the absolute data must also
+be shown.
+
+23
+
+4. Footnotes and Appendices
+
+4.1 Footnotes
+Footnotes in the text are of two kinds:
+Content footnotes. Content footnotes supplement or amplify information in
+the text. Such footnotes should be used sparingly. A content footnote should contain
+only one idea that is necessary to understanding, but might otherwise interrupt the
+flow of the main text if included there.
+Copyright footnotes. This type of footnote is only used when you have had to
+obtain written permission to quote from or use a source. In student dissertations
+such footnotes appear when the work is intended for later publication.
+The following forms of words, suitably adapted, should be used (as also in notes
+which acknowledge tables or figures copied from another source):
+•
+
+Material reprinted from a book
+1 [with copyright footnote]/Note. [with tables and figures] From Title of Book, by A. N.
+Author and O. T. Author, 2006, Publisher. p. 302. Reprinted with permission
+[use this phrase only if you intend to publish your work].
+
+•
+
+Material reprinted from an article
+2 [with copyright footnote]/Note. [with tables and figures] From “Title of Article,” by
+A. N. Author and O. T. Author, 2006, Title of Journal, 40, p. 22. Reprinted
+with permission [use this phrase only if you intend to publish your work].
+
+•
+
+Material reprinted from an online source
+[with tables and figures] From “Title of Table,
+Graphic, etc”, by A. N. Author, 2018, Title of Publication (URL or DOI).
+Reprinted with permission [use this phrase only if you intend to publish your
+work].
+
+3 [with copyright footnote]/Note.
+
+Notice that the rules for the use of uppercase letters in article and book titles in
+in-text citations and in the Bibliography do not apply in such footnotes or in the
+notes to tables and figures.
+Content and copyright footnotes should be numbered consecutively with
+superscript numbers throughout the text regardless of which chapter they appear in.
+4.2 Appendices
+Appendices give you the opportunity to present lengthy detailed information
+that would be distracting to read in the main body of the text. Common kinds of
+
+24
+
+appendices include large tables, the raw data from a questionnaire or other survey
+instrument, or detailed coding information.
+The following detailed points should be observed when including appendices:
+•
+•
+
+•
+
+If you have only one appendix label it Appendix; if your dissertation has
+more than one appendix, label each one with a capital letter Appendix A,
+Appendix B, and so on.
+Each appendix must have a title (Appendix D: Raw Data From
+Questionnaire), but in the text it should be referred to by its label
+(Appendix D). Each appendix must be referred to at least once in the
+text.
+An appendix may include headings and subheadings like the main text. It
+may also include tables and figures. Tables and figures should be
+numbered within each appendix, the number of each being preceded by
+the letter of the respective appendix (e.g., Figure B2). If there is only one
+appendix, then precede the number of each table or figure with an italic A
+to differentiate them from those in the main text.
+
+25
+
+5. Reference Citations in the Text and Bibliography
+
+5.1 Reference Citations in the Text
+5.11 Citations referring to a source as a whole (see below for the far
+more common citations referring to specific parts of a source). The basis
+of the APA citation system is the brief in-text reference. Readers who wish more
+information about a source can then find it in the bibliography. This kind of in-text
+reference takes the following forms in cases in which the source as a whole is being
+referred to:
+One work by one author. The surname of the author is given together with
+the year of publication:
+Peterson (2003) compared profit margins
+In a recent study of profit margins (Peterson, 2003) …
+Within the same paragraph, if you cite the same work you do not need to repeat the
+year of publication, as long as there is no opportunity for confusion.
+One work by multiple authors. When a work has two authors both names
+should be cited every time the reference occurs in the text. If a work has three or
+more authors, all the authors should be cited the first time the reference occurs. In
+later citations only the surname of the first author followed by “et al.” should be used,
+together with the year of publication if it is the first citation in a later paragraph.
+Peterson, Waller, Milkin, and Rock (1997) found … [first citation in a text]
+Peterson et al. (1997) found … [first citation made in each subsequent
+paragraph]
+Peterson et al. found … [year omitted from later citations in each paragraph]
+Groups as authors. The names of groups that have acted as authors (e.g.,
+corporations, government agencies, and study groups) are usually spelt out each time
+they appear in a text citation. If, however, the name is long and cumbersome and an
+abbreviation is known or is readily understandable, then an abbreviation can be used
+in the second and subsequent citations.
+A study of inventory levels of the time (Confederation of British Industry [CBI],
+1988) … [first citation in the text]
+Inventory levels at that point (CBI, 1988) … [first citation made in a subsequent
+paragraph]
+Works with no author. Where a work has no author (e.g. a legal text) cite
+the first few words of the title and the year of publication. If the title is of a chapter or
+26
+
+article, then enclose it in double quotation marks, if it is of a book or report then it
+should be italicised.
+in an article on accounting standards (“GAAP in Practice,” 1998) …
+in a report on auditing practices (Report of the National Commission on
+Auditing, 2005) …
+Authors with the same surname. If two authors have the same surname
+then the authors’ respective initials should be included in all citations to avoid
+confusion.
+B. Peterson (1956) and M. Peterson (1958) concur in the view …
+Two or more works within the same parentheses. These should be
+ordered in the same order as they appear in the bibliography.
+Past studies (Shepherd 1995, 2002) showed …
+If the same author published works in the same year, these are differentiated by the
+suffixes a, b, c, and so on after the year. These suffixes are assigned in the
+bibliography.
+Past analyses (Preston, 1995a, 1995b, 1995c) all showed …
+If works by different authors are cited within the same parentheses these are
+separated by semicolons.
+Past research (Moor, 1996; Korner, 2006) showed …
+5.12 Citations referring to specific parts of a source. Particular parts of
+a source can be cited by indicating the page, chapter, table, or figure after the year of
+publication. This should be done whenever a specific idea is taken from a
+source, whether the source is paraphrased, quoted from, or not. The
+words page and chapter are abbreviated in text citations. When quoting, page
+numbers are always given in the text citation, which should be placed
+after the quoted material.
+(Peterson and Miller, 2004, p. 204)
+(Peterson and Miller, 2007, pp. 205–208)
+(Peterson and Miller, chap. 7)
+For electronic sources do not use page numbers (unless you are citing a
+printed work available in this form on the Internet), but rather use the paragraph
+number, if available, preceded by the ¶ symbol or the abbreviation “para.” If
+
+27
+
+paragraph numbers are not visible, then cite the heading and the number of the
+paragraph following it.
+(Osgood, 1998, ¶ 4)
+(Butler, 2008, Recommendations section, para. 2)
+For audio-visual sources (e.g. a YouTube video) use a time stamp for the
+beginning of the section cited in place of a page number.
+Personal communications. This APA classification includes interview and
+survey material, as well as emails, transcripts of telephone conversations and so
+forth. These are not included in the reference list because they are not supported by
+publically recoverable material. They should be cited in the text only. Reference
+should be made in the text to their inclusion in any relevant appendix. In the case of
+person-specific communications the surname and initials of the communicator,
+together with as exact a date as possible are given.
+P. Summers (personal communication, June 6, 1997)
+M. Jordi (interview, June 23, 2003 – see Appendix B for transcript)
+Citing legal sources. Such sources should be cited in the text as follows:
+•
+•
+
+reference to a case: Peters v. Smith (1992)
+reference to a statute (law): Planning and Zoning Act (1992)
+
+Citations in parenthetical material. In a citation that appears in a
+parenthetical text, you should use commas and not parentheses/brackets to separate
+the date.
+(See Figure 4 of Milburn and Waterman, 2011, for a representation of similar
+data)
+5.13 Citations and references within citations and/or references. Do
+not leave out citations within material which you quote. If the citation within your
+quotation is the only time it appears in your dissertation then only the work from
+which you are quoting need appear in your Bibliography.
+If a work to which you refer makes use of the work of others in a way in which
+this secondary work is also relevant to your dissertation, then you must give credit to
+all concerned. This can be done as follows:
+Peters, Bellows and Vellors (2004, p. 235) refer, in developing their model, to
+the approach of Maason and Uppstom (1937), which can be described as an
+empirically based technique.
+
+28
+
+You should avoid using a readily available source to cite material that you really
+want to make use of, and which you have not taken the trouble to find a copy of. In
+other words, make the effort to find the original. As far as very well known models
+are concerned, for example Maslow’s hierarchy of needs, you should proceed as
+follows. If this occurs in a source that uses Maslow in the argument presented and
+you primarily wish to make use of this argument rather than the well known model,
+then citing that source alone is sufficient. You should do this in the following way in
+the text:
+Maslow’s hierarchy of needs (as cited in Dubbin, 1997) is central to the
+contention that …
+In the Bibliography you should then only list the source you have actually read, in
+this case Dubbin.
+If, however, you wish to make use of Maslow’s hierarchy alone, and not
+Maslow’s hierarchy in the context of another source’s argument, then you should cite
+Maslow’s own work (1943) list this in your Bibliography.
+All material from other sources which you use, including those
+which you have previously written yourself, must be properly cited.
+Failure to do so may result in your being held responsible for plagiarism
+or self-plagiarism, the most serious charge of misconduct in academic
+writing. Citation is not only necessary when you quote from another
+work, it is also required if you paraphrase or make use of the ideas of
+another author in your own words. If in doubt, be cautious and cite.
+5.2 Bibliography
+The bibliography at the end of your dissertation provides the information
+necessary to verify and retrieve each source. It must be accurate and complete in all
+its details. Each entry in the bibliography usually contains the following elements:
+author, year of publication, title, and details helpful to retrieval, such as the name of
+the publisher, a URL or a DOI. Additionally, for instance in a dissertation proposal,
+an indicative or annotated bibliography may be included. This includes a short
+comment on each entry, which may indicate its relevance to the topic of the research.
+5.21 Order of entries in the Bibliography. Entries should be arranged in
+alphabetical order by the surname of the first author. The following rules apply in
+special cases:
+•
+•
+•
+
+The prefixes M’, Mc, and Mac are alphabetised literally, not as if they were
+all spelled Mac. Disregard apostrophes for this purpose. MacArthur
+therefore precedes McAllister, and McAllister precedes M’Carthy.
+Entries with numerals are alphabetised as if the numerals were spelled
+out.
+One-author entries by the same author are arranged by year of publication.
+
+29
+
+•
+•
+•
+•
+•
+•
+
+One-author entries precede multiple-author entries beginning with the
+same surname.
+References with the same first author and different second or third authors
+are arranged alphabetically by the surname of the second author or, if the
+second author is the same, by the surname of the third author, and so on.
+References by the same author (or by the same two or more authors in the
+same order) with the same publication date are arranged alphabetically by
+the title (excluding A or The) that follows the date.
+Works by different authors with the same surname are arranged
+alphabetically by the first initial.
+Works by group authors, such as government agencies or study groups, are
+alphabetised by the first significant word of the name.
+If there is no author, the title moves to the author position, and the entry is
+alphabetised by the first significant word in the title.
+
+5.22 Common types of bibliographical entry. The following are examples
+of the most common types of reference as they appear in a bibliography. Careful
+attention should be paid to the relevant punctuation.
+•
+
+Journal/periodical article (print or database):
+Author, A. A., Author, B. B., & Author, C. C. (year). Title of article. Title of
+Periodical, xx[volume no.](x)[issue number], xxx–xxx[page numbers].
+Examples:
+Mellors, B.A. (2000). Choice and the relative pleasure of consequences.
+Psychological Bulletin, 126, 910–924.
+Beatty, P. D., Berliner, A. P., Miller, F. D., & Amery, J. (1954). Political
+thought in an age of consensus. Journal of Conservative Research, 43(2),
+125–147.
+Example citation: (Beatty et al., 1954)
+
+•
+
+Journal/periodical article with a DOI or URL:
+Author, A. A., Author, B. B., & Author, C. C. (year). Title of article. Title of
+Periodical, xx[volume no.](x)[issue number], xxx–xxx[page numbers].
+URL or DOI[digital object identifier]
+Examples:
+Denver, M. P., Amersham, W. T., & Quick, R. T. (2018). Twittering about
+viral marketing. Journal of Internet Marketing, 9(12), 17–35.
+https://www.internetmarketing.co.uk/volume-9
+or:
+Denver, M. P., Amersham, W. T., & Quick, R. T. (2018). Twittering about
+viral marketing. Journal of Internet Marketing, 9(12), 17–35.
+https://doi.org/11.1190/rev715299
+Example citation: (Denver et al., 2018, pp. 18-22)
+
+30
+
+•
+
+A book without a DOI (print or database):
+Author, A. A. (year). Title of work. Publisher.
+Example:
+Handy, C. (2000). Gods of management: The changing work of
+organisations (3rd ed.). Arrow Books.
+Example citation: (Handy, 2000, p. 54)
+
+•
+
+A book with a DOI:
+Author, A. A. (year). Title of work. Publisher. DOI
+Example:
+Handy, C. (2000). Gods of management: The changing work of
+organisations (3rd ed.). Arrow Books. https://doi.org/10.1111/20571615.12246
+Example citation: (Handy, 2000, p. 54)
+
+•
+
+An ebook (e.g. Kindle book) or audio book with a URL:
+Author, A. A. (year). Title of work. Publisher. DOI
+Example:
+Handy, C. (2000). Gods of management: The changing work of
+organisations [Ebook]. Arrow Books. http://bit.org/3G0Bpbx
+Example citation: (Handy, 2000, p. 54)
+Note: It is not necessary to specify “ebook” or “audio book” if the content
+is the same, even if the format is different.
+
+•
+
+An edited book without a DOI (print or database):
+Editor, Z. Z. (Ed.). (year). Title of work. Publisher.
+Example:
+Gibson, H. M., & Galloway, T. G. (Eds.). (1963). Public management in
+post-war Europe: A survey. Waverley-Winterberg.
+Example citation: (Gibson & Galloway, 1963)
+
+•
+
+An edited book with a DOI (with multiple publishers):
+Editor, Z. Z. (Ed.). (year). Title of work. Publishers. DOI
+Example:
+Gibson, H. M., & Galloway, T. G. (Eds.). (1963). Public management in
+post-war Europe: A survey. OUP; Waverley-Winterberg.
+https://doi.org/10.1039/16069-001
+Example citation: (Gibson & Galloway, 1963)
+
+•
+
+Chapter in an edited book without a DOI (print or database):
+Author, A. A., & Author, B. B. (year). Title of chapter. In A. Editor, B.
+Editor, & C. Editor (Eds.), Title of book (pp. xxx–xxx). Publisher.
+Example:
+
+31
+
+Brandt, T. M., & Wenders, R. (1989). Financial accounting in SMEs. In M.
+Peters, T. Walter, & F. Müller (Eds.), Verifying business success (pp. 236–
+312). Business Press.
+Example citation: (Brandt & Wenders, 1989)
+•
+
+Chapter in an edited book with a DOI:
+Author, A. A., & Author, B. B. (year). Title of chapter. In A. Editor, B.
+Editor, & C. Editor (Eds.), Title of book (pp. xxx–xxx). Publisher. DOI
+Example:
+Brandt, T. M., & Wenders, R. (1989). Financial accounting in SMEs. In M.
+Peters, T. Walter, & F. Müller (Eds.), Verifying business success (pp. 236–
+312). Business Press. https://doi.org/10.1040/0000119-013
+Example citation: (Brandt & Wenders, 1989)
+
+•
+
+Entry in an encyclopaedia or dictionary:
+Author, A. A. (year). Title of entry. In Title of work. Retrieval date and
+URL.
+Example:
+Weskamp, B. (2019). Political thought. In The Stanford encyclopedia of
+philosophy. Retrieved August 31, 2019, from
+https://plato.stanford.edu/entries/polthought/
+Example citation: (Weskamp, 2019)
+
+•
+
+A magazine or newspaper article:
+Author, A. A., & Author, B. B. (year, month, day). Title of article. Title of
+Magazine. URL
+Example:
+Wentworth, W. Z., & Hirter, T. V. (2014, July 22). Color in advertising.
+Marketing Weekly.
+https://www.marketingweekly.com/wp/2019/7/22/color-in-advertising
+Example citation: (Wentworth and Hirter, 2014)
+
+•
+
+A (government) report:
+Name of Institution. (year). Title of report (Details of series). URL.
+Example:
+United Nations. (2017). Peacekeeping in Europe (Current Strategic Issues
+No. 234-1). https://www.un.org/publications/strategic_234-1.pdf
+Example citation: (UN, 2017, pp. 17-54)
+
+•
+
+Report from a company/NPO (with no author identified):
+Name of Company/NGO (year). Title of report. (Document Series and
+number – if applicable). URL
+Example:
+
+32
+
+Central Swiss Banking Institute (2017). Business innovation climate
+report (Central Swiss Business Reports No. 27).
+https://csbi.ch/reports/27.pdf
+Example citation: (Central Swiss Banking Institute, 2017)
+•
+
+Non-English book:
+Author, A. A. (year). Title of work in the original language [Translation of
+title of work]. Publisher.
+Example:
+Thommen, J-P. (1996). Managementorientierte Betriebswirtschaftslehre
+[Management-oriented business administration] (5th ed.). Versus.
+Example citation: (Thommen, 1996, pp. 45-46)
+
+•
+
+Journal/periodical article published in translation:
+Author, A. A. (year). Title of article (A. Translator, Trans). Title of
+Periodical, xx[volume no.](x)[issue number], xxx–xxx[page numbers].
+URL or DOI (Original work published year)
+Example:
+Erhard, L. (1970). Prosperity for all (M. Trevor, Trans). Journal of
+European Economics, 27(2), 32-51. https://doi.org/13.1674/000271338
+(Original work published 1961)
+Example citation: (Erhard, 1961/1970)
+
+•
+
+Unpublished thesis or dissertation:
+Author, A. A. (year). Title of work [unpublished X thesis], XYZ University.
+Example:
+Adam, J. (2018). Community finance in Central Switzerland
+[Unpublished MSc dissertation]. Lucerne University of Applied Sciences
+and Arts.
+Example citation: (Adam, 2018)
+
+•
+
+Thesis or dissertation published online (not in a database):
+Author, A. A. (year). Title of work [X thesis, XYZ University]. XYZ
+University Digital Archive. URL
+Example:
+Zander, P. (2018). Community finance in Maryland [Master’s thesis,
+Maryland University]. University of Maryland System Digital Archive.
+https://digitalarchive.um.edu/handle/ZanderPaul2018.pdf
+Example citation: (Zander, 2018, p. 47)
+
+•
+
+Conference session:
+Author, A. & Author, B. (year, month day(s)). Title [Conference Session].
+Host of conference, Location. URL
+Example:
+
+33
+
+Mather, D & Miller, R. (2019, July 2-4). Everybody can be an intrapreneur
+[Conference session]. Entrepreneurs Society, London, UK.
+https://entresoc.conference.org/2019/session35.html
+Example citation: (Mather & Miller, 2019)
+•
+
+Chapter or section in an Internet document:
+Title (year, month day). Title of section. In Title of work (chap. number).
+Retrieved month day, year, from source [give the URL or database]
+Example:
+Silverman Foundation. (2008, November 9). Ways to build your business.
+In Small-business legends (chap.4). Retrieved September 14, 2010, from
+http://www.smallbusiness.org/library
+Example citation: (Silverman Foundation, 2008)
+
+•
+
+Online stand-alone document (with no author identified):
+Title of document. (year). Retrieved month day, year, from source [give the
+URL or database]
+Example (with no date of publication):
+Swiss IT-user’s WWW survey. (n.d.). Retrieved August 14, 2009, from
+http://www.schweizonline.ch/archiv
+Example citation: (Swiss IT-user’s WWW survey, n.d., para 46)
+
+•
+
+Blog post:
+Author, A. (year, month day). Title of post. Name of blog. URL
+Example:
+Geek, P. (2020, March 14). Happiness is the reward of waiting. Flowers.
+https://blogs.edi.org/flowers/2020/03/14/happiness-is/
+Example citation: (Geek, 2020)
+
+•
+
+YouTube video:
+Uploader, A. (year, month day). Title of video [Video]. Name of streaming
+service. URL
+Example:
+Chandler, R. (2018, September 5). Virtue [Video]. YouTube.
+https://www.youtube.com/watch?v=gp2xGgOZJb2
+Example citation: (Chandler, 2018)
+Note: The person or group who uploaded the video is credited as the
+author, even if they did not create the work, as this facilitates retrieval.
+Others who contributed to, or appeared in, the video can be mentioned in
+the relevant section of the text.
+
+•
+
+A legal case (civil):
+Plaintiff v. Defendant, Volume Source Page (Court Date). URL
+Example:
+34
+
+Peters v. Smith, 240 F. Supp. 562 (W.D. MA. 2008).
+https://www.oyez.org/cases/2001-2010/240ma562
+Example citation: (Peters v. Smith, 2008)
+•
+
+A statute (law):
+Name of Act, Volume Source § Paragraph (Year)
+Example:
+Planning and Zoning Act, 15 Public General Acts 56 Eliz 2 c 90 § 4 et seq.
+(2008). www.publicacts.uk.gov/2008.90.pdf
+Example citation: (Planning and Zoning Act, 2008)
+
+The following detailed points should be noted when formulating such entries:
+•
+•
+•
+•
+•
+
+•
+•
+
+•
+•
+
+If no date of publication is available, write (n.d.).
+In ascertaining the date of publication, ignore reprint dates. Only edition
+dates are of significance.
+If a work has been accepted for publication, but not yet published, write (in
+press) in place of the date of publication.
+In the title of a non-periodical, or of an article or chapter, capitalise only
+the first word of the title and any proper nouns. Do not use any quotation
+marks for the title of an article or chapter in a bibliography entry.
+Do not use Vol. before the volume number of a journal/periodical. If each
+issue of a journal/ periodical begins with a page 1, then give the issue
+number in parentheses immediately after the volume number, for example
+23(2). Note that volume (but not issue) numbers are italicised.
+If a journal/periodical does not use volume numbers, then include the
+month, season or other designation with the year, for example (1998,
+June).
+With an article or a chapter from a non-periodical work the editors initials
+and names are not given in reversed order and the normal comma rules
+apply (i.e., no comma between two editors names, commas from three
+editors and more). For a book with no editor, simply include the word In
+before the book title.
+Give the name of the publisher in as brief a form as possible. Omit terms
+such as Co., Inc., and so on.
+With online items, do not finish the retrieval information with a full stop if
+it is a URL or DOI.
+
+5.3 Other (non-APA) standards
+The main alternative to in-text citation is the so-called note citation system. In
+this footnotes or endnotes are used. The Chicago Manual of Style provides
+information on this approach to citation and referencing, but does not concentrate
+on it exclusively and invites an open approach to the various formats available. This
+is realistic as different academic journals either have their own style sheets or require
+contributors to use one system or another.
+35
+
+In recent years citation software has become available. Much like translation
+software it is useful within the limits of the accuracy it can provide. Students require
+to understand the detail of the system they are required to use, if for no other reason
+than that the output of citation software need to be rigorously checked.
+You should also be aware of the in-text citation by page number approach favoured
+by the Modern Language Association (MLA). This latter should be contrasted with
+the APA in-text approach, which uses the year of publication and adds page numbers
+for specific location of the citation within the work in question.
+
+36
+
+6. The Abstract/Management Summary
+
+The term Abstract is used in doctoral theses and in the arts and sciences.
+Management Summary is used in business administration studies and reports. The
+Management Summary should not read like an Introduction, nor is it a repetition of
+the conclusions and/or recommendations of your dissertation. Rather it is a
+comprehensive summary of the contents of your entire work, which is intended to
+enable the reader to survey your dissertation quickly. It should therefore be the very
+last item you write.
+The Management Summary also allows abstracting and information services to
+index your dissertation. Future readers may have their first contact with your work
+through the management summary, very possibly on a computer screen, and it is
+likely that they will decide whether to read more on this basis. For these reasons a
+management summary should be dense with information, but also easy to read, well
+organised, and self-contained. Try to embed key words in your management
+summary so that computer retrieval systems will pick them up and make your
+dissertation easier to find. Also try to make the first paragraph interesting, because
+your management summary may be seen on screen with others and, therefore, only
+the first paragraph may be visible without scrolling or further clicking.
+A one-page management summary is ideal, but often very difficult to achieve.
+Two, or at most three, pages may be necessary. The length is dictated by how much
+text it takes to briefly explain the problem the dissertation addresses, the methods
+used to investigate it, the findings, and the discussion, conclusions and
+recommendations based on these findings. A management summary should be nonevaluative. In other words you should not comment on your work or add to it.
+The Management Summary should read as a coherent piece of self-contained
+prose text. It should have paragraphs, use verbs rather than noun equivalents, and be
+written in the third person. Results and conclusions should be described in the
+present tense. Methods applied and the details of your investigation should be
+explained in the past tense. You should paraphrase rather than quote and with
+citations of other publications give the name and initials, together with the date of
+publication.
+
+37
+
+7. Final Submission
+
+Finally submitting your work is a time-consuming process which can take days
+rather than hours. Allow sufficient time to check the quality of your text, the logic of
+its organisation, the detail of its citation and referencing, and the aesthetics of its
+appearance.
+Bear in mind that a dissertation is a product. Thinking about the aesthetics of
+what you produce will add to its attractiveness. This in turn will influence the frame
+of mind of the reader (and examiner). The aim should be to make your dissertation
+something that the potential reader wants to pick up and read.
+Remember to check the specific submission requirements of your degree
+programme. This includes requirements for the inclusion of appendices and of raw
+data material.
+7.1 Paper or bound submission
+Special attention should be paid to the following points:
+•
+•
+•
+•
+•
+•
+
+•
+
+•
+
+Dissertations should be presented in a one-volume bound format. Tape
+bindings of a brochure kind are particularly suitable.
+Use white A4 paper of a suitable weight (c. 80 g/m2) printed on one side
+only.
+An electronic version, preferably in PDF format, should be attached to
+each volume.
+The left-hand margin of the text should be 4 cm (to allow for binding).
+Other margins should be no less than 2.5 cm.
+Your text should be set at what Word describes as “1.5 lines”. In other
+words a form of double-spacing that does not unnecessarily add to the bulk
+of the finished volume.
+Choose a typeface that has serifs to improve readability. Times New
+Roman or Georgia are good choices. Use Georgia or Times New Roman at
+12 points or your own choice of typeface at an equivalent size. A sans serif
+typeface may be used in figures to add to a clean visual impression.
+Number the pages consecutively with Arabic numerals throughout your
+dissertation, including any appendices, taking the title page as the first
+page. The APA suggests putting page numbers in the upper right-hand
+corner of the page. As you will see here, this position is not mandatory.
+Some pages (e.g. the first page of each chapter) may not have a number
+printed on them, but should nevertheless be counted for pagination
+purposes. Some pages may also, for aesthetic reasons (e.g. depending on
+the use of diagrams or graphics), have the page number printed in a place
+other than the one you have selected as standard.
+As described in Chapter One, the use of page headers may assist the reader
+in identifying where a particular page belongs in your work, especially if
+the pages become separated.
+
+38
+
+7.2 Online or electronic submission
+This form is known as an ETD (“Electronic Thesis/Dissertation”). Particular
+attention should be paid to the following:
+•
+
+•
+
+•
+
+The online submission of a dissertation uses the version that would have
+been submitted on paper. In other words all the previous advice (about, for
+example, appearance, pagination, appendices, and so on), with the
+exception of those points which refer to the physical preparation of copies
+of the dissertation, should be followed.
+The dissertation should be presented as a one-file .pdf. You should check
+that the .pdf file is a faithful representation of the word-processing file it is
+generated from, including such features as fonts, accents on letters,
+pagination, graphics and so on.
+This format allows for the use of hyperlinks to guide the reader through
+the work and to facilitate access to the works cited, including audio and
+video material.
+
+39
+
+8. Presenting Your Dissertation
+
+As part of the examination of a dissertation, or for the purposes of making the
+work known to a commissioner of the work or a conference audience, you may be
+required to present the material. The following guidelines may be of assistance:
+General
+•
+Don’t try to present the whole dissertation. Pick out what is likely to be of
+interest and which will enable you to construct a story for the presenting time
+available.
+•
+Remember that the language of a presentation is oral not written.
+•
+You may need to create new visuals which are not in the dissertation to better
+explain material in a presentation.
+•
+Remember that you are part of the presentation. Your appearance, use of voice
+and responsiveness to your audience may be as important as the content of
+what you want to say.
+Structure
+•
+A presentation should have a story arc, which has an arresting beginning, an
+easy-to-follow body, and a clear ending with takeaways if possible.
+•
+Introduce yourself and your subject clearly. Contextualise the subject in the
+relevant wider research and/or practically oriented field(s).
+•
+Aim to present a limited number of main points (3 to 4 in a 10-minute
+presentation).
+•
+Build a story using a chain of sections each with its own objective and interim
+summary, all of which should lead to the crescendo of your work, the
+conclusions and, if appropriate, the recommendations.
+•
+If you forget something, then forget it.
+Language
+•
+Use oral language (short sentences, as few subordinate clauses as possible, and
+a minimum of meaning-carrying nouns). Do not read. Speak to slides.
+•
+Make use of the meta-language of presentations, especially to link the various
+parts of what you say together. Phrases such as “let’s”, I’d like to”, “as you can
+see”, “as I said”, “in conclusion”, and “to sum up” are essential.
+•
+With graphs and charts in particular, make sure you explain the layout,
+highlight the important points, and then say what important point the graphic
+makes.
+•
+Speak at a speed which people can follow. Remember, your audience doesn’t
+know what you know, so give them time. Let your voice rise and fall and make
+your pauses meaningful. Avoid “um’s” and “ah’s”.
+•
+Speak persuasively and engage with questions fully. Be self-critical and modest
+(especially about the significance of results) without indulging in psychobabble.
+
+40
+
+Visualisation (and PowerPoint)
+•
+Visuals will be remembered more than the spoken word. Make each one
+meaningful and/or entertaining, including the last one (avoid a slide which says
+“Questions” – use a logo or the title of your dissertation repeated at the end
+instead).
+•
+Use a mixture of different visuals and graphics (e.g. pictures, diagrams, models,
+graphs and charts).
+•
+With PowerPoint (or any other suitable presentation tool) pay attention to: not
+having too many slides, spelling, and avoiding the over-use of lists. No more
+than 50% of your slides should be in list form. Bullet points should be no longer
+than one line. Every slide should have a title and, in English, every title should
+include a verb.
+•
+If you (are required to) produce a handout, avoid simply copying your slides. A
+handout should be complementary to what you present and should represent in
+itself a takeaway.
+You as the presenter
+•
+Position yourself in the room to use any equipment effectively. Remove
+unnecessary barriers between yourself and the audience.
+•
+Avoid unnecessary body language (playing with objects in your pocket or
+hands)
+•
+Use gestures, facial expressions, movements, and eye contact with meaning and
+purpose.
+•
+Dress so as not to distract from your message and in a manner suitable to the
+occasion.
+•
+Treat the audience in such a way that they feel respected, but take the time to
+explain material they cannot be expected to have prior knowledge of.
+•
+Establish your presence with a clear beginning and an equally clear ending.
+
+41
+
+Bibliography
+Concise rules of APA style. (2010). (6th ed.). American Psychological Association.
+Gelfand, H., Walker, C. J., & American Psychological Association (2002). Mastering
+APA style: Student’s workbook and training guide (5th ed.). American Psychological
+Association.
+Graduate School, University of Colorado Boulder, “Electronic Thesis and
+Dissertation Submission”, retrieved October 17, 2017, from
+https://www.colorado.edu/graduateschool/academic-resources/electronic-thesisand-dissertation-submission
+Hulcoop, L. (1996). Study guide: A practical handbook for the writing of
+assignments. Unpublished manuscript, English Language Institute, University of
+Surrey.
+Maslow, A. H. (1943). A theory of human motivation. Psychological Review, 50(4),
+370–96.
+Nicol, A. & Pexman, P. (2010). Displaying your findings: a practical guide for
+creating figures, posters, and presentations. American Psychological Association.
+Nicol, A. & Pexman, P. (2010). Presenting your findings: a practical guide for
+creating tables. American Psychological Association.
+Publication manual of the American Psychological Association (7th ed.). (2020).
+American Psychological Association.
+Turabian, K. L. (2007). A manual for writers of research papers, theses, and
+dissertations: Chicago style for students and researchers (5th ed.). University of
+Chicago.
+
+42
+
+Appendix A: Declaration of Sole Authorship
+I, ____________________________ (insert your name), hereby certify that
+the attached work, ________________________________ (insert the title of
+your assignment), is wholly and completely my own and that I have indicated all the
+sources (printed, electronic, personal, etc.) that I have consulted. Any sections
+quoted from these sources are clearly indicated in quotation marks or are otherwise
+so declared. I further attest that I have included acknowledgement of the name(s) of
+any person(s) consulted in the course of preparing this assignment.
+
+Signed:
+
+___________________________
+
+Date:
+
+___________________________
+
+43
+
+Appendix B: Checklist for Dissertation Preparation
+B.1 Organisation of the dissertation
+Done
+Cover page
+Title page
+Management Summary
+Table of Contents
+Any Lists (e.g. of Illustrations) and any Note
+Preface
+Introduction
+Literature Review
+Methods/Procedures
+Results
+Discussion/Conclusions
+Recommendations
+Bibliography/References
+Appendix/Appendices
+Declaration of Sole Authorship
+
+B.2 Referencing (Check which system you are using.)
+Done
+Originals consulted and references (double-)checked
+All quotations referenced
+All paraphrases referenced
+All in-text references matched by references in the Bibliography
+All illustrations (including that on the cover page, if any), tables and figures sourced where
+they are not your own
+
+B.3 Sequencing
+Done
+Page numbers in logical sequence
+Chapters and sections logically numbered
+All tables, figures and illustrations numbered logically and with a matching title in an
+appropriate List (e.g. of Figures)
+
+44
+
+All abbreviations explained and, where appropriate, included in a List or in a Note
+All Appendices mentioned at least once in the main text of the dissertation and numbered
+appropriately
+
+B.4 Appearance/Presentation of the dissertation
+(Check which format is required.)
+Done
+Page margins of the right size and consistent throughout the dissertation
+Pages and their elements are correctly paginated (e.g. any footnotes appear on the
+appropriate page, graphics are not preceded or followed by unnecessary empty space, etc.)
+Fonts, line spacing, paragraph indents and spacing, and positioning of page numbers and
+page headers are consistent throughout the dissertation
+The number of copies to be handed in (incl. those in electronic form) is clear. OR The
+channel for electronic submission and confirmation of receipt is clear.
+
+45
+
+

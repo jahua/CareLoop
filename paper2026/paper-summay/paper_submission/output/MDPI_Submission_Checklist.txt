@@ -1,0 +1,39 @@
+MDPI Healthcare Submission Checklist
+===================================
+
+Before Submission:
+□ Manuscript follows MDPI Healthcare formatting guidelines
+□ References are in APA style format
+□ All figures are high-resolution (300 dpi minimum)
+□ All tables have proper captions and headers
+□ Abbreviations are defined at first use
+□ Word count is appropriate for article type
+□ Author information is complete (if applicable)
+□ Funding information is provided (if applicable)
+□ Ethics approval mentioned (if applicable)
+□ Data availability statement included
+□ Conflicts of interest declared
+
+MDPI Healthcare Specific:
+□ A4 paper format with correct margins (1.5cm top, 3.5cm bottom, 1.75cm sides)
+□ Legible font (Times New Roman 12pt recommended)
+□ 1.5 line spacing for submission
+□ Numbered headings and sections
+□ Figures numbered and captioned below
+□ Tables numbered and captioned above
+□ APA style references
+□ Mathematical equations numbered sequentially
+
+Files to Submit:
+□ Main manuscript (Word format)
+□ Cover letter
+□ Figures (separate high-resolution files)
+□ Tables (if not embedded in manuscript)
+□ Supplementary materials (if any)
+
+Special Issue: Artificial Intelligence in Healthcare: Opportunities and Challenges
+□ Manuscript addresses AI opportunities in healthcare
+□ Manuscript discusses AI challenges in healthcare
+□ Content is relevant to healthcare applications
+□ Technical contributions are clearly explained
+□ Clinical implications are discussed

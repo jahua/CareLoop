@@ -1,0 +1,141 @@
+> Spannortstrasse 10 , 6003 Luzern \| + 41 76 80 111 55 \|
+> <jiahua.duojie@hotmail.com> \| https://me.tripwise.ch
+
+# PROFILE
+
+Data Engineer with extensive experience in building scalable data
+pipelines and cloud infrastructure. Proven expertise in designing and
+maintaining data warehouses, data lakes, and data pipelines using
+PySpark, Delta Lake, and Databricks on Azure, particularly within
+regulated and enterprise-scale environments. Experienced in event
+streaming technologies, ETL processes, and DevOps practices ensuring
+reliable data solutions. Combines deep technical knowledge with strong
+communication skills to collaborate effectively with cross-functional
+teams. Passionate about about bridging data engineering and machine
+learning to create impactful, real-world applications.
+
+# CORE COMPETENCIES
+
+- PySpark, Delta Lake, Apache Spark
+
+- Databricks, Azure Data Factory, Azure Synapse
+
+- Python (strong OOP and functional background)
+
+- ETL/ELT design for regulated/financial environments
+
+- Big Data Architecture & Workflow Orchestration (Airflow, Kafka)
+
+- SQL, PostGIS, MongoDB, Azure Blob Storage
+
+- Geospatial data processing, visualization, and analytics
+
+- Agile team collaboration, solution architecture, and stakeholder
+  communication
+
+# EDUCATION
+
+## Master of Data Science (Expected June 2026)
+
+Lucerne University of Applied Sciences and Arts, Lucerne
+
+*Relevant Coursework:* Machine Learning, Deep Learning, Human-Centered
+Design, Statistics, Time Serious Analysis, Data engineering, design and
+experiment, Data Quality
+
+## Bachelor of Computer Science (January 2017)
+
+Nankai University, Tianjin
+
+# Languages
+
+> English (Fluent) / Chinese (Fluent) / Tibetan (Native) / German(basic)
+
+# PROFESSIONAL EXPERIENCE
+
+## Data Engineer -- Qinghai Big Data Co., Ltd (2020--2023)
+
+- Architected and implemented data pipelines for IoT sensor-based data
+  collection, processing, and storage
+
+- Designed and optimized ETL processes using SQL, Python, and Apache
+  Airflow for automated data workflows
+
+- Built and maintained cloud-based data lake infrastructure ensuring
+  high availability and data integrity
+
+- Implemented observability practices including monitoring, logging, and
+  alerting to ensure reliable data solutions
+
+- Collaborated with cross-functional teams to design data models and
+  platforms supporting business intelligence initiativesResearch
+  Project: Swiss Shared Mobility Analysis (Oct-Dec 2024)
+
+## Project Team Lead -- Darui Media & Tech (2017--2020)
+
+- Led development of data integration platforms connecting multiple data
+  sources with downstream applications
+
+- Managed deployment pipelines and release processes for smooth delivery
+  of data solutions
+
+- Designed and implemented PostgreSQL/PostGIS databases for spatial and
+  analytical workloads
+
+- Orchestrated data flows between streaming and batch systems using
+  message queues and event- driven architecture
+
+## Web Developer -- Himalaya Travel Service (2012--2017)
+
+- Developed data collection systems and interactive mapping applications
+
+- Built ETL processes for integrating diverse data sources into unified
+  databases
+
+- Implemented data validation and quality assurance processes for
+  business-critical applications
+
+# TECHNICAL SKILLS
+
+> Cloud & Big Data: Azure, Databricks, AWS, GCP, Kubernetes, Delta Lake
+> Programming: Python, SQL, JavaScript, C#, FastAPI, Django
+>
+> Data Platforms: Airflow, Kafka, MongoDB, PostgreSQL/PostGIS Machine
+> Learning: Classification, Clustering, Geospatial ML, LLMs
+> Visualization: Tableau, Power BI, Plotly, Kepler.gl, Matplotlib KEY
+> PROJECTS
+>
+> Development of a Tourism Data Chatbot to Access and Interact with
+> Complex Data
+
+- Developed a chatbot interface for querying tourism and spatial data
+  using natural language model
+
+- Integrated retrieval mechanisms and interactive visualization to
+  support cognitive accessibility
+
+- Explored interface strategies for non-expert users engaging with
+  structured databases
+
+> Research Project: Swiss Shared Mobility Analysis (Oct-Dec 2024)
+
+- Developed a Databricks-powered spatial data warehouse
+
+- Analyzed urban mobility trends through spatial clustering
+
+- Created dashboards and geo-visualizations to support behavioral
+  analysis
+
+- Investigated the relationship between perceived accessibility and
+  actual movement data
+
+> Product Classification Research for On Holding AG (Aug 2024-Jan 2025)
+
+- Designed supervised learning models to automate product tariff code
+  classification
+
+- Focused on model interpretability and usability in applied business
+  contexts
+
+- Built preprocessing and evaluation pipelines for high-volume product
+  data

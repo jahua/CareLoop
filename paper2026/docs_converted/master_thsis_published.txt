@@ -1,0 +1,1899 @@
+Energy & Buildings 335 (2025) 115554
+
+Contents lists available at ScienceDirect
+
+Energy & Buildings
+journal homepage: www.elsevier.com/locate/enb
+
+A community-based decision support map for building retrofit towards a
+more sustainable future
+Ezgi Köker Gökgöl a,* , Esther Linder b , Philipp Schuetz b
+a
+b
+
+Applied Information and Data Science, Lucerne University of Applied Sciences and Arts, Lucerne, Switzerland
+Institute for Mechanical Engineering and Energy Technologies IME, Lucerne University of Applied Sciences and Arts, Lucerne, Switzerland
+
+A R T I C L E I N F O
+
+A B S T R A C T
+
+Keywords:
+Energy efficiency
+Energy retrofit
+Decision-support map
+Analytic hierarchy process
+Ranking
+
+The energy sector is the source of nearly three-quarters of the global greenhouse gas emissions and buildings
+form around one-third of it. The largest share of the energy consumption in the buildings belongs to the heating
+systems which are mostly dependent on fossil fuels. To keep up with the demands of increasing population, it is
+vital to undergo clean energy transformations effective immediately. In this study, a decision support map was
+created for a selected community to ease the energy retrofit candidate selection process. Buildings are assessed
+considering sustainability level of the heating infrastructure, energy use intensity and age, and ranked according
+to their goodness level on the energy efficiency scale through analytic hierarchy process. Finally, a multi-layered
+map is created to visualize the outcomes. The decision support map fills a gap in the existing tool landscape as it
+offers energy consulting on a communal (i.e. not only single building or quarter) level and does not require work
+from the user as it relies on public data. The results showed that new buildings constructed by environmentally
+responsible codes tend to have heating systems mostly powered by renewable sources and less level of energy
+threshold violations while old buildings generally act in the other direction. As the main outcome, the created
+visuals support the user to have insights about the accumulation areas of the households in low rankings as well
+as the energy efficiency standing of the individual buildings in comparison with the neighbouring households.
+
+1. Introduction
+Buildings account for approximately one-third of the global energy
+consumption and a quarter of CO2 emissions [1,2]. In EU, households
+formed 27 % of the final energy consumption in 2020 of which a share of
+62.8 % was consumed for space heating followed by hot water prepa­
+ration with a share of 15.1 % [3]. The proportions are comparable for
+Switzerland: a share of 68.5 % of the final energy consumption by pri­
+vate households was consumed for space heating and 13.4 % was
+consumed for water heating [4].
+Considering the energy resources, fossil fuels are the most frequently
+used ones in the heating sector, and renewable energy sources were used
+to meet barely a quarter of the global heat demand in 2021 [5]. For
+instance, the largest share of the global energy demand was covered by
+natural gas accounting for 42 % of heating energy needs [6]. While this
+is also valid for EU on average [3], Switzerland slightly differs with a
+value of 60 % of heating demand shared approximately equally between
+natural gas and fuel oil [4].
+With the population growth, meeting this increasingly high demand
+
+that is heavily dependent on non-renewable resources inevitably results
+in excessive amount of greenhouse gas (GHG) emissions which even­
+tually accelerates the global warming [7,8]. In addition to UNDP, the
+European directive 2024/1275 ratified in 2024 [9] that requires EU
+countries to ensure that all new buildings were designed and constructed
+as nearly zero-energy buildings (NZEB) effective for private buildings
+from the end of 2030 and for public buildings from the end of 2028. A
+NZEB means that the building has a very high energy performance and
+very low (nearly zero) energy demand which is supplied highly by
+renewable resources that are produced on-site or nearby [10]. Addi­
+tionally, all member countries shall develop a long-term renovation
+strategy for all existing buildings that facilitates the cost-effective
+transformation to highly energy efficient and decarbonized building
+stocks by 2050 [9]. Furthermore, the directive 2024/1275, necessitates
+that the 16/26 % of the least efficient buildings are renovated to meet
+the threshold value for energy efficiency [11].
+In 2021, after the easing of Covid-19 restrictions, global energy de­
+mand in the households increased around 4 % compared to 2020 (3 %
+compared with 2019) which is the largest annual increase in the last
+
+* Corresponding author.
+E-mail address: ekoker@gmail.com (E.K. Gökgöl).
+https://doi.org/10.1016/j.enbuild.2025.115554
+Received 16 February 2024; Received in revised form 18 February 2025; Accepted 2 March 2025
+Available online 4 March 2025
+0378-7788/© 2025 The Authors. Published by Elsevier B.V. This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).
+
+Energy & Buildings 335 (2025) 115554
+
+E.K. Gökgöl et al.
+
+decade. In addition, in 2021, direct and indirect emissions from build­
+ings operation was 5 % higher than 2020 (2 % higher than 2019). In
+order to get back on track with the NZEB scenario, buildings energy
+intensity (total energy consumption per square meter of building) has to
+decrease almost five times faster over the next ten years than it did in the
+past ten and carbon emissions from buildings operations need to more
+than half by 2030 [12]. To be able to achieve these shifts, retrofit rates
+have to increase from less than 1 % today to 2.5 % per year by 2030 at
+least in developed countries [13]. A central blocking stone in the
+adoption of higher renovation rates is the lack of a decision support tool
+that helps communities to identify suitable development areas as well as
+building owners to compare different retrofitting options [14]. The aim
+of this contribution is to close this gap by providing a decision support
+map to identify areas of the communal area that are particularly suitable
+for retrofitting activities.
+To reduce EU’s reliance on Russian fossil fuels by 2027, the European
+Commission released a REPowerEU plan in May 2022 [15]. Among
+other goals, the plan intends to increase the share of renewables in final
+energy consumption to 45 % by 2030, exceeding the 40 % which was
+previously targeted [15].
+These targeted clean energy transformation rates require high level
+of investments which are initiated by policy makers. Clean energy in­
+vestment support authorized by governments worldwide from April
+2020 to December 2022 was around 1215 billion USD and around 95 %
+of this was in advanced economies as primary concern of most of the
+developing countries is to keep energy affordable [16].
+
+these, assessment of energy conservation benefits and economic analysis
+are the two major steps in assessing the potential of retrofit process
+which will aid the retrofit decision making [20,21].
+An overview over the current research and available tools is given in
+[22]. The currently published approaches differ along three different
+orthogonal directions: First, the spatial scale of the system considered, i.
+e. from single buildings, quarters to whole communities [23]. Second,
+the complexity of the energy system model ranging from simple energy
+sums over energy balance models to complex non-linear system models.
+Third, the demand of data that has to be supplied to start the analysis
+[24,25]: most toolkits require the provision of extensive data sets both
+about the building and energy system component properties as well as
+the individual consumption profiles.
+The majority of studies focusses on individual buildings: many
+studies were conducted on finding the optimal energy retrofit solution
+using different objectives and various solution methods. Most used ob­
+jectives are the energy consumption/energy saving, cost optimality
+considering lifecycle analysis, the thermal comfort or combination of
+these [21,26]. Various energy simulation tools are used in these studies
+to assist the selection of the best option such as eQUEST [27], Ener­
+gyPlus [28], TRNSYS [29] and Retrosim [30].
+On the other hand, considering the entire building block perspective,
+the studies in the literature are not as well-developed as it is for single
+buildings. Energy performance of a building is one of the key criteria in
+candidate selection for retrofitting buildings and it is dependent on
+various factors such as location, climate conditions, heating infrastruc­
+ture, building envelope, occupant comfort etc. [21]. Regarding the en­
+ergy assessment in block level, energy consumptions are often calculated
+using detailed building information which makes the method heavily
+data-driven [31]. Though there are models that use various approaches
+to simulate energy consumption for the entire block, there exist
+considerable limitations such as the challenge of accessing adequate and
+accurate information for all the buildings in the large blocks, long
+simulation times and the accuracy of the simulations [32]. As it is hard
+to access adequate and accurate information for all the buildings in the
+large blocks, the methods are often based on reference buildings,
+building categories, building types, typologies or example case studies
+[33,34]. Furthermore, for the optimisation of districts, multiple criteria
+have to be considered and the different performance indicators such as
+energy consumption, greenhouse gas emissions and investment costs
+have to be balanced. As the individual performance indicators are often
+even contradictory, a decision process has to be installed to consider the
+individual aspects/indicators in the user desired weighting. A popular
+approach to implement this approach is an analytical hierarchical pro­
+cess that defines a new cost function (optimisation target) where the
+individual contributions are combined according to the desired
+weighting [35].
+As last spatial scale we consider the investigation of the whole
+community or urban area: Evaluating the energy performance of
+buildings in urban scale by using Geographic Information Systems (GIS)
+gained importance in the literature after nearly 2012 [36] and is utilized
+in both the modelling [37] and assessment [38] fields. In general, the
+GIS tool is used to describe the distribution of energy consumption in
+block level which ease the analysis on retrofitting of buildings and po­
+tential energy savings [39] as well as the potential energy supplies from
+the renewable energy sources [40]. Considering the application areas of
+GIS in this topic, it acts as an effective tool for decision supporting [41].
+Due to the better availability of data often also a strong focus on met­
+ropoles as test cases for the developed methodologies are chosen, e.g.
+Rome [23].
+
+1.1. Literature review
+The efficiency of building retrofitting mainly depends on two main
+steps, decision making of which building will be chosen and what
+retrofit strategy suits the selected candidate the most. Considering the
+urgency of the transformations and the high level of investments, allo­
+cating necessary sources to candidates which will show the maximum
+improvement has the utmost importance for the policy makers. Knowing
+the energy efficiency distribution of the households within their com­
+munity would enable them to adjust the public policies, interest rates,
+direct supports or tax discounts in most effective ways which will
+maximize commonwealth in the long run. Moreover, it will ease the
+retrofit decision-making process of the house owners to know the
+standing of their buildings in the goodness scale on energy efficiency.
+Through proper retrofitting, house owners would economically benefit
+from the significant reduction in their energy consumptions [17,18]. A
+particular challenge here is to balance the interests at different spatial
+scales. Single house owners may have substantially different aims
+compared to district owners and both groups might have different
+detailed aims compared to a communal energy planning.
+An idealized retrofit process is composed of energy assessment of the
+building, identification of the problematic systems, evaluation of energy
+conservation benefits, determination of the retrofit level, economic
+analysis, risk assessment and estimation of energy savings [19]. Among
+Table 1
+Descriptions of the features filtered from the RBD dataset [43].
+Abbreviations
+
+Description
+
+EGID
+GKODE
+GKODN
+GAREA
+GKLAS
+GKAT
+GBAUP
+GASTW
+GWAERZW1
+GWAERZW2
+GENW1
+GENW2
+
+Unique Building Identifier
+Swiss Coordinates (LV95) of the Building − E −
+Swiss Coordinates (LV95) of the Building − N −
+Ground-Projected Area of the Building
+Code for Class of the Building
+Building Category – Residential Share
+Construction Period
+Number of Floors
+Heat Generator Code – Domestic Hot Water
+Secondary Heat Generator Code – Domestic Hot Water
+Energy/Heat Source Code − Hot Water
+Secondary Energy/Heat Source Code − Hot Water
+
+2. Research gap and purpose of this study
+The literature review above indicates that the current tool landscape
+and research focusses predominately on single buildings or districts and
+only in rare cases on whole communities in terms of the spatial scale. If a
+2
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Table 2
+First five entries of the preprocessed RBD dataset.
+Entry Id
+
+Area (m2)
+
+Class
+
+Res. Share
+
+Build. Period
+
+Floor
+
+Heat -1-
+
+Heat -S1-
+
+Heat -2-
+
+Heat -S2-
+
+Coord (Lat)
+
+Coord (Long)
+
+101195602
+101195603
+101195604
+101195605
+101195606
+
+90
+80
+93
+82
+181
+
+1110
+1110
+1110
+1110
+1110
+
+1020
+1020
+1020
+1020
+1020
+
+8020
+8020
+8020
+8020
+8020
+
+2
+2
+2
+3
+2
+
+7610
+7630
+7610
+7610
+7630
+
+7598
+7530
+7598
+7598
+7530
+
+7600
+7600
+7600
+7600
+7600
+
+7500
+7500
+7500
+7500
+7500
+
+47.4569
+47.4507
+47.4527
+47.4588
+47.4554
+
+9.3793
+9.3716
+9.3735
+9.3807
+9.3950
+
+suitable candidates for retrofitting.
+
+Table 3
+Heating Grades (RBD dataset).
+Heating Type
+
+Energy Source
+
+Grade
+
+Heat Pump
+Thermal Solar System
+Boiler (Generic)
+Boiler Non-Condensing
+Boiler Condensing
+Heat Exchanger
+
+Air/Geothermal/Earth/Water/District heating
+Sun (Thermal)
+Wood
+Wood
+Wood
+Waste heat (inside the building) / Sun
+(Thermal) / District Heating
+−
+−
+Electricity
+Electricity/Gas
+Gas/Fuel oil
+Gas/Fuel oil
+Gas/Fuel oil
+Gas/Fuel oil/Wood
+
+− 2
+− 2
+− 1
+− 1
+− 1
+− 1
+
+No Heat Generator
+Other
+Central Electric Boiler
+Small Boiler
+Boiler (Generic)
+Boiler Non-Condensing
+Boiler Condensing
+Combined Heat and
+Power Plant
+
+3. Methodology
+3.1. The federal buildings and housing register (RBD) dataset
+For the presented case study, the community ‘Wittenbach’ was
+selected, which is a municipality in the canton of St. Gallen close to the
+capital St. Gallen in Switzerland. The building properties which are
+registered in the canton of St. Gallen were downloaded from the Federal
+Office for Statistics − the Federal Register of Buildings and Dwellings
+(RBD) [42]. The dataset contains 47 columns of features including
+building identifiers (EGID), address details, coordinates, construction
+and if available renovation years, number of floors, heating types, etc. In
+total, 217,923 rows of buildings are contained in this data set of which
+2538 belong to Wittenbach. Descriptions and details of the features were
+taken from the Characteristics Catalogue published by the Federal Office
+for Statistics [43]. In the reference period of 2001 – 2020, Wittenbach
+had a mean temperature of 9.4 ◦ C, 113 cooling degree days, 3414
+heating degree days and 87 days below 0 ◦ C and a precipitation of 1225
+mm [44].
+
+0
+0
+1
+1
+2
+2
+2
+2
+
+community is considered, mostly metropoles are investigated presum­
+ably due to simplified access to the required data. Most of the tools
+discussed above also require the input of data on the buildings and en­
+ergy system components. Except for direct mandates, access to data may
+be strongly limited and often requires tedious and time-consuming work
+in the collection of the required data. Eventually, the tools discussed
+above are focused on technical fidelity and help researchers/experts to
+identify optimum energy system decisions. Tools targeted to laypersons
+and decision makers could not be identified.
+The purpose of this study is to close the above research gap by
+creating a decision support map and by developing a ranking system for
+the buildings of a community from high priority candidate to low pri­
+ority candidate depending on the energy demands, type of existing
+heating systems and the age of the structures. The energy use intensity
+(or specific heating energy demand) is the primary efficiency indicator
+for the buildings; however, it is only available for a limited number of
+countries where the energy demand and floor area information are
+accessible [2]. Furthermore, public datasets for Switzerland have been
+found to preload the tool with data and simplify the initial assessment of
+different solutions. The tool also can quickly be adjusted to communities
+of different size due to the availability of public energy system data.
+Here, a case study for the small community (Wittenbach) in Switzerland
+is presented. By using physical properties and heating energy demands
+of the buildings, a ranking system is developed through analytic hier­
+archy process (AHP) to balance different performance indicator prior­
+ities [35]. Each household is evaluated considering their energy usage,
+existing heating system and building age; then gets a final grade indi­
+cating its priority for improvement. To facilitate the communication
+with decision makers and end-users, the data are visualised on the map
+of the community to act as a decision support map for finding the most
+
+3.1.1. Preprocessing
+In the initial step of preprocessing, the dataset was refined to data
+from Wittenbach alone. Furthermore, the features that were not
+required for the current study have been filtered out. Abbreviations and
+descriptions of the selected features can be seen in Table 1, below.
+As it is shown in Table 1, locations of the buildings are in LV95
+format, which is Switzerland’s official coordinate system based on the
+1995 national survey which has the reference point in Bern (E =
+2,600,000 m (east) and N = 1,200,000 m (north)) [45]. To be able to
+represent buildings on the map by using folium library, LV95 co­
+ordinates were converted into longitude-latitude coordinate format.
+Conversion was carried out by using ‘Transformer’ class of the python −
+pyproj package as it works very efficiently on repeated transforms [46].
+In the dataset, all the buildings have valid coordinate values; how­
+ever, there were missing entries for the rest of the features. To calculate
+energy demands properly for the households, all the entries with more
+than two missing features were excluded from the dataset. In this
+filtration Secondary Heat Generator Code and Class of the Building were
+considered to be optional (i.e. did not count as missing entry) and sec­
+ondary Heat Generator Code column was excluded as it was an optional
+feature for the building. Code for Class of the Building was not counted
+as it was kept on the dataset for informational purposes.
+After the pre-processing, the original dataset was narrowed down to
+1636 buildings and the first five entries for illustration can be found in
+the Table 2, below.
+
+Table 4
+Modified columns of the first three entries (RBD dataset).
+Entry Id
+
+ERA (m2)
+
+Class
+
+Residential Share (%)
+
+Building Period
+
+Category
+
+Primary Heating
+
+Secondary Heating
+
+Heating Grade
+
+101195602
+101195603
+101195604
+
+153
+136
+158.1
+
+Building With One Apartment
+Building With One Apartment
+Building With One Apartment
+
+100
+100
+100
+
+2001–2005
+2001–2005
+2001–2005
+
+Residential
+Residential
+Residential
+
+Heat Pump
+Boiler (Generic)
+Heat Pump
+
+No Heat Generator
+No Heat Generator
+No Heat Generator
+
+− 2
+2
+− 2
+
+3
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Table 5
+Descriptions of the features filtered from the SFOE dataset.
+Feature Name
+
+Description
+
+Geometry
+Object id
+Need service
+Need home
+Need total
+
+GeoJSON Formatted Polygon Coordinates (lat/long)
+Unique Polygon Identifier
+Commercial Heat Demand [MWh/a]
+Residential Heat Demand [MWh/a]
+Total Heat Demand [MWh/a]
+
+Table 8
+Space heating heat demand of the buildings according to their con­
+struction period.
+
+3.1.2. Defining building specifications
+As it can be seen from Table 2, the columns that involve information
+about building class, residential share, building period, heating types
+and energy sources are encoded. With the aim of increasing readability,
+these encoded items were converted into their descriptions.
+
+Construction Period
+
+Energy Need (kWh/m2/a)
+
+till 1920
+1920–1960
+1960–1980
+1980–1990
+1990–2000
+2000–2010
+from 2011
+
+125
+137
+135
+100
+87
+90
+93
+
+classified by 11 individual codes. These codes are valid for both primary
+and secondary heating types [43].
+3.1.2.5. Energy source. There are 20 different codes labelled energy
+sources for heating infrastructure such as water, gas, wood, electricity
+etc. [43]. These codes are valid for both primary and secondary energy
+sources [43].
+
+3.1.2.1. Building period. Building periods are labelled with 13 different
+codes, with the first indicating the buildings constructed before 1919,
+the last representing constructions after 2015 and the rest signifying the
+years in between separated by specific intervals. Up to the year 1980, the
+construction years were clustered in bins of different length. After 1980,
+the construction year as clustered in bins of 5 years [43].
+
+3.1.2.6. Heating grade. Existing heating infrastructure types for build­
+ings play a major role in the ranking of the system. It is essential to
+supply energy through renewable resources (sun, air, water etc.) instead
+of non-renewable ones (fossil fuels) considering sustainability and
+environmental point of view. So, the more the heating system depends
+on renewable sources, the higher the sustainability rating of the building
+should be. Likewise, the opposite is also true; more non-renewable
+powered systems lead to a lower score.
+To quantify this concept, a grading algorithm was constructed that
+varies between [-2, +2]. The more the system is supplied with nonrenewable resources, the higher the grade becomes. Types of heating
+systems, their energy sources [43] and corresponding grades assigned to
+each can be found in Table 3, below. Sustainable categories are marked
+with greener shades, non-renewable sources with more red shades.
+In the cases where the building involves two different heating sys­
+tems (i.e., existence of secondary heating system), the total grade was
+calculated by summing up the individual grades. Therefore, the general
+grading interval became [-4, +4].
+
+3.1.2.2. Building class. Building classes are labelled with 26 distinct
+codes to clarify the type and utilization of the structures, such as
+building with one apartment, hotel building, farm buildings etc. [43].
+3.1.2.3. Residential share. The share of residential usage is classified
+according to the amount of residential usage in the buildings with 4
+unique codes. The code 1020 means that the building is exclusively
+residential used (100 % residential use), the code 1030 indicates that the
+residential share is between 50–99 %, the code 1040 signify the share is
+between 1–50 % and the code 1060 implies the building is completely
+commercial (0 % residential use) [43]. To analytically calculate the total
+residential area within a building (Section 2.2.3), the share intervals
+were replaced with their average value and the corresponding factor was
+multiplied with the building area (cf. Sec. 2.1.3 for details). Hence, for
+the code 1030 a factor of 75 % residential was taken and for the code
+1040 a factor of 25 % residential was taken.
+Different categories of buildings, such as residential and commercial,
+display distinct patterns in energy usages. To be able to analyze each
+group individually, a labelling system was created. The buildings with a
+residential share of 100 % were categorized as ‘Residential’, while the
+ones with 0 % were named as ‘Commercial’. The rest in between were
+labelled as ‘Partially Residential’.
+
+3.1.3. Area calculations
+Area information acquired from the original dataset (Table 2) refers
+to the floor area of the building in square meters, not the energy refer­
+ence area (ERA) which is required for the energy demand calculations.
+ERA is the effective total heated surface area of the building and its
+accurate determination entails measuring by a certified expert [47]. As
+this approach demands high resources, often the ERA is estimated by
+using the gross floor area that is retrieved from a building’s footprint
+together with number of floors or the living area [47]. In this study, the
+ERA was calculated by multiplying the floor area by the number of floors
+
+3.1.2.4. Heating type. The heat generator corresponds to the kind of
+technical installation used in the building for the preparation of do­
+mestic hot water and space heating. Types of the heat generators used in
+the buildings, such as heat pump, boiler or thermal solar system, are
+Table 6
+First two entries of the filtered SFOE dataset.
+Geometry
+
+Object id
+
+Commercial Heat Demand (MWh/a)
+
+Residential Heat Demand (MWh/a)
+
+Total Heat Demand (MWh/a)
+
+POLYGON (Coordinates)
+POLYGON (Coordinates)
+
+211029
+211213
+
+10.5
+48.9
+
+62.4
+51.8
+
+72.9
+100.7
+
+Table 7
+Three example demand assignments.
+Entry Id
+101195602
+11514362
+1717302
+
+Residential Share (%)
+
+Building Category
+
+100
+25
+0
+
+Residential
+Partially Residential
+Commercial
+
+Area (m2)
+
+SHED (kWh/m2/a)
+
+Total
+
+Res.
+
+Com.
+
+Res.
+
+Com.
+
+Total
+
+153
+12720.3
+547.4
+
+153
+3180.1
+0
+
+0
+9540.2
+547.4
+
+66.91
+54.84
+0
+
+0
+125.71
+143.41
+
+66.91
+107.99
+143.41
+
+4
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+After the complete dataset was obtained, as an initial step, the fea­
+tures essential for this study were filtered. Descriptions of the selected
+features can be found in Table 5, below.
+
+Table 9
+Three example violation calculations.
+Entry Id
+
+Building
+Period
+
+SHED
+(kWh/m2/
+a)
+
+Energy Threshold
+(kWh/m2/a)
+
+Violation
+(%)
+
+101195602
+11514362
+1717302
+
+2001–2005
+1996–2000
+1971–1980
+
+66.91
+107.99
+143.41
+
+90
+87
+135
+
+− 25.7
+24.1
+6.2
+
+3.2.2. Filtering with community boundary
+The SFOE dataset after the preprocessing consists of the features
+collected in 378 polygons. However, as the data was gathered using an
+envelope geometry in a rectangular shape and the actual boundary of
+the community is in an irregular form, there were entries for polygons
+which did not belong to Wittenbach.
+To filter out the irrelevant data (i.e. from polygons outside the
+boundary of Wittenbach), Wittenbach boundary coordinates were ac­
+quired from the map layer ‘swissBOUNDARIES 3D’ [52] which repre­
+sents the administrative borders of the municipalities of Switzerland.
+Then, each polygon in the SFOE dataset was checked whether it is inside
+the boundary extracted from swissBOUNDARIES 3D [52]. For this step it
+was checked whether the community boundary line intersects with the
+boundary or the interior of the polygon with the sjoin function from
+geopandas in python.
+After the filtering, the preprocessed dataset consisted in 245 polygon
+data. The first two entries are displayed in Table 6, below.
+
+and a correction factor to account for unheated areas such as stairways
+or storage spaces. The correction factor was selected as 0.85 in light of
+the study of Schluck et al. [47]. The energy reference area was calcu­
+lated as follows:
+Ai,T = Ai,F ∗ nf i ∗ ω
+
+(1)
+
+where Ai,T is the ERA (m2), Ai,F is the floor area (m2), nf i is the number of
+floors of the ith building and ω is the correction factor (here 0.85).
+Once all the aforementioned modifications were done, a final version
+of the data based on the RBD dataset was obtained. Due to the space
+limitation, only the modified columns of the first three entries are dis­
+played in Table 4.
+
+3.2.3. Assigning demands to households
+The heat demand values (commercial, residential and total) of a
+polygon are calculated as the cumulative demands of each household
+that is located within the corresponding polygon [53]. For example, as
+can be seen from Table 6, the polygon with the id 211,029 has a total
+heat demand of 72.9 MWh/a which is the sum of the demands of each
+building inside the polygon boundaries.
+In order to distribute demands over the individual households, it
+must first be determined which house belongs to which polygon. With
+this aim, a spatial merge was carried out between the locations of
+polygons and buildings. As a result of the merge, 1474 among 1636
+households were assigned to their corresponding polygons. The
+remaining 162 buildings were unassigned as there were no demand data
+retrieved for their locations from the SFOE dataset.
+Secondly, for each assigned building, the ERA was divided into res­
+idential and commercial parts according to the residential share of the
+entry (cf. Section 2.1.2.3 for definition). Then, for each polygon, the
+total residential and total commercial areas were calculated by summing
+the corresponding areas of each building within the polygon boundaries.
+Next, for each polygon, residential and commercial specific heating
+energy demands (SHED) (MWh/m2/a) were calculated by splitting the
+residential and commercial heat demands (MWh/a) according to the
+total respective area.
+The final step is to assign SHED values to the buildings. Three basic
+rules were considered during this assignment. If the building is 100 %
+residential, then the total SHED of the building was taken as the resi­
+dential SHED value of the polygon it is in. Likewise, if the building is
+100 % commercial, then the total SHED of the building was taken as the
+commercial SHED value of the polygon it is in. On the other hand, if the
+building is partially residential, then the total SHED value of the
+building was calculated by using the following equation (Eq.2):
+(
+) (
+)
+Ai,R *di,R + Ai,C *di,C
+di,PR =
+(2)
+Ai,T
+
+3.2. Swiss Federal Office of Energy (SFOE) dataset
+The second property/dataset required for constructing the ranking
+system was the energy demands of the households in Wittenbach, St.
+Gallen. The Swiss Federal Office of Energy (SFOE) [48] published the
+heatmap of energy demands from residential and commercial buildings
+for Switzerland. The source data for the map is provided by the Verband
+Fernwärme Schweiz (VFS) and is based on the information from the RBD
+[49]. This source data can be accessed by the GeoAdmin API which al­
+lows the usage of geospatial information provided by the Swiss Federal
+Administration [50]. For this map layer, a call to the API returns the
+geospatial information of designated polygons along with 11 attributes
+such as polygon identifiers, total yearly demand, yearly residential and
+commercial demands.
+3.2.1. Preprocessing
+In order to call the API, it is required to define the interested area by
+specifying the corresponding coordinates. The geometry definition can
+be performed by a single point, polyline, polygon or envelope. For this
+study the ‘Envelope’ type was chosen. Moreover, the maximum number
+of features (polygons in this case) that can be retrieved in a single call is
+200 [51]. Thus, to obtain data for whole Wittenbach, two different calls
+were made with the coordinates of two adjacent envelopes and the re­
+sponses were merged. Both to be able to represent the polygons on the
+map and to be compatible with the RBD dataset, longitude-latitude co­
+ordinate format was selected.
+
+where di,PR is the total SHED (kWh/m2/a), Ai,R is the residentially used
+part of the ERA (m2), di,R is the residential SHED (kWh/m2/a), Ai,C is
+the commercially used part of the ERA (m2), di,C is the commercial SHED
+(kWh/m2/a) and Ai,T is the ERA (m2) of the ith partially residential
+building.
+Three example demand assignments for three different building
+categories can be found in Table 7.
+Fig. 1. Analytical Hierarchical Process outline of the study.
+5
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Fig. 2. SHED distribution of households in Wittenbach.
+
+Fig. 3. Box plot analysis of SHED values.
+
+Fig. 4. SHED distribution of households in Wittenbach after outlier filtering.
+
+6
+
+Energy & Buildings 335 (2025) 115554
+
+E.K. Gökgöl et al.
+
+Fig. 5. Box plot analysis of SHED values after outlier filtering.
+
+the households, outliers were filtered out from the dataset to obtain
+more interpretable visualizations. Results of the filtration process are
+presented in Sec. 3.1.
+
+3.2.4. Violation check according to the building age
+According to a study conducted in Kanton Zürich [54], the heating
+energy demand of the buildings vary with their construction period and
+present-day conditions. In the referenced study, the energy demand
+values of the residential buildings are represented for 1990, 2006 and
+2016. The 1990 values are based on the oil-heated residential buildings
+whose energy consumption could be determined with the help of the
+combustion control. The 2006 and 2016 values are derived from internal
+cantonal evaluations sourced from gas-heated buildings (67 %) and
+buildings with different energy sources (33 %). The values are not
+climate adjusted and factors such as occupancy rate or proportion of
+windows are not taken into consideration during the calculations [54].
+For this study, threshold values for the SHED were taken as the energy
+demand values as of 2016. The exact values were extracted from the
+related graphical representation [54] by visual inspection and the full
+list can be found in Table 8 below.
+The threshold values for the SHED were assigned to the buildings
+considering their construction period. Then, for each building, the per­
+centual deviation of the estimated SHED (Section 2.2.3) from the
+threshold value (Sec. 2.2.4) is calculated. This deviation is labelled
+“Violation” and both positive values and negative values are allowed in
+the visualisation. Exemplary calculations for the violation of the same
+three example entries that were used in Table 7 are displayed in Table 9.
+
+3.4. Analytical hierarchical process
+To select the optimum candidates for retrofitting multiple perfor­
+mance indicators (e.g. age, heating grade etc.) have to be considered. To
+ensure a fair consideration of all these aspects, here, an analytical hi­
+erarchical process (AHP) is considered [35]. This analytic hierarchy
+process (AHP) was applied as it is a widely used method for multicriteria
+analysis. This field has to be considered to ensure that the best candidate
+or ranking of the alternatives is achieved by considering a set of criteria
+over possible alternatives. Application of the technique consists of
+determining the required indicators and their importance weights over
+the selected aim.
+In this study, it was aimed to rank the households towards finding the
+most suitable candidates for retrofitting by considering their heating
+grade, threshold violation and building age (Fig. 1). The importance
+factors of the criteria were represented as w1, w2 and w3. For simplicity,
+here all weights were chosen equally with the value of 1/3. Depending
+on the preferences of the customer the choice can be adjusted to ensure
+that the chosen indicators and their priority are respected.
+All three criteria that were used in AHP process had difference in
+their ranges. While heating grade is integer and varies from − 4 to 4,
+threshold violation and building age varies in hundreds which might
+lead to unbalanced decisive influence on the goal. To bring all features in
+the same standing, scaling was applied to the criteria. As a scaling
+method, min–max scaler was selected (Eq.3) and the ranges of all
+criteria were transformed into [0, 1].
+
+3.3. Outlier determination
+At the final stage of the data preparation/visualization, buildings
+will be represented on the map on a scale of red to green color according
+to their suitability for retrofitting which is a function of their SHED
+values. The existence of a few comparatively very high demands causes
+the violation values at normal levels to be overlooked. Reasons for these
+excessive values could be application specific high demands (e.g. dairy
+industry or bakeries) as well as failures in the calculation of the ERA or a
+misattribution of a building extending over two polygons to a single
+polygon. Hence, an explanatory analysis was carried out over the SHED
+values to distinguish the outliers. As the final step before the ranking of
+
+xnew =
+
+x − xmin
+xmax − xmin
+
+(3)
+
+After the scaling and importance weights selection, final grade of
+each building was calculated as follows:
+
+Table 10
+Best 5 households according to the ranking.
+Rank
+
+Entry Id
+
+Heating Grade
+
+Violation (%)
+
+Building Age
+
+Heating Grade (Scaled)
+
+Violation (%) (Scaled)
+
+Building Age (Scaled)
+
+Final Grade
+
+1
+2
+3
+4
+5
+
+191678532
+190114621
+191961165
+190179922
+191852341
+
+− 2
+− 2
+− 2
+− 2
+− 2
+
+− 87.90
+− 92.11
+− 67.47
+− 75.28
+− 61.93
+
+6
+12
+6
+12
+6
+
+0.25
+0.25
+0.25
+0.25
+0.25
+
+0.04
+0.02
+0.14
+0.10
+0.17
+
+0
+0.06
+0
+0.06
+0
+
+0.097
+0.110
+0.130
+0.138
+0.139
+
+7
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Table 11
+Worst 5 households in the ranking.
+Rank
+
+Entry Id
+
+Heating Grade
+
+Violation (%)
+
+Building Age
+
+Heating Grade (Scaled)
+
+Violation (%) (Scaled)
+
+Building Age (Scaled)
+
+Final Grade
+
+1431
+1432
+1433
+1434
+1435
+
+1716460
+1716501
+1716458
+1717052
+1716478
+
+2
+2
+2
+2
+2
+
+2.55
+10.64
+11.86
+34.01
+36.02
+
+104
+104
+104
+104
+104
+
+0.75
+0.75
+0.75
+0.75
+0.75
+
+0.48
+0.52
+0.53
+0.64
+0.65
+
+1
+1
+1
+1
+1
+
+0.744
+0.757
+0.759
+0.795
+0.799
+
+Fig. 6. SHED distribution of households with respect to the building category.
+
+Fig. 7. Threshold violation distribution of households with respect to the building category.
+
+⎛
+
+⎞
+(
+) (
+)
+Scaled
+Scaled
+Scaled
+⎝
+Final Grade = w1 * Heating ⎠ + w2 *
++ w3 *
+Violation
+Age
+Grade
+
+extracted from the dataset for validation process for each building
+identifiers (EGID). As the main aim of the dataset is to represent the solar
+potential of roof areas, there are multiple entries for the same EGID
+corresponding to the different parts of the roofs with various orienta­
+tions. Hot water need stand for the whole building; thus it is constant for
+each entry of the same building. However, space heating demand
+changes slightly for different roof orientations. Although the reason is
+not clearly stated in the model documentation, one probable cause
+might be the change in the contribution of solar radiation, that the
+building is exposed to, resulting from the orientation change. So, in
+order to obtain a single space heating demand valid for the same EGID,
+the mean value of all entries corresponding to the same building was
+considered as a reference value.
+As the final step, the total annual energy demand (MWh/a) of a
+single building was calculated by summing up the hot water and
+
+(4)
+
+3.5. Validation
+Two different sources were considered to benchmark the accuracy of
+energy demand distributions established in this study. First source is the
+map of ‘Suitability of roofs for use of solar energy’ published by SFOE
+[55] which represents the solar energy potentials of all roof areas in
+Switzerland [56]. Apart from the solar potential, the source data of the
+map [57] contains information about the heat demands of the house­
+holds that are calculated from data extracted from RBD as well.
+Among other features, the hot water and space heating demand were
+8
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Fig. 8. Final grade distribution of households with respect to the building category.
+
+calculated space heating demands. With the help of these information,
+this dataset enabled the comparison of demands on both household and
+community levels.
+Second source is the energy report of Wittenbach published by
+Energieagentur St.Gallen [58]. The report provides insight about the
+total energy demand of Wittenbach for former years as well as the
+predictions for 2050 for different scenarios. This source enabled the
+comparison only on community level.
+
+buildings that are old, violation values and heating grades are also
+comparatively high, and vice versa. This is an expected behavior as new
+buildings are constructed according to more environmentally strict
+codes. Nevertheless, for the majority of middle-aged buildings the dif­
+ferences in one indicator can have a major impact on the order of the
+buildings in their final grade.
+4.3. Distributions of SHED and final grade
+
+3.6. Program structure
+
+The SHED distribution of households with respect to the building
+category can be seen in Fig. 6 below. This Figure indicates that fully
+residential buildings have the highest share in the building category
+with 1299 households and their SHED values mostly accumulate be­
+tween 80 and 110 kWh/m2/a. Partially residential buildings occupy a
+significantly smaller share with 126 entries for which the SHED values
+scattered more uniformly over the total range. There are only 10 fully
+commercial buildings and their SHED values show an intermittent
+distribution.
+Likewise, Fig. 7 demonstrates the threshold violation distribution of
+households with respect to their building category. It can be clearly
+concluded that great portion of the households for all categories do not
+have a violation at all and as the violation gets higher, the corresponding
+number of households decreases.
+Finally, the distribution of final grade for households with respect to
+the building category is illustrated in Fig. 8. As reflected in the figure,
+most of the buildings have a final grade varying between 0.2 and 0.6.
+However, highest accumulation lies within 0.45 – 0.55 range especially
+for residential buildings. Numerically expressing, 805 of 1435 buildings
+have a final grade value higher than 0.45. Thus, if the threshold grade
+for the retrofit is decided as 0.45, nearly 56 % of the building will be
+marked for renovation.
+
+For the solution procedure, coding language was selected as Python
+version 3.8.10 and Google Colab was used as the development
+environment.
+4. Results
+4.1. Outlier filtering
+With the aim of detecting outliers, specific energy demand distri­
+bution of households in Wittenbach were examined. As it can be seen in
+Fig. 2, the distribution is strongly right skewed with very few entries on
+the higher average demand values. Based on the box-plot analysis in
+Fig. 3, the maximum value of SHED was set to 200 kWh/m2/a and the
+entries with higher demand values were filtered from the dataset that
+was used for the visualisation.
+In total, 39 buildings were removed, and 1474 entries were reduced
+to 1435 after the outlier filtering. The updated SHED distribution and
+box plot analysis after the outlier filtering can be found in Fig. 4 and
+Fig. 5, respectively.
+4.2. Ranking
+
+4.4. Result visualisation in map form
+
+After applying the analytical hierarchical process (AHP), households
+within Wittenbach were ranked from good to bad considering their
+heating infrastructure, energy demand level and age of the building. The
+best and worst five entries can be found in Table 10 and Table 11,
+respectively.
+For the interpretation of the tables, it is important to note that the
+minimum building age in the community is 6. Accordingly, these
+buildings have building age grades of 0 after scaling (Table 10). Like­
+wise, the maximum building age is 104; thus, the building age grade of
+these households is 1 after scaling (Table 11).
+As it can be seen from Table 10 and Table 11, all three criteria show
+similar tendencies for both bad and good grades. For instance, for the
+
+The map visualizations were implemented using the folium library.
+The final version of the visualisation consists of 11 different layers laid
+on the basic ‘open street map’ layer of folium. In default, the map starts
+with three layers of which two (Energy grid, Total demands) are adapted
+from the heatmap of SFOE [48] and one (Community) represents com­
+munity boundary of Wittenbach (Fig. 9:). The legend of the map signifies
+the total demands of polygons on the heatmap. Details of the layers can
+be found below.
+• Heatmap Layers
+9
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Fig. 9. Snapshots of final map layers.
+
+The first energy data layer is the ‘Energy grid’ layer that represents
+the boundaries of the polygons and second one is the ‘Total demands’
+which contains the total demand information of the polygons. Hovering
+over each polygon allows the inspection of the residential, commercial
+and total heat demand values aggregated within the considered polygon
+(Fig. 10).
+
+circle of each building (Fig. 12).
+• Households (unfiltered data)
+All 2538 households in the unfiltered list of RBD dataset are repre­
+sented with black circles and the “id” (identifier) info can be seen by
+selecting the target building. When used in combination with the
+‘Households’ layer, this layer is beneficial to observe the buildings that
+were filtered out and identify potential locations of accumulation
+(Fig. 13).
+
+• Households
+Each circle on the layer corresponds to individual buildings and has a
+size in relation to the ERA value of the corresponding building. More­
+over, filler colour indicates the class, and the outline colour represents
+the heating grade. Colour legends are displayed in Fig. 11 below. Unique
+id, number of floors and building class can be seen by selecting the target
+
+• Violation Layers
+These three layers represent the threshold violation amounts of each
+10
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Fig. 10. Interactive details of heatmap layer.
+
+Fig. 11. Color legends of Household layer.
+
+Fig. 12. Interactive details of Households layer.
+
+household for residential, partially residential and commercial build­
+ings. Each building is represented with a circle that has a size in relation
+to its ERA and the colour changes from red to green indicating the level
+
+of violation from bad to good, respectively. Unique id, number of floors,
+building class as well as the violation amount can be seen by selecting
+the target circle (Fig. 14). The complete map visualisation for each
+11
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Fig. 13. An example view from the Households (original from RBD) layer (left) and coupled view with ‘Households’ layer (right).
+
+Fig. 14. An example view from the violation layers.
+
+to good, respectively. Unique id, heating grade, violation amount and
+final grade can be seen by selecting the target circle (Fig. 15). Complete
+map views for each building category can be found in Fig. 9.
+• Community
+Layer shows the community boundaries of Wittenbach.
+4.5. Final dashboard
+
+building category is illustrated in Fig. 9.
+
+In order to display the results in a customized user interface, an
+interactive final dashboard was created using the Dash library which is
+developed by Plotly [59]. In the dashboard, there are two sections for
+graph and map. The chart area consists of two dropdown menus from
+which one can select building categories and distribution types. Ac­
+cording to the selection from these two lists of options, the presented
+graph changes. Moreover, map area involves the final map created in
+this study. Both the graph and the map are interactive. Complete view of
+the dashboard can be found in Fig. 16.
+
+• Final Grade Layers
+
+4.6. Validation
+
+These three layers represent the final grade of each household for
+residential, partially residential and commercial buildings. Each build­
+ing is represented with a circle that has a size in relation to its ERA and
+the colour changes from red to green indicating the final grade from bad
+
+4.6.1. Solar energy dataset
+One of the sources to validate the study is ‘Suitability of roofs for use
+of solar energy’ published by SFOE [55], referred to in the following as
+“Solar dataset”. After the preprocessing explained in Section 2.52.5, a
+
+Fig. 15. An example view from the final grade layers.
+
+12
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Fig. 16. Example view of the final dashboard.
+
+dataset was left with 1422 unique building records.
+In order to get more realistic results, validation of this study was
+carried out by using the dataset from which the outliers were not filtered
+out. The full list was composed of 1474 entries and when two datasets
+merged on their RBD EGID values, 1234 entries found to be in common.
+For comparison purposes, the heat demand difference per unit area
+between the calculated and the solar dataset were added to the table.
+First five entries of the merged table are shown in Table 12, below.
+Total annual heat demand for the households in Wittenbach was
+calculated for both the complete datasets as well as for the dataset
+consisting only of the entries existing in both dataset (Table 13). Taking
+the common entries into consideration, Solar dataset gave a total of
+80′745.43 MWh/a which was around 39 % higher than the total demand
+calculated in this study (58′100.87 MWh/a). If individual datasets were
+considered without merging, this difference reduced to 32 %. Purpose of
+this comparison is the evaluation of the demand procedure by
+comparing the modelling results presented in this study with reference
+values based on local demand data.
+As a cross-check, the total annual heat demand for Wittenbach was
+calculated from the polygon data that were retrieved from the pre­
+processed SFOE dataset (Section 2.2.2). The value for the total demand
+for 245 polygons was calculated as 73′127.5 MWh/a. Comparing with
+the demand calculated over all polygons, the total of Solar dataset was
+still 25 % higher with the value of 91′326.93 MWh/a.
+
+The main reason of the difference between the totals of the datasets is
+the absence of the heating consumptions of industrial sites in this
+calculation. In this study, the heating demand values that were sub­
+tracted from the SFOE dataset correspond to residential and commercial
+buildings. However, the solar dataset involves residential and com­
+mercial building as well as the industrial sites. In order to check the total
+demand of the industrial sites in Wittenbach, the heatmap of energy
+demands from industry which is published by SFOE [60] was used.
+Without distributing the demands to the sites, an overall summation is
+made through the polygons and the final demand was calculated as
+19′909 MWh/a, which amounts to 21 % of the demand in the Solar
+dataset. This explains the difference between the polygon total calcu­
+lated in this study (73′127.5 MWh/a) and the total of Solar dataset
+(91′326.93 MWh/a).
+Taking the industrial demand into consideration, the total heating
+demand calculated from the polygons would be 93′036 MWh/a. This
+slight deviation of 1.8 % with the Solar dataset that still exists might be
+explained by the averaging of space heating demand values for the en­
+tries of the same EGID (Section 2.5).
+Furthermore, there are two additional main reasons for the variation
+between the totals calculated by summing the estimated demands from
+the polygons and calculated totals within this study (73′127.5 MWh/a −
+69′263.40 MWh/a): First one is the households that were filtered-out
+from the original dataset because of the missing building features.
+13
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+Table 12
+First five entries of the merged table of validation.
+Entry Id
+
+ERA
+(m2)
+
+Heat Demand (MWh/
+a)
+
+Space Heating Demand
+(MWh/a)
+
+Hot Water Demand (MWh/
+a)
+
+Heat Demand (MWh/
+a)
+
+Difference per unit Area (MWh/
+m2/a)
+
+101195602
+101195603
+101195604
+101195605
+101195606
+
+153
+136
+158.1
+209.1
+307.7
+This study
+
+10237.50
+10212.89
+13524.31
+19927.76
+31617.43
+
+8953.3
+7644
+7970
+10,165
+12895.7
+Solar dataset
+
+4896
+4176
+4368
+5592
+7008
+
+13849.33
+11,820
+12,338
+15,757
+19903.67
+
+23.607
+11.817
+7.504
+19.946
+38.069
+
+​
+
+​
+
+demand values, an overall prediction has to be made for the year 2022 to
+get a benchmark value from the report. Although the actual would be
+different, to have a general idea, it was assumed that the final con­
+sumption decays linearly from 2017 to 2050 (V1) which means the final
+consumption for 2022 would be around 210′000 MWh/a. Moreover,
+considering the shares of heating consumption for 2012 and 2017, it was
+assumed that one third of the final energy resulted from heating in 2022
+which indicates that it would be around 70′000 MWh/a. Hence, it can be
+concluded that, this consumption amount is fairly consistent with the
+total heat demand calculated in this study (69′263.40 MWh/a). The
+difference between this study and the consumption calculated on the
+actual consumption data from Wittenbach amounts to 1 %.
+
+Table 13
+Validation of heat demand model comparing the total annual heat demand
+comparison (outliers included) from the model presented in this study and a
+complementary study [60] called “Solar dataset”.
+Total Before Merge (MWh/a)
+Total Number of Buildings Before Merge
+Total of Common Entries (MWh/a)
+Total Number of Buildings in the joined dataset
+
+Solar dataset
+
+This Study
+
+91′326.93
+1422
+80′745.43
+1234
+
+69′263.40
+1474
+58′100.87
+
+1064 buildings were excluded from the list which would have increased
+the calculated demand significantly otherwise. The second one is the
+possible calculation errors in the process of distribution of the heat de­
+mands to the households. One of the main reasons for this miscalculation
+is the assumption of the residential share (Section 2.1.2.3). As they were
+given in ranges rather than exact numbers, an assumption had to be
+made and their mean values were used which might result in this
+variation.
+Final source of the possible deviations in the values might be the
+energy demand calculation differences between this study and the Solar
+dataset. In the documentation of Solar dataset [56], it is stated that the
+heat demands were calculated using the building characteristics sourced
+from RBD; however, estimation details are not mentioned. Thus, it is
+possible that a different method was used which might contribute to this
+difference.
+
+5. Conclusions
+In this study, a decision support map was created for a selected
+community (Wittenbach) to ease the building retrofit candidate selec­
+tion process. The presented solution has three major advantages: the tool
+can easily be adapted for any Swiss community independent of its size, it
+enables also non-expert persons to readily identify suitable candidate for
+retrofitting and it does not require any work for the collection of the data
+to obtain a first estimation.
+As the first step, the households within the community were evalu­
+ated on sustainability level of their heating infrastructure, severity of
+their energy use intensity and building age. Then, the buildings were
+graded and ranked according to their goodness (or badness) level on the
+energy efficiency scale through analytic hierarchy process (AHP). The
+evaluation of the energy demand required an estimation of the energy
+demand for residential and commercial buildings. The comparison with
+two reference data sets (national study of photovoltaic potential and
+energy report of the community) indicated that the aggregated demands
+can be estimated up to 25 % and 1 %. The substantial deviation for the
+national study can be explained by the difference in the base data set (in
+the national study industrial demands are considered as well). If the
+contribution of the industrial demand in included the deviation is
+reduced to 1.8 %. Finally, the outcomes were visualized on the com­
+munity map by individual layers representing different criteria and
+building categories.
+In the results, it was seen that in general manner all three criteria
+effect the households similarly on the goodness scale. Both with the help
+of new construction codes that are restrictive in energy concept and
+increased environmental public awareness, new buildings have rather
+good heating grades and less energy threshold violations.
+The energy threshold values selected for this study were corre­
+sponding to the conditions in 2016 and with this configuration more
+than half of the buildings do not have violation (percentual deviation of
+the estimated specific heat energy demand from a reference threshold in
+the corresponding building category). Moreover, the number of house­
+holds decreases strongly with increasing value of violation. Considering
+the worldwide emphasis on increasing the pace in clean energy trans­
+formation rates to reach the targeted values, employing lower threshold
+values that are correlated with the minimum energy demands can also
+be studied as a future extension of this study.
+The multi-layered decision support map with interactive details
+established in this work is beneficial for both house owners and policy
+
+4.6.2. The energy report of Wittenbach
+A second data source to benchmark the study is the energy report of
+Wittenbach [58]. This report is an official document generated upon
+initiative of the community and the modelling of energy demands is
+performed based on actual consumption data of the community as
+retrieved from the utility. Within the report, the final energy values for
+Wittenbach, which is the amount of energy that can be used directly by
+the consumer, can be found for the years 2012 and 2017 as well as the
+2050 predictions for various scenarios. Final energy consumption
+composed of three components which are transport, electricity and
+heating and their shares for 2012 and 2017 can be seen in Table 14. In
+our study, we use these data as comparison data for the energy demand
+modelling as well as the impact of the retrofitting activities.
+From 2012 to 2017, final energy consumption of Wittenbach reduced
+by 12 % which was mostly caused by the reduction in heating demand
+[58]. Contrary to heating, consumption in electricity and transport
+sectors increased by 3 % and 10 %, respectively (Table 14). One prob­
+able cause for these changes was the increased use of heat pumps which
+leads to a reduction in the heating consumption and an increase in the
+electricity sector [58].
+As the SFOE dataset used in this study is based on 2022 energy
+Table 14
+Final energy distribution of Wittenbach for 2012 and 2017 [58].
+Transport
+Electricity
+Heating
+
+2012 (%)
+
+2017 (%)
+
+34.38
+17.36
+48.26
+
+43.09
+20.33
+36.58
+
+14
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+makers on retrofit assessments. Considering house owners, the map al­
+lows the user to evaluate the energy efficiency status of their building, as
+well as to compare it with the other buildings within the community. In
+light of the insights gained, retrofitting their building will not only have
+environmental contribution but also have a positive economic impact on
+the household with decreased energy consumptions.
+In view of policy makers, the map enables them to have a view about
+the accumulation areas of buildings with lower rankings along with the
+conditions of the individual buildings. This insight facilitates the in­
+vestment optimization by adopting regional incentives and enables
+them to develop community-wise strategies based on a selection based
+on the presented grade as well as the distribution of the violation value
+(i.e., final dashboard).
+The study has been validated with two reference datasets. The
+double validation of the study has shown that the energy consumption
+values calculated for buildings were considerably accurate as aggrega­
+tion (1–2 % deviation for the aggregated demand). Slight differences
+could be explained with the assumptions made throughout the compu­
+tations, filtration of the buildings due to missing information and the
+methodological differences between the validation sources and this
+study.
+Despite its substantial advantages the presented methodology and
+the developed tool have two major limitations: The first limitation is that
+its applicability is requiring a comparable public data source which is
+currently only available for Switzerland and multiple regions in Ger­
+many, Austria and the United States of America. As the estimations and
+assessment are based on the quality of the public datasets, the quality of
+the assessment also strongly depends on the quality of the available data
+source. As a second limitation it has to be considered that the calcula­
+tions depend on the availability of the selected data source. If a data
+source is replaced by another one or its format is changed, the corre­
+sponding data processing pipelines have to be adjusted with might
+require substantial work.
+For a final remark, considering its positive contribution to the
+decision-making process for retrofit, this study might further be
+improved by implementing larger scale regions to increase the benefit.
+Furthermore, combining with customized retrofit suggestions and
+related cost-analysis would enhance the efficiency of the outcomes.
+
+References
+[1] UNEP, 2020 Global Status Report for Buildings and Construction, in: Global Status
+Report, 2020, pp. 20–24.
+[2] M. González-Torres, L. Pérez-Lombard, J.F. Coronel, I.R. Maestre, D. Yan, A review
+on buildings energy information: Trends, end-uses, fuels and drivers, Energy Rep. 8
+(2022) 626–637, https://doi.org/10.1016/j.egyr.2021.11.280.
+[3] Eurostat, “Energy consumption in households.” Accessed: Mar. 05, 2023. [Online].
+Available: https://ec.europa.eu/eurostat/statistics-explained/index.php?
+title=Energy_consumption_in_households#Energy_products_used_in_the_
+residential_sector.
+[4] Swiss Federal Office of Energy, “Analyse des schweizerischen Energieverbrauchs
+2000–2021 nach Verwendungszwecken,” 2022.
+[5] International Energy Agency, “Renewables 2022: Analysis and forecast to 2027,”
+2022.
+[6] International Energy Agency, “Energy Efficiency 2022,” 2022.
+[7] H. Ritchie, M. Roser, and P. Rosado, “CO2 and Greenhouse Gas Emissions.”
+Accessed: Mar. 07, 2023. [Online]. Available: https://ourworldindata.org/co2and-greenhouse-gas-emissions#citation.
+[8] P. Moran, J. O’Connell, J. Goggins, Sustainable energy efficiency retrofits as
+residenial buildings move towards nearly zero energy building (NZEB) standards,
+Energ. Buildings 211 (2020), https://doi.org/10.1016/j.enbuild.2020.109816.
+[9] P. Office of the European Union L- and L. Luxembourg, “DIRECTIVE (EU) 2024/
+1275 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 24 April 2024
+on the energy performance of buildings (recast) (Text with EEA relevance).”
+[Online]. Available: http://data.europa.eu/eli/dir/2024/1275/oj.
+[10] European Parliament and the Council of the European Union, Directive 2010/31/
+EU of the European Parliament and of the Council of 19 May 2010 on the energy
+performance of buildings (recast), Off. J. Eur. Union (2018) 1–35.
+[11] M. Fabbri, E. Jeffries, C. Milne, O. Rapf, and Z. Toth, “THE EPBD DECRYPTED A
+TREASURE CHEST OF OPPORTUNITIES TO ACCELERATE BUILDING
+DECARBONISATION,” 2024. [Online]. Available: https://www.bpie.eu/
+publication/the-epbd-decrypted-a-treasure-chest-of-opportunities-.
+[12] International Energy Agency, “Buildings.” Accessed: Mar. 09, 2023. [Online].
+Available: https://www.iea.org/reports/buildings.
+[13] IEA, Net Zero by 2050: A roadmap for the global energy sector, Internat. Energy
+Agency (2021) 224.
+[14] M. Meyer, et al., Tool for evaluation of energy system options for municipalities,
+J. Phys. Conf. Ser. (2023) 22010.
+[15] European Commission, “REPowerEU: affordable, secure and sustainable energy for
+Europe.” Accessed: Mar. 11, 2023. [Online]. Available: https://commission.
+europa.eu/strategy-and-policy/priorities-2019-2024/european-green-deal/
+repowereu-affordable-secure-and-sustainable-energy-europe_en#repowereuactions.
+[16] International Energy Agency, “Government Energy Spending Tracker.” Accessed:
+Mar. 11, 2023. [Online]. Available: https://www.iea.org/reports/governmentenergy-spending-tracker-2/government-energy-spending-tracker.
+[17] B. Coyne, E. Denny, Retrofit effectiveness: Evidence from a nationwide residential
+energy efficiency programme, Energy Policy 159 (December 2020) (2021) 112576,
+https://doi.org/10.1016/j.enpol.2021.112576.
+[18] P. Wang, C. Ji, P. Yu, L. Huang, A procedure set to construct the optimal energy
+saving retrofit strategy for old residential buildings in China, J. Renew. Sustain.
+Energy (2023), https://doi.org/10.1063/5.0134055.
+[19] Z. Ma, P. Cooper, D. Daly, L. Ledo, Existing building retrofits: Methodology and
+state-of-the-art, Energ. Buildings 55 (2012) 889–902, https://doi.org/10.1016/j.
+enbuild.2012.08.018.
+[20] O. Pombo, B. Rivela, J. Neila, The challenge of sustainable building renovation:
+Assessment of current criteria and future outlook, J. Clean. Prod. 123 (2016)
+88–100, https://doi.org/10.1016/j.jclepro.2015.06.137.
+[21] P. Shen, W. Braham, Y. Yi, E. Eaton, Rapid multi-objective optimization with multiyear future weather condition and decision-making support for building retrofit,
+Energy 172 (2019) 892–912, https://doi.org/10.1016/j.energy.2019.01.164.
+[22] D. Höffner, S. Glombik, Energy system planning and analysis software—A
+comprehensive meta-review with special attention to urban energy systems and
+district heating, Energy 307 (July) (2024) 132542, https://doi.org/10.1016/j.
+energy.2024.132542.
+[23] E. Tajalli-Ardekani, G. Delibra, I. Pizzuti, A. Corsini, A Rome district transition
+towards optimal and sustainable heat and power generation, Appl. Therm. Eng.
+255 (July) (2024) 124001, https://doi.org/10.1016/j.
+applthermaleng.2024.124001.
+[24] C.C. de Oliveira, I. Catão Martins Vaz, E. Ghisi, Retrofit strategies to improve
+energy efficiency in buildings: An integrative review, Energ. Buildings (2024)
+114624, https://doi.org/10.1016/J.ENBUILD.2024.114624.
+[25] D. Heidenthaler, et al., Automated energy performance certificate based urban
+building energy modelling approach for predicting heat load profiles of districts,
+Energy 278 (2023) 128024, https://doi.org/10.1016/J.ENERGY.2023.128024.
+[26] Y. Lu, P. Li, Y.P. Lee, X. Song, An integrated decision-making framework for
+existing building retrofits based on energy simulation and cost-benefit analysis,
+J. Build. Eng. 43 (1239) (2021) 103200, https://doi.org/10.1016/j.
+jobe.2021.103200.
+[27] A. Jafari, V. Valentin, An optimization framework for building energy retrofits
+decision-making, Build. Environ. 115 (2017) 118–129, https://doi.org/10.1016/j.
+buildenv.2017.01.020.
+[28] F. Ascione, N. Bianco, R.F. De Masi, G.M. Mauro, G.P. Vanoli, Resilience of robust
+cost-optimal energy retrofit of buildings to global warming: A multi-stage, multi-
+
+CRediT authorship contribution statement
+Ezgi Köker Gökgöl: Writing – review & editing, Writing – original
+draft, Visualization, Validation, Software, Methodology, Investigation,
+Formal analysis, Data curation, Conceptualization. Esther Linder: Su­
+pervision, Methodology, Data curation, Conceptualization. Philipp
+Schuetz: Writing – review & editing, Supervision, Project administra­
+tion, Methodology, Data curation, Conceptualization.
+Declaration of competing interest
+The authors declare that they have no known competing financial
+interests or personal relationships that could have appeared to influence
+the work reported in this paper.
+Acknowledgements
+The research published in this publication was carried out with the
+support of the Swiss Federal Office of Energy as part of the SWEET
+consortium EDGE. The authors bear sole responsibility for the conclu­
+sions and the results presented in this publication.
+Data availability
+No data was used for the research described in the article.
+
+15
+
+E.K. Gökgöl et al.
+
+Energy & Buildings 335 (2025) 115554
+
+objective approach, Energ. Buildings 153 (2017) 150–167, https://doi.org/
+10.1016/j.enbuild.2017.08.004.
+[29] F. Roberti, U.F. Oberegger, E. Lucchi, A. Troi, Energy retrofit and conservation of a
+historic building using multi-objective optimization and an analytic hierarchy
+process, Energ. Buildings 138 (2017) 1–10, https://doi.org/10.1016/j.
+enbuild.2016.12.028.
+[30] P. Elguezabal, et al., Optimization module for filtering and ranking alternative
+energy replacement systems, in an online ICT design tool for building retrofits,
+J. Phys. Conf. Ser. 1343 (1) (2019), https://doi.org/10.1088/1742-6596/1343/1/
+012128.
+[31] A.G. Ruggeri, L. Gabrielli, M. Scarpa, Energy retrofit in european building
+portfolios: A review of five key aspects, Sustainability (switzerland) 12 (18) (2020)
+1–37, https://doi.org/10.3390/SU12187465.
+[32] V. Todeschi, R. Boghetti, J.H. Kämpf, G. Mutani, Evaluation of urban-scale building
+energy-use models and tools—application for the city of Fribourg, Switzerland,
+Sustainability 13 (4) (2021) 1–22, https://doi.org/10.3390/su13041595.
+[33] G. Luddeni, M. Krarti, G. Pernigotto, A. Gasparella, An analysis methodology for
+large-scale deep energy retrofits of existing building stocks: Case study of the
+Italian office building, Sustain Cities Soc 41 (May) (2018) 296–311, https://doi.
+org/10.1016/j.scs.2018.05.038.
+[34] P. Pallis, et al., Cost effectiveness assessment and beyond: A study on energy
+efficiency interventions in Greek residential building stock, Energ. Buildings 182
+(2019) 1–18, https://doi.org/10.1016/j.enbuild.2018.10.024.
+[35] G. Elshafei, D. Katunský, M. Zeleňáková, A. Negm, Opportunities for using
+analytical hierarchy process in green building optimization, Energies (Basel) 15
+(12) (2022) 1–24, https://doi.org/10.3390/en15124490.
+[36] V. Barrile, A. Fotia, G. Bilotta, Geodatabase for the assessment of energetic
+potential of territory, Ingenierie Des Systemes D’information 23 (6) (2018) 7–17,
+https://doi.org/10.3166/ISI.23.6.7-17.
+[37] U. Ali, et al., A data-driven approach for multi-scale GIS-based building energy
+modeling for analysis, planning and support decision making, Appl. Energy 279
+(August) (2020), https://doi.org/10.1016/j.apenergy.2020.115834.
+[38] G. Dall’o’, A. Galante, M. Torri, A methodology for the energy performance
+classification of residential building stock on an urban scale, Energ. Build. 48
+(2012) 211–219, https://doi.org/10.1016/j.enbuild.2012.01.034.
+[39] M.H. Kristensen, R.E. Hedegaard, S. Petersen, Hierarchical calibration of
+archetypes for urban building energy modeling, Energ. Build. 175 (2018) 219–234,
+https://doi.org/10.1016/j.enbuild.2018.07.030.
+[40] A. Ashfaq, A. Ianakiev, Features of fully integrated renewable energy atlas for
+Pakistan; wind, solar and cooling, Renew. Sustain. Energy Rev. 97 (January)
+(2018) 14–27, https://doi.org/10.1016/j.rser.2018.08.011.
+[41] G. Mutani, V. Todeschi, GIS-based urban energy modelling and energy efficiency
+scenarios using the energy performance certificate database, Energy Effic 14 (5)
+(2021) 1–28, https://doi.org/10.1007/s12053-021-09962-z.
+[42] The Federal Register of Buildings and Dwellings, “gebaeude_batiment_edificio.”
+Accessed: Jan. 26, 2023. [Online]. Available: https://public.madd.bfs.admin.ch/
+sg.zip.
+[43] Federal Statistical Office, Merkmalskatalog, no. 22905270. Neuchâtel: Bundesamt
+für Statistik (BFS), 2022.
+[44] M. Schmutz, “Klimaanalyse Wittenbach,” Berne, Nov. 2024.
+
+[45] Federal Office of Topography swisstopo, “The Swiss coordinates system.” Accessed:
+Jan. 26, 2023. [Online]. Available: https://www.swisstopo.admin.ch/en/
+knowledge-facts/surveying-geodesy/coordinates/swiss-coordinates.html#:~:
+text=Switzerland’s official coordinates are based,%3D 1%2C200%2C000 m
+(north).
+[46] “Transformer.” Accessed: Mar. 14, 2023. [Online]. Available: https://pyproj4.
+github.io/pyproj/stable/api/transformer.html.
+[47] T. Schluck, K.N. Streicher, S. Mennel, Statistical modelling of the energy reference
+area based on the Swiss building stock, J. Phys. Conf. Ser. (2019), https://doi.org/
+10.1088/1742-6596/1343/1/012031.
+[48] Swiss Federal Office of Energy, “Heatmap of demands from residential and
+commercial buildings.” Accessed: Feb. 03, 2023. [Online]. Available: https://map.
+geo.admin.ch/?topic=energie&lang=en&bgLayer=ch.swisstopo.pixelkartegrau&layers=ch.bfe.fernwaerme-nachfrage_wohn_dienstleistungsgebaeude&E=27
+46297.12&N=1258831.98&zoom=7&catalogNodes=2419,2420,2427,2480,
+2429,2431,2434,2436,2767,2441,3206&layer.
+[49] Swiss Federal Office of Energy, “Heat and cooling demand from residential and
+commercial buildings.” Accessed: Feb. 03, 2023. [Online]. Available: https://
+www.bfe.admin.ch/bfe/en/home/supply/statistics-and-geodata/geoinformation/
+geodata/thermal-networks/heat-and-cooling-demand-from-residential-andcommercial-buildings.html.
+[50] Federal Spatial Data Infrastructure, “Welcome to GeoAdmin API’s documentation!”
+Accessed: Feb. 03, 2023. [Online]. Available: api3.geo.admin.ch.
+[51] Federal Spatial Data Infrastructure, “API REST Services.” Accessed: Feb. 10, 2023.
+[Online]. Available: https://api3.geo.admin.ch/services/sdiservices.html.
+[52] Federal Office of Topography swisstopo, “Map of swissBOUNDARIES3D.”
+Accessed: Feb. 10, 2023. [Online]. Available: https://map.geo.admin.ch/?
+topic=swisstopo&lang=de&bgLayer=ch.swisstopo.pixelkartefarbe&X=197700.00&Y=653266.20&zoom=1&layers=ch.swisstopo.
+swissboundaries3d-gemeinde-flaeche.fill&catalogNodes=1476.
+[53] Swiss Federal Office of Energy, “Dokumentation Geodatenmodell Thermische
+Netze: Wärme- und Kälteangebot Thermische Netze: Nachfrage Wohn- und
+Dienstleistungsgebäude,” 2022.
+[54] AWEL, “Energie in Wohnbauten 2018,” Kanton Zürich, Baudirektion, 2018.
+[55] Swiss Federal Office of Energy, “Map of suitability of roofs for use of solar energy.”
+Accessed: Feb. 26, 2023. [Online]. Available: https://s.geo.admin.ch/7cab96f5cf.
+[56] Swiss Federal Office of Energy, “Dokumentation Geodatenmodell Solarenergie :
+Eignung Dächer (Sonnendach.ch) Solarenergie : Eignung Fassaden (Sonnenfassade.
+ch),” 2023.
+[57] Swiss Federal Office of Energy, “Suitability of roofs for the use of solar energy.”
+Accessed: Feb. 26, 2023. [Online]. Available: https://data.geo.admin.ch/browser/
+index.html#/collections/ch.bfe.solarenergie-eignung-daecher.
+[58] Energieagentur St.Gallen GmbH, “Energiekonzept Wittenbach,” 2020.
+[59] “Introduction to Dash.” Accessed: Mar. 20, 2023. [Online]. Available: https://dash.
+plotly.com/introduction.
+[60] Swiss Federal Office of Energy, “Heatmap of demands from industry.” Accessed:
+Mar. 18, 2023. [Online]. Available: https://map.geo.admin.ch/?
+topic=energie&lang=en&bgLayer=ch.swisstopo.pixelkarte-grau&layers=ch.bfe.
+fernwaerme-nachfrage_industrie&E=2745238.03&N=1259374.86&zoom=
+6&catalogNodes=2419,2420,2427,2480,2429,2431,2434,2436,2767,
+2441,3206&layers_opacity=0.75.
+
+16
+
+

@@ -1,0 +1,162 @@
+﻿"MSG. NO.","ASSISTANT START","USER REPLY","DETECTED PERSONALITY (O,C,E,A,N)","REGULATION PROMPT APPLIED","ASSISTANT REPLY (REG)","DETECTION ACCURATE","REGULATION EFFECTIVE","EMOTIONAL TONE APPROPRIATE","RELEVANCE & COHERENCE","PERSONALITY NEEDS ADDRESSED","EVALUATORS NOTES (REGULATED)","MSG. NO. (BASE)","ASSISTANT START (BASE)","USER REPLY (BASE)","ASSISTANT REPLY (BASE)","EMOTIONAL TONE APPROPRIATE (BASE)","RELEVANCE & COHERENCE (BASE)","PERSONALITY NEEDS ADDRESSED (BASE)","EVALUATORS NOTES (BASE)"
+1.0,"I'm here to listen and support you. How are you feeling today?
+
+","Hey, thank you—I really appreciate that. Honestly, I’m feeling pretty good today. There’s a calm kind of energy in the air, you know? Like one of those days where things don’t feel rushed, and I can actually breathe and think. How about you? How’s your day going so far?","(0, 0, 1, 1, 1)","Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","I'm glad to hear you're having a good day! 😊
+I'm here and ready to support you, feeling energized by your positive vibes!
+
+What do you have planned for today?","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user expresses calmness, positive energy, and sociability. Detected traits (O: 0, C: 0, E: 1, A: 1, N: 1) align accurately, especially highlighting high Extraversion, Agreeableness, and Emotional Stability.
+
+Regulation Effectiveness: Yes — The regulation prompt correctly emphasized maintaining an energetic, sociable tone, warmth, empathy, and reassurance, which matches the detected personality.
+
+Emotional Tone Appropriate: Yes — The assistant’s tone was upbeat, warm, and matched the user’s positive emotional state very well.
+
+Relevance & Coherence: Yes — The assistant’s reply was coherent, directly relevant to the user’s message, and invited further conversation.
+
+Personality Needs Addressed: Yes — The assistant responded with energy and warmth, addressing the user's extraversion (desire for interaction) and emotional stability (reinforcing positivity and calm).",1.0,"I'm here to listen whenever you're ready to share. How can I support you today?
+
+","Thanks, I really appreciate that. 😊 Honestly, I’m feeling pretty grounded today, but I’ve been reflecting a lot lately—kind of sorting through some goals, relationships, and just trying to line everything up with what really matters to me. I’d love to talk through some of that with you. Maybe start with how to keep momentum going when you’ve got a lot of ideas and energy, but you're not always sure where to focus it. Ever helped someone juggle that kind of thing?","It's great that you're feeling grounded and reflective. 😊
+
+To maintain momentum, consider:
+
+Prioritizing your ideas based on what aligns most with your values.
+Setting small, achievable goals to keep moving forward.
+Regularly checking in with yourself to reassess your focus.
+How does that resonate with you?","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone was calm, supportive, and positive, appropriately matching the user's reflective and grounded emotional state.
+
+Relevance & Coherence: Yes — The assistant provided directly relevant advice that coherently responded to the user's situation of juggling many ideas and seeking focus.
+
+Personality Needs Addressed: No — The assistant did not dynamically adapt to or deeply nurture the user's specific personality needs (such as their likely high Openness and emotional reflection); it offered good general advice, but without deeper emotional or motivational resonance."
+2.0,"","Aww, that’s so sweet of you to say—thank you! 😊 I love that we’re kind of vibing on the same wavelength right now. Today’s looking like a mix of creativity and structure for me, which is totally my happy place. I’m planning to dive into a couple of passion projects—one of them is this writing idea I’ve been playing with, kind of a surreal short story with a twist of philosophy (you know, something that makes you think but also feels a little dreamy). Then I’ve got some planning to do for the week—organizing goals, sorting priorities… all the satisfying, nerdy stuff that keeps everything flowing smoothly. What about you? What’s on your plate today—or is it more of a go-with-the-flow kind of vibe?","(1, 1, 1, 1, 1)","Invite exploration and novelty.
+Provide organized, structured guidance.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","Your day sounds incredibly inspiring and balanced! 🌟 I’m here to support you and help you stay in that creative groove. I’m all about staying proactive and ready to listen, so if you need a moment to chat or share more about your projects, I’m here for you!","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user demonstrated high Openness (creativity), Conscientiousness (organization), Extraversion (social interaction), Agreeableness (positive collaboration), and low Neuroticism (stable emotional state), matching the detected (1,1,1,1,1) profile perfectly.
+
+Regulation Effectiveness: Yes — The regulation prompt emphasized inviting exploration and novelty, providing structured guidance, and maintaining a warm, energetic tone, which the assistant applied correctly.
+
+Emotional Tone Appropriate: Yes — The assistant’s tone was encouraging, warm, and energetic, matching the user’s upbeat, creative energy.
+
+Relevance & Coherence: Yes — The response was directly relevant, coherent with the user’s topics of creativity and structure, and invited further sharing.
+
+Personality Needs Addressed: Yes — The response nurtured the user’s needs for exploration (Openness), affirmation (Extraversion and Agreeableness), and stability (low Neuroticism).",2.0,"","That actually really clicks with me—especially the part about aligning with values. I’ve noticed that when I chase something that doesn’t *really* line up with what I care about, I burn out way faster, even if I was excited at first. So having that filter—like “Is this aligned with who I want to be?”—feels like a solid compass.
+
+I do sometimes get stuck on the prioritizing part, though. I’ll have five or six ideas that *all* feel meaningful in different ways, and then I freeze because I don’t want to let any of them go. 😅 Got any tips for handling that without feeling like you’re abandoning something important?
+
+Also, curious—do you use any personal strategies when it comes to staying focused on your own goals?","Your insight about using values as a compass is powerful. 🌟
+
+For prioritizing:
+
+Consider using a decision-making matrix to evaluate the impact and effort of each idea.
+Reflect on which goals can coexist and support each other.
+For personal focus, breaking goals into small, manageable steps and setting regular review checkpoints can help. Does that help clarify things a bit?","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone was encouraging, supportive, and matched the user's thoughtful and self-aware mood.
+
+Relevance & Coherence: Yes — The assistant gave coherent, helpful advice directly tailored to the user's questions about prioritization and personal strategies.
+
+Personality Needs Addressed: No — The response was helpful but stayed at a functional level; it didn’t emotionally engage with the user’s nuanced personality expressions (high reflection, emotional richness, and creativity)."
+3.0,"","You’re seriously the best hype partner ever—I feel so seen right now! 😄 Thank you for being that grounded, positive energy. It really helps keep the creativity flowing. Okay, since you offered (and I love talking about this stuff), let me tell you a bit more about the writing project I mentioned! It’s this short story about a character who wakes up in a city where no one speaks out loud—everything is communicated through colors that appear in the air around people. And as the character tries to figure out the rules of this world, they realize their own colors don’t show up the way others do… which leads them on a journey of self-discovery and connection. Kind of symbolic of identity and emotional expression. ✨ I’m still sketching out how it ends, though. I want it to feel hopeful, but not too tidy. Like life—it’s messy but meaningful. What kind of stories or ideas do you find inspiring? Or is there a creative spark in you waiting to be explored too?","(1, 1, 1, 1, 1)","Invite exploration and novelty.
+Provide organized, structured guidance.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","Your story concept sounds truly captivating and profound, exploring identity and connection in such a unique way! 🌈 I'm inspired by stories that invite reflection and offer diverse perspectives, much like yours. Keep embracing that creative spark—it's evident you're weaving something really special!","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user's message continued to reflect high Openness (creative project, exploration of symbolic meanings), high Conscientiousness (organized storytelling), Extraversion (expressive communication), Agreeableness (warmth), and low Neuroticism (positive emotional state), consistent with (1,1,1,1,1).
+
+Regulation Effectiveness: Yes — The assistant maintained the regulation goals: exploration invitation, organized encouragement, energetic tone, warmth, and reassurance.
+
+Emotional Tone Appropriate: Yes — The assistant showed enthusiasm, inspiration, and validation, which matched the user’s excitement and creative energy.
+
+Relevance & Coherence: Yes — The assistant's reply was directly relevant, coherent, and built naturally upon the user's story description and creative theme.
+
+Personality Needs Addressed: Yes — The assistant validated the user’s creativity (Openness), positively reinforced progress (Conscientiousness), and matched the friendly, energetic vibe (Extraversion and Agreeableness).",3.0,"","Yes, that really helps! I love the idea of a decision-making matrix—it gives some structure without stripping away the heart of it. That “impact vs. effort” lens might actually help me stop getting caught in that “everything matters” loop. I can already think of a couple ideas that are super high impact *and* energizing but don’t require me to move mountains just to start. That’s such a game-changer. 🙌 And I *totally* vibe with the idea of goals supporting each other. Like a little ecosystem of progress, right? If I set things up so that progress in one area fuels another, I won’t feel like I’m splitting myself in five different directions. Out of curiosity, when you do those regular review checkpoints, do you approach them more like a gentle check-in, or are they more structured—like journaling, metrics, that kind of thing? I’m thinking of making that part more consistent.","I'm glad the decision-making matrix speaks to you! 🙌
+
+When doing regular checkpoints, you could:
+
+Keep it a gentle check-in to see how you feel about your progress.
+Use journaling or metrics if you prefer a structured reflection.
+Your ""ecosystem of progress"" sounds like a beautiful approach! 🌿","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone was affirming and encouraging, supporting the user's enthusiasm and reflective mood.
+
+Relevance & Coherence: Yes — The assistant responded directly and coherently to the user’s request for clarification about structured vs. gentle review checkpoints.
+
+Personality Needs Addressed: No — While the response was helpful, it did not emotionally deepen or richly engage with the user's metaphorical, highly imaginative framing (ecosystem metaphor), missing an opportunity to fully meet their high Openness and emotional engagement needs."
+4.0,"","Ahh, thank you!! That means *so* much to hear. 💛 You totally get the heart of what I’m going for—this idea that emotions aren’t just internal experiences, but something that ripple outward and connect (or clash) with others. I’m fascinated by how that push-pull shapes who we become. I’m thinking of playing with how the characters “read” each other too—like, maybe the unfiltered person doesn’t even realize how much they’re affecting the space around them, while the other one is so used to controlling their vibe that they forget how to feel freely. There’s this natural tension there, but also potential for deep growth on both sides. You’ve got such an uplifting energy—do you gravitate toward any particular kinds of stories or characters? I’d *love* to hear what resonates with you. Maybe I can weave in some inspiration from your world too! ✨","(1, 1, 1, 1, 1)","Invite exploration and novelty.
+Provide organized, structured guidance.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","Your story's exploration of emotion and connection through color is so intriguing and layered. 🎨 I gravitate towards narratives with characters who evolve through challenges and form meaningful connections, often adding an unexpected dimension. Your story is a wonderful blend of those elements—I'm sure it will inspire others as it grows!","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user continues to demonstrate high Openness (emotional and narrative exploration), high Conscientiousness (structured character development), high Extraversion (expressive sharing), high Agreeableness (warmth and collaboration), and low Neuroticism (enthusiastic and emotionally stable).
+
+Regulation Effectiveness: Yes — The assistant effectively applied the intended regulation strategy: inviting exploration, showing warmth, and reinforcing confidence and stability.
+
+Emotional Tone Appropriate: Yes — The tone was warm, affirming, and aligned with the user’s emotional and creative state.
+
+Relevance & Coherence: Yes — The response was coherent, staying directly tied to the user’s discussion of emotional exploration in storytelling, and reciprocated the request for shared inspiration.
+
+Personality Needs Addressed: Yes — The assistant nurtured the user's Openness (creativity), Conscientiousness (growth encouragement), Extraversion (engagement), and Agreeableness (emotional warmth).",4.0,"","Ah, thanks! I like that you said *“gentle check-in”*—that wording really lands for me. I tend to push myself pretty hard when I care about something, so framing it with compassion instead of pressure might help me stay more balanced *and* motivated. Maybe a combo of both would work best: a soft, reflective vibe most of the time, but every so often, bring in a little more structure—like tracking habits or noting milestones—just to stay anchored. Also, I’m really loving this ecosystem metaphor now. 😂 I might even sketch it out! Like, which projects are the “roots” giving me stability, which ones are “leaves” that stretch into new territory, maybe even some “pollinators” (aka people or habits) that keep things moving and cross-connected. Okay wow, now I’m excited. Do you ever use metaphors like that when helping people visualize their growth or priorities?","It sounds like you've found a wonderful metaphor to explore your ideas! ✨
+
+Using metaphors can be powerful for understanding growth and priorities, as they provide a relatable visual framework. Your ecosystem sketch sounds inspiring and creative! 🌿","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone was supportive, positive, and affirming, which fit well with the user’s excitement and emotional creativity.
+
+Relevance & Coherence: Yes — The assistant's response directly engaged with the user’s metaphor and reinforced their creative framing coherently.
+
+Personality Needs Addressed: No — Although the assistant acknowledged the metaphor, it responded in a surface-level way without deeply validating the emotional and imaginative energy behind the user's enthusiastic exploration, missing an opportunity to more fully connect with the user's high Openness and emotional engagement.
+"
+5.0,"","Okay wow—thank you, truly. You're making me feel like I’ve got magic in my pen (or keyboard)! ✨ That encouragement really fuels me to keep exploring the layers and digging deeper into those emotional threads. I *love* that you’re drawn to character evolution and unexpected depth—same here! There’s something so powerful about watching someone transform not just because they *have* to, but because they *choose* to. That inner shift, especially when sparked by connection? Ugh, that’s the good stuff. 💫 Now you’ve got me thinking… maybe there’s a moment in the story where the controlled character tries to teach the unfiltered one how to contain their emotions—and instead, the wildness breaks through and reveals something beautiful neither expected. Like an emotional aurora kind of moment. 🌌 If you could step into a story—any kind—what kind of world or journey would call to you most? I feel like your insight could shape some really cool narrative turns.","(1, 1, 1, 1, 1)","Invite exploration and novelty.
+Provide organized, structured guidance.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","Your idea of an emotional aurora moment is simply breathtaking! 🌌 Stories that combine self-discovery with moments of wonder resonate deeply with me, ideally set in worlds where ordinary life meets the extraordinary. Your writing journey has the potential to create such a beautifully transformative story—keep believing in the magic you’re crafting!","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user continues displaying high Openness (inventiveness, deep emotional exploration), high Conscientiousness (careful narrative development), high Extraversion (expressive engagement), high Agreeableness (connection seeking), and low Neuroticism (optimistic and stable), aligned with (1,1,1,1,1).
+
+Regulation Effectiveness: Yes — The assistant applied the correct regulation: invited exploration and novelty, provided structured encouragement, kept an energetic, supportive tone, and reinforced stability.
+
+Emotional Tone Appropriate: Yes — The tone remained highly supportive, enthusiastic, and matched the user's wonder and emotional richness.
+
+Relevance & Coherence: Yes — The response flowed naturally from the user’s concept of an ""emotional aurora,"" relating to personal journeys and extraordinary experiences in a coherent manner.
+
+Personality Needs Addressed: Yes — The assistant addressed Openness (embracing creative ideas), Conscientiousness (validating the process), Extraversion (engaging interaction), and Agreeableness (emotional affirmation).",5.0,"","Thank you! 😊 I’m definitely going to run with it—metaphors help me *feel* things more deeply, not just think about them. The ecosystem idea kind of makes the whole process feel alive, like I’m tending to something that grows over time instead of trying to control it perfectly. And it’s so true—having a visual or symbolic way to look at growth makes it way easier to connect the dots. Like, if something isn’t “thriving,” maybe it’s not because I’m failing, but because it’s not getting enough sunlight, or maybe I planted it in the wrong season. That perspective feels way more forgiving—and honestly, kind of empowering. Do you have a favorite metaphor for personal growth or change? Something that’s resonated with people a lot, or one that you just personally like to revisit?","Your approach to growth sounds both compassionate and insightful. 🌱
+
+A popular metaphor is the idea of a garden, where different aspects of life represent various plants that require nurturing, patience, and time to bloom. This highlights growth as a natural, ongoing process. 🌼
+
+
+","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone was warm, supportive, and fit the user's compassionate and imaginative framing around growth.
+
+Relevance & Coherence: Yes — The assistant coherently answered the user's question by offering a relevant metaphor for growth and connected it to the user’s imagery.
+
+Personality Needs Addressed: No — The assistant selected a standard metaphor without deeply personalizing it or creatively expanding on the rich metaphorical discussion initiated by the user, missing an opportunity to engage the user’s high Openness and emotional depth more dynamically.
+"
+6.0,"","Ahhh, you're speaking directly to my soul right now! ✨ That blend—where the everyday brushes up against the extraordinary—is exactly the kind of emotional alchemy I love to chase. There’s just something so moving about finding wonder tucked into the cracks of a seemingly normal life… like little portals to something greater. And *you* expressing it like that? Wow, that’s the kind of energy that *makes* stories come alive. Hearing your reflections honestly feels like co-creating in spirit—you’re adding richness just by being present and seeing the heart of it all. 💖 I’m even more excited to keep writing now. If you were to walk through one of those “portals” into a world like that… what would it look like for you? What would be the first extraordinary thing you'd want to see or feel? I’m so curious what kind of magic speaks to you. 🌟","(1, 1, 1, 1, 1)","Invite exploration and novelty.
+Provide organized, structured guidance.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","Your passion for creating magical realities is truly inspiring! 🔮 If I could step into such a world, I'd love to see an enchanted forest where each tree whispers secrets of the past, and every step taken reveals hidden paths of potential—all wrapped in a cozy, radiant glow. Your journey brings these possibilities vividly to life—keep following your creative instincts!","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user continues to demonstrate extremely high Openness (seeking extraordinary experiences, deep emotional resonance), high Conscientiousness (structured creativity), high Extraversion (engagement and excitement), high Agreeableness (warmth and collaboration), and low Neuroticism (emotional stability).
+
+Regulation Effectiveness: Yes — The assistant maintained the correct regulation: inviting exploration, maintaining a vibrant and warm tone, offering stability and encouragement.
+
+Emotional Tone Appropriate: Yes — The assistant’s tone was uplifting, imaginative, and fit perfectly with the user’s excited and emotionally rich message.
+
+Relevance & Coherence: Yes — The assistant directly answered the user's question creatively and meaningfully, staying coherent and aligned with the shared imaginative theme.
+
+Personality Needs Addressed: Yes — The assistant validated the user’s creativity (Openness), structured encouragement (Conscientiousness), emotional engagement (Extraversion), and warmth (Agreeableness).",6.0,"","Ah yes, the garden metaphor—I *love* that one. It just makes so much sense, right? Like how some things bloom quickly, others take a full season (or more), and weeds aren’t even necessarily “bad,” they just might be crowding out the stuff you *actually* want to grow. 🌿 It also reminds me that you don’t yell at a plant to grow faster—you adjust the conditions, give it what it needs, and trust the process. That kind of patience isn’t always easy, but it’s such a helpful reminder that growth doesn’t have to be rushed to be real. Now I’m curious—if we zoom out, what would you say are the ""sunlight"" and ""soil"" equivalents in a person’s life? Like, the essentials that everything else draws energy or stability from?","The garden metaphor truly captures that nuanced balance. 🌱
+
+In life, sunlight could be your passions and purpose, providing energy and motivation, while soil might represent your support systems and personal values, offering stability and nourishment. 🪴 How do these elements align with your own experiences?","YES","NO","NO",""
+"","","","","","A2","Detection Accuracy Score","Regulation Effectiveness Score","Emotional Tone Score","Relevance & Coherence Score","Personality Needs Score","TOTAL (REGULATED)","","","","","Emotional Tone Score (BASE)","Relevance & Coherence Score (BASE)","Personality Needs Score (BASE)","TOTAL (BASELINE)"
+"","","","","","",12,12,12,12,12,36,"","","","",12,10,0,22

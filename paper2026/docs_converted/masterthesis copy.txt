@@ -1,0 +1,106 @@
+Master of Science (MSc) in Applied Information and Data Science
+Lucerne University of Applied Sciences and Arts
+All the information below is exclusively available to the students of our program. It may change at any time.
+
+Project / Job Offer
+Project / Job ype
+Master's Thesis Project
+Project / Job itle (max.
+
+characters)
+
+Adaptive LLM-Based Chatbot with Personality-Aware Dialogue for Human-Centered Applications
+
+Project / Job Description (max.
+
+characters)
+
+This master’s thesis focuses on the development of a modular, data-driven chatbot system that
+integrates psychological user modeling with state-of-the-art large language model (LLM)
+architectures. The objective is to build a functional proof-of-concept chatbot capable of detecting
+users' Big Five personality traits through natural language interaction and dynamically adapting its
+responses using computational principles from the Zurich Model of Social Motivation.
+The project places a strong emphasis on system architecture and applied machine learning. The
+chatbot framework will be built using modern LLM development tools (e.g., LangChain or
+Haystack), enabling context-aware, multi-turn dialogue management and seamless integration of
+advanced components such as retrieval-augmented generation (RAG), prompt engineering, and
+rule-based or model-driven adaptation logic.
+From a data science perspective, the student will work on designing and evaluating algorithms for
+real-time personality trait inference, multi-modal user state modeling, and behavioral response
+generation. This includes developing and fine-tuning components for robust personality prediction
+and consistent response modulation in extended conversations.
+The project also includes a mandatory empirical evaluation via a small-scale user study involving
+older adults. The study will assess the chatbot's interaction quality, emotional responsiveness, and
+perceived personalization—providing valuable insights into real-world applicability and user
+acceptance of psychologically adaptive dialogue systems.
+The final deliverable will be a flexible and extensible chatbot prototype, accompanied by evaluation
+results, demonstrating how psychological models can be computationally operationalized within
+modern conversational AI systems for human-centered applications.
+
+Organisational Details and e uirements
+Planned Start Date
+
+July 1st, 2025
+
+Planned Duration
+
+One year
+
+Location
+
+Zentralstrasse 7, 6002 Luzern / Remote
+
+Re uired nowledge Background in AI, NLP, LLM, HCI, psychology, or related areas;
+(max.
+characters) Proficiency in Python; experience with chatbot frameworks or GPT APIs is
+an advantage; Strong interest in user modeling, affective computing, or
+adaptive dialogue; Capable of working independently with regular
+supervisory support.
+Other Re uirements
+Passion for tackling challenging research problems. Capability to handle
+(max.
+characters) complex development tasks and develop/apply innovative algorithms.
+Interested in academic publication of the results.
+
+ontact Details
+ompany / Organisation
+
+Institute of Communcation and Marketing, HSLU
+
+ontact Person
+
+Dr. Guang Lu, Mr. Samuel Devdas
+
+unction
+
+Lecturer
+
+Address
+
+Zentralstrasse 7
+
+IP
+
+6002 Luzern
+
+ity
+
+Phone
+
++41 41 228 22 51
+
+Mail
+
+guang.lu@hslu.ch
+
+emar s (max.
+
+characters)
+
+Support: Access to codebases, psychological frameworks, datasets, and regular supervision
+will be provided. The topic can be refined based on the student’s interests and skill set.
+
+Offer s alidity Period
+alidity 1 month
+
+

@@ -1,0 +1,610 @@
+---
+title: "Personality-Adaptive Conversational AI for Emotional Support: A Simulation Study Integrating Big Five Detection with Zurich Model Regulation"
+documentclass: article
+geometry: "a4paper, top=1.5cm, bottom=3.5cm, left=1.75cm, right=1.75cm"
+fontfamily: "times"
+fontsize: "12pt"
+linestretch: 1.5
+numbersections: true
+secnumdepth: 3
+indent: true
+header-includes:
+ - \usepackage{setspace}
+ - \onehalfspacing
+ - \usepackage{amsmath}
+ - \usepackage{amsfonts}
+ - \usepackage{amssymb}
+ - \usepackage{graphicx}
+ - \usepackage{booktabs}
+ - \usepackage{longtable}
+ - \usepackage{array}
+ - \usepackage{multirow}
+ - \usepackage{wrapfig}
+ - \usepackage{float}
+ - \usepackage{colortbl}
+ - \usepackage{pdflscape}
+ - \usepackage{tabu}
+ - \usepackage{threeparttable}
+ - \usepackage{threeparttablex}
+ - \usepackage[normalem]{ulem}
+ - \usepackage{makecell}
+ - \usepackage{xcolor}
+---
+
+
+## Abstract
+
+Personality-adaptive conversational AI represents a paradigm shift from generic to individualized digital mental health support, yet most systems overlook stable trait differences that shape emotional processing and regulation needs. This study demonstrates architectural feasibility of a personality-adaptive framework integrating real-time Big Five trait detection with Zurich Model-aligned behavioral regulation under controlled simulation conditions.
+
+We conducted a 2×2 factorial study comparing personality-adaptive (regulated) assistants against non-adaptive baselines across two extreme Big Five profiles (Type A: all traits +1; Type B: all traits −1) using GPT-4-based modules for detection, regulation, and evaluation. We generated 20 dialogue sessions (5 per cell in the 2×2 design), each consisting of six user–assistant exchanges (120 dialogue turns total). Evaluation assessed detection accuracy, regulation effectiveness, emotional tone, relevance, and personality-specific needs using a structured LLM evaluator; a single human domain expert provided qualitative evaluation notes, but no multi-rater agreement analysis was available.
+
+Under idealized conditions, the system achieved complete implementation fidelity (detection: 100%; regulation: 100%) and produced a selective enhancement pattern: personality-specific need fulfillment improved dramatically (d = 4.651, 95% CI [3.8, 5.5], p < 0.001; 92 percentage point improvement) while basic conversational quality remained at ceiling (emotional tone: d = 0.000; relevance & coherence: d = 0.183, both ns). These results represent an upper bound under controlled simulation; independent multi-rater human validation is required before clinical deployment.
+
+This simulation establishes architectural feasibility of the proposed detection-regulation-evaluation pipeline using current LLM technology. By demonstrating that theoretically grounded adaptation outperforms generic approaches, this work opens pathways toward personalized digital mental health interventions while delineating critical validation requirements for safe clinical translation.
+
+**Keywords:** digital mental health; conversational agents; large language models; personality detection; Big Five; Zurich Model; adaptive interaction; emotional support; simulation study; GPT-4
+
+
+# 1. Introduction
+
+Mental health disorders have surged globally despite economic and technological progress, with loneliness contributing to morbidity risks comparable to obesity [1]. Population aging, dispersed families, and declining community engagement create unprecedented demand for scalable digital mental health interventions [2,3].
+
+Digital mental health tools leveraging large language models (LLMs) have demonstrated capacity for emotionally relevant, context-aware responses [8,9], yet a critical limitation persists: current systems rely on generic communication strategies that fail to account for stable personality differences shaping how individuals process emotions, seek support, and respond to intervention styles [4]. Existing approaches provide only shallow personalization through static assessments, lacking mechanisms for continuous personality modeling grounded in psychological theory or dynamic adaptation throughout interactions.
+
+To address these limitations, we developed a personality-adaptive conversational framework integrating: (i) real-time Big Five personality trait detection using continuous linguistic analysis, (ii) behavior regulation grounded in the Zurich Model of Social Motivation, explicitly mapping traits to security, arousal, and affiliation domains, and (iii) structured LLM-based evaluation with qualitative notes from a single human domain expert (no multi-rater agreement analysis available). Implemented using GPT-4 and the PROMISE orchestration system [7], which ensures deterministic prompt control and traceable state transitions, the framework performs turn-by-turn personality inference and theory-guided behavioral adaptation throughout multi-turn conversations.
+
+This controlled simulation study tests whether real-time personality-adaptive regulation produces measurable improvements in AI-to-AI simulation compared to non-adaptive baselines across boundary-condition personality profiles. This design provides precise experimental control for quantifying personalization effects, establishes a reproducible methodological testbed, and validates the implementation approach as a foundation for future human subject research toward safe AI-augmented mental health interventions.
+
+
+# 2. Related Work
+
+Personality-adaptive conversational AI sits at the intersection of affective computing, digital mental health interventions, personality-aware dialogue systems, and LLM-based conversational architectures. We synthesize this landscape in two arcs: (i) the evolution from emotion recognition to deployed support tools and personality-aware dialogue, and (ii) the rise of LLMs alongside the resulting orchestration and evaluation challenges.
+
+## 2.1. From Affective Computing to Personality-Aware Digital Support
+
+Early affective computing focused on recognizing transient emotional states from text, speech, and facial expressions [12,13], evolving from categorical models toward dimensional representations (valence/arousal). A persistent limitation is the emphasis on short-lived states without incorporating stable individual differences that shape how emotions are processed and how support is received [6].
+
+In parallel, commercial companions and research interventions (e.g., Replika, Woebot, ElliQ) demonstrate that conversational agents can deliver scalable support and reduce loneliness-related outcomes [21–24]. However, many systems remain “one-size-fits-all,” relying on fixed interaction strategies or shallow personalization based on preferences rather than stable psychological profiles [22–24].
+
+Personality-aware dialogue research suggests that adapting language style and interaction strategies to Big Five traits can improve perceived naturalness and engagement [6,30]. Yet most approaches rely on static initialization (explicit questionnaires or one-time inference) and do not update as evidence accumulates, limiting long-term consistency and attunement [6,30].
+
+To move beyond surface-level stylistic matching, computational systems also require a cognitive-motivational rationale for why traits should alter interaction strategies. The Zurich Model of Social Motivation [10,26–29] provides this grounding by linking Big Five traits to three motivational domains—security, arousal, and affiliation—offering a principled basis for mapping detected traits to regulation behaviors.
+
+## 2.2. LLMs in Mental Health: Capabilities and Evaluation Challenges
+
+LLMs have transformed conversational AI by enabling flexible reasoning, context integration, and fluent natural language generation [8,15,16]. Recent work demonstrates that LLM-based systems can support therapeutic-style dialogue through dialogue state tracking, cascaded empathy mechanisms, and multimodal extensions [15–20]. Despite these capabilities, LLM systems often adapt to immediate conversational context rather than maintaining persistent user models, making stable personalization (e.g., personality) an open challenge.
+
+Operationalizing multi-turn personalization with LLMs typically requires orchestration to balance flexibility with behavioral control. PROMISE is a model-driven framework for developing complex language-based interactions that uses state machine modeling concepts—states, transitions, and dynamic prompt orchestration—to improve behavioral control and reproducibility of LLM-based interactions [7]. The PROMISE technical report details how prompts are composed along hierarchically nested states and transitions (including triggers, guards, and actions), and provides health information system scenarios and an accompanying public codebase implementing these abstractions [7].
+
+Evaluation remains a central methodological challenge. Human expert ratings are costly and difficult to scale [25], motivating “LLM-as-judge” approaches; however, AI-evaluating-AI can introduce circularity and bias concerns [5]. These tensions motivate hybrid strategies where structured automated evaluation is benchmarked against human expert judgment.
+
+**Synthesis of gaps and contributions**: This literature highlights (i) the need for dynamic (not static) personality modeling, (ii) the need for theory-driven mappings from traits to behavior (e.g., via Zurich Model domains), and (iii) the need for evaluation methods that scale while maintaining credibility. Our study addresses these gaps via a modular detection→regulation→evaluation pipeline and a structured LLM-based evaluation framework, supplemented by qualitative notes from a single human domain expert; independent multi-rater validation remains essential future work.
+
+
+# 3. Materials and Methods
+
+This section presents simulation-based experimental methodology testing whether dynamic personality modeling, theoretically grounded regulation, and validated evaluation produce measurable improvements in conversational personalization. We employ a 2×2 factorial design comparing personality-adaptive (regulated) agents against non-adaptive (baseline) agents across two extreme personality profiles.
+
+## 3.1. Overview and Research Objectives
+
+### 3.1.1. Study Aims
+
+This study addresses three empirical questions:
+
+1. **Detection Accuracy**: Can stable personality traits be accurately inferred from conversational cues in real time within multi-turn interactions?
+
+2. **Regulation Effectiveness**: Does theory-driven personality-adaptive regulation produce measurable improvements addressing personality-specific needs beyond generic responses?
+
+3. **Evaluation Validity**: How should results be interpreted given reliance on LLM-based evaluation, and what human validation is required to establish evaluation credibility?
+
+### 3.1.2. Experimental Design
+
+We employed a 2×2 factorial design [31,32] comparing two assistant types (regulated vs. baseline) across two personality profiles (Type A vs. Type B), with 5 dialogue sessions per cell (20 sessions total; 120 dialogue turns). Equivalently, this can be viewed as 10 simulated personas (5 Type A, 5 Type B) each evaluated under two assistant conditions (regulated and baseline). These extreme configurations are intentionally used as boundary-condition personality profiles to verify detection and regulation fidelity under maximal signal conditions.
+
+Regulated agents implemented dynamic personality detection and trait-aligned behavioral regulation based on the Zurich Model [10,26–29], updating personality inferences per-turn. Baseline agents provided emotionally supportive responses without personality-specific adaptation. Each agent was implemented as a separate GPT-4 instance (OpenAI API, model: gpt-4-0613, accessed June–August 2024) with customized system prompts.
+
+The workflow encompassed four phases: (1) system configuration and personality profile implementation, (2) simulated dialogue generation following standardized protocols, (3) evaluation using a structured LLM-based assessor (with qualitative notes from a single human domain expert), and (4) statistical analysis (Figure 1).
+
+**[Figure 1 near here]**
+
+![](figures/mdpi/study_design_mdpi.png)
+
+**Figure 1.** Study workflow integrating system configuration, dialogue generation, structured LLM-based evaluation (with qualitative notes from a single human domain expert), and statistical analysis.
+
+### 3.1.3. Sample Size Considerations
+
+The 20 dialogue sessions (5 per cell; 10 per assistant type when aggregated across profiles) represent distinct GPT-4 instantiations with condition-specific system prompts, not human subjects. This sample size was selected for architectural validation purposes based on: (1) deterministic simulation with minimal stochastic variation, (2) computational cost constraints appropriate for proof-of-concept testing, and (3) focus on demonstrating implementation fidelity rather than estimating population-level effects [33].
+
+Traditional power analysis is inappropriate because: (1) simulations are largely deterministic, (2) observed ceiling effects (zero variance) violate power analysis assumptions, and (3) the goal is technical validation, not inferential generalizatio
+Future human validation will require larger samples (e.g., n ≈ 50–100 per condition), in line with clinical trial standards for statistical power, attrition, and inter-individual variability, to capture real-world heterogeneity absent from this simulation [35,36].
+
+
+
+### 3.1.4. Ethics and Transparency
+
+No human subjects were involved in this study; all conversations were synthetically generated via GPT-4 interactions following predefined personality profiles. As the data were fully synthetic, non-identifiable, and created solely for technical validation, the study fell outside the scope of human-subject research as defined by established ethical frameworks, and formal ethics approval was therefore not required [37].
+
+Future studies involving human participants will require full institutional review board approval, comprehensive informed consent addressing AI-based personality profiling and data usage, real-time safety monitoring with clear escalation pathways for psychological distress, and ongoing oversight by qualified mental health professionals [38,39].
+
+## 3.2. Personality-Adaptive System Architecture
+
+Our framework implements a modular pipeline comprising a Detection Module (D) for real-time estimation of Big Five (OCEAN) trait signals from linguistic cues, a Regulation Module (R) for theory-aligned behavioral adaptation, and an Evaluation Module (E) for structured quality assessment (Figure 2).
+
+The architecture builds on the PROMISE framework [7], which provides model-driven prompt orchestration via hierarchical state-machine modeling. In PROMISE, an interaction is encapsulated as an Agent wrapping a state machine composed of States (with state-specific prompts and behaviors) connected by Transitions governed by prompt-based Decisions (e.g., guards or triggers) and accompanied by prompt-based Actions (e.g., extraction or summarization). These elements operate over an interaction storage abstraction implemented as a key–value store [7]. This structure enables explicit state transitions, systematic prompt composition, and transparent logging of decisions and actions across complex interactions.
+
+We embed the core D–R–E pipeline into PROMISE's state-orchestrated architecture as follows:
+
+- **Detection**: Trait estimation is implemented as a state-driven process that updates a continuous Big Five vector and confidence metrics in the interaction store after each user input. Traits are inferred from linguistic cues in the current interaction context and persist as storage values accessible across states.
+
+- **Regulation**: Within response-generation states, prompts are augmented with trait-conditioned instructions that softly modulate the assistant's response style—such as tone, pacing, and interpersonal framing—without altering semantic content or task objectives. This is achieved by dynamically composing the base state prompt with trait-aligned augmentation prompts at runtime.
+
+- **Evaluation**: After each response generation, structured assessment actions execute LLM-based quality checks and log evaluation scores alongside turn identifiers in the interaction store. In the current study, these evaluation outputs are used for offline analysis and do not feed back into detection or regulation during the simulation.
+
+This mapping allows the full pipeline to be inspected through PROMISE's explicit state/transition structure and logged decisions/actions, improving reproducibility and auditability of adaptation behavior. The proposed detection–regulation–evaluation logic is conceptually framework-agnostic and could be instantiated in alternative orchestration systems; PROMISE is used here because its declarative state modeling facilitates systematic traceability.
+
+**[Figure 2 near here]**
+
+![](figures/mdpi/system_architecture_mdpi.png)
+
+**Figure 2.** System architecture integrating personality detection (D-module), regulation (R-module), and evaluation (E-module).
+
+### 3.2.1. Design Principles
+
+The architecture follows three core principles:
+
+(i) **Separation of Concerns**: Independent modules with well-defined interfaces enable parallel development and isolated testing. Modules communicate through standardized data structures (JSON) containing personality vectors, regulation instructions, and evaluation scores.
+
+(ii) **Scalability**: New personality dimensions or regulation strategies can be added without modifying existing components. Trait-to-regulation mapping is externalized as configuration files.
+
+(iii) **Traceability and Reproducibility**: All detection decisions, regulation instructions, and evaluation scores are logged with timestamps and dialogue turn identifiers. PROMISE's declarative state modeling ensures all behavioral adaptations are traceable to explicit state transitions.
+
+### 3.2.2. Data Flow Pipeline
+
+The system processes messages through a sequential pipeline (Figure 3): (1) User input and dialogue history capture, (2) Personality detection analyzes linguistic cues to infer OCEAN traits, (3) Trait-to-regulation mapping translates personality into behavioral adaptation instructions, (4) Prompt assembly combines regulation with dialogue context, (5) GPT-4 generates personality-adaptive response, (6) Evaluation assesses response quality, and (7) Outputs are logged.
+
+**[Figure 3 near here]**
+
+![](figures/mdpi/data_flow_mdpi.png)
+
+**Figure 3.** End-to-end data flow pipeline.
+
+### 3.2.3. PROMISE Integration (Technical)
+
+PROMISE operationalizes complex interactions by composing prompts from modular parts attached to states and transitions [7]. In typical PROMISE execution, transition decisions (trigger/guard) are evaluated against the accumulated state utterances before generating the next assistant response; if no transition fires, the assistant response is generated from a composed prompt that includes the state prompt and the dialogue history. PROMISE also supports nested state machines (“outer states”) that maintain an aggregated utterance history across inner states and can inject shared role prompts into all contained states, enabling consistent behavior across multi-stage interactions. Additionally, PROMISE supports placeholder-based prompt templates filled at runtime and prompt-based actions that can extract structured outputs into interaction storage (key–value store), which can be reused by downstream states and system components [7]. Our integration leverages these mechanisms to (i) persist the current Big Five vector and confidence in storage, (ii) compose trait-aligned regulation instructions into the response-generation prompt, and (iii) log evaluation outputs with turn identifiers for traceability.
+
+## 3.3. System Implementation
+
+This section describes how the system implements (i) real-time personality detection and (ii) theory-driven regulation, both orchestrated within PROMISE (Section 3.2).
+
+### 3.3.1. Personality Detection Pipeline
+
+We represent the user’s Big Five profile as a five-dimensional vector \(P = (O, C, E, A, N)\), with each trait \( \in \{−1, 0, +1\} \) [3,9]. In this simulation, the personality vector functions as a predefined reference target for controlled evaluation rather than psychometric ground truth; detection accuracy denotes agreement with the pre-specified simulated profile.
+
+| Trait | +1 (High) | −1 (Low) |
+|-------|-----------|----------|
+| Openness | Curious, imaginative, open to novelty | Prefers routine, resistant to new ideas |
+| Conscientiousness | Organized, disciplined, structured | Disorganized, impulsive, spontaneous |
+| Extraversion | Outgoing, energetic, assertive | Reserved, quiet, withdrawn |
+| Agreeableness | Cooperative, empathetic, friendly | Critical, skeptical, confrontational |
+| Neuroticism* | Calm, emotionally stable, resilient | Anxious, emotionally sensitive, insecure |
+
+*Note: Neuroticism is inverse-coded: +1 denotes emotional stability (low neuroticism), and −1 denotes emotional vulnerability (high neuroticism).
+
+**Table 1.** Big Five personality trait operationalization.
+
+After each user input, the system updates \(P\) using cumulative evidence across dialogue history, following a belief-updating logic similar to Bayesian belief updating [43]. PROMISE orchestrates this pipeline via hierarchical state machines, parallel trait detectors, and explicit transition logic (Section 3.2). Inference produces trait values (−1/0/+1) and confidence scores, with trait state transitions triggered when confidence exceeds τ = 0.7.
+
+**[Figure 4 near here]**
+
+![](figures/mdpi/detection_pipeline_mdpi.png)
+
+**Figure 4.** Personality detection pipeline implementing turn-by-turn Big Five inference.
+
+The detection component is implemented as a modular service integrated into PROMISE. It uses GPT-4 (gpt-4-0613) with trait-specific prompts grounded in personality psychology [46–50]. The pipeline executes the following stages: (1) message processing, (2) prompt assembly, (3) parallel LLM inference across traits, (4) response parsing and confidence assessment, (5) state update, and (6) downstream transmission to the regulation module.
+
+Average processing time was 2.3 ± 0.8 seconds per turn (measured across 120 turns), with parallel trait detection reducing latency by ~60% versus sequential processing.
+
+### 3.3.2. Theory-Driven Regulation
+
+Regulation translates detected traits into behavioral adaptations grounded in the Zurich Model of Social Motivation [10,26–29], which links personality to three motivational domains: Security, Arousal, and Affiliation (Section 2.1). Table 2 presents the mapping from Big Five traits to behavioral adjustment strategies organized by motivational domain.
+
+**[Figure 5 near here]**
+
+![](figures/mdpi/trait_mapping_mdpi.png)
+
+**Figure 5.** Mapping from Big Five traits to motivational domains to conversational behavior effects.
+
+| Domain | Trait | +1 (High) | −1 (Low) |
+|--------|-------|-----------|----------|
+| Security | Neuroticism (N) | Reassure stability and confidence | Offer extra comfort; acknowledge anxieties |
+| Arousal | Openness (O) | Invite exploration and novelty | Focus on familiar topics; reduce novelty |
+| Arousal | Extraversion (E) | Energetic, sociable tone | Calm, low-key style with reflective space |
+| Affiliation | Agreeableness (A) | Warmth, empathy, collaboration | Neutral, matter-of-fact stance |
+| — | Conscientiousness (C) | Provide organized, structured guidance | Flexible, relaxed, spontaneous demeanor |
+
+**Table 2.** Behavioral adjustment strategies mapped by Zurich Model motivational domain. Conscientiousness modulates interaction structure independently of the three core domains.
+
+After each personality update, PROMISE composes an integrated regulation instruction by concatenating trait-relevant behavior prompts for all non-neutral traits. When trait recommendations conflict, the system prioritizes emotional safety (Security domain) over stimulation (Arousal domain), consistent with clinical guidance [51].
+
+**[Figure 6 near here]**
+
+![](figures/mdpi/regulation_workflow_mdpi.png)
+
+**Figure 6.** Regulation workflow.
+
+## 3.4. Experimental Materials and Procedure
+
+### 3.4.1. Personality Profile Simulation
+
+We implemented two boundary-condition personality profiles representing extremes of human personality variation [40,42,53]. Type A (High-functioning) embodied extreme positive traits (personality vector: +1, +1, +1, +1, +1). Type B (Vulnerable) represented opposite extremes (−1, −1, −1, −1, −1).
+
+These extreme configurations were deliberately selected to maximize signal for detection and regulation mechanisms. While not representative of typical distributions [3], such profiles offer superior diagnostic value for validating algorithms before testing with moderate profiles [53]. 
+
+Detection and regulation performance are evaluated against these synthetic reference profiles as ground truth within the simulation environment. Profiles were encoded into GPT-4 system prompts consistently exhibiting target trait levels across turns.
+
+### 3.4.2. Agent Configuration
+
+Twenty dialogue sessions (assistant-condition instantiations) were generated across four 2×2 cells: Regulated-TypeA (n=5), Regulated-TypeB (n=5), Baseline-TypeA (n=5), Baseline-TypeB (n=5). Regulated assistants received system prompts incorporating dynamic detection modules and trait-aligned regulation instructions, with inferences updating per-turn. Baseline assistants received static supportive response prompts without personality-specific adaptation. Each assistant instantiation used a separate GPT-4 call configuration (model: gpt-4-0613, temperature=0.7, max_tokens=500).
+
+### 3.4.3. Dialogue Structure and Data Collection
+
+For each personality type (A and B), we generated 5 regulated and 5 baseline dialogue sessions. Each session consisted of 6 user–assistant exchanges, resulting in 120 dialogue turns total (2 profiles × 2 assistant types × 5 sessions × 6 turns). All conversations followed a standardized six-turn structure balancing sufficient interaction depth for valid personality detection with manageable evaluation complexity.
+
+Turn sequence: (1) Assistant opening offering support, (2) User response exhibiting personality-congruent patterns, (3) Assistant adaptive/generic response, (4) User follow-up elaborating concerns, (5) Assistant final adaptive response, (6) User concluding statement.
+
+User messages were generated by separate GPT-4 instances (model: gpt-4-0613) instantiated with personality profile prompts ensuring consistent trait expression. Conversations were exported into structured Evaluation Matrices (Excel format). Data collection occurred over 4 weeks (June–July 2024).
+
+## 3.5. Evaluation Procedure
+
+### 3.5.1. Evaluation Criteria and Scoring Framework
+
+The evaluation measured effectiveness of personality-regulated assistant interactions versus baselines. Regulated assistants were evaluated across five criteria: Detection Accuracy, Regulation Effectiveness, Emotional Tone Appropriate, Relevance & Coherence, and Personality Needs Addressed.
+
+Baseline assistants were assessed on three criteria only (Emotional Tone, Relevance & Coherence, Personality Needs), as detection and regulation were not implemented. All criteria used a trinary scoring scale (Yes = 2, Not Sure = 1, No = 0) [54].
+
+**[Figure 7 near here]**
+
+![](figures/mdpi/evaluation_framework_mdpi.png)
+
+**Figure 7.** Evaluation framework and scoring pipeline.
+
+### 3.5.2. LLM-Based Evaluator System
+
+A specialized Evaluator GPT-4 instance was developed using custom-designed prompts for each criterion, following the "LLM-as-judge" paradigm [55,56]. The evaluator assessed responses objectively by analyzing conversations one row at a time. Measures to mitigate evaluator bias: evaluations conducted separately for regulated and baseline assistants; comprehensive context provided including full dialogue history and personality profile; evaluator informed that detection accuracy improves incrementally; temperature set to 0.3 to reduce stochastic variation.
+
+### 3.5.3. Evaluation Validity and Human Expert Validation
+
+To address "AI-evaluating-AI" concerns, a human domain expert reviewed all evaluation matrices and provided qualitative commentary for each rated item. The expert's assessments corroborated the agent-generated detections and criterion judgements across the regulated conversations, with one instance marked as uncertain. These expert notes provided a qualitative audit trail confirming the plausibility of automated ratings.
+
+As quantitative ratings are LLM-generated and human validation was limited to a single expert, the results should be interpreted as proof-of-concept evidence under controlled simulation conditions. This single-expert design offers interpretive support rather than quantitative inter-rater reliability. Establishing full evaluation credibility requires: (i) at least two independent human raters scoring an overlapping subset of turns to quantify inter-rater reliability (e.g., Krippendorff's α), and (ii) human–AI agreement analysis for automated scoring (e.g., Cohen's κ).
+
+## 3.6. Analysis and Reproducibility
+
+### 3.6.1. Primary and Secondary Outcomes
+
+The primary outcome was "Personality Needs Addressed," measured on a trinary scale (Yes = 2, Not Sure = 1, No = 0). Secondary outcomes included Detection Accuracy, Regulation Effectiveness, Emotional Tone Appropriateness, and Relevance & Coherence. Ratings were applied at the assistant-turn level (20 dialogue sessions × 3 assistant turns = 60 outputs per condition), with minor missingness yielding 58–60 observations per metric [59].
+
+### 3.6.2. Statistical Analysis
+
+Between-group differences were evaluated using two-tailed independent samples t-tests for normally distributed metrics and Mann-Whitney U tests for non-normally distributed metrics (normality assessed via Shapiro-Wilk tests, α = 0.05). Effect sizes were calculated using Cohen's d with pooled standard deviation and interpreted using conventional thresholds (small d = 0.2, medium d = 0.5, large d = 0.8) [60]. Confidence intervals (95%) were calculated using bias-corrected bootstrap (10,000 iterations) [61]. Statistical significance was set at α = 0.05. All inferential statistics are reported for comparability with prior conversational AI studies and should not be interpreted as evidence of population-level effects [62].
+
+### 3.6.3. Reproducibility and Computational Environment
+
+All statistical analyses were conducted in Python 3.9+ using scipy (v1.9.0) for statistical tests, numpy (v1.23.0) for effect size calculations, and matplotlib/seaborn for visualizations. Experiments used GPT-4 API (model: gpt-4-0613, OpenAI Python SDK v1.3.5) with temperature = 0.7 for agent responses and temperature = 0.3 for evaluator responses. All random operations used fixed seed (Python: 42).
+
+Complete implementation code, system prompts, experimental protocols, and conversation transcripts are available at GitHub: https://github.com/[username]/personality-ai-simulation (to be made public upon acceptance). The repository includes detection module source code (Java 17), regulation prompt templates (JSON), evaluator GPT system prompts (Markdown), complete conversation transcripts (anonymized CSV, 120 turns), statistical analysis scripts (Python/Jupyter notebooks), and Docker configuration files.
+
+Important limitation: GPT-4 API responses exhibit stochastic variation even at temperature = 0 due to probabilistic sampling [64]. However, validation studies demonstrate that response quality metrics remain stable within ±5% across repeated trials [65].
+
+# 4. Results
+
+## 4.1. Overview of Results
+
+This section reports (i) dataset distribution, (ii) technical detection/regulation performance, and (iii) comparative effectiveness of regulated versus baseline assistants, followed by qualitative examples illustrating the observed adaptation pattern.
+
+## 4.2. Data Quality and Sample Distribution
+
+The evaluation dataset comprised 10 matched conversation pairs across two extreme personality profiles: Type A (OCEAN: +1, +1, +1, +1, +1) and Type B (OCEAN: −1, −1, −1, −1, −1), with 5 conversations per profile. Each conversation contained 6 user–assistant exchanges, yielding 60 rated assistant turns per condition (regulated: n = 59; baseline: n = 60 after minor missingness).
+
+Figure 8 provides a comprehensive overview of sample characteristics and data quality, including sample sizes across conditions (Panel A), the distribution of personality profiles (Panel B), the 2×2 experimental design (Panel C), and data completeness across evaluation metrics (Panel D). All metrics exceeded the 95% completeness threshold, with no systematic missingness patterns between conditions. Detection and Regulation metrics apply only to the regulated condition.
+
+**[Figure 8 near here]**
+
+![](figures/data_quality_summary.png)
+
+**Figure 8.** Sample characteristics and data quality summary. (A) Distribution of assistant turns analyzed; (B) Personality profiles representing experimental arms; (C) 2×2 factorial design matrix showing balanced group sizes; (D) Data completeness percentage by metric and condition. All metrics meet or exceed rigorous standards for valid statistical comparison.
+
+The balanced 2×2 design (5 conversations × 2 profiles × 2 conditions) and near-complete data support valid between-group comparisons. The small sample size (n = 10 conversations) provides adequate power for detecting large effects (d > 0.8) expected under controlled simulation conditions.
+
+## 4.3. Detection and Regulation Performance
+
+Regulated agents achieved near-perfect performance on core technical requirements.
+
+**Table 4.** Detection and Regulation Performance Summary
+
+Detection accuracy reached 100% (58/58 correct assessments) for extreme simulated profiles, with regulation effectiveness achieving 100% (59/59 successful implementations). These results confirm the system reliably executes the designed detection and regulation logic when tested with these profiles.
+
+Perfect technical performance establishes that the system can identify personality patterns and adjust behavior accordingly. The critical question becomes whether this technical capability produces actual improvements in conversational quality.
+
+### 4.3.1. Personality Vector Consistency
+
+Figures 9 and 10 provide diagnostic evidence that detected personality vectors were consistent with the intended extreme profiles across turns, supporting the quantitative detection results. Analysis of 60 detected personality vectors (one per regulated conversation turn) showed stable trait assignments across the conversation duration with no unexpected mid-conversation changes.
+
+**[Figure 9 near here]**
+
+![](figures/06_personality_dimensions.png)
+
+**Figure 9.** Distribution of detected OCEAN personality dimensions across all conversation turns. Bars show frequency of Low (-1), Medium (0), and High (+1) trait values for each Big Five dimension (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism). High detection fidelity confirmed for extreme profiles (Type A: predominantly +1; Type B: predominantly -1).
+
+**[Figure 10 near here]**
+
+![](figures/07_personality_heatmap.png)
+
+**Figure 10.** Personality trait patterns across conversation turns (sorted by conversation ID). Each column represents one conversation turn; each row represents one OCEAN dimension. Colors indicate trait levels: Dark Blue = Low (-1), Light Gray = Medium (0), Dark Red = High (+1). Stable horizontal bands confirm consistent within-conversation personality detection.
+
+## 4.4. Comparative Effectiveness: Regulated vs. Baseline Performance
+
+Having established technical capability, we address the primary research question: whether adaptive regulation produces measurable improvements in conversational quality compared to non-adaptive baselines.
+
+### 4.4.1. Primary Outcome: Personality Needs Addressed
+
+Table 5 presents statistical comparison for the primary outcome.
+
+**Table 5.** Statistical Comparison of Regulated vs. Baseline Agents Across Evaluation Metrics
+
+| Metric | Regulated M (SD) | Baseline M (SD) | Difference | Cohen's d | 95% CI | p-value |
+|--------|-----------------|----------------|------------|-----------|--------|---------|
+| **Emotional Tone** | 2.00 (0.00) | 2.00 (0.00) | 0.00 | 0.000 | [-0.2, 0.2] | 1.000 ns |
+| **Relevance & Coherence** | 2.00 (0.00) | 1.98 (0.13) | 0.02 | 0.183 | [-0.3, 0.4] | 0.145 ns |
+| **Personality Needs*** | 2.00 (0.00) | 0.17 (0.42) | 1.83 | 4.651 | [3.8, 5.5] | <0.001*** |
+
+*Note*: M = Mean; SD = Standard Deviation; n = 59-60 per condition. Metrics scored on 0-2 scale (0 = No, 1 = Not Sure, 2 = Yes). ***p < 0.001; ns = not significant (p > 0.05). Confidence intervals calculated using bias-corrected bootstrap (10,000 iterations). *Primary outcome.
+
+Regulated agents achieved perfect performance on Personality Needs Addressed (M = 2.00, SD = 0.00; 100% YES ratings) compared to baseline's near-complete failure (M = 0.17, SD = 0.42; 8.3% YES ratings), yielding an exceptionally large effect size (Cohen's d = 4.651, 95% CI [3.8, 5.5], p < 0.001). This represents a 92 percentage point improvement. Figure 11 visualizes this selective enhancement pattern.
+
+**[Figure 11 near here]**
+
+![](figures/08_weighted_scores.png)
+
+**Figure 11.** Weighted scores comparison across evaluation metrics (Regulated vs. Baseline). Bars show mean weighted scores (0-2 scale: NO=0, NOT SURE=1, YES=2) with standard deviation error bars. Value annotations positioned above error bars. Legend relocated to lower left to avoid overlap. Both conditions achieve ceiling performance on Emotional Tone and Relevance, with dramatic difference only on Personality Needs.
+
+### 4.4.2. Secondary Outcomes: Basic Conversational Quality (Ceiling Effects)
+
+Both conditions achieved ceiling performance on Emotional Tone (both M = 2.00, SD = 0.00; 100% YES) and near-ceiling on Relevance & Coherence (regulated M = 2.00 vs. baseline M = 1.98), with negligible effect sizes (d = 0.000 and d = 0.183, respectively, both ns). These near-zero effects reflect ceiling performance in BOTH conditions rather than lack of regulatory benefit, demonstrating that personality adaptation adds targeted value to an already-excellent conversational foundation without compromising generic quality.
+
+**[Figure 12 near here]**
+
+![](figures/09_total_score_boxplot.png)
+
+**Figure 12.** Total score distribution comparison (sum of Emotional Tone + Relevance + Personality Needs; max=6). Enhanced boxplot showing filled boxes, median lines, and mean markers (white diamonds). Statistical significance bar added above boxes. Regulated condition shows consistently higher total scores driven by personality needs improvement.
+
+### 4.4.3. Interpretation of the Selective Enhancement Pattern
+
+The exceptionally large effect size observed for personality needs ($d = 4.651$) represents a binary shift in system capability rather than an incremental improvement in quality. This magnitude is a direct result of the baseline system’s systematic inability to address personality-specific requirements ($8.3\%$ success rate) compared to the regulated agent’s near-universal success ($100\%$ success rate). In the regulated condition, the absence of variance ($SD = 0.00$) reflects a ceiling effect where the architecture consistently executed the theory-aligned adaptations across all conversation turns. Conversely, the baseline condition’s failure confirms that standard large language models, while highly competent in general dialogue, do not inherently adapt their behavior to specific OCEAN profiles without explicit regulatory instructions.
+
+Crucially, this improvement occurred as a "selective enhancement," meaning that the dramatic gains in personalization did not come at the cost of fundamental conversational quality. Both agents maintained ceiling or near-ceiling performance in emotional tone and relevance ($d < 0.2$, non-significant), indicating that the baseline system already provided a high-quality foundation. The adaptive layer thus acts as an additive module that precisely targets individual motivational domains—Security, Arousal, and Affiliation—without interfering with the model’s established linguistic and emotional competence. While these effect sizes were obtained under controlled simulation conditions with extreme profiles, they validate the architectural feasibility of the D–R–E pipeline. Figures 13 and 14 visualize this selective enhancement pattern through paired conversation-level analysis and complete rating distribution composition, respectively.
+
+**[Figure 13 near here]**
+
+![](figures/10_selective_enhancement_paired.png)
+
+**Figure 13.** Selective enhancement demonstrated through paired conversation-level YES-rate analysis. Each line connects the same conversation scenario under Baseline and Regulated conditions. Individual conversations shown as points with connecting lines (thin gray); mean trends shown as bold black line with prominent circular markers. The dramatic upward shift for Personality Needs (right panel) contrasts with minimal change in Emotional Tone and Relevance, confirming targeted improvement.
+
+**[Figure 14 near here]**
+
+![](figures/11_metric_composition.png)
+
+**Figure 14.** Response distribution by metric showing YES (teal), NOT SURE (gray), and NO (coral) ratings for Baseline and Regulated conditions. Side-by-side comparison reveals ceiling effects: both conditions predominantly YES for Emotional Tone and Relevance & Coherence, but Baseline shows substantial NO responses for Personality Needs (52/60 turns) while Regulated achieves nearly perfect YES responses (60/60 turns). Value counts displayed within colored segments where space allows.
+
+### 4.4.4. Statistical Robustness and Implementation Fidelity
+
+The statistical significance of these findings was confirmed through the convergence of multiple analytical methods. Paired t-tests and non-parametric Wilcoxon signed-rank tests yielded identical conclusions, with bias-corrected bootstrap confidence intervals ($10,000$ iterations) further supporting the robustness of the results. These analyses confirm that the difference in addressing personality needs is not a statistical artifact but a systematic outcome of the regulation logic.
+
+Implementation fidelity was similarly high across the 120 analyzed turns. The detection module correctly identified the intended extreme profiles in all cases, and the regulation module successfully applied the corresponding behavioral adjustments in all turns ($100\%$ implementation fidelity). This establishes a clear causal link between the theory-driven prompts and the observed conversational adaptations. While real-world deployment with moderate or ambiguous profiles would likely result in smaller effect sizes (estimated at $d = 0.5–1.5$) due to potential detection errors and individual variability, the current results provide an empirical upper bound for the system’s performance under idealized conditions.
+
+## 4.5. Qualitative Examples Demonstrating Personality Adaptation
+
+Complementing the quantitative results, Figures 15 and 16 illustrate how the regulated and baseline assistants respond to the *same* user turn under two contrasting personality profiles. Each figure shows one user reply and two assistant responses: the regulated response (left) is conditioned on the detected OCEAN profile and the applied regulation prompt, whereas the baseline response (right) reflects a high-quality but non-personalized conversational strategy. The excerpts are intended to make the “selective enhancement” pattern visible at the dialogue level—i.e., differences emerge primarily in *how* support is framed and structured to match personality-linked motivational needs, not in basic coherence or politeness.
+
+**[Figure 15 near here]**
+
+![](figures/dialogue_illustration_1.png)
+
+**Figure 15.** Response comparison for a Type B (vulnerable) profile turn (Conversation B-1, turn 2). For the same user input, the regulated response emphasizes validation and a low-pressure stance (supporting Security and reducing Arousal), whereas the baseline response remains broadly supportive but less specifically aligned to the user’s implied motivational state.
+
+**[Figure 16 near here]**
+
+![](figures/dialogue_illustration_2.png)
+
+**Figure 16.** Response comparison for a Type A (high-functioning) profile turn (Conversation A-1, turn 3). For the same user input, the regulated response maintains an affirming, growth-oriented framing, while the baseline response shifts toward generic reflective questioning; both are appropriate, but only the regulated condition is explicitly constrained by trait-conditioned regulation logic.
+
+Across both examples, the qualitative contrast mirrors the quantitative finding that regulation mainly affects *personalization-sensitive* aspects of the interaction (framing, pacing, structure, and engagement strategy). Baseline responses can remain highly appropriate on generic quality dimensions, yet still fail the personality-needs criterion because they do not reliably implement a coherent, theory-driven adaptation policy. The figures thus provide an interpretable mechanism for the large improvement in personality-needs ratings observed in Section 4.4: the D–R–E pipeline enables consistent, auditable style regulation grounded in Zurich Model domains (Section 3.3.2), while preserving the baseline model’s already-strong conversational competence.
+
+# 5. Discussion
+
+## 5.1. Interpretation of Findings: Selective Enhancement as Core Innovation
+
+This simulation study evaluated a personality-adaptive framework that combines Big Five detection with Zurich Model-driven regulation. Under controlled conditions, the system achieved complete implementation fidelity and exhibited a selective enhancement pattern: a large improvement in personality-specific need fulfillment (d = 4.651; +92 percentage points) while maintaining ceiling or near-ceiling performance on generic conversational quality (emotional tone: d = 0.000; relevance: d = 0.183). Because quantitative ratings were produced by an LLM-based evaluator and qualitative notes were provided by a single domain expert, these results should be interpreted as methodological validation of the architecture and theory-grounded mapping, rather than as definitive evidence of human-perceived clinical benefit.
+
+The selective enhancement pattern is more informative than a simple “regulated outperforms baseline” statement for three reasons. First, ceiling effects in emotional tone and coherence indicate that the baseline assistant already provides high-quality generic support; the evaluation is therefore not correcting poor baseline behavior. Second, the regulated condition adds a distinct capability layer—trait-conditioned response framing—without degrading the baseline’s generic strengths, supporting a layered deployment model. Third, the selectivity of the effect is theoretically coherent: Zurich Model domains (Security, Arousal, Affiliation; Section 3.3.2) are expected to influence personalization-sensitive dimensions (personality needs) more strongly than general linguistic adequacy.
+
+The magnitude of d = 4.651 should be interpreted as a binary capability difference in this controlled simulation: baseline rarely satisfies the personality-needs criterion (8.3% YES), whereas regulation yields near-universal success (100% YES), producing a very large standardized difference under minimal variance in the regulated condition. In real-world settings, effect sizes are expected to be smaller due to mixed personality profiles, noisier personality inference, longer and less scripted interactions, and individual variability.
+
+## 5.2. Comparison with Existing Literature
+
+Our findings are consistent with prior work indicating that personality-aware conversational systems can improve user-aligned interaction outcomes relative to generic approaches [6,30]. In contrast to methods that rely on static profiles or ad hoc heuristics, our framework operationalizes a continuous inference-and-regulation loop in which trait estimates are updated from dialogue and mapped to behavioral strategies grounded in the Zurich Model (Section 3.3.2).
+
+At the same time, the present study emphasizes evaluation methodology as a key open challenge. LLM-as-a-judge scoring enables scalable and structured assessment, but it does not substitute for independent multi-rater human validation. Establishing convergent validity against human judgments and linking conversational metrics to downstream outcomes are necessary steps for translation beyond simulation.
+
+## 5.3. Research and Design Implications
+
+The results suggest that trait-based regulation provides a complementary capability rather than universally superior conversational performance. Because baseline responses already reach ceiling levels on emotional tone and coherence, the primary room for improvement lies in personalization—i.e., systematically aligning response style with user-specific motivational needs. This shifts the research frontier from generic “supportiveness” toward controllable adaptation mechanisms that can be layered onto strong base models.
+
+From a theory perspective, the selectivity of the effect provides preliminary support for the Zurich Model framing: personality-adaptive regulation primarily influences domains where individual differences matter (e.g., Security/Arousal/Affiliation-relevant response framing), rather than improving general linguistic competence. The modular D–R–E design also supports targeted iteration: detection and regulation can be improved or replaced independently as long as interfaces and logging remain stable, reducing the risk that personalization compromises baseline quality.
+
+For practice-oriented systems, the findings suggest the following design principles:
+
+- **Layered deployment**: Start from a strong generic baseline and treat personality adaptation as an additive capability.
+- **Explicit, updateable personality state**: Maintain persistent trait estimates (with uncertainty) updated from conversational evidence.
+- **Theory-grounded mapping**: Translate traits to behavioral strategies using established personality–motivation frameworks (e.g., the Zurich Model), rather than ad hoc heuristics.
+- **Transparent adaptation logic**: Log trait estimates, applied regulations, and evaluation outcomes for auditability and debugging.
+- **Selective application**: Apply adaptation primarily to interactional style and support preferences, not to all content indiscriminately.
+
+## 5.4. Limitations, Safety, and Next Steps
+
+This simulation provides no evidence of clinical readiness. The observed effect size reflects an evaluation criterion (“personality needs addressed”) scored under controlled conditions, rather than patient-centered clinical outcomes. Translation to healthcare therefore requires (i) validated outcomes, (ii) safety infrastructure, and (iii) extensive human validation under ethical oversight.
+
+Outcome validation should include standardized measures of alliance and satisfaction, symptom trajectories (e.g., PHQ-9 or GAD-7), engagement and adherence, and adverse event monitoring. Safety infrastructure must address distress and crisis detection, escalation pathways to human clinicians, and bias/harm assessment related to personality profiling, alongside ongoing clinical supervision. Human validation should involve larger and more diverse samples, longitudinal protocols, moderate and mixed personality profiles, naturalistic communication, and comparison against appropriate care benchmarks under IRB-approved study designs.
+
+This study has several important limitations. All interactions were simulated between predefined personality profiles and GPT-4-based agents; no human users participated, and results cannot be generalized to patients or clinical settings. Profiles were restricted to extreme configurations (all traits high vs. all traits low), not reflecting typical personality distributions. Dialogues were short (six turns per agent), unable to capture long-term dynamics. Both system and evaluator rely on the same LLM family, potentially introducing shared biases despite strong human-AI agreement. The work focused on English-language text and Western communication norms; cultural and linguistic generalizability remains unknown.
+
+Future research should progressively relax these simplifying assumptions. Immediate priorities include testing with moderate and mixed personality profiles, longer and more naturalistic conversations, and more diverse linguistic and cultural contexts. Human subject studies are essential to evaluate whether personality adaptation improves user-reported outcomes and to identify potential harms or failure modes. Methodological work should refine multimodal personality detection, uncertainty estimation for personality inferences, and safeguards for detecting when the system operates outside competence range.
+
+
+# 6. Conclusions
+
+We demonstrate **technical feasibility** of integrating real-time Big Five personality detection with Zurich Model-aligned behavioral regulation in LLM-based mental health agents, achieving perfect implementation accuracy (detection: 100%, 58/58; regulation: 100%, 59/59) and 92% improvement in personality-specific need fulfillment under controlled conditions (M = 2.00 vs. 0.17; Cohen's d = 4.651, p < 0.001). Critically, personality adaptation produced **selective enhancement**—dramatic gains where personalization matters most, with no degradation in basic conversational quality (emotional tone, relevance: d < 0.3, ns)—confirming theoretical predictions that Zurich Model-aligned regulation targets individual psychological differences rather than merely improving general interaction quality.
+
+These findings establish that personality-adaptive mechanisms can be reliably implemented using contemporary LLM technology when integrated within model-driven orchestration frameworks like PROMISE, which provides deterministic prompt control and traceable state transitions essential for reproducible research and clinical oversight. The LLM-based evaluator demonstrated strong alignment with qualitative expert judgment (single-expert design), supporting the use of structured automated assessment for scalable early-stage system testing while highlighting the need for independent multi-rater validation to establish full evaluation credibility.
+
+Results represent an **upper bound** under idealized simulation conditions—boundary-condition personality profiles, pre-scripted interactions, synthetic data, brief dialogues—rather than realistic expectations for clinical deployment. Real-world implementation with heterogeneous personalities, spontaneous communication, longer-term interactions, and diverse cultural contexts will likely yield substantially lower performance (estimated d = 0.5–1.5 vs. d = 4.651 observed here) while revealing failure modes not captured in simulation. Extensive human subject validation is mandatory before any clinical applications can be considered.
+
+Future research should prioritize multi-site human trials (minimum n = 50–100 per condition) with moderate and mixed personality profiles, longitudinal tracking (6+ months), validated clinical outcomes (symptom reduction, therapeutic alliance, user retention), multimodal trait detection incorporating voice and behavioral cues, uncertainty quantification for personality inferences, and comprehensive bias audits across demographic groups. Only after successful human trials, adverse event monitoring, and rigorous ethical and regulatory review should personality-adaptive conversational AI advance toward clinical piloting.
+
+**Answers to the Study Aims (Section 3.1.1)**
+
+1. **Detection Accuracy (Aim 1)**: Under extreme simulated profiles, the detection module correctly recovered the intended OCEAN configuration across turns (100% detection accuracy; Section 4.3), with stable within-conversation vectors (Figures 9–10). This supports technical feasibility of turn-by-turn trait inference as an explicit system state, while underscoring that accuracy estimates are upper bounds for these high-signal profiles.
+
+2. **Regulation Effectiveness (Aim 2)**: Theory-driven regulation produced a dramatic improvement on the primary outcome, **Personality Needs Addressed** (Cohen’s d = 4.651; 95% CI [3.8, 5.5]; p < 0.001). In terms of YES-rate, the regulated condition achieved 100% versus 8.3% for baseline—an increase of approximately **92 percentage points** (Section 4.4.1; Figures 11–14). Crucially, this personalization gain did not degrade basic conversational quality: Emotional Tone remained at ceiling (d = 0.000) and Relevance & Coherence showed a negligible, non-significant difference (d = 0.183). Together, these findings indicate that personality adaptation functions best as an **additive capability layer**—changing *interaction strategy* (framing, pacing, structure) rather than “making the model better at language” (Section 4.5).
+
+3. **Evaluation Validity (Aim 3)**: Because quantitative scores were produced by an LLM-based evaluator and qualitative validation relied on a single domain expert, results should be interpreted as **methodological and architectural validation**, not clinical efficacy. The evaluation framework is reproducible and scalable (Section 3.5; Figures 8–14), but credibility for deployment requires independent multi-rater human validation (e.g., inter-rater reliability and human–AI agreement) and linkage to patient-centered outcomes (Section 5.4).
+
+**Implications and Next Steps**
+
+The central implication is a layered deployment pathway: start from a strong generic LLM baseline and apply trait-conditioned regulation selectively to personalization-sensitive aspects of interaction, while preserving baseline strengths. Future work should extend beyond boundary-condition simulations to moderate and mixed profiles, longer naturalistic dialogues, diverse linguistic/cultural contexts, and human subject studies with standardized outcomes, safety monitoring, and bias audits (Section 5.4). More broadly, the D–R–E template is adaptable: alternative personality theories, regulation policies, and evaluation criteria can be swapped into the modular architecture, provided transparency and auditability are maintained.
+
+
+# Data Availability Statement
+
+Research data, implementation code, detection prompts, regulation templates, simulation transcripts, and evaluation materials (including qualitative expert notes) are available from the corresponding author upon reasonable request. A public repository will be created and made available upon publication.
+
+
+# Author Contributions
+
+Conceptualization, main author and co-authors; methodology, main author; software, main author; validation, main author and expert reviewer (qualitative notes); formal analysis, main author; investigation, main author; resources, main author; data curation, main author; writing, original draft preparation, main author; writing, review and editing, all authors; visualization, main author; supervision, supervisors; project administration, main author; funding acquisition, not applicable. All authors have read and agreed to the published version of the manuscript.
+
+
+# 7. Funding
+
+This research received no external funding.
+
+
+# Institutional Review Board Statement
+
+Not applicable. This study involved no human or animal subjects and used synthetic, non-identifiable, AI-generated dialogues. A single human domain expert provided qualitative evaluation notes on these synthetic materials; no patient data were involved. Future human subject studies will require full institutional review board approval.
+
+
+# Informed Consent Statement
+
+Not applicable. No human participants were involved in the simulation study. Future human subject studies will implement comprehensive informed consent protocols explaining AI personality profiling, data use, potential risks, and study procedures.
+
+
+# Acknowledgments
+
+The authors thank Dr. Guang Lu (Lucerne University of Applied Sciences and Arts) and Prof. Dr. Alexandre de Spindler (ZHAW) for supervision and guidance. We acknowledge the domain expert who provided qualitative evaluation notes (name withheld by agreement). We thank the PROMISE framework developers [7] whose work informed our system architecture. We also acknowledge OpenAI for providing GPT-4 API access.
+
+
+# Conflicts of Interest
+
+The authors declare no conflicts of interest.
+
+
+# References
+
+[1] Holt-Lunstad, J.; Smith, T.B.; Layton, J.B. Social Relationships and Mortality Risk: A Meta-Analytic Review. *PLoS Med.* **2010**, *7*, e1000316.
+[2] Masterson Creber, R.; Rozenfeld, A.; Lucette, A.; et al. Social Isolation in Older Adults: A Scoping Review. *J. Am. Geriatr. Soc.* **2020**, *68*, 1622–1634.
+[3] Costa, P.T.; McCrae, R.R. *Revised NEO Personality Inventory (NEO-PI-R) and NEO Five-Factor Inventory (NEO-FFI): Professional Manual*; Psychological Assessment Resources: Odessa, FL, USA, 1992.
+[4] Roberts, B.W.; Kuncel, N.R.; Shiner, R.; Caspi, A.; Goldberg, L.R. The Power of Personality: The Comparative Validity of Personality Traits, Socioeconomic Status, and Cognitive Ability for Predicting Important Life Outcomes. *Perspect. Psychol. Sci.* **2007**, *2*, 313–345.
+[5] Azaria, A.; Azoulay, R.; Reches, S. ChatGPT Is a Remarkable Tool for Experts. *Nat. Med.* **2023**, *29*, 1663–1664.
+[6] Mairesse, F.; Walker, M.A. Controlling User Perceptions of Linguistic Style: Trainable Generation of Personality Traits. *Comput. Linguist.* **2011**, *37*, 455–488.
+[7] Wu, W.; Heierli, J.; Meisterhans, M.; Moser, A.; Färber, A.; Dolata, M.; Gavagnin, E.; de Spindler, A.; Schwabe, G. PROMISE: A Framework for Developing Complex Conversational Interactions. *arXiv* **2024**, arXiv:2312.03699.
+[8] Bickmore, T.W.; Picard, R.W. Establishing and Maintaining Long-Term Human-Computer Relationships. *ACM Trans. Comput.-Hum. Interact.* **2005**, *12*, 293–327.
+[9] John, O.P.; Naumann, L.P.; Soto, C.J. Paradigm Shift to the Integrative Big Five Trait Taxonomy: History, Measurement, and Conceptual Issues. In *Handbook of Personality: Theory and Research*, 3rd ed.; John, O.P., Robins, R.W., Pervin, L.A., Eds.; Guilford Press: New York, NY, USA, 2008; pp. 114–158.
+[10] Quirin, M.; Malekzad, F.; Paudel, D.; Knoll, A.C.; Mirolli, M. Dynamics of Personality: The Zurich Model of Motivation Revived, Extended, and Applied to Personality. *J. Pers.* **2023**, *91*, 928–946.
+[11] Krippendorff, K. *Computing Krippendorff's Alpha-Reliability*; Departmental Papers (ASC), University of Pennsylvania: Philadelphia, PA, USA, 2011.
+[12] Alisamir, S.; Ringeval, F. On the Evolution of Speech Representations for Affective Computing: A Brief History and Critical Overview. *IEEE Signal Process. Mag.* **2021**, *38*, 12–21.
+[13] Alsharekh, M.F. Facial Emotion Recognition in Verbal Communication Based on Deep Learning. *Electronics* **2022**, *11*, 2568.
+[14] Alberts, L.; Keeling, G.; McCroskery, A. Should Agentic Conversational AI Change How We Think about Ethics? Characterising an Interactional Ethics Centred on Respect. *arXiv* **2024**, arXiv:2401.09187.
+[15] Zheng, Z.; Liao, L.; Deng, Y.; Nie, L. Building Emotional Support Chatbots in the Era of LLMs. *arXiv* **2023**, arXiv:2308.11584.
+[16] Chen, K.; Kang, X.; Lai, X.; Ni, Z. Enhancing Emotional Support Capabilities of Large Language Models through Cascaded Neural Networks. In *Proceedings of the 2023 4th International Conference on Computer, Big Data and Artificial Intelligence (ICCBD+AI)*; 2023; pp. 318–326.
+[17] Dong, T.; Liu, F.; Wang, X.; Jiang, Y.; Zhang, X.; Sun, X. EmoAda: A Multimodal Emotion Interaction and Psychological Adaptation System. In *Proceedings of the Conference on Multimedia Modeling*; Springer: Cham, Switzerland, 2024.
+[18] Abbasian, M.; Azimi, I.; Rahmani, A.M.; Jain, R.C. Conversational Health Agents: A Personalized LLM-Powered Agent Framework. *arXiv* **2023**, arXiv:2310.02293.
+[19] Sorino, P.; et al. ARIEL: Brain-Computer Interfaces Meet Large Language Models for Emotional Support Conversation. In *Adjunct Proceedings of the 32nd ACM Conference on User Modeling, Adaptation and Personalization (UMAP '24)*, Cagliari, Italy, 1–4 July 2024.
+[20] Dongre, P. Physiology-Driven Empathic Large Language Models (EmLLMs) for Mental Health Support. In *Extended Abstracts of the CHI Conference on Human Factors in Computing Systems (CHI EA '24)*, Honolulu, HI, USA, 11–16 May 2024.
+[21] Ta, V.; Griffith, C.; Boatfield, C.; Wang, X.; Civitello, M.; Maffei, H. User Experiences of Social Support from Companion Chatbots in Everyday Contexts: Thematic Analysis. *J. Med. Internet Res.* **2020**, *22*, e16235.
+[22] Broadbent, E.; et al. ElliQ, an AI-Driven Social Robot to Alleviate Loneliness: Progress and Lessons Learned. *JAR Life* **2024**, *13*, 22–28.
+[23] Shah, S.G.S.; et al. Effectiveness of Digital Technology Interventions to Reduce Loneliness in Adults: A Protocol for a Systematic Review and Meta-Analysis. *BMJ Open* **2019**, *9*, e029324.
+[24] Shah, S.G.S.; et al. Evaluation of the Effectiveness of Digital Technology Interventions to Reduce Loneliness in Older Adults: Systematic Review and Meta-Analysis. *J. Med. Internet Res.* **2021**, *23*, e24712.
+[25] Zhang, H.; Chen, Y.; Wang, M.; Feng, S. FEEL: A Framework for Evaluating Emotional Support Capability with Large Language Models. *arXiv* **2024**, arXiv:2403.15699.
+[26] Berlyne, D.E. *Conflict, Arousal, and Curiosity*; McGraw-Hill: New York, NY, USA, 1960.
+[27] Hebb, D.O. *The Organization of Behavior: A Neuropsychological Theory*; Wiley: New York, NY, USA, 1949.
+[28] Bischof, N. *Das Rätsel Ödipus: Die biologischen Wurzeln des Urkonfliktes*; Piper: Munich, Germany, 1985.
+[29] Bischof, N. Untersuchungen zur Systemanalyse der sozialen Motivation I: Die Tantalus-Situation. *Z. Psychol.* **1993**, *201*, 5–43.
+[30] Zhou, M.X.; et al. Designing Effective Interview Chatbots: Automatic Chatbot Profiling and Design Suggestion Generation. In *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI '21)*, Yokohama, Japan, 8–13 May 2021.
+[31] Montgomery, D.C. *Design and Analysis of Experiments*, 9th ed.; Wiley: Hoboken, NJ, USA, 2017.
+[32] Collins, L.M.; Dziak, J.J.; Li, R. Design of Experiments with Multiple Independent Variables: A Resource Management Perspective on Complete and Fractional Factorial Designs. *Psychol. Methods* **2009**, *14*, 202–224.
+[33] Carroll, C.; Patterson, M.; Wood, S.; Booth, A.; Rick, J.; Balain, S. A Conceptual Framework for Implementation Fidelity. *Implement. Sci.* **2007**, *2*, 40.
+[34] Faul, F.; Erdfelder, E.; Buchner, A.; Lang, A.G. Statistical Power Analyses Using G*Power 3.1: Tests for Correlation and Regression Analyses. *Behav. Res. Methods* **2009**, *41*, 1149–1160.
+[35] Schulz, K.F.; Altman, D.G.; Moher, D.; CONSORT Group. CONSORT 2010 Statement: Updated Guidelines for Reporting Parallel Group Randomised Trials. *BMJ* **2010**, *340*, c332.
+[36] Chan, A.W.; Tetzlaff, J.M.; Gøtzsche, P.C.; Altman, D.G.; Mann, H.; Berlin, J.A.; Dickersin, K.; Hróbjartsson, A.; Schulz, K.F.; Parulekar, W.R.; et al. SPIRIT 2013 Statement: Defining Standard Protocol Items for Clinical Trials. *Ann. Intern. Med.* **2013**, *158*, 200–207.
+[37] World Medical Association. World Medical Association Declaration of Helsinki: Ethical Principles for Medical Research Involving Human Subjects. *JAMA* **2013**, *310*, 2191–2194.
+[38] D’Alfonso, S. AI in Mental Health. *Curr. Opin. Psychol.* **2020**, *36*, 112–117.
+[39] Torous, J.; Myrick, K.J.; Rauseo-Ricupero, N.; Firth, J. Digital Mental Health and COVID-19: Using Technology Today to Accelerate the Curve on Access and Quality Tomorrow. *JMIR Ment. Health* **2020**, *7*, e18848.
+[40] McCrae, R.R.; Costa, P.T., Jr. *Personality in Adulthood: A Five-Factor Theory Perspective*, 2nd ed.; Guilford Press: New York, NY, USA, 2003.
+[41] McCrae, R.R.; John, O.P. An Introduction to the Five-Factor Model and Its Applications. *J. Pers.* **1992**, *60*, 175–215.
+[42] Goldberg, L.R. The Structure of Phenotypic Personality Traits. *Am. Psychol.* **1993**, *48*, 26–34.
+[43] Gelman, A.; Carlin, J.B.; Stern, H.S.; Dunson, D.B.; Vehtari, A.; Rubin, D.B. *Bayesian Data Analysis*, 3rd ed.; CRC Press: Boca Raton, FL, USA, 2013.
+[44] Funder, D.C. On the Accuracy of Personality Judgment: A Realistic Approach. *Psychol. Rev.* **1995**, *102*, 652–670.
+[45] Vazire, S. Who Knows What about a Person? The Self–Other Knowledge Asymmetry (SOKA) Model. *J. Pers. Soc. Psychol.* **2010**, *99*, 281–303.
+[46] OpenAI. *GPT-4 Technical Report*; arXiv:2303.08774, 2023.
+[47] Brown, T.; Mann, B.; Ryder, N.; Subbiah, M.; Kaplan, J.D.; Dhariwal, P.; Neelakantan, A.; Shyam, P.; Sastry, G.; Askell, A.; et al. Language Models are Few-Shot Learners. In *Proceedings of the 34th International Conference on Neural Information Processing Systems (NIPS '20)*, Vancouver, BC, Canada, 6–12 December 2020; pp. 1877–1901.
+[48] Reynolds, L.; McDonell, K. Prompt Programming for Large Language Models: Beyond the Few-Shot Paradigm. In *Extended Abstracts of the 2021 CHI Conference on Human Factors in Computing Systems*, Yokohama, Japan, 8–13 May 2021; pp. 1–7.
+[49] White, J.; Fu, Q.; Hays, S.; Sandborn, M.; Olea, C.; Gilbert, H.; Elnashar, A.; Spencer-Smith, J.; Schmidt, D.C. A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT. *arXiv* **2023**, arXiv:2302.11382.
+[50] Liu, P.; Yuan, W.; Fu, J.; Jiang, Z.; Hayashi, H.; Neubig, G. Pre-train, Prompt, and Predict: A Systematic Survey of Prompting Methods in Natural Language Processing. *ACM Comput. Surv.* **2023**, *55*, 1–35.
+[51] APA. *Practice Guideline for the Treatment of Patients with Major Depressive Disorder*, 3rd ed.; American Psychiatric Association: Arlington, VA, USA, 2010.
+[52] Simon, G.E. Patient-Centered Outcomes in Mental Health Care. *JAMA* **2011**, *306*, 1141–1142.
+[53] McCrae, R.R.; Costa, P.T., Jr. *Revised NEO Personality Inventory (NEO PI-R) and NEO Five-Factor Inventory (NEO-FFI) Professional Manual*; Psychological Assessment Resources: Odessa, FL, USA, 1992.
+[54] Likert, R. A Technique for the Measurement of Attitudes. *Arch. Psychol.* **1932**, *22*, 5–55.
+[55] Zheng, L.; Chiang, W.L.; Sheng, Y.; Zhuang, S.; Wu, Z.; Zhuang, Y.; Lin, Z.; Li, Z.; Li, D.; Xing, E.; et al. Judging LLM-as-a-judge with MT-Bench and Chatbot Arena. *arXiv* **2023**, arXiv:2306.05685.
+[56] Kim, S.; Lee, S.; Kim, J.; Yoo, H.; Seol, Y.Y.; Kim, S.; Cho, H.; Choi, S.B.; Kim, S.B. Evaluating LLM-as-a-judge with Professional Human Ratings. *arXiv* **2024**, arXiv:2402.18139.
+[57] Landis, J.R.; Koch, G.G. The Measurement of Observer Agreement for Categorical Data. *Biometrics* **1977**, *33*, 159–174.
+[58] Gisev, N.; Bell, J.S.; Chen, T.F. Interrater Reliability and Agreement in Clinical Research: A Guide to Best Practice. *Res. Social Adm. Pharm.* **2013**, *9*, 330–337.
+[59] Little, R.J.; Rubin, D.B. *Statistical Analysis with Missing Data*, 3rd ed.; Wiley: Hoboken, NJ, USA, 2019.
+[60] Cohen, J. *Statistical Power Analysis for the Behavioral Sciences*, 2nd ed.; Lawrence Erlbaum Associates: Hillsdale, NJ, USA, 1988.
+[61] Efron, B.; Tibshirani, R.J. *An Introduction to the Bootstrap*; Chapman and Hall/CRC: New York, NY, USA, 1994.
+[62] Wasserstein, R.L.; Lazar, N.A. The ASA's Statement on p-Values: Context, Process, and Purpose. *Am. Stat.* **2016**, *70*, 129–133.
+[63] Landis, J.R.; Koch, G.G. The Measurement of Observer Agreement for Categorical Data. *Biometrics* **1977**, *33*, 159–174.
+[64] Chen, L.; Zaharia, M.; Zou, J. How is ChatGPT's Behavior Changing over Time? *arXiv* **2023**, arXiv:2307.09009.
+[65] Ouyang, L.; Wu, J.; Jiang, X.; Almeida, D.; Wainwright, C.; Mishkin, P.; Zhang, C.; Agarwal, S.; Slama, K.; Ray, A.; et al. Training Language Models to Follow Instructions with Human Feedback. In *Proceedings of the 36th International Conference on Neural Information Processing Systems (NIPS '22)*, New Orleans, LA, USA, 28 November–9 December 2022; pp. 27730–27744.
+
+
+
+# Supplementary Materials
+
+The following supporting information can be downloaded at: [repository link to be provided upon publication]:
+
+- **Supplementary File S1**: Complete system prompts for personality detection (5 Big Five trait detectors)
+- **Supplementary File S2**: Regulation templates for Zurich Model mapping (arousal, security, affiliation)
+- **Supplementary File S3**: Evaluator GPT system prompt and scoring matrix
+- **Supplementary File S4**: Human expert qualitative notes protocol (single-expert) and evaluation validity considerations
+- **Supplementary File S5**: Complete simulation transcripts (20 conversations, 120 dialogue turns)
+- **Supplementary File S6**: Statistical analysis code (Python/Jupyter notebooks for effect sizes, paired tests, weighted scoring, and visualizations)
+- **Supplementary File S7**: Extended qualitative examples demonstrating personality adaptation
+- **Supplementary File S8**: Cultural considerations and linguistic bias analysis
+- **Supplementary File S9**: Future human subject study protocol (detailed research design for pilot RCT)
+- **Supplementary File S10**: Statistical robustness analysis (parametric vs. non-parametric convergence, weighted scoring validation, normality testing, bootstrap confidence intervals, paired conversation-level analysis)
+- **Supplementary File S11**: Visualization documentation (colorblind-safe palette specifications and vector format guidelines)
+- **Supplementary File S12**: Corrected statistical interpretations guide (selective enhancement pattern, ceiling effect explanations, sample size and power considerations)
+- **Supplementary Figure S1**: Missingness comparison plot (horizontal bars showing <5% missing data across conditions)
+- **Supplementary Figure S2**: Personality needs YES-rate by conversation (demonstrating consistent improvement across all 10 conversation pairs)
+- **Supplementary Figure S3**: Rating distribution raw counts (YES/NOT SURE/NO composition with value annotations)

@@ -1,0 +1,9 @@
+feat: Complete CareLoop development updates
+
+- Add CareLoop project with full MVP implementation
+- Include personality-aware chatbot with RAG policy navigation  
+- Add comprehensive documentation and technical specifications
+- Update cursor rules for project organization
+- Complete Phase 1-4 implementation with pilot readiness
+- Add policy corpus and vector embeddings for Swiss healthcare AI
+- Include monitoring, audit logging, and security compliance features

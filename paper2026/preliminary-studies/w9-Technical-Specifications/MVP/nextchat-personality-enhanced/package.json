@@ -1,0 +1,67 @@
+{
+  "name": "nextchat-personality-enhanced",
+  "private": false,
+  "license": "MIT",
+  "description": "NextChat Enhanced with Phase 1 Multi-Agent Personality Detection System",
+  "version": "2.16.1-personality-v1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build", 
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "phase1:dev": "next dev",
+    "phase1:health": "curl -f http://localhost:3001/api/health || echo 'Phase 1 API not running'",
+    "setup": "chmod +x setup-dev.sh && ./setup-dev.sh"
+  },
+  "dependencies": {
+    "next": "^14.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zustand": "^4.3.8",
+    "nanoid": "^5.0.3",
+    "clsx": "^2.1.1",
+    "axios": "^1.7.5",
+    "framer-motion": "^10.16.0",
+    "recharts": "^2.8.0",
+    "date-fns": "^2.30.0",
+    "react-hot-toast": "^2.4.1",
+    "class-variance-authority": "^0.7.0",
+    "tailwind-merge": "^2.0.0",
+    "lucide-react": "^0.294.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.70",
+    "@types/react-dom": "^18.2.7",
+    "@types/uuid": "^9.0.7",
+    "typescript": "5.2.2",
+    "eslint": "^8.49.0",
+    "eslint-config-next": "13.4.19"
+  },
+  "packageManager": "yarn@1.22.19",
+  "keywords": [
+    "nextchat",
+    "personality-ai",
+    "multi-agent",
+    "chatgpt",
+    "openai",
+    "anthropic",
+    "gemini",
+    "personality-detection",
+    "ema-smoothing",
+    "therapeutic-ai",
+    "zurich-model",
+    "ocean-traits",
+    "phase1-enhanced"
+  ],
+  "repository": {
+    "type": "git", 
+    "url": "git+https://github.com/your-username/nextchat-personality-enhanced.git"
+  },
+  "homepage": "https://github.com/your-username/nextchat-personality-enhanced",
+  "bugs": {
+    "url": "https://github.com/your-username/nextchat-personality-enhanced/issues"
+  }
+}

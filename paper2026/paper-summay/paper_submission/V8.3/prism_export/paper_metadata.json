@@ -1,0 +1,89 @@
+{
+  "paper": {
+    "title": "Personality-Adaptive Conversational AI for Emotional Support: A Simulation Study Integrating Big Five Detection with Zurich Model Regulation",
+    "version": "V8.2.7",
+    "date": "2026-02-01",
+    "format": "MDPI APA Template",
+    "keywords": [
+      "digital mental health",
+      "conversational agents",
+      "large language models",
+      "personality detection",
+      "Big Five",
+      "Zurich Model",
+      "adaptive interaction",
+      "emotional support",
+      "simulation study",
+      "GPT-4"
+    ],
+    "abstract_summary": "Proposes a theory-grounded personality-adaptive pipeline that performs turn-by-turn Big Five trait detection and applies Zurich Model-aligned behavioral regulation, orchestrated with PROMISE for traceable, reproducible control.",
+    "main_findings": {
+      "detection_accuracy": "98.3%",
+      "regulation_adherence": "100%",
+      "personality_needs_improvement": "+92 percentage points (Cohen's d = 4.651)",
+      "general_quality_preserved": "No degradation (emotional tone d=0.000, relevance d=0.183)"
+    }
+  },
+  "references": {
+    "total_count": 68,
+    "key_new_additions": [
+      {
+        "id": 66,
+        "authors": "Ahmad, R.; Siemon, D.; Gnewuch, U.; Robra-Bissantz, S.",
+        "year": 2022,
+        "title": "Designing Personality-Adaptive Conversational Agents for Mental Health Care",
+        "journal": "Information Systems Frontiers",
+        "doi": "10.1007/s10796-022-10254-9",
+        "relevance": "One-size-fits-all problem in mental health CAs"
+      },
+      {
+        "id": 67,
+        "authors": "Wanniarachchi, V.U.; Greenhalgh, C.; Choi, A.; Warren, J.R.",
+        "year": 2025,
+        "title": "Personalization Variables in Digital Mental Health Interventions for Depression and Anxiety in Adolescents and Youth: A Scoping Review",
+        "journal": "Frontiers in Digital Health",
+        "doi": "10.3389/fdgth.2025.1500220",
+        "relevance": "51% of interventions use only one personalization dimension"
+      },
+      {
+        "id": 68,
+        "authors": "Soni, U.; Thakkar, H.; Pandya, A.; Patel, D.",
+        "year": 2023,
+        "title": "The Power of Personalization: A Systematic Review of Personality-Adaptive Chatbots",
+        "journal": "SN Computer Science",
+        "doi": "10.1007/s42979-023-02092-6",
+        "relevance": "Challenge of developing chatbots that adapt to user personality"
+      }
+    ],
+    "categories": {
+      "personality_psychology": [3, 4, 9, 10, 40, 41, 42, 44, 45, 53],
+      "digital_mental_health": [22, 23, 24, 38, 39, 66, 67],
+      "llms_and_ai": [5, 8, 15, 16, 17, 18, 19, 20, 46, 47, 48, 49, 50, 64, 65],
+      "conversational_agents": [6, 21, 30, 66, 68],
+      "zurich_model": [10, 26, 27, 28, 29],
+      "methodology": [31, 32, 33, 34, 35, 36, 37],
+      "statistics": [43, 54, 57, 58, 59, 60, 61, 62, 63],
+      "evaluation": [11, 25, 55, 56],
+      "frameworks": [7]
+    }
+  },
+  "prism_import": {
+    "files_included": [
+      "references.bib",
+      "V8.2.7_MDPI_APA.tex",
+      "README.md",
+      "paper_metadata.json"
+    ],
+    "recommended_tags": [
+      "personality-adaptive-ai",
+      "mental-health",
+      "big-five",
+      "zurich-model",
+      "llm-evaluation",
+      "conversational-agents",
+      "simulation-study",
+      "behavioral-regulation"
+    ],
+    "import_instructions": "Upload references.bib to Prism via Import > BibTeX"
+  }
+}

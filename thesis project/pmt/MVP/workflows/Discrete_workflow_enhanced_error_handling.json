@@ -1,0 +1,226 @@
+{
+  "name": "Discrete Workflow - Enhanced Error Handling (Safety Filters)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "221bd71b-08d0-4705-827a-8bf7892d1772",
+      "name": "When clicking 'Execute workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [368, -96]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"session_id\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\",\n  \"message\": \"Give me a supportive tip for my presentation anxiety.\"\n}",
+        "options": {}
+      },
+      "id": "bd6de7e6-177d-4716-b12a-bb36dde1117e",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [576, -96]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract per-turn fields only (no history weighting)\nconst b = $json || {};\nconst sessionId = b.session_id || 'f47ac10b-58cc-4372-a567-0e02b2c3d479';\nconst msg = String(b.message || '').trim();\nreturn {\n  session_id: sessionId,\n  clean_msg: msg,\n  // per Samuel: detect on turn text; allow optional last-N in future\n  conversation_context: `user: ${msg}`\n};"
+      },
+      "id": "7888002b-8626-46d7-89a5-5d67349dd68e",
+      "name": "Ingest (Per-turn, no smoothing)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [768, -96]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ENHANCED: Gemini API with Safety Filter Detection\nconst GEMINI_API_KEY = 'AIzaSyCu7cMyJAB4ossEePGYQQGpzjlqAfbIG2E';\n\nconst ctx = String($input.first().json.conversation_context || '').trim();\n\n// Handle empty context\nif (!ctx) {\n  console.log('⚠️ No conversation context provided, returning default values');\n  return [{ json: { choices: [{ message: { content: '{\"ocean_disc\":{\"O\":0,\"C\":0,\"E\":0,\"A\":0,\"N\":0}}' } }], api_used: 'default' } }];\n}\n\nconst prompt = `You are a personality detector. Infer Big Five from the user text for THIS TURN ONLY. Return JSON ONLY exactly as: {\"ocean_disc\":{\"O\":-1|0|1,\"C\":-1|0|1,\"E\":-1|0|1,\"A\":-1|0|1,\"N\":-1|0|1}} No prose.\\n\\nText: ${ctx}`;\n\nconsole.log('🚀 Calling Gemini API for OCEAN detection...');\nconsole.log('📝 Prompt length:', prompt.length, 'characters');\nconsole.log('🔗 Context:', ctx.substring(0, 100) + (ctx.length > 100 ? '...' : ''));\n\n// ✅ CORRECTED: Using recommended model for reliability\nconst model = 'gemini-1.5-flash-latest';\nconst options = {\n  method: 'POST',\n  url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ // ✅ User's suggestion: explicit JSON.stringify\n    contents: [{ parts: [{ text: prompt }] }],\n    generationConfig: { \n      temperature: 0.1, \n      maxOutputTokens: 200, \n      topK: 40, \n      topP: 0.95 \n    },\n    safetySettings: [\n      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },\n      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },\n      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },\n      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }\n    ]\n  }),\n  timeout: 20000\n};\n\ntry {\n  const response = await this.helpers.httpRequest(options);\n  \n  console.log('📊 Raw Gemini Response:', JSON.stringify(response, null, 2));\n  \n  // ✅ IMPROVED: Check for candidates first\n  if (response.candidates && response.candidates.length > 0) {\n    const content = response.candidates[0].content.parts[0].text;\n    console.log('✅ Gemini API successful');\n    console.log('📝 Content received:', content);\n    \n    return [{ json: { choices: [{ message: { content } }], api_used: model } }];\n  } else {\n    // ✅ IMPROVED: Check for safety blocking as the reason for no candidates\n    if (response.promptFeedback && response.promptFeedback.blockReason) {\n      const reason = response.promptFeedback.blockReason;\n      console.log(`❌ Request blocked by safety filters. Reason: ${reason}`);\n      return [{ json: { choices: [{ message: { content: '{\"ocean_disc\":{\"O\":0,\"C\":0,\"E\":0,\"A\":0,\"N\":0}}' } }], error: `Blocked by safety filter: ${reason}`, api_used: 'error' } }];\n    } else {\n      console.log('❌ No candidates in Gemini response for an unknown reason.');\n      console.log('🔍 Full response for debugging:', JSON.stringify(response, null, 2));\n      return [{ json: { choices: [{ message: { content: '{\"ocean_disc\":{\"O\":0,\"C\":0,\"E\":0,\"A\":0,\"N\":0}}' } }], error: 'No candidates in response', api_used: 'error' } }];\n    }\n  }\n  \n} catch (error) {\n  console.log('❌ Gemini API Error:', error.message);\n  \n  // Enhanced error handling per user feedback\n  if (error.message.includes('429') || error.message.includes('quota')) {\n    console.log('⚠️ Quota exceeded - this is expected on free tier');\n    console.log('💡 Solution: Wait 5-10 minutes or upgrade billing plan');\n  }\n  \n  console.log('📊 Error Details:', JSON.stringify(error, null, 2));\n  \n  // Return default values on error\n  return [{ json: { choices: [{ message: { content: '{\"ocean_disc\":{\"O\":0,\"C\":0,\"E\":0,\"A\":0,\"N\":0}}' } }], error: error.message, api_used: 'error' } }];\n}"
+      },
+      "id": "0dc686cd-04ac-4dd1-be1e-8bb23718c385",
+      "name": "Detect OCEAN (Enhanced Safety Filters)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1008, -96]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the detection result from Detect OCEAN node\nconst det = $input.first()?.json || {};\nconst raw = det?.choices?.[0]?.message?.content ?? '';\n\n// Get the session data from the previous workflow execution items\nconst ingestData = $items('Ingest (Per-turn, no smoothing)', 'main', 0)?.json || {};\n\n// Debug: Check all available items\nconsole.log('Parse Detection - All available items:', JSON.stringify($items()));\nconsole.log('Parse Detection - Ingest items specifically:', JSON.stringify($items('Ingest (Per-turn, no smoothing)')));\n\nconsole.log('Parse Detection - Detection result:', JSON.stringify(det));\nconsole.log('Parse Detection - Ingest data:', JSON.stringify(ingestData));\nconsole.log('Parse Detection - Raw API response content:', raw);\n\nlet parsed = {};\ntry {\n  // First try to parse the raw content directly\n  parsed = JSON.parse(raw);\n} catch (e) {\n  // If that fails, try to extract JSON from the content\n  const jsonMatch = raw.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    try {\n      parsed = JSON.parse(jsonMatch[0]);\n    } catch (e2) {\n      console.log('Failed to parse extracted JSON:', e2.message);\n      parsed = {};\n    }\n  } else {\n    console.log('No JSON found in content:', raw);\n  }\n}\n\nconsole.log('Parse Detection - Parsed object:', JSON.stringify(parsed));\n\n// Extract OCEAN discrete values\nlet oceanDisc = parsed?.ocean_disc;\n\n// If ocean_disc doesn't exist but ocean does, convert continuous to discrete\nif (!oceanDisc && parsed?.ocean) {\n  const thr = 0.2;\n  const o = parsed.ocean;\n  const sign = (v) => (v >= thr ? 1 : (v <= -thr ? -1 : 0));\n  oceanDisc = {\n    O: sign(o.O || 0),\n    C: sign(o.C || 0), \n    E: sign(o.E || 0),\n    A: sign(o.A || 0),\n    N: sign(o.N || 0)\n  };\n}\n\n// Ensure we have a valid oceanDisc object\nconst od = oceanDisc || { O: 0, C: 0, E: 0, A: 0, N: 0 };\n\n// Extract session data from ingest\nconst turnText = ingestData?.clean_msg || '';\nconst sessionId = ingestData?.session_id || '';\n\nconsole.log('Parse Detection - Final ocean_disc values:', JSON.stringify(od));\nconsole.log('Parse Detection - Session ID:', sessionId);\nconsole.log('Parse Detection - Turn text:', turnText);\n\nreturn [{\n  json: {\n    ocean_disc: od,\n    turn_text: turnText,\n    session_id: sessionId\n  }\n}];"
+      },
+      "id": "683c9e0f-ca4e-4ffd-b7e0-a6051c8ed158",
+      "name": "Parse Detection JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1216, -96]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Map discrete OCEAN to behavior prompts\nconst inputData = $json || {};\nconst od = inputData.ocean_disc || { O:0,C:0,E:0,A:0,N:0 };\nconst sessionId = inputData.session_id || '';\nconst turnText = inputData.turn_text || '';\n\nconst dirs = [];\n// Security (N)\nif (od.N === -1) dirs.push('offer extra comfort; acknowledge anxieties');\nif (od.N === 1)  dirs.push('reassure stability and confidence');\n// Arousal (O,E)\nif (od.O === 1) dirs.push('invite small exploration/novelty');\nif (od.O === -1) dirs.push('reduce novelty; focus on familiar');\nif (od.E === 1) dirs.push('use energetic, engaging tone');\nif (od.E === -1) dirs.push('adopt calm, reflective tone');\n// Affiliation (A)\nif (od.A === 1) dirs.push('use warm, collaborative language');\nif (od.A === -1) dirs.push('stay neutral and matter-of-fact');\n// Conscientiousness (C)\nif (od.C === 1) dirs.push('provide 2-3 structured steps');\nif (od.C === -1) dirs.push('keep guidance flexible and low-pressure');\n// Keep concise\nconst directives = dirs.slice(0,5);\n\nconsole.log('Regulation - Raw input data:', JSON.stringify(inputData));\nconsole.log('Regulation - Session ID extracted:', sessionId);\nconsole.log('Regulation - Turn text extracted:', turnText);\nconsole.log('Regulation - OCEAN disc:', JSON.stringify(od));\nconsole.log('Regulation - Directives:', JSON.stringify(directives));\n\nreturn {\n  session_id: sessionId,\n  turn_text: turnText,\n  ocean_disc: od,\n  directives\n};"
+      },
+      "id": "e3adc0dd-a9b4-4f20-bb95-9c1eef79bbca",
+      "name": "Build Regulation Directives (Zurich Model)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1408, -96]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ENHANCED: Gemini API with Safety Filter Detection for Response Generation\nconst GEMINI_API_KEY = 'AIzaSyCu7cMyJAB4ossEePGYQQGpzjlqAfbIG2E';\n\n// Extract all data from the regulation input\nconst inputData = $input.first()?.json || {};\nconst directives = inputData?.directives || [];\nconst sessionId = inputData?.session_id || '';\nconst turnText = inputData?.turn_text || '';\nconst oceanDisc = inputData?.ocean_disc || { O:0, C:0, E:0, A:0, N:0 };\n\nconsole.log('Generate Response - Input data:', JSON.stringify(inputData));\nconsole.log('Generate Response - Ocean disc:', JSON.stringify(oceanDisc));\nconsole.log('Generate Response - Session ID:', sessionId);\nconsole.log('Generate Response - Turn text:', turnText);\nconsole.log('Generate Response - Directives:', JSON.stringify(directives));\n\nlet userText = turnText.trim();\nif (!userText) {\n  userText = 'Please provide a supportive, grounded reply to the user. Context provided separately.';\n}\n\nconst systemPrompt = [\n  'You are a supportive assistant. Follow these behavior directives strictly:',\n  JSON.stringify(directives),\n  'Constraints: stay grounded in the user text only; 1-2 questions max; 70-150 words.'\n].join(' ');\n\nconst fullPrompt = `${systemPrompt}\\n\\nUser: ${userText}`;\n\nconsole.log('🚀 Calling Gemini API for response generation...');\nconsole.log('📝 System prompt:', systemPrompt.substring(0, 150) + '...');\nconsole.log('👤 User text:', userText.substring(0, 100) + (userText.length > 100 ? '...' : ''));\n\n// ✅ CORRECTED: Using recommended model for reliability\nconst model = 'gemini-1.5-flash-latest';\nconst options = {\n  method: 'POST',\n  url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ // ✅ User's suggestion: explicit JSON.stringify\n    contents: [{ parts: [{ text: fullPrompt }] }],\n    generationConfig: { \n      temperature: 0.7, \n      maxOutputTokens: 220, \n      topK: 40, \n      topP: 0.95 \n    },\n    safetySettings: [\n      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },\n      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },\n      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },\n      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' }\n    ]\n  }),\n  timeout: 20000\n};\n\ntry {\n  const response = await this.helpers.httpRequest(options);\n  \n  console.log('📊 Raw Gemini Response:', JSON.stringify(response, null, 2));\n  \n  // ✅ IMPROVED: Check for candidates first\n  if (response.candidates && response.candidates.length > 0) {\n    const content = response.candidates[0].content.parts[0].text;\n    console.log('✅ Gemini API response generation successful');\n    console.log('📝 Generated content:', content.substring(0, 150) + (content.length > 150 ? '...' : ''));\n    \n    return {\n      json: {\n        choices: [{ message: { content } }],\n        session_id: sessionId,\n        turn_text: turnText,\n        ocean_disc: oceanDisc,\n        directives: directives,\n        api_used: model\n      }\n    };\n  } else {\n    // ✅ IMPROVED: Check for safety blocking as the reason for no candidates\n    if (response.promptFeedback && response.promptFeedback.blockReason) {\n      const reason = response.promptFeedback.blockReason;\n      console.log(`❌ Response generation blocked by safety filters. Reason: ${reason}`);\n      return {\n        json: {\n          choices: [{ message: { content: `Sorry—response was blocked by safety filters (${reason}). Quick tip: take 3 slow breaths and exhale longer than you inhale.` } }],\n          error: `Blocked by safety filter: ${reason}`,\n          session_id: sessionId,\n          turn_text: turnText,\n          ocean_disc: oceanDisc,\n          directives: directives,\n          api_used: 'error'\n        }\n      };\n    } else {\n      console.log('❌ No candidates in Gemini response for an unknown reason.');\n      console.log('🔍 Full response for debugging:', JSON.stringify(response, null, 2));\n      return {\n        json: {\n          choices: [{ message: { content: 'Sorry—response generation is temporarily unavailable. Quick tip: take 3 slow breaths and exhale longer than you inhale.' } }],\n          error: 'No candidates in response',\n          session_id: sessionId,\n          turn_text: turnText,\n          ocean_disc: oceanDisc,\n          directives: directives,\n          api_used: 'error'\n        }\n      };\n    }\n  }\n  \n} catch (error) {\n  console.log('❌ Gemini API Error:', error.message);\n  \n  // Enhanced error handling per user feedback\n  if (error.message.includes('429') || error.message.includes('quota')) {\n    console.log('⚠️ Quota exceeded - this is expected on free tier');\n    console.log('💡 Solution: Wait 5-10 minutes or upgrade billing plan');\n  }\n  \n  console.log('📊 Error Details:', JSON.stringify(error, null, 2));\n  \n  // Return fallback response on error\n  return {\n    json: {\n      choices: [{ message: { content: 'Sorry—response generation encountered an error. Quick tip: take 3 slow breaths and exhale longer than you inhale.' } }],\n      error: error.message,\n      session_id: sessionId,\n      turn_text: turnText,\n      ocean_disc: oceanDisc,\n      directives: directives,\n      api_used: 'error'\n    }\n  };\n}"
+      },
+      "id": "d6f09df4-4396-48f3-91b0-c5a49a8ba154",
+      "name": "Generate Response (Enhanced Safety Filters)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1616, -96]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract reply and assemble clean output payload\nconst generateData = $json || {};\nconst reply = generateData?.choices?.[0]?.message?.content?.trim() || 'Response unavailable.';\n\n// Get regulation data for fallback session info\nconst reg = ($items('Build Regulation Directives (Zurich Model)', 'main', 0)?.json) || {};\n\nconsole.log('Format Output - Generate data received:', JSON.stringify({\n  session_id: generateData.session_id,\n  turn_text: generateData.turn_text,\n  ocean_disc: generateData.ocean_disc,\n  has_choices: !!generateData.choices\n}));\nconsole.log('Format Output - Regulation fallback data:', JSON.stringify({\n  session_id: reg.session_id,\n  turn_text: reg.turn_text,\n  ocean_disc: reg.ocean_disc\n}));\n\n// Return clean format with just the 4 main fields\nreturn {\n  session_id: generateData.session_id || reg.session_id || '',\n  reply,\n  turn_text: generateData.turn_text || reg.turn_text || '',\n  ocean_disc: generateData.ocean_disc || reg.ocean_disc || { O:0, C:0, E:0, A:0, N:0 }\n};"
+      },
+      "id": "80414a6f-12e1-48be-9dec-2bc616007399",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1840, -96]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Ingest (Per-turn, no smoothing)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingest (Per-turn, no smoothing)": {
+      "main": [
+        [
+          {
+            "node": "Detect OCEAN (Enhanced Safety Filters)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect OCEAN (Enhanced Safety Filters)": {
+      "main": [
+        [
+          {
+            "node": "Parse Detection JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Detection JSON": {
+      "main": [
+        [
+          {
+            "node": "Build Regulation Directives (Zurich Model)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Regulation Directives (Zurich Model)": {
+      "main": [
+        [
+          {
+            "node": "Generate Response (Enhanced Safety Filters)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Response (Enhanced Safety Filters)": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2dfc1f0e-aa58-426e-9ceb-3865678789ea",
+  "meta": {
+    "instanceId": "d89794e06cc2305b770e1dc943eb7ff194d272f0e1f67dd864b5ba2d2d08831a"
+  },
+  "id": "zoTnpTlfkicHHF66",
+  "tags": []
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

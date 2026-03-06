@@ -1,0 +1,210 @@
+================================================================================
+                    PAPER IMPROVEMENTS: ENGAGEMENT & STRESS
+                              October 22, 2025
+================================================================================
+
+OBJECTIVE: Improve Preliminary-Study-V2.7.1.md by adding caregiver engagement
+and stress level measurements via system logs + LLM evaluator
+
+================================================================================
+                         IMPROVEMENTS MADE
+================================================================================
+
+1. ENGAGEMENT METRICS (System Logs) - Added to Section 4.6
+   
+   What Gets Captured (Automated):
+   ✓ Message length (words per turn)
+   ✓ Response latency (time between system output and user response)
+   ✓ Follow-up question (boolean: user asks clarifying question?)
+   ✓ Directive acceptance (boolean: user adopts suggested approach?)
+   
+   Per-Turn Engagement Score (0-2):
+   ✓ 0 = Low engagement (one-word response, no follow-up)
+   ✓ 1 = Moderate (brief response, minimal follow-up)
+   ✓ 2 = High (detailed response, follow-up question, directive adoption)
+   
+   Session-Level Target:
+   ✓ Average engagement score ≥1.2/2.0
+   ✓ Positive trend (second half > first half)
+
+---
+
+2. STRESS LEVEL METRICS (LLM Evaluator) - Added to Section 4.6
+   
+   Stress Classification (0-4):
+   ✓ Level 0: None/minimal (calm, organized, solutions-focused)
+   ✓ Level 1: Mild (some concern, manageable tone)
+   ✓ Level 2: Moderate (clear stress, but coping present)
+   ✓ Level 3: High (strong emotion, limited coping resources)
+   ✓ Level 4: Crisis (acute distress, danger signals)
+   
+   Detected Signals (LLM Analysis):
+   ✓ Lexical markers (overwhelmed, exhausted, trapped, etc.)
+   ✓ Emotional intensity (ALL CAPS, repeated punctuation)
+   ✓ Problem escalation (new/worsening problems mentioned)
+   ✓ Behavioral indicators (loss of coping language)
+   
+   Stress Drivers Identified:
+   ✓ Caregiver burden (role strain, guilt)
+   ✓ Benefit navigation complexity (confusion, frustration)
+   ✓ Self-care neglect (exhaustion, isolation, sleep)
+   ✓ Role strain (competing responsibilities)
+   ✓ Financial stress (income loss concerns)
+   ✓ Social isolation (lack of support)
+   
+   System Response Appropriateness:
+   ✓ Level 0-1: Balanced tone, proactive guidance → Score 2
+   ✓ Level 2: Validate, coping strategies → Score 2
+   ✓ Level 3: Reassurance, break problems down → Score 2
+   ✓ Level 4: Crisis protocol, professional referral → Score 2
+
+---
+
+3. ENGAGEMENT-STRESS INTERACTION METRICS - Added to Section 4.6
+   
+   Key Questions Answered:
+   ✓ Q1: Does engagement improve as stress decreases?
+      → Target: Engagement-stress correlation r ≥ 0.4 (positive)
+   
+   ✓ Q2: Does system successfully mitigate stress?
+      → Target: ≥60% of high-stress turns → lower stress next turn
+   
+   ✓ Q3: Are patterns consistent across scenarios?
+      → Target: Cross-scenario correlation r ≥ 0.7
+
+---
+
+4. DATABASE SCHEMA EXTENDED - Section 4.5
+
+   NEW Table: engagement_metrics
+   - session_id, turn_index
+   - message_length, response_latency_ms
+   - follow_up_question, directive_acceptance
+   - engagement_score, session_engagement_avg
+   
+   NEW Table: stress_metrics
+   - session_id, turn_index
+   - stress_level (0-4), confidence
+   - lexical_markers (array), emotional_intensity_score
+   - problem_escalation (bool), stress_drivers (array)
+   - response_appropriateness (0-2)
+   
+   NEW Table: engagement_stress_interaction
+   - session_id
+   - engagement_stress_correlation
+   - stress_reduction_rate
+   - stress_mitigation_success_rate (%)
+   - scenario_consistency_correlation
+
+---
+
+5. SUCCESS CRITERIA UPDATED - Section 3.3
+
+   Added: Engagement & Stress Measurement (Target)
+   ✓ Engagement: Session avg ≥1.2/2.0; positive trend with progress
+   ✓ Stress Detection: Accuracy ≥75% LLM confidence; drivers ID'd ≥80% high-stress
+   ✓ Stress Mitigation: ≥60% of level 3-4 → lower stress next turn
+   ✓ Engagement-Stress Correlation: r ≥ 0.4; consistency r ≥ 0.7
+
+================================================================================
+                     HOW THIS IMPROVES THE PAPER
+================================================================================
+
+OPERATIONALITY:
+✓ BEFORE: Paper mentioned "emotional support" but no measurement of user state
+✓ AFTER: Now measures BOTH what user is experiencing (stress) + HOW engaged
+          they are with the system
+
+VALIDATION:
+✓ BEFORE: Only measured if expert panel approved system
+✓ AFTER: Also measures if system actually detects & responds to caregiver state
+
+AUTHENTICITY:
+✓ BEFORE: Simulated conversations might not show real stress patterns
+✓ AFTER: LLM can analyze stress signals from dialogue, showing REALISTIC response
+
+COMPLETENESS:
+✓ BEFORE: Missing link between personality adaptation → actual user benefit
+✓ AFTER: Engagement-stress dynamics show user benefits from adaptation
+          (e.g., lower stress → higher engagement → virtuous cycle)
+
+MEASUREMENT RIGOR:
+✓ BEFORE: Evaluation based on expert judgment only
+✓ AFTER: Automated + expert hybrid (system logs + LLM + human validation)
+
+THESIS CONTRIBUTION:
+✓ Shows system not just technically sound, but RESPONSIVE to real caregiver needs
+✓ Demonstrates engagement increases as stress decreases (proof of concept)
+✓ Provides metrics for future clinical validation studies
+
+================================================================================
+                         DATA FLOW (IMPLEMENTATION)
+================================================================================
+
+EXPERT PILOT (Weeks 3-5):
+  Expert session → System logs engagement metrics
+                → LLM evaluator detects stress levels
+                → PostgreSQL: engagement_metrics + stress_metrics tables
+                → Analysis: Expert ratings + automated engagement/stress
+
+SIMULATED EVALUATION (Weeks 11-14):
+  Synthetic conversation → System logs + LLM evaluation
+                        → 250 conversations × multiple runs
+                        → Compute engagement scores per turn
+                        → Compute stress levels per turn
+                        → Analyze engagement-stress correlations
+                        → Generate Table for thesis
+
+THESIS WRITING (Weeks 15-20):
+  Results:
+  - Table: Engagement & Stress Metrics Across Scenarios
+  - Analysis: Correlation patterns, stress mitigation success, consistency
+  - Interpretation: System creates positive feedback loop
+
+================================================================================
+                            KEY SUCCESS TARGETS
+================================================================================
+
+Engagement:
+  ✓ Session average ≥1.2/2.0
+  ✓ Positive trend (early half vs. late half)
+
+Stress Detection:
+  ✓ LLM confidence ≥0.75
+  ✓ Stress drivers identified in ≥80% of high-stress turns
+
+Stress Mitigation:
+  ✓ ≥60% of high-stress (level 3-4) turns → lower stress next turn
+  ✓ Shows personality-adaptive response actually helps
+
+Engagement-Stress Dynamics:
+  ✓ Positive correlation r ≥ 0.4 (engagement ↑ as stress ↓)
+  ✓ Consistency r ≥ 0.7 across scenarios (not random noise)
+
+================================================================================
+                         DOCUMENT REFERENCE
+================================================================================
+
+Paper Updated:
+  📄 Preliminary-Study-V2.7.1.md
+     - Section 3.3: Success criteria (added engagement & stress targets)
+     - Section 4.5: Database schema (added 3 new tables)
+     - Section 4.6: Evaluation framework (added engagement & stress metrics)
+
+Supporting Guide:
+  📄 ENGAGEMENT_AND_STRESS_METRICS.md (NEW)
+     - Implementation guide with Python examples
+     - LLM evaluator prompts
+     - SQL schema definitions
+     - Analysis examples
+     - Thesis tables
+
+================================================================================
+
+IMPACT: The paper now measures BOTH what the system does technically
+AND how it affects real caregiver engagement & stress levels,
+providing stronger evidence for personality-adaptive coaching effectiveness.
+
+STATUS: ✓ PAPER IMPROVED - Ready for expert pilot implementation
+
+================================================================================

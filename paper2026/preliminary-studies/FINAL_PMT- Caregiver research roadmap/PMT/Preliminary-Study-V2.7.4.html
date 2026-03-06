@@ -1,0 +1,3414 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Preliminary-Study-V2.7.4</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+</head>
+<body>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#adaptive-llm-based-chatbot-with-personality-aware-dialogue-for-human-centered-applications-a-formal-preliminary-study-with-swiss-caregiver-focus"
+id="toc-adaptive-llm-based-chatbot-with-personality-aware-dialogue-for-human-centered-applications-a-formal-preliminary-study-with-swiss-caregiver-focus">Adaptive
+LLM-Based Chatbot with Personality-Aware Dialogue for Human-Centered
+Applications: A Formal Preliminary Study with Swiss Caregiver Focus</a>
+<ul>
+<li><a href="#changelog-2.7.4" id="toc-changelog-2.7.4">Changelog
+(2.7.4)</a></li>
+<li><a href="#key-innovations-contributions"
+id="toc-key-innovations-contributions">Key Innovations &amp;
+Contributions</a></li>
+<li><a href="#abstract" id="toc-abstract">Abstract</a></li>
+<li><a href="#background-general-framework-and-swiss-caregiver-context"
+id="toc-background-general-framework-and-swiss-caregiver-context">1.
+Background: General Framework and Swiss Caregiver Context</a>
+<ul>
+<li><a
+href="#problem-context-the-need-for-personality-aware-human-computer-interaction"
+id="toc-problem-context-the-need-for-personality-aware-human-computer-interaction">1.1
+Problem Context: The Need for Personality-Aware Human-Computer
+Interaction</a></li>
+<li><a
+href="#limitations-of-current-digital-assistants-and-caregiver-support-systems"
+id="toc-limitations-of-current-digital-assistants-and-caregiver-support-systems">1.2
+Limitations of Current Digital Assistants and Caregiver Support
+Systems</a></li>
+<li><a
+href="#recent-literature-context-ai-personality-caregiver-support"
+id="toc-recent-literature-context-ai-personality-caregiver-support">1.2.1
+Recent Literature Context (AI, Personality, Caregiver Support)</a></li>
+<li><a
+href="#motivation-and-contributions-addressing-caregiver-specific-gaps"
+id="toc-motivation-and-contributions-addressing-caregiver-specific-gaps">1.3
+Motivation and Contributions: Addressing Caregiver-Specific
+Gaps</a></li>
+</ul></li>
+<li><a href="#topic-definition" id="toc-topic-definition">2. Topic
+Definition</a>
+<ul>
+<li><a href="#core-concepts" id="toc-core-concepts">2.1 Core
+Concepts</a></li>
+<li><a href="#scope-and-application-context"
+id="toc-scope-and-application-context">2.2 Scope and Application
+Context</a></li>
+<li><a href="#implementation-specifications"
+id="toc-implementation-specifications">2.3 Implementation
+Specifications</a></li>
+<li><a href="#primary-use-case-swiss-caregiver-coaching-assistant"
+id="toc-primary-use-case-swiss-caregiver-coaching-assistant">2.4 Primary
+Use Case: Swiss Caregiver Coaching Assistant</a></li>
+</ul></li>
+<li><a href="#research-questions" id="toc-research-questions">3.
+Research Questions</a>
+<ul>
+<li><a href="#primary-research-question"
+id="toc-primary-research-question">3.1 Primary Research
+Question</a></li>
+<li><a
+href="#sub-research-questions-scoped-for-swiss-caregiver-coaching"
+id="toc-sub-research-questions-scoped-for-swiss-caregiver-coaching">3.2
+Sub-Research Questions (Scoped for Swiss Caregiver Coaching)</a></li>
+<li><a href="#success-criteria-architecture-oriented"
+id="toc-success-criteria-architecture-oriented">3.3 Success Criteria
+(Architecture-Oriented)</a></li>
+<li><a href="#mapping-to-methodology"
+id="toc-mapping-to-methodology">3.4 Mapping to Methodology</a></li>
+</ul></li>
+<li><a href="#methodology" id="toc-methodology">4. Methodology</a>
+<ul>
+<li><a href="#architecture-and-workflow"
+id="toc-architecture-and-workflow">4.1 Architecture and
+Workflow</a></li>
+<li><a
+href="#detection-module-continuous-ocean-inference-with-ema-smoothing"
+id="toc-detection-module-continuous-ocean-inference-with-ema-smoothing">4.2
+Detection Module: Continuous OCEAN Inference with EMA Smoothing</a></li>
+<li><a
+href="#regulation-module-psychologically-grounded-behavior-mapping"
+id="toc-regulation-module-psychologically-grounded-behavior-mapping">4.3
+Regulation Module: Psychologically Grounded Behavior Mapping</a></li>
+<li><a
+href="#generation-module-rag-enhanced-response-production-with-personality-aware-presentation"
+id="toc-generation-module-rag-enhanced-response-production-with-personality-aware-presentation">4.4
+Generation Module: RAG-Enhanced Response Production with
+Personality-Aware Presentation</a></li>
+<li><a href="#data-management-and-simulation"
+id="toc-data-management-and-simulation">4.5 Data Management and
+Simulation</a></li>
+<li><a href="#evaluation-framework" id="toc-evaluation-framework">4.6
+Evaluation Framework</a></li>
+<li><a href="#system-advantages-and-reproducibility"
+id="toc-system-advantages-and-reproducibility">4.7 System Advantages and
+Reproducibility</a></li>
+</ul></li>
+<li><a href="#technology-software-and-applications"
+id="toc-technology-software-and-applications">5. Technology, Software,
+and Applications</a>
+<ul>
+<li><a href="#core-technology-stack" id="toc-core-technology-stack">5.1
+Core Technology Stack</a></li>
+<li><a href="#development-and-testing"
+id="toc-development-and-testing">5.2 Development and Testing</a></li>
+<li><a href="#security-and-privacy" id="toc-security-and-privacy">5.3
+Security and Privacy</a></li>
+<li><a href="#computational-costs-and-performance"
+id="toc-computational-costs-and-performance">5.4 Computational Costs and
+Performance</a></li>
+<li><a href="#deployment-and-maintenance"
+id="toc-deployment-and-maintenance">5.5 Deployment and
+Maintenance</a></li>
+<li><a href="#frontend-architecture-lightweight-demo-interface"
+id="toc-frontend-architecture-lightweight-demo-interface">5.6 Frontend
+Architecture: Lightweight Demo Interface</a></li>
+</ul></li>
+<li><a href="#project-plan-and-risk-management"
+id="toc-project-plan-and-risk-management">6. Project Plan and Risk
+Management</a>
+<ul>
+<li><a href="#thesis-proposal-and-structure"
+id="toc-thesis-proposal-and-structure">6.1 Thesis Proposal and
+Structure</a></li>
+<li><a href="#twenty-week-work-plan" id="toc-twenty-week-work-plan">6.2
+Twenty-Week Work Plan</a></li>
+<li><a href="#risk-management" id="toc-risk-management">6.3 Risk
+Management</a></li>
+</ul></li>
+<li><a href="#future-work" id="toc-future-work">7. Future Work</a>
+<ul>
+<li><a href="#future-research-directions"
+id="toc-future-research-directions">7.1 Future Research
+Directions</a></li>
+<li><a href="#limitations-and-future-research-directions"
+id="toc-limitations-and-future-research-directions">7.2 Limitations and
+Future Research Directions</a></li>
+</ul></li>
+<li><a href="#references" id="toc-references">8. References</a></li>
+<li><a href="#appendix" id="toc-appendix">9. Appendix</a>
+<ul>
+<li><a href="#appendix-a.-swiss-policy-sources-placeholders-for-rag"
+id="toc-appendix-a.-swiss-policy-sources-placeholders-for-rag">Appendix
+A. Swiss Policy Sources (Placeholders for RAG)</a></li>
+<li><a href="#appendix-a.-prompt-interfaces-and-templates"
+id="toc-appendix-a.-prompt-interfaces-and-templates">Appendix A. Prompt
+Interfaces and Templates</a></li>
+<li><a href="#appendix-b.-evaluation-rubric-and-scoring-guidelines"
+id="toc-appendix-b.-evaluation-rubric-and-scoring-guidelines">Appendix
+B. Evaluation Rubric and Scoring Guidelines</a></li>
+<li><a href="#appendix-c.-data-management-and-ethics"
+id="toc-appendix-c.-data-management-and-ethics">Appendix C. Data
+Management and Ethics</a></li>
+<li><a href="#appendix-d.-glossary-of-key-terms"
+id="toc-appendix-d.-glossary-of-key-terms">Appendix D. Glossary of Key
+Terms</a></li>
+<li><a
+href="#appendix-e.-vendor-specific-assumptions-for-planning-purposes"
+id="toc-appendix-e.-vendor-specific-assumptions-for-planning-purposes">Appendix
+E. Vendor-Specific Assumptions (For Planning Purposes)</a></li>
+<li><a href="#appendix-f.-deployment-and-maintenance-notes"
+id="toc-appendix-f.-deployment-and-maintenance-notes">Appendix F.
+Deployment and Maintenance Notes</a></li>
+<li><a href="#timeline-summary-and-feasibility"
+id="toc-timeline-summary-and-feasibility">6.2.1 Timeline Summary and
+Feasibility</a></li>
+<li><a href="#quantified-impact-and-preliminary-evidence"
+id="toc-quantified-impact-and-preliminary-evidence">6.2.2 Quantified
+Impact and Preliminary Evidence</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1
+id="adaptive-llm-based-chatbot-with-personality-aware-dialogue-for-human-centered-applications-a-formal-preliminary-study-with-swiss-caregiver-focus">Adaptive
+LLM-Based Chatbot with Personality-Aware Dialogue for Human-Centered
+Applications: A Formal Preliminary Study with Swiss Caregiver Focus</h1>
+<p><strong>Author:</strong> Jiahua Duojie<br />
+<strong>Program:</strong> MSc Applied Information and Data Science
+(HSLU)<br />
+<strong>Supervisor:</strong> Prof. Dr. Guang Lu<br />
+<strong>Secondary Supervisor/Advisor:</strong> Samuel Devdas<br />
+<strong>Date:</strong> October 22, 2025<br />
+<strong>Version:</strong> 2.7.4 (Quality Refinement: Precision,
+Credibility, Measurable Targets)</p>
+<hr />
+<h3 id="changelog-2.7.4">Changelog (2.7.4)</h3>
+<ul>
+<li><strong>Quality Refinement (Precision &amp; Credibility):</strong>
+<ul>
+<li>Replaced absolutes with measurable targets: “zero/100%” → “no
+critical errors”; “first validated” → “we operationalize (validation in
+thesis)”</li>
+<li>Added explicit scope boundaries: “In this preliminary study, policy
+answers are design-only; canton-specific retrieval validated in thesis
+phase”</li>
+<li>Converted claims to observable criteria: “SUS ≥70 (no critical
+failures across 5–8 sessions)”; “100% citation coverage; audits detect
+no critical errors (≤5% minor flags)”</li>
+<li>Removed value judgments: “clearly/perfectly/publication-quality
+(10+)” → “documented/appropriate/publication-ready”</li>
+<li>Improved evidence phrasing: “create evidence base” → “provide
+convergent evidence”; “establishes paradigm/validated methodology” →
+“proposes approach; validation in thesis”</li>
+<li>Unified grounding targets across all sections: “All policy claims
+cite official sources; sampled audits detect no critical errors (≤5%
+minor flags)”</li>
+</ul></li>
+<li><strong>Standardized Statistics:</strong> Table 0 remains Single
+Source of Truth (700,000 caregivers, 40–70% burnout in SCI cohort with
+generalization caveats)</li>
+<li><strong>Technical Consolidation:</strong> EMA details, crisis
+protocol in dedicated appendix subsections (Appendix G, Appendix C)</li>
+</ul>
+<hr />
+<h2 id="key-innovations-contributions">Key Innovations &amp;
+Contributions</h2>
+<p>This preliminary study introduces <strong>five core
+innovations</strong> addressing Swiss caregiver support:</p>
+<ol type="1">
+<li><p><strong>Continuous Personality-Aware Dialogue</strong> — OCEAN
+detection with EMA smoothing (α=0.3) provides real-time personality
+adaptation, moving beyond static user profiles to dynamically responsive
+emotional coaching.</p></li>
+<li><p><strong>Zurich Model Operationalization</strong> — We
+operationalize personality-to-motivation mappings (Big Five →
+security/arousal/affiliation systems) with testable behavioral
+directives; validation planned in thesis evaluation phase.</p></li>
+<li><p><strong>Swiss-Contextualized RAG Pipeline</strong> — RAG-enhanced
+policy navigation for IV/Invalidenversicherung and
+Hilflosenentschädigung, addressing Switzerland’s federalized healthcare
+complexity with 20–30 validated Q-A benchmark pairs per domain.</p></li>
+<li><p><strong>Multi-Stream Validation Architecture</strong> — Expert
+pilot (n=5–8), real caregiver cohort (n=20–30) with BFI-44/PSS-10
+ground-truth, human expert response scoring (κ≥0.75), and synthetic
+evaluation (N≥250) provide convergent evidence for external
+validity.</p></li>
+<li><p><strong>Privacy-Preserving &amp; Audit-Ready Design</strong> —
+Swiss FADP compliance, pseudonymized storage, formalized crisis protocol
+(KEK/CE-approved; cantonal ethics committee via swissethics/HRA,
+equivalent to US IRB), and JSONL audit trails enable organizational
+trust and regulatory alignment for Spitex adoption.</p></li>
+</ol>
+<p><strong>Impact:</strong> Provides an operational, auditable approach
+for personality-aware caregiver support in Switzerland, with validation
+planned in the thesis phase.</p>
+<hr />
+<h2 id="abstract">Abstract</h2>
+<p>Emotional well-being and personalized support are persistent
+challenges for AI assistants. Current systems often store user data but
+rarely adapt to stable personality traits or real-time motivational
+needs, resulting in generic, context-insensitive responses. In
+Switzerland, approximately 700,000 informal caregivers face chronic
+stress from caregiving (40–70% burnout among high-intensity caregivers),
+compounded by limited formal training and complex, canton-specific
+healthcare policies. This creates a need for digital assistants that
+provide personality-aware emotional coaching and precise policy
+navigation to enhance resilience.</p>
+<p>We propose the <strong>Swiss Caregiver Coaching Assistant</strong>.
+The system detects personality (Big Five; OCEAN), aligns responses to
+motivational needs using the Zurich Model, and delivers three supports:
+<strong>(1) Emotional Support</strong> (resilience, boundary-setting),
+<strong>(2) Educational Guidance</strong> (caregiving skills matched to
+personality), and <strong>(3) Policy Navigation</strong> (RAG-augmented
+retrieval; all policy claims cite official sources; sampled audits
+detect no critical errors with ≤5% minor flags allowable). Reliability
+is reinforced through exponential moving-average smoothing (α=0.3) and
+confidence-weighted filtering.</p>
+<p>This preliminary study evaluates core functionality across expert
+pilot (n=5–8 domain specialists), simulated evaluation (N≥250 synthetic
+conversations vs. non-adaptive baselines), and real caregiver sessions
+(n=20–30 with BFI-44/PSS-10 ground truth). LLM-based evaluators are
+gated by human audit (30% synthetic + 100% real data, inter-rater
+κ≥0.70). Crisis detection follows cantonal ethics committee
+(KEK/CE)-approved protocols under FADP compliance.</p>
+<hr />
+<h2 id="background-general-framework-and-swiss-caregiver-context">1.
+Background: General Framework and Swiss Caregiver Context</h2>
+<h3
+id="problem-context-the-need-for-personality-aware-human-computer-interaction">1.1
+Problem Context: The Need for Personality-Aware Human-Computer
+Interaction</h3>
+<p>The rapid rise of AI-driven systems has shifted user expectations
+toward personalized, context-aware dialogues that adapt to individual
+personality traits, communication preferences, and situational needs,
+moving beyond transactional interactions. This transformation spans
+critical application domains—workplace productivity and wellbeing,
+education and skill development, customer service, and healthcare—where
+users increasingly expect systems to understand not merely task
+requirements but also personal preferences, emotional states, and
+motivational patterns.</p>
+<p><strong>The capacity crisis in traditional support systems.</strong>
+Traditional human-delivered support faces three structural constraints:
+limited scalability, financial barriers, and geographic limitations.
+Digital alternatives achieve scalability but deliver one-size-fits-all
+responses, creating a critical gap: systems combining digital
+scalability with personalized, adaptive interaction.</p>
+<p><strong>Swiss informal caregiver crisis: Context and
+urgency.</strong> Switzerland has approximately <strong>700,000 informal
+caregivers</strong> (8% of population; OECD 2023, ZHAW 2022),
+representing one of the nation’s largest vulnerable populations.
+<strong>Generalization note:</strong> Burnout and intensity figures (see
+Table 0) include SCI-specific cohorts (Ruoss et al., 2023; n≈200);
+broader population estimates are lower (~20% burnout prevalence
+vs. 40–70% in high-intensity subgroups). <strong>Professional training
+and competency gaps:</strong> Unlike formal healthcare workers, these
+family caregivers typically lack systematic professional training,
+evidence-based caregiving techniques, or ongoing clinical supervision.
+<strong>Stress, burnout, and performance impact:</strong> Informal
+caregivers face chronic stress (see Table 0 for population-specific
+estimates), leading to emotional exhaustion, compassion fatigue, and
+isolation. These stress states directly impair caregiving performance
+and create reinforcing cycles of burden and guilt.</p>
+<p><strong>Table 0. Key Swiss Caregiver Statistics (Single Source of
+Truth)</strong></p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 23%" />
+<col style="width: 26%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Source</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Total Informal Caregivers in Switzerland</strong></td>
+<td>~700,000</td>
+<td>ZHAW (2022); OECD (2023)</td>
+<td>8% of ~8.8M population; OECD reports 13–20% of adults 50+ provide
+informal care</td>
+</tr>
+<tr>
+<td><strong>Proportion with Burnout (High-Intensity
+Caregivers)</strong></td>
+<td>40–70%</td>
+<td>Ruoss et al. (2023); Gérain &amp; Zech (2019)</td>
+<td>High-end figures for 24/7 care; Ruoss cohort is SCI-specific; may
+overestimate general population</td>
+</tr>
+<tr>
+<td><strong>Population-Level Burnout Prevalence</strong></td>
+<td>~20%</td>
+<td>Recent reviews (2024–2025)</td>
+<td>Emotional exhaustion indicators; lower than high-intensity
+subset</td>
+</tr>
+<tr>
+<td><strong>Average Caregiving Intensity</strong></td>
+<td>25–40 hours/week</td>
+<td>Ruoss et al. (2023)</td>
+<td>SCI cohort average; varies by condition and family structure</td>
+</tr>
+<tr>
+<td><strong>Financial Support Potential</strong></td>
+<td>CHF 900–1,000/month</td>
+<td>Höpflinger &amp; Hugentobler (2023)</td>
+<td>Cantonal allowances + IV benefits; awareness low (~15% eligible
+caregivers use resources)</td>
+</tr>
+<tr>
+<td><strong>Employment Impact</strong></td>
+<td>8.4 hours/week reduction</td>
+<td>Ruoss et al. (2023)</td>
+<td>SCI cohort; generalization limited; may OVERESTIMATE broader
+caregiver workforce impact</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: This table consolidates key statistics cited throughout the
+document. Estimates vary by definition (age, duration, intensity
+thresholds). For replication: OECD (2023) defines informal care as ≥1
+hour/week; FSO (2023) and SCOHPICA (2024) use broader definitions. See
+Appendix A for detailed source citations.</em></p>
+<p>Beyond emotional challenges, Swiss caregivers navigate a complex,
+federalized healthcare system with strong cantonal variations (26
+cantons = 26 regulatory frameworks). Yet most caregivers remain unaware
+of their rights under Swiss law, available financial support mechanisms
+(cantonal allowances averaging CHF 900–1,000 monthly support potential;
+Höpflinger &amp; Hugentobler, 2023*), employment protection regulations,
+and healthcare system navigation strategies. Many caregivers experience
+reduced working hours (avg. 8.4h/week reduction; Ruoss et al., 2023**)
+without accessing support mechanisms that could mitigate financial
+strain.</p>
+<p>*Note: Höpflinger &amp; Hugentobler figures are drawn from studies of
+specific caregiver sub-populations; may not generalize uniformly across
+all Swiss caregivers.<br />
+**Note: Ruoss et al., 2023 study population: caregivers of persons with
+spinal cord injury (SCI) only (n≈200); work-hour reduction and income
+impact may OVERESTIMATE burden for general Swiss caregiver
+population.</p>
+<p><strong>Domain-specific requirements and the personalization gap for
+caregivers.</strong> Informal caregivers require personality-adaptive
+support across: (1) <strong>Emotional resilience</strong> (compassion
+fatigue recognition, stress validation, boundary-setting—especially
+critical for high-neuroticism caregivers), (2) <strong>Practical
+education</strong> (caregiving techniques, time management, self-care
+strategies adapted to individual learning and processing styles), and
+(3) <strong>Swiss healthcare policy navigation</strong> (cantonal Spitex
+variations, IV/AI eligibility, Hilflosenentschädigung application,
+Ergänzungsleistungen, caregiver employment models). Current digital
+assistance solutions—generic stress management apps, FAQs without
+personality awareness, generic policy information portals—fail to
+account for individual differences, creating systematic mismatches that
+reduce effectiveness and undermine caregiver trust.</p>
+<h3
+id="limitations-of-current-digital-assistants-and-caregiver-support-systems">1.2
+Limitations of Current Digital Assistants and Caregiver Support
+Systems</h3>
+<p>We synthesize four interconnected technical and domain-specific
+constraints limiting current conversational AI effectiveness for
+caregiver support:</p>
+<p><strong>Table 1.2. Four Critical Gaps in Current Caregiver Support
+Systems</strong></p>
+<p><strong>Gap 2: Zurich Model Theory-Practice Disconnect</strong><br />
+Recent industry deployments (ChatGPT Memory, mem0, LangChain Memory)
+prioritize memory-centric personalization, storing user statements as
+vector embeddings for similarity-based retrieval across sessions. While
+achieving factual persistence at scale, <strong>this approach remains
+cognitively shallow</strong>, addressing <em>what the user said</em> but
+not <em>why they behave</em>. Memory systems recall that a caregiver
+mentioned “mother has dementia” but cannot infer whether that
+caregiver’s preference for structured planning stems from high
+conscientiousness (organizational drive), neuroticism (need for
+security), or both—leading to generic responses that miss underlying
+motivational drivers. No validated computational mappings translate
+Zurich Model of Social Motivation constructs into behavioral directives;
+measurement protocols to confirm intended motivational state induction
+remain undeveloped. The field lacks manipulation checks to confirm that
+adapted responses are perceived as intended by users.</p>
+<p><strong>Gap 3: LLM Safety, Reliability, and Privacy in
+Healthcare</strong><br />
+Most systems lack complete logging, audit trails, and deterministic
+interfaces preventing rigorous evaluation. Caregiver support systems
+particularly lack standardized outcome measures or longitudinal tracking
+to assess effectiveness. Critical deficiencies exist in truthfulness,
+persona stability, and privacy preservation for vulnerable caregiver
+populations. No privacy-preserving architectures meet Swiss data
+protection standards (FADP, rev. 2023) while enabling effective
+personality tracking.</p>
+<p><strong>Gap 4: Absence of Personalized Education and Swiss Healthcare
+Navigation</strong><br />
+No caregiver support systems currently exist that integrate: (1)
+personalized practical education on caregiving techniques adapted to
+individual OCEAN personality profiles, and (2) LLM-based navigation of
+complex Swiss healthcare policies and regulations tailored to caregiver
+needs. While personality adaptation is essential for emotional support
+and educational guidance, the navigation of policies and regulations is
+fundamentally important functionality that does not necessarily require
+OCEAN trait adaptation—instead, it requires accurate, contextualized
+information delivery. This gap is particularly acute in Switzerland’s
+federalized system where caregivers require guidance on cantonal
+variations in Spitex services, caregiver allowances, long-term care
+insurance (Pflegeversicherung), family caregiver employment models,
+patient rights, and culturally appropriate Swiss interaction patterns.
+Current digital health interventions, when they exist, provide only
+generic information without personality adaptation or Swiss-specific
+contextualization.</p>
+<h3
+id="recent-literature-context-ai-personality-caregiver-support">1.2.1
+Recent Literature Context (AI, Personality, Caregiver Support)</h3>
+<p>Recent work establishes three foundations for this study: 1.
+<strong>Personality-aware conversational AI:</strong> Devdas (2025)
+demonstrates that Big Five detection with Zurich Model regulation
+improves emotional support quality by ≥20% in controlled settings. Prior
+frameworks (FEEL by Zhang et al., 2024; ElliQA by Broadbent et al.,
+2024) show scalability but lack personality adaptation or Swiss context.
+2. <strong>LLM reliability in healthcare:</strong> Transparency is
+critical (genAI disclosure per emerging guidelines); grounding and audit
+trails reduce hallucination (Abbasian et al., 2023; Sorino et al.,
+2024). 3. <strong>Caregiver digital interventions:</strong> Gérain &amp;
+Zech (2019), Gigon et al. (2024, SCOHPICA cohort), and recent OECD
+reviews show that targeted, accessible support reduces burnout by 10–15%
+and improves well-being outcomes. Swiss-specific implementations remain
+scarce.</p>
+<p>This study bridges these domains by operationalizing
+personality-aware regulation for caregiver support with Swiss policy
+accuracy, grounded in validated science and auditable design.</p>
+<h3
+id="motivation-and-contributions-addressing-caregiver-specific-gaps">1.3
+Motivation and Contributions: Addressing Caregiver-Specific Gaps</h3>
+<p>Despite growing interest in personality-aware conversational AI and
+digital caregiver support, <strong>no existing system systematically
+integrates</strong>: (1) continuous personality detection and
+regulation, (2) caregiver-specific emotional support and
+resilience-building, (3) personality-adapted practical caregiving
+education, and (4) accurate Swiss healthcare policy navigation—all
+grounded in validated personality science and Swiss regulatory
+context.</p>
+<p><strong>Research Motivation and Expected Impact:</strong></p>
+<p>While informal caregivers face documented stressors, existing digital
+support systems lack personality-adaptive emotional support and
+Swiss-specific healthcare knowledge navigation. This research develops a
+personality-aware chatbot providing: (1) emotional support tailored to
+individual personality profiles, and (2) accurate navigation of complex
+Swiss healthcare policies. Three key opportunities motivate this
+work:</p>
+<ul>
+<li><strong>Scaling personalized support without scaling costs:</strong>
+Continuous personality adaptation enables digital systems to deliver
+individualized caregiver support that matches human practitioners’
+empathy and responsiveness, addressing Switzerland’s caregiver capacity
+crisis while maintaining accessibility and affordability.</li>
+<li><strong>Building caregiver trust through psychological
+validity:</strong> Grounding adaptations in validated personality
+science (Big Five, Zurich Model) and Swiss healthcare accuracy ensures
+that systems respond to genuine caregiver psychological needs and
+practical requirements, increasing acceptance and long-term
+engagement.</li>
+<li><strong>Enabling Swiss healthcare organizations’ adoption through
+reliability:</strong> Providing reproducible evaluation protocols, audit
+trails, deterministic interfaces, and caregiver-centered outcomes
+addresses organizational requirements (Spitex services, cantonal health
+departments, employee assistance programs) for quality assurance,
+compliance, and evidence-based deployment.</li>
+</ul>
+<p>Recent work by Devdas (2025) provides crucial empirical validation,
+demonstrating substantial performance gains through personality-adaptive
+assistants in controlled simulations using Big Five detection and Zurich
+Model regulation. This establishes the conceptual foundation—that
+personality-aware regulation meaningfully improves conversational
+quality—motivating production-ready, Swiss-contextualized system
+architectures.</p>
+<p>By addressing these four interconnected gaps, this research proposes
+an approach to <strong>theoretically grounded, personality-aware, safe,
+and contextually appropriate AI applications in informal
+caregiving</strong>, with specific contributions to Switzerland’s
+700,000+ caregivers and broader implications for global caregiver
+support systems.</p>
+<p><strong>This preliminary study specifies six key objectives
+addressing caregiver-specific research gaps, aligned with the Master
+Thesis Research Roadmap:</strong></p>
+<p><strong>Table 1. Six Research Objectives Addressing Caregiver
+Gaps</strong></p>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 26%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr>
+<th>Objective</th>
+<th>Description</th>
+<th>Caregiver-Specific Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(1) Dynamic Personality-Aware Adaptation</td>
+<td>Develop and validate OCEAN detection with real-time adaptation
+outperforming static approaches</td>
+<td>Tailor emotional support intensity to caregiver neuroticism;
+resource navigation detail to conscientiousness</td>
+</tr>
+<tr>
+<td>(2) Zurich Model Operationalization</td>
+<td>Create validated mappings from OCEAN to behavioral directives with
+manipulation checks</td>
+<td>Confirm caregivers perceive security/arousal/affiliation framing as
+intended; measure stress reduction</td>
+</tr>
+<tr>
+<td>(3) LLM Safety and Swiss Privacy Compliance</td>
+<td>Design privacy-preserving architecture meeting Swiss FADP with
+persona stability and hallucination guardrails</td>
+<td>Protect caregiver anonymity; target policy guidance factual
+accuracy; prevent fabricated Swiss benefits</td>
+</tr>
+<tr>
+<td>(4) Caregiver-Specific Emotional Support</td>
+<td>Develop resilience-building, compassion fatigue recognition,
+boundary-setting strategies with personality adaptation</td>
+<td>High-N: reassurance + grounding; Low-N: pragmatic solutions; All:
+caregiver-specific stress drivers</td>
+</tr>
+<tr>
+<td>(5) Personalized Caregiving Education</td>
+<td>Create practical education (techniques, time management, self-care)
+adapted to individual learning styles</td>
+<td>High-C: detailed step-by-step; Low-C: flexible overview; High-O:
+novel approaches; Low-O: proven methods</td>
+</tr>
+<tr>
+<td>(6) Swiss Healthcare Policy Navigation</td>
+<td>Develop RAG-enhanced system for cantonal Spitex, IV/AI,
+Hilflosenentschädigung, allowances, employment models</td>
+<td>Contextualized guidance per canton; eligibility checklists;
+application step-by-step support; contact information</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="topic-definition">2. Topic Definition</h2>
+<h3 id="core-concepts">2.1 Core Concepts</h3>
+<p><strong>Personality-adaptive emotional support chatbot.</strong> A
+conversational agent that dynamically detects user personality signals
+from dialogue content and accordingly modulates its communicative
+behavior—including tone, structural complexity, pacing, warmth, and
+novelty—to better satisfy user-specific emotional and psychological
+needs. Unlike static systems that rely on predetermined user profiles,
+personality-adaptive chatbots continuously update their understanding of
+user traits and adjust their responses in real time to optimize
+emotional alignment and therapeutic effectiveness.</p>
+<p><strong>Big Five (OCEAN) personality framework.</strong> A
+well-established personality taxonomy comprising five major dimensions:
+<strong>O</strong>penness to experience (curiosity, creativity),
+<strong>C</strong>onscientiousness (organization, discipline),
+<strong>E</strong>xtraversion (sociability, energy),
+<strong>A</strong>greeableness (cooperation, empathy), and
+<strong>N</strong>euroticism (emotional sensitivity, stress reactivity)
+(McCrae &amp; John, 1992). This framework provides a structured basis
+for personality inference and has been extensively validated across
+cultures and contexts. In our implementation, we employ
+<strong>continuous per-turn inference with values in the range [−1.0,
++1.0]</strong> representing the full spectrum from low to high trait
+expression. This continuous representation is essential for (i)
+Exponential Moving Average (EMA) smoothing—a weighted averaging
+technique requiring fine-grained values to prevent quantization noise
+(abrupt jumps from discrete values), (ii) capturing motivational
+intensity as conceptualized by the Zurich Model, and (iii) enabling
+nuanced behavioral adaptations that match the dimensional nature of
+personality traits established by personality psychology research (Costa
+&amp; McCrae, 1992; Quirin et al., 2023).</p>
+<p><strong>Zurich Model alignment.</strong> Our personality-to-behavior
+mapping approach is grounded in the Zurich Model of Social Motivation
+(Quirin et al., 2023), which conceptualizes human behavior through three
+fundamental motivational systems: security, arousal, and affiliation. We
+operationalize this framework by mapping OCEAN traits to these
+motivational domains: Neuroticism influences security-related behaviors
+(comfort provision vs. stability reassurance), Openness and Extraversion
+modulate arousal through novelty and energy regulation, and
+Agreeableness affects affiliation through warmth and collaborative
+stance adjustments. Conscientiousness serves as a structural modifier,
+influencing the organization and specificity of guidance provided.
+<em>Note: This operationalization represents a simplified first-order
+mapping; the Zurich Model emphasizes dynamic interactions between
+motivational systems (Quirin et al., 2023), which are not fully captured
+in this preliminary design and require empirical validation in the
+thesis phase.</em></p>
+<p><strong>Safety constraints.</strong> All system responses are
+designed to be grounded in user conversational input (see Section 4.4
+for quote-and-bound implementation details).</p>
+<h3 id="scope-and-application-context">2.2 Scope and Application
+Context</h3>
+<p><strong>Human-centered applications.</strong> Our framework targets
+applications emphasizing personalization, empathy, and adaptive user
+interaction across diverse domains: family caregiver support, mental
+health services, educational assistance, customer service interactions,
+and general emotional companionship. We designed the system to
+complement human interaction by providing consistent availability,
+emotional attunement, and personality-aware responses. The system
+maintains appropriate boundaries and escalation mechanisms when
+professional human intervention is needed.</p>
+<p><strong>Domain prioritization rationale.</strong> Family caregiver
+coaching was prioritized over clinical mental health applications due
+to: (1) strong alignment with Zurich Model motivations (security for
+managing care responsibilities and financial stress, affiliation for
+family dynamics and social support, arousal for goal-setting and
+advocacy), (2) urgent public health need (Switzerland’s aging population
+creates growing caregiver burden with limited digital support
+infrastructure), (3) clear policy integration opportunity (navigating
+AHV, IV, Hilflosenentschädigung, respite care services), (4) lower
+ethical and regulatory risks (non-clinical coaching boundary avoids
+medical device regulations while addressing wellbeing), and (5)
+measurable technical outcomes (system usability SUS ≥70, personality
+adaptation appropriateness, policy navigation accuracy, benefit
+comprehension improvements).</p>
+<p><strong>Technical scope.</strong> The system integrates
+personality-aware dialogue with RAG-augmented policy navigation for
+Swiss caregiver benefits. The RAG module retrieves relevant policy
+documents and eligibility criteria based on caregiver context, while the
+personality-aware regulation determines presentation style (detailed
+vs. summary, reassuring vs. pragmatic). The system implements a
+webhook-based N8N architecture for production deployment.</p>
+<p><strong>Thesis Scope (Realistic Focus):</strong> -
+<strong>Personality Detection &amp; Regulation:</strong> Full
+implementation in Weeks 7-10 (detect→regulate→generate pipeline) -
+<strong>RAG Policy Navigation:</strong> Focused development on 2
+high-impact policy domains (<strong>IV/Invalidenversicherung</strong>
+and <strong>Hilflosenentschädigung</strong>) with 20-30 manually curated
++ LLM-generated question-answer-chunk benchmark pairs for validation -
+<strong>Expert Pilot (Weeks 3-5):</strong> Small-scale usability testing
+with n=5-8 in-house domain experts (Spitex coordinators, geriatricians)
+using think-aloud protocol to validate personality adaptation and
+directive effectiveness - <strong>Simple UI (Weeks 9-10):</strong>
+Lightweight Streamlit interface for expert demo and thesis defense, not
+production deployment - <strong>Human Validation (Weeks 15-16):</strong>
+Caregiver pilot (n=30-50); human studies with BFI-44 ground truth;
+qualitative feedback collection</p>
+<p><strong>Scope Note:</strong> In this preliminary study, policy
+answers are design-only; operational canton-specific retrieval is
+implemented and validated in the thesis phase. Full 26-canton policy
+coverage and multimodal inputs are planned for post-thesis
+extensions.</p>
+<p><strong>Evaluation framework.</strong> Our assessment methodology
+employs a structured rubric examining five key dimensions: detection
+accuracy (how well inferred OCEAN traits match user personality cues),
+regulation effectiveness (appropriate application of trait-specific
+behavioral strategies), emotional tone appropriateness (alignment with
+user emotional state and personality), relevance and coherence
+(contextual appropriateness and logical consistency), and personality
+needs satisfaction (addressing trait-specific emotional and
+interactional requirements) (Devdas, 2025; Zhang et al., 2024).</p>
+<h3 id="implementation-specifications">2.3 Implementation
+Specifications</h3>
+<p><strong>LLM model selection.</strong> We employ OpenAI GPT-4.1 as the
+primary model for personality detection and response generation, with
+Gemini 2.5 Pro as a cost-effective alternative. GPT-4.1 offers
+structured JSON output via function calling and strong personality
+inference capabilities validated in prior work (Miotto et al., 2022). We
+set temperature to 0.3 for detection (consistency) and 0.7 for
+generation (creativity with reliability). The provider-agnostic JSON
+contracts enable seamless model swapping for evaluation, cost
+optimization, and robustness. Vendor-specific details are in Appendix E
+(planning assumptions).</p>
+<p><strong>Dataset for OCEAN detection training.</strong> The system
+uses <strong>zero-shot prompt-based inference</strong> rather than
+fine-tuned models. This leverages GPT-4’s pre-trained understanding of
+personality psychology. We engineer prompts based on established
+personality assessment instruments (NEO-PI-R, BFI-2) and linguistic
+markers validated in prior work (Yarkoni, 2010; Park et al., 2015). For
+evaluation and validation, we employ three approaches: (1)
+<strong>synthetic personality profiles</strong> generated via simulated
+user agents with extreme (±0.8) and mixed trait configurations, (2)
+<strong>scripted dialogue scenarios</strong> covering Swiss caregiver
+stress contexts (emotional burden, benefit navigation complexity,
+self-care neglect), and (3) <strong>human validation subset</strong>
+(planned for thesis phase) with 30-50 Swiss family caregiver
+participants completing self-report personality inventories (BFI-44) for
+ground-truth comparison.</p>
+<p><strong>Evaluation metrics and target thresholds.</strong> The system
+targets the following performance benchmarks:</p>
+<p><strong>Evidence Map: Validation Status</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th>Claim Type</th>
+<th>Evidence Status</th>
+<th>Validation Plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Architecture specifications</strong></td>
+<td>Design complete</td>
+<td>Implementation in thesis Weeks 7-10</td>
+</tr>
+<tr>
+<td><strong>EMA parameters (α=0.3)</strong></td>
+<td>Theory-derived</td>
+<td>Empirical validation in thesis Weeks 11-14 (N≥250)</td>
+</tr>
+<tr>
+<td><strong>Performance thresholds</strong></td>
+<td>Target hypotheses</td>
+<td>Human validation in thesis Weeks 15-16 (n=30-50)</td>
+</tr>
+<tr>
+<td><strong>Cross-domain reusability</strong></td>
+<td>Design claim</td>
+<td>Timed experiments in thesis Weeks 8-10</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 2. Evaluation Metrics and Target
+Thresholds</strong></p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 40%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Target Threshold</th>
+<th>Measurement Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detection Accuracy</strong></td>
+<td style="text-align: center;">≥75% trait alignment</td>
+<td>Correlation between inferred and ground-truth OCEAN scores (r ≥
+0.75)</td>
+</tr>
+<tr>
+<td><strong>Temporal Stability</strong></td>
+<td style="text-align: center;">Variance &lt; 0.15</td>
+<td>Standard deviation of trait estimates after turn 6</td>
+</tr>
+<tr>
+<td><strong>Confidence Calibration</strong></td>
+<td style="text-align: center;">≥85% alignment</td>
+<td>High-confidence predictions (≥0.7) match personality cues in 85%+
+cases</td>
+</tr>
+<tr>
+<td><strong>JSON Contract Compliance</strong></td>
+<td style="text-align: center;">≥99.5%</td>
+<td>Percentage of valid JSON outputs from detection/generation
+modules</td>
+</tr>
+<tr>
+<td><strong>Tone Appropriateness</strong></td>
+<td style="text-align: center;">≥80% evaluator rating</td>
+<td>LLM evaluator scores on 5-point Likert scale (≥4.0/5.0)</td>
+</tr>
+<tr>
+<td><strong>Needs Satisfaction</strong></td>
+<td style="text-align: center;">≥20% improvement vs. baseline</td>
+<td>Relative gain on personality-specific needs addressed</td>
+</tr>
+<tr>
+<td><strong>System Reliability</strong></td>
+<td style="text-align: center;">No critical failures</td>
+<td>All errors trigger neutral fallback responses</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: Thresholds informed by prior conversational AI evaluation
+studies (Zhang et al., 2024; Devdas, 2025) and personality assessment
+reliability standards (Costa &amp; McCrae, 1992). These represent
+hypothesized success criteria to be empirically validated in thesis
+phase with N≥250 simulated conversations and n=30-50 human
+participants.</em></p>
+<p><strong>Two-Tier Acceptance (Power-Adjusted):</strong> (1)
+<strong>Preliminary Study Gate (r ≥ 0.50)</strong> — Temporal
+correlation between consecutive OCEAN estimates; achievable with ~25
+paired observations (α=0.05, power=0.80). (2) <strong>Thesis Target (r ≥
+0.75)</strong> — Criterion validity against BFI-44, requiring n≥60 for
+adequate power.</p>
+<p><strong>Temporal smoothing parameters.</strong> EMA (α=0.3)
+stabilizes traits by turns 6–8 (variance &lt;0.15); weights 30% current
+observation, 70% historical average. Confidence thresholds—0.4 (minimum
+for updates) and 0.7 (high-confidence adaptation)—align with personality
+assessment reliability standards (r≥0.7; Park et al., 2015). Sensitivity
+analysis (α ∈ {0.1, 0.2, 0.3, 0.4, 0.5}) in Appendix G.</p>
+<h3 id="primary-use-case-swiss-caregiver-coaching-assistant">2.4 Primary
+Use Case: Swiss Caregiver Coaching Assistant</h3>
+<p><strong>Target Population and Rationale.</strong> This study focuses
+on the <strong>Swiss Caregiver Coaching Assistant</strong>, designed to
+support approximately 700,000 family caregivers managing eldercare,
+chronic illness, disability care, and dementia in Switzerland.
+Caregivers face chronic stress from prolonged responsibility (25–40
+hours/week), leading to 40–70% burnout rates, yet remain unaware of
+available financial support (CHF 900–1,000 monthly potential) and
+employment protections. The system addresses three core gaps: (1)
+<strong>emotional resilience</strong> (compassion fatigue recognition,
+boundary-setting), (2) <strong>practical education</strong> (caregiving
+techniques adapted to learning style), and (3) <strong>Swiss healthcare
+policy navigation</strong> (cantonal variations across 26 regulatory
+frameworks). This focus was selected for: urgent public health need;
+strong alignment with Zurich Model motivations (security, affiliation,
+arousal); clear policy integration opportunity; minimal regulatory risk
+(non-clinical coaching); and measurable technical outcomes (usability,
+personality adaptation, policy accuracy).</p>
+<p><strong>Three Personality-Tailored Coaching Modes:</strong></p>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr>
+<th>Pillar</th>
+<th>Implementation</th>
+<th>Personality Regulation</th>
+<th>Delivery</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>(1) Emotional Support &amp; Resilience</strong></td>
+<td>Personality Regulation Model</td>
+<td>✓ Full</td>
+<td>Tone adapted to OCEAN (esp. N, A)</td>
+</tr>
+<tr>
+<td><strong>(2) Practical Education &amp; Self-Care</strong></td>
+<td>Personality Regulation Model</td>
+<td>✓ Full</td>
+<td>Content/approach adapted to OCEAN (esp. C, O, E)</td>
+</tr>
+<tr>
+<td><strong>(3) Swiss Policy Navigation</strong></td>
+<td>RAG + Personality Styling</td>
+<td>✓ Presentation Only</td>
+<td>Facts from RAG; delivery adapted to personality</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1. Emotional Support &amp; Resilience Building
+(Personality-Regulated)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Validate caregiver burden, help process
+emotions, develop coping strategies</li>
+<li><strong>Personality Adaptation:</strong>
+<ul>
+<li><strong>High-N:</strong> Extra reassurance (“Many caregivers feel
+overwhelmed—this is completely valid”)</li>
+<li><strong>Low-N:</strong> Pragmatic acknowledgment (“You’re managing
+significant responsibilities”)</li>
+<li><strong>High-A:</strong> Collaborative, warm framing with
+relationship emphasis</li>
+<li><strong>Low-A:</strong> Direct, matter-of-fact stance respecting
+autonomy</li>
+</ul></li>
+<li><strong>Content &amp; Evidence-Based Techniques:</strong> Compassion
+fatigue recognition; guilt/resentment reframing (CBT); boundary
+assertion; stress validation</li>
+</ul>
+<p><strong>2. Practical Education &amp; Self-Care Planning
+(Personality-Regulated)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Develop sustainable respite plans, teach
+caregiving techniques, prevent burnout escalation</li>
+<li><strong>Personality Adaptation:</strong>
+<ul>
+<li><strong>High-C:</strong> Structured planning with timelines and
+step-by-step techniques</li>
+<li><strong>Low-C:</strong> Flexible self-care suggestions with light
+scaffolding</li>
+<li><strong>High-E:</strong> Emphasize social support mobilization
+(support groups, family coordination)</li>
+<li><strong>Low-E:</strong> Focus on individual restoration
+(micro-breaks, boundary-setting scripts)</li>
+<li><strong>High-O:</strong> Novel caregiving techniques, creative
+respite solutions</li>
+<li><strong>Low-O:</strong> Proven, traditional methods with clear
+evidence base</li>
+</ul></li>
+<li><strong>Content:</strong> Caregiving techniques (dementia care,
+mobility assistance); time management (scheduling, delegation
+scripting); self-care (micro-rest protocols, technology aids, financial
+planning)</li>
+</ul>
+<p><strong>3. Swiss Healthcare Policy Navigation (RAG-Enhanced, Minimal
+Personality Styling)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Help caregivers understand and access
+Swiss benefits and services</li>
+<li><strong>Implementation:</strong> RAG retrieves factual policy
+information (AHV/AVS, IV/AI, Hilflosenentschädigung,
+Ergänzungsleistungen, Spitex); personality adaptation styles
+<strong>delivery only</strong> (summary vs. detailed, reassuring
+vs. pragmatic), NOT policy facts</li>
+<li><strong>Key Distinction:</strong> RAG ensures factual accuracy;
+personality adaptation styles the <strong>presentation</strong>, NOT the
+policy facts themselves</li>
+<li><strong>Technical Details:</strong> See Section 4.4 for complete RAG
+pipeline specification (context extraction, retrieval, personality-aware
+presentation, grounding enforcement)</li>
+</ul>
+<hr />
+<h2 id="research-questions">3. Research Questions</h2>
+<p>Building on the background and scope, we now articulate the research
+questions that drive the evaluation and implementation.</p>
+<h3 id="primary-research-question">3.1 Primary Research Question</h3>
+<p>How can personality-aware dialogue systems support Swiss family
+caregivers in managing emotional burden, navigating benefit systems, and
+sustaining self-care through adaptive coaching strategies grounded in
+the Big Five and Zurich Model frameworks?</p>
+<p>This use-case-driven research question addresses the design,
+implementation, and evaluation of a personality-adaptive caregiver
+coaching system, encompassing: (1) <strong>domain-specific needs
+assessment</strong> (caregiver stress profiles, benefit navigation
+challenges, self-care barriers), (2) <strong>technical
+implementation</strong> (EMA-based personality detection, RAG-augmented
+Swiss policy guidance, personality-to-directive mapping for caregiver
+contexts), (3) <strong>user-centered outcomes</strong> (stress
+reduction, benefit navigation success, self-care adoption, system
+usability), and (4) <strong>empirical validation</strong> (demonstrating
+measurable improvements in caregiver wellbeing and resource access
+versus non-adaptive baselines).</p>
+<h3 id="sub-research-questions-scoped-for-swiss-caregiver-coaching">3.2
+Sub-Research Questions (Scoped for Swiss Caregiver Coaching)</h3>
+<p><strong>RQ1 - EMA Personality Detection Stability:</strong> Can
+continuous OCEAN inference with EMA smoothing achieve stable personality
+estimates? See Section 4.2 for technical specifications (α=0.3, target
+variance σ_T &lt;0.15 post-stabilization within 6–8 turns). Validation
+targets: temporal consistency r&gt;0.7 across conversation segments;
+correlation r ≥ 0.60 with BFI-44 self-report on real caregiver data
+(n=20-30; see Section 4.5 for protocol).</p>
+<p><strong>RQ2 - Simulated &amp; Real Coaching Effectiveness:</strong>
+Do personality-adaptive behavioral directives improve response quality
+for three coaching modes (Emotional Support, Resource Navigation,
+Self-Care Planning) versus non-adaptive baseline? Target: ≥20% relative
+improvement on tone appropriateness, relevance, and personality need
+satisfaction in simulated evaluation (N≥250 conversations; see Section
+4.5). For real caregivers: human experts rate engagement scores ≥1.2/2.0
+and stress mitigation ≥60% (full protocol in Sections 4.5.2 and
+4.6).</p>
+<p><strong>RQ3 - RAG Policy Grounding and Expert Validation:</strong>
+Does RAG-augmented Swiss policy guidance (AHV, IV,
+Hilflosenentschädigung, respite care, Spitex) achieve target factual
+accuracy? See Section 4.4 for RAG technical specifications and Section
+4.6 for accuracy targets. Verification: all policy statements cite
+official source documents; sampled audits (250 claims) detect no
+critical errors (≤5% minor flags allowed for correction); validation by
+expert domain specialists.</p>
+<p><strong>RQ4 - Multi-Stream Validation (Expert Pilot, Human Expert
+Scoring, Real Caregiver Validation, Crisis Protocol):</strong> Does the
+system achieve acceptable performance across all four validation
+streams? See Section 4.5 for complete specifications: - <strong>(a)
+Expert Pilot (Section 4.5.1):</strong> SUS ≥70; Personality Adaptation
+Appropriateness ≥4.0/5.0; Tone-Fit ≥80%. - <strong>(b) Human Expert
+Response Scoring (Section 4.6.2):</strong> Mean quality scores ≥1.4/2.0
+across 5 criteria (emotional tone, engagement, stress reduction,
+relevance, factual accuracy); inter-rater κ ≥ 0.75 team certification. -
+<strong>(c) Real Caregiver Ground-Truth Validation (Section
+4.5.2):</strong> Personality r ≥ 0.60 vs. BFI-44; Stress r ≥ 0.50
+vs. PSS-10; Engagement patterns consistent with synthetic data; ≥60%
+stress mitigation. - <strong>(d) Crisis Protocol Formalization (Section
+4.5.2):</strong> Level 4 detection triggers automatic crisis line
+contacts with KEK/CE-approved researcher notification; no protocol
+violations.</p>
+<p><strong>RQ5 - Preliminary Study Scope and Limitations:</strong> What
+are the explicit boundaries and research limitations of this validated
+proof-of-concept study? See Section 3.3 (Success Criteria) and Section
+7.2 (Limitations vs. Future Work Table) for complete documentation of
+scope boundaries, sample sizes, methodology constraints, and external
+validity limitations.</p>
+<p>RQ–Objective crosswalk (expert-validated, human-scored,
+real-caregiver-informed scope): - RQ1 → Objective (1) Dynamic
+Personality-Aware Adaptation via EMA stability (simulated evaluation)
+AND ground-truth validation against BFI-44 (real caregivers) - RQ2 →
+Objectives (4) Caregiver-Specific Emotional Support, (5) Personalized
+Caregiving Education via expert appropriateness assessment AND human
+expert response scoring - RQ3 → Objective (6) Swiss Healthcare Policy
+Navigation via expert accuracy review, systematic audit, and grounding
+verification - RQ4 → Objectives (1), (4), (6) via expert pilot usability
++ human expert response scoring + real caregiver ground-truth validation
++ formalized crisis protocol - RQ5 → All objectives via explicit scope
+documentation and external validity boundaries</p>
+<h3 id="success-criteria-architecture-oriented">3.3 Success Criteria
+(Architecture-Oriented)</h3>
+<p>To build a reusable, reliable, and personality-adaptable chatbot
+architecture validated through expert assessment, human expert scoring,
+and real caregiver ground-truth comparison, we define explicit success
+criteria organized by validation stream. See Sections 4.1–4.6 for
+complete technical specifications, data management protocols, and
+evaluation frameworks.</p>
+<p><strong>Reusability:</strong> Stable API contracts for
+detect→regulate→generate pipeline; config-driven policy packs enabling
+domain transfer without code changes; portable evaluator harness with
+pluggable metrics. Target: policy pack swap ≤30 min (requires
+thesis-phase timed experiments); no breaking changes.</p>
+<p><strong>Reliability (Target):</strong> JSON compliance ≥99.5%; EMA
+stabilization in ≥80% of sessions (variance &lt;0.15 within 6–8 turns);
+confidence calibration (filter &lt;0.4, align ≥85% when ≥0.7); graceful
+degradation (all failures handled, no unhandled exceptions). See Section
+4.2 for EMA technical specifications.</p>
+<p><strong>Expert Pilot Usability (Target):</strong> SUS ≥70 (no
+critical failures across 5–8 expert sessions); Expert appropriateness
+rating ≥4.0/5.0; Tone-fit expert alignment ≥80%; All policy claims cite
+official sources; sampled audits detect no critical errors. See Section
+4.5.1 for expert pilot protocol.</p>
+<p><strong>Human Expert Response Scoring (Target):</strong> Independent
+expert evaluators (n=2–3, trained with 15-page rubric, inter-rater
+κ≥0.70) score responses on 5 criteria (emotional tone, engagement,
+stress reduction, relevance, factual accuracy). Targets: mean scores
+≥1.4/2.0 across all criteria; human-LLM agreement κ≥0.70 (gate for
+remaining synthetic responses); team κ≥0.75 for real caregiver data. See
+Section 4.6.2 for detailed scoring protocol.</p>
+<p><strong>Real Caregiver Ground-Truth Validation (Target):</strong>
+Personality detection r≥0.60 vs. BFI-44 self-report; Stress detection
+r≥0.50 vs. PSS-10; Engagement patterns consistent with synthetic data
+(no unexpected divergence); Stress mitigation ≥60% of high-stress turns;
+Retention ≥80% of recruited caregivers complete all sessions; no
+unhandled errors. See Section 4.5.2 for caregiver protocol and analysis
+framework.</p>
+<p><strong>Crisis Protocol Acceptance (Target):</strong> KEK/CE approval
+(Weeks 1–4); Level 4 detection automatically triggers crisis line
+contacts (TeleFon 143, SOS Amitié, 112) + researcher notification; all
+research team members complete training (≥80% quiz score); 24/7
+researcher availability during active study phases (Weeks 3–5, 11–14);
+no protocol violations. See Section 4.5.2 for crisis protocol
+specifics.</p>
+<p><strong>Policy Accuracy &amp; Hallucination Control
+(Target):</strong> All policy claims cite official sources; sampled
+audits (250 claims) detect no critical errors; expert double-check on
+disputed items. Target: ≤5% minor errors flagged for correction. See
+Section 4.4 and 4.6 for RAG grounding and audit specifications.</p>
+<p><strong>Effectiveness &amp; Baseline Comparison (Target):</strong>
+Primary outcome: ≥20% improvement on evaluation criteria versus
+non-adaptive baseline (95% CI). Baseline comparison includes Generic
+Non-Adaptive, Memory-Only (mem0-style), and Policy-Only (RAG without
+personality) on matched conversations (n=20 per baseline), scored by
+same human experts on all 5 criteria. See Section 4.6 for evaluation
+framework.</p>
+<p><strong>Observability:</strong> Complete JSONL traces (OCEAN
+evolution, directives, confidence, metadata); reproducible seeds,
+version-locked models/prompts, configuration snapshots; automated
+testing (contracts, EMA, evaluator); human expert rubric + scoring
+records archived.</p>
+<h3 id="mapping-to-methodology">3.4 Mapping to Methodology</h3>
+<p>These research questions and success criteria inform our methodology:
+RQ1-2 validated through per-turn logging, directive auditing, and
+outcome metrics; RQ3 through multi-run consistency testing and bias
+controls; RQ4 through workflow instrumentation, policy pack validation,
+and interface stability testing; RQ5 through systematic variation of
+simulation scenarios (extreme vs. mixed profiles, diverse stress
+contexts) and documentation of scope limitations.</p>
+<hr />
+<h2 id="methodology">4. Methodology</h2>
+<h3 id="architecture-and-workflow">4.1 Architecture and Workflow</h3>
+<p>We implement a reproducible pipeline orchestrated via N8N with
+deterministic JSON contracts, neutral fallbacks, and complete logging.
+Each stage (ingest, detection, regulation, generation, verification,
+persistence) exposes stable interfaces configured by versioned policy
+packs, enabling reuse, scaling, and domain transfer.</p>
+<p><strong>Implementation Timeline (Weeks 7-10):</strong> -
+<strong>Weeks 7-8:</strong> Detection module, regulation logic,
+generation pipeline, EMA integration → working personality detection +
+regulation engine - <strong>Weeks 6-8 (Parallel):</strong> RAG
+development for <strong>2 policy domains</strong>
+(IV/Invalidenversicherung, Hilflosenentschädigung) with <strong>20-30
+Q-A benchmark pairs</strong> (manual + LLM-generated, expert-validated
+κ≥0.70) - <strong>Weeks 9-10:</strong> Streamlit UI integration, Flask
+backend for detect→regulate→generate→RAG pipeline, expert pilot testing
+- <strong>Future Extensions:</strong> Full 26-canton RAG coverage,
+multimodal inputs, production UI (React/Next.js)</p>
+<p><strong>EMA-Based Trait Stabilization:</strong> To prevent erratic
+personality shifts from noisy detections, we apply exponential moving
+average (EMA) smoothing (α=0.3) at each turn, balancing responsiveness
+with stability.</p>
+<p><em>Algorithm Pseudocode:</em></p>
+<pre><code>For each OCEAN trait T at turn n:
+  1. LLM detects current trait value: T_detected[n] ∈ [-1.0, +1.0]
+  2. LLM provides confidence score: confidence[n] ∈ [0.0, 1.0]
+  3. IF confidence[n] &gt;= threshold (0.4):
+       T_smoothed[n] = α × T_detected[n] + (1 - α) × T_smoothed[n-1]
+     ELSE:
+       T_smoothed[n] = T_smoothed[n-1]  // retain previous estimate
+  4. Use T_smoothed[n] for behavioral regulation</code></pre>
+<p><em>Mathematical Formula:</em></p>
+[ T_{smoothed}^{(n)} =
+<p>]</p>
+<p>Where α=0.3 weights recent observations at 30% and historical average
+at 70%, preventing single-turn volatility while enabling gradual
+adaptation. Initialization: (T_{smoothed}^{(0)} = T_{detected}^{(0)})
+for first turn. This approach fills a critical gap in prior work
+(Devdas, 2025), which lacked temporal stability mechanisms, resulting in
+inconsistent personality profiles across multi-turn conversations.</p>
+<p><strong>Parameter Selection:</strong> α=0.3 selected via sensitivity
+analysis across α ∈ {0.1, 0.2, 0.3, 0.4, 0.5} targeting 6-8 turn
+convergence with variance &lt;0.15. Simulated testing scenarios
+demonstrated optimal balance between responsiveness and stability.
+Complete sensitivity analysis planned for thesis phase with human
+participant data (target N≥250).</p>
+<p><strong>Early-Turn Bias Mitigation:</strong> To mitigate EMA
+amplification of initial misdetections, the system employs gradual
+intensity scaling (50% turns 1-2, 75% turns 3-5, 100% turns 6+) and
+neutral fallbacks when confidence &lt;0.4 after 3 turns.</p>
+<p><strong>Figure 1. System Architecture Pipeline (Conceptual
+Overview)</strong></p>
+<p><em>Core pipeline: detect (OCEAN + confidence) → EMA (α=0.3) →
+regulate → generate (quote‑and‑bound) → verify. RAG retrieves policy
+information for IV and Hilflosenentschädigung domains with 20-30
+validated Q-A pairs. All processes logged to JSONL audit logs and
+PostgreSQL for reproducibility and longitudinal analysis.</em></p>
+<pre><code>┌─────────────┐
+│ User Input  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────────────────────────────────┐
+│  Detection Module (OCEAN + Confidence)  │
+│  • Continuous trait inference [-1,+1]   │
+│  • Per-trait confidence scores          │
+└──────┬──────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────┐
+│  EMA Smoothing (α=0.3)                  │
+│  • Temporal stability filter            │
+│  • Confidence-aware updates (≥0.4)      │
+│  • PostgreSQL state persistence         │
+└──────┬──────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────┐
+│  Regulation Module                      │
+│  • Map traits → behavioral directives   │
+│  • Apply policy pack rules              │
+│  • Intensity scaling                    │
+└──────┬──────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────┐
+│  Generation Module                      │
+│  • Directive-driven response            │
+│  • Quote-and-bound grounding            │
+│  • Tone/pacing/warmth adaptation        │
+└──────┬──────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────┐
+│  Verification &amp; Refinement              │
+│  • Grounding check                      │
+│  • Quality validation                   │
+└──────┬──────────────────────────────────┘
+       │
+       ▼
+┌─────────────┐      ┌──────────────────┐
+│ User Output │◄─────┤ JSONL Audit Logs │
+└─────────────┘      └──────────────────┘
+                              │
+                     ┌────────▼─────────┐
+                     │ PostgreSQL Store │
+                     │ • Sessions       │
+                     │ • Turns          │
+                     │ • Personality    │
+                     │   States         │
+                     └──────────────────┘</code></pre>
+<p><em>Conceptual pipeline: detect (OCEAN + confidence) → EMA (α=0.3) →
+regulate → generate (quote‑and‑bound) → verify, with JSONL audit logs
+and PostgreSQL state for reproducibility and longitudinal
+analysis.</em></p>
+<hr />
+<p><strong>Figure 2. Containerized System Architecture and DevOps
+Infrastructure</strong></p>
+<pre><code>┌──────────────────────────────────────────────────────────────────┐
+│                      Docker Compose Environment                  │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌─────────────────┐        ┌──────────────────┐                 │
+│  │   Streamlit     │◄──────►│   N8N Workflow   │                 │
+│  │   Frontend      │  HTTP  │   Engine         │                 │
+│  │  (Port 8501)    │        │  (Port 5678)     │                 │
+│  │                 │        │                  │                 │
+│  │ • Chat UI       │        │ • Orchestration  │                 │
+│  │ • OCEAN Display │        │ • Node Execution │                 │
+│  │ • Policy Review │        │ • Webhook Handler│                 │
+│  │ • Think-Aloud   │        │ • Session Mgmt   │                 │
+│  │   Protocol      │        │ • RAG Retrieval  │                 │
+│  └────────┬────────┘        └────────┬─────────┘                 │
+│           │                           │                          │
+│           │                           │                          │
+│           │                           ▼                          │
+│           │                  ┌──────────────────┐                │
+│           │                  │   Flask Backend  │                │
+│           │                  │   (Port 5000)    │                │
+│           │                  │                  │                │
+│           │                  │ • Detection Svc  │                │
+│           │                  │ • Regulation Svc │                │
+│           │                  │ • Generation Svc │                │
+│           │                  │ • RAG Retrieval  │                │
+│           │                  └────────┬─────────┘                │
+│           │                           │                          │
+│           │                           ▼                          │
+│           │                  ┌──────────────────┐                │
+│           │                  │   PostgreSQL     │                │
+│           └─────────────────►│   Database       │                │
+│                   SQL        │  (Port 5432)     │                │
+│                              │                  │                │
+│                              │ • Sessions       │                │
+│                              │ • Turns          │                │
+│                              │ • Personality    │                │
+│                              │   States (EMA)   │                │
+│                              │ • Metrics        │                │
+│                              │ • RAG Q-A Pairs  │                │
+│                              └──────────────────┘                │
+│                                       ▲                          │
+│                                       │                          │
+│                                       │                          │
+│                              ┌────────┴─────────┐                │
+│                              │      Redis       │                │
+│                              │   Cache Layer    │                │
+│                              │  (Port 6379)     │                │
+│                              │                  │                │
+│                              │ • Session Cache  │                │
+│                              │ • Policy Cache   │                │
+│                              │ • Rate Limiting  │                │
+│                              │ • Temp Storage   │                │
+│                              └──────────────────┘                │
+│                                                                  │
+└──────────────────────────────────────────────────────────────────┘
+         │                          │              │
+         ▼                          ▼              ▼
+  ┌─────────────┐          ┌──────────────┐    ┌─────────────┐
+  │   Volume:   │          │   Volume:    │    │   Volume:   │
+  │ streamlit/  │          │  n8n_data/   │    │  postgres/  │
+  │  config     │          │  workflows   │    │    data     │
+  └─────────────┘          │  RAG_corpus/ │    └─────────────┘
+                           │  iv_docs     │
+                           │  hilflosen   │
+                           └──────────────┘</code></pre>
+<p><strong>Deployment Progression:</strong> - <strong>Weeks 3-5 (Expert
+Pilot):</strong> Streamlit UI runs locally on development machine -
+<strong>Weeks 9-10 (Thesis Demo):</strong> Can deploy to Streamlit Cloud
+or Heroku for remote access - <strong>Post-Thesis (Optional):</strong>
+Upgrade to React/Next.js + Kubernetes for production scaling</p>
+<p><strong>Table 3. N8N Node Specifications and Contracts</strong></p>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 16%" />
+<col style="width: 28%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr>
+<th>Node</th>
+<th>Type</th>
+<th>Purpose</th>
+<th>Input Contract</th>
+<th>Output Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Webhook Trigger</td>
+<td>N8N Webhook</td>
+<td>Accept POST requests</td>
+<td><code>{session_id, message, turn_index}</code></td>
+<td>Execution context</td>
+</tr>
+<tr>
+<td>Enhanced Ingest</td>
+<td>Code</td>
+<td>Normalize input, validate session</td>
+<td>Input payload</td>
+<td><code>{session_id, clean_msg, turn_index, conversation_context}</code></td>
+</tr>
+<tr>
+<td>Load Previous State</td>
+<td>PostgreSQL</td>
+<td>Retrieve last personality state</td>
+<td><code>{session_id}</code></td>
+<td><code>{ocean: {O,C,E,A,N}, confidence: {...}, stable}</code> or
+empty</td>
+</tr>
+<tr>
+<td>Combine Inputs</td>
+<td>Merge</td>
+<td>Wait for both inputs</td>
+<td>Enhanced Ingest + PostgreSQL outputs</td>
+<td>Combined data object</td>
+</tr>
+<tr>
+<td>Merge Previous State</td>
+<td>Code</td>
+<td>Merge current + previous</td>
+<td>Combined inputs</td>
+<td><code>{inputData + previous_state}</code></td>
+</tr>
+<tr>
+<td>Zurich Model Detection</td>
+<td>Code/HTTP</td>
+<td>GPT-4 personality detection + EMA</td>
+<td>Context + previous state</td>
+<td><code>{ocean: {O,C,E,A,N ∈ [-1.0,1.0]}, confidence: {...}, stable}</code></td>
+</tr>
+<tr>
+<td>Stress Assessment &amp; Mode Classification</td>
+<td>Function/HTTP</td>
+<td>Infer stress level (0–4), drivers, and coaching mode</td>
+<td><code>{session_id, conversation_context}</code></td>
+<td><code>{stress_level: 0-4, drivers: [...], coaching_mode: vent_validate|plan_structure|cope_rehearse, confidence}</code></td>
+</tr>
+<tr>
+<td>Enhanced Regulation</td>
+<td>Function</td>
+<td>Map continuous traits to directives</td>
+<td><code>{ocean, confidence, stable}</code></td>
+<td><code>{directives: [...], policy_plan: [...]}</code></td>
+</tr>
+<tr>
+<td>Enhanced Generation</td>
+<td>Code/HTTP</td>
+<td>GPT-4 regulated response</td>
+<td><code>{directives, policy_plan, context}</code></td>
+<td><code>{assistant_response, metadata}</code></td>
+</tr>
+<tr>
+<td>Verification &amp; Refinement</td>
+<td>Code</td>
+<td>Validate response quality</td>
+<td>Generated response</td>
+<td><code>{verified_response, verification_score}</code></td>
+</tr>
+<tr>
+<td>Save Session</td>
+<td>PostgreSQL</td>
+<td>Upsert session metadata</td>
+<td><code>{session_id, total_turns}</code></td>
+<td>Success confirmation</td>
+</tr>
+<tr>
+<td>Save Turns</td>
+<td>PostgreSQL</td>
+<td>Store conversation turns</td>
+<td><code>{session_id, turn_index, messages}</code></td>
+<td>Success confirmation</td>
+</tr>
+<tr>
+<td>Save Personality State</td>
+<td>PostgreSQL</td>
+<td>Store EMA-smoothed OCEAN</td>
+<td><code>{session_id, turn_index, ocean, confidence, stable}</code></td>
+<td>Success confirmation</td>
+</tr>
+<tr>
+<td>Return API Response</td>
+<td>Code</td>
+<td>Format final output</td>
+<td>All upstream data</td>
+<td><code>{assistant_response, personality_state, session_metadata}</code></td>
+</tr>
+</tbody>
+</table>
+<h3
+id="detection-module-continuous-ocean-inference-with-ema-smoothing">4.2
+Detection Module: Continuous OCEAN Inference with EMA Smoothing</h3>
+<p><strong>Input Processing:</strong> Accepts up to 10 previous turns;
+produces continuous OCEAN assessments with confidence scores.
+Preprocessing: text normalization, length validation, history assembly,
+PostgreSQL state integration.</p>
+<p><strong>LLM Contract:</strong> GPT-4.1 via OpenAI-compatible
+endpoint; temperature 0.3, max_tokens 300, 30s timeout. JSON response
+format:
+<code>json   {     "ocean": {"O": [-1.0 to 1.0], "C": [-1.0 to 1.0], "E": [-1.0 to 1.0], "A": [-1.0 to 1.0], "N": [-1.0 to 1.0]},     "confidence": {"O": [0.0 to 1.0], "C": [0.0 to 1.0], "E": [0.0 to 1.0], "A": [0.0 to 1.0], "N": [0.0 to 1.0]},     "reasoning": "Brief explanation of detected motivations"   }</code></p>
+<p><strong>EMA Smoothing:</strong> Targets temporal stability while
+remaining responsive to genuine personality evolution:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// EMA Parameters</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> EMA_ALPHA <span class="op">=</span> <span class="fl">0.3</span><span class="op">;</span>  <span class="co">// Weight for current detection (30%)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> MIN_CONFIDENCE_THRESHOLD <span class="op">=</span> <span class="fl">0.4</span><span class="op">;</span>  <span class="co">// Minimum confidence to update</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> STABILIZATION_TURNS <span class="op">=</span> <span class="dv">6</span><span class="op">;</span>  <span class="co">// Turns required for stability designation</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Per-trait smoothing</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (trait <span class="kw">in</span> [<span class="st">&#39;O&#39;</span><span class="op">,</span> <span class="st">&#39;C&#39;</span><span class="op">,</span> <span class="st">&#39;E&#39;</span><span class="op">,</span> <span class="st">&#39;A&#39;</span><span class="op">,</span> <span class="st">&#39;N&#39;</span>]) {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (currentConfidence[trait] <span class="op">&gt;=</span> MIN_CONFIDENCE_THRESHOLD) {</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    smoothed[trait] <span class="op">=</span> EMA_ALPHA <span class="op">*</span> current[trait] <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> EMA_ALPHA) <span class="op">*</span> previous[trait]<span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    smoothed[trait] <span class="op">=</span> previous[trait]<span class="op">;</span>  <span class="co">// Keep previous if confidence too low</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">// Stability determination</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>stable <span class="op">=</span> (consistentTurns <span class="op">&gt;=</span> STABILIZATION_TURNS <span class="op">&amp;&amp;</span> variance <span class="op">&lt;</span> <span class="fl">0.15</span>)<span class="op">;</span></span></code></pre></div>
+<p><strong>Confidence-Weighted Updates:</strong> GPT-4.1 self-assesses
+confidence based on evidence clarity, consistency with previous turns,
+and behavioral indicator strength. Low-confidence detections (&lt; 0.4)
+are filtered to prevent noise from corrupting the personality
+profile.</p>
+<p><strong>Early-Turn Bias Mitigation:</strong> The EMA mechanism can
+amplify initial misdetections if early conversation turns contain
+unrepresentative personality signals (e.g., users responding formally in
+initial exchanges despite being naturally extraverted). To mitigate this
+risk, the system implements:</p>
+<ol type="1">
+<li><strong>Consistency Requirement:</strong> Strong behavioral
+adaptations (high-intensity directives) activate only after turn 3 when
+at least 2 consistent trait readings (variance &lt; 0.2 across last 3
+turns) are observed</li>
+<li><strong>Gradual Intensity Scaling:</strong> Directive intensity
+scales proportionally to turn count: turns 1-2 use 50% intensity, turns
+3-5 use 75% intensity, turns 6+ use full 100% intensity</li>
+<li><strong>Neutral Fallback Mode:</strong> If confidence remains below
+0.4 for any trait after 3 turns, the system defaults to balanced,
+non-adaptive responses for that trait until sufficient evidence
+accumulates</li>
+<li><strong>Early-Turn Variance Monitoring:</strong> If moving variance
+exceeds 0.25 within turns 1-5, the system logs a warning flag and
+applies conservative adaptation until stabilization</li>
+</ol>
+<p>This multi-layered approach balances responsiveness with protection
+against premature trait fixation, allowing the α=0.3 parameter to
+eventually correct early biases (8-12 turns) while minimizing interim
+misalignment.</p>
+<p><strong>Example Evolution Across 6 Turns:</strong></p>
+<pre><code>Turn 1: detected=0.5, conf=0.6  → smoothed = 0.3×0.5 + 0.7×0.0 = 0.15
+Turn 2: detected=0.7, conf=0.7  → smoothed = 0.3×0.7 + 0.7×0.15 = 0.315
+Turn 3: detected=0.6, conf=0.9  → smoothed = 0.3×0.6 + 0.7×0.315 = 0.40
+Turn 4: detected=0.8, conf=0.8  → smoothed = 0.3×0.8 + 0.7×0.40 = 0.52
+Turn 5: detected=0.7, conf=0.8  → smoothed = 0.3×0.7 + 0.7×0.52 = 0.574
+Turn 6: detected=0.7, conf=0.9  → smoothed = 0.3×0.7 + 0.7×0.574 = 0.612
+                                   → STABLE = TRUE (6 consistent turns, low variance)</code></pre>
+<h3 id="regulation-module-psychologically-grounded-behavior-mapping">4.3
+Regulation Module: Psychologically Grounded Behavior Mapping</h3>
+<p>Translates continuous OCEAN assessments into behavioral directives
+via the motivational framework in Section 2.1. Threshold-based
+activation (|value| ≥ 0.2); continuous values enable
+intensity-proportional directives.</p>
+<p><strong>Table 4. Trait-to-Directive Mapping</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trait</th>
+<th>Threshold</th>
+<th>High Directive</th>
+<th>Low Directive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>O</strong></td>
+<td>±0.2</td>
+<td>Novel concepts</td>
+<td>Familiar examples</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>±0.2</td>
+<td>Structured plans</td>
+<td>Flexible guidance</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>±0.2</td>
+<td>Energetic tone</td>
+<td>Calm, reflective</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>±0.2</td>
+<td>Warm, cooperative</td>
+<td>Direct, matter-of-fact</td>
+</tr>
+<tr>
+<td><strong>N</strong></td>
+<td>±0.2</td>
+<td>Reassurance, coping</td>
+<td>Pragmatic solutions</td>
+</tr>
+</tbody>
+</table>
+<p>Directive intensity scales proportionally to trait magnitude (|value|
+≥0.2 activates); confidence &lt;0.4 triggers neutral fallbacks.</p>
+<h3
+id="generation-module-rag-enhanced-response-production-with-personality-aware-presentation">4.4
+Generation Module: RAG-Enhanced Response Production with
+Personality-Aware Presentation</h3>
+<p><strong>Dialogue Grounding and Safety Constraints (Critical
+Guideline):</strong></p>
+<p>All system responses must be strictly grounded in the user’s
+conversational input, employing a “quote-and-bound” approach that
+prevents hallucination by ensuring every assertion is entailed by recent
+dialogue turns. This constraint is particularly critical for
+human-centered applications where accuracy, reliability, and user trust
+are paramount. The system must never fabricate external facts, make
+assumptions about unstated user circumstances, or introduce information
+not present in the conversation history.</p>
+<p><strong>RAG-Augmented Swiss Policy Guidance (Thesis Implementation
+Phase):</strong></p>
+<p>When Resource Navigation mode is activated, the system integrates
+Retrieval-Augmented Generation (RAG) for Swiss caregiver benefit
+systems:</p>
+<ol type="1">
+<li><strong>Context Extraction:</strong> Parse caregiver context from
+conversation (care recipient age, disability level, financial situation,
+canton)</li>
+<li><strong>Policy Retrieval:</strong> Query vector database of Swiss
+policy documents (AHV, IV, Hilflosenentschädigung, Ergänzungsleistungen,
+respite care programs) using semantic similarity</li>
+<li><strong>Relevance Filtering:</strong> Retrieve top-3 most relevant
+policy sections with eligibility criteria, application procedures, and
+contact information</li>
+<li><strong>Personality-Aware Presentation:</strong> Adapt retrieved
+policy content via behavioral directives:
+<ul>
+<li><strong>High-C:</strong> Step-by-step application checklist,
+required documentation list, timeline</li>
+<li><strong>Low-C:</strong> Concise eligibility summary, direct canton
+contact, optional depth</li>
+<li><strong>High-N:</strong> Reassuring framing (“Many caregivers
+successfully navigate this process”), support availability</li>
+<li><strong>High-O:</strong> Mention alternative programs, community
+resources</li>
+<li><strong>High-A:</strong> Collaborative language (“Let’s explore your
+eligibility together”)</li>
+</ul></li>
+<li><strong>Grounding Enforcement:</strong> Policy guidance must cite
+specific documents (e.g., “According to the IV eligibility guidelines
+for care recipients…”, see Appendix A for source families); no invented
+procedures or criteria</li>
+</ol>
+<p><strong>Response Constraints:</strong> - <strong>Grounding:</strong>
+Strict adherence to user’s conversational input + retrieved policy
+documents (with citations) - <strong>Length:</strong> 70-150 words
+(policy mode may extend to 180 words for detailed guidance) -
+<strong>Interaction:</strong> Maximum 2 questions per response to
+maintain conversational flow - <strong>Parameters:</strong> Temperature
+0.7, max_tokens 220 (300 for policy mode), 20-second timeout -
+<strong>Safety:</strong> If stress level ≥3 and crisis indicators
+detected, return neutral supportive message with escalation guidance;
+never provide clinical/legal advice</p>
+<p><strong>Prompt Construction:</strong> Integrates behavioral
+directives + retrieved policy content + strict grounding constraints
+(see Appendix B.2).</p>
+<p>Citings in text (example): - “According to the IV/AI eligibility
+criteria (Appendix A, IV/AI), …”</p>
+<p><strong>Error Handling:</strong> Neutral fallback on failure: “I’m
+here to support you. Could you tell me more about how you’re feeling?”
+Full session context maintained for debugging. RAG failures trigger
+policy-free emotional support response.</p>
+<h3 id="data-management-and-simulation">4.5 Data Management and
+Simulation</h3>
+<h4 id="postgresql-database-architecture">4.5.1 PostgreSQL Database
+Architecture</h4>
+<p>The system persists longitudinal state across four core tables.
+<strong><code>chat_sessions</code></strong> maintains session metadata
+(ID, start time, mode, status).
+<strong><code>conversation_turns</code></strong> stores dialogue history
+with detected directives and coaching mode applied.
+<strong><code>personality_states</code></strong> holds EMA-smoothed
+OCEAN values (five dimensions), confidence per dimension, and stability
+flags indicating convergence.
+<strong><code>performance_metrics</code></strong> records latencies
+(detection, generation), token counts, and error logs.</p>
+<p><strong>Data Flow:</strong> Load previous state from PostgreSQL →
+Detection module (GPT-4) → EMA smoothing (α=0.3) → Save updated state →
+Next turn retrieves smoothed state for continuity.</p>
+<h4 id="primary-data-sources-for-preliminary-study">4.5.2 Primary Data
+Sources for Preliminary Study</h4>
+<p>Four concurrent data streams validate system performance across
+expert, simulated, and real caregiver contexts:</p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 15%" />
+<col style="width: 17%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th>Data Source</th>
+<th>Weeks</th>
+<th>Sample</th>
+<th>Primary Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(1) Expert Pilot System Logs</td>
+<td>3–5</td>
+<td>n=5–8 domain experts</td>
+<td>Validate personality detection &amp; directive appropriateness</td>
+</tr>
+<tr>
+<td>(2) LLM Stress Testing &amp; Simulated Evaluation</td>
+<td>11–14</td>
+<td>N≥250 synthetic conversations</td>
+<td>Validate EMA parameters, regulation effectiveness, reliability</td>
+</tr>
+<tr>
+<td>(3) Real Caregiver Validation</td>
+<td>11–14</td>
+<td>n=20–30 Swiss caregivers</td>
+<td>Ground-truth validation against BFI-44 &amp; PSS-10</td>
+</tr>
+<tr>
+<td>(4) Human Expert Response Scoring</td>
+<td>11–14</td>
+<td>2–3 evaluators, κ≥0.70 gate</td>
+<td>Gold-standard credibility for findings</td>
+</tr>
+</tbody>
+</table>
+<h5
+id="expert-pilot-system-logs-weeks-35-n58-domain-experts"><strong>(1)
+Expert Pilot System Logs (Weeks 3–5, n=5–8 Domain Experts)</strong></h5>
+<p><strong>Source:</strong> Automated logging during think-aloud
+sessions conducted by in-house domain specialists (Spitex coordinators,
+geriatricians, home care nurses).</p>
+<p><strong>Data Captured:</strong> - OCEAN trait evolution per turn (all
+5 dimensions, continuous [−1.0, +1.0] values) - EMA smoothing parameters
+applied (α=0.3, confidence thresholds) - Behavioral directives triggered
+(timestamp, directive type, intensity scale) - Response generation
+metrics (token counts, latency, temperature setting) - Policy retrieval
+events (query formulation, retrieved sections, citation verification) -
+System errors, fallbacks, and graceful degradation instances - Session
+duration, total turns, conversation flow characteristics</p>
+<p><strong>Storage:</strong> PostgreSQL + JSONL audit logs (per-turn
+verbosity for debugging)</p>
+<p><strong>Use:</strong> Validate personality detection stability,
+directive appropriateness, and policy grounding accuracy.</p>
+<h5
+id="llm-stress-testing-simulated-evaluation-weeks-1114-n250-synthetic-conversations"><strong>(2)
+LLM Stress Testing &amp; Simulated Evaluation (Weeks 11–14, N≥250
+Synthetic Conversations)</strong></h5>
+<p><strong>Source:</strong> Automated evaluation on N≥250 simulated
+caregiver profiles (Type A/B/C personality distributions × 3 scenarios ×
+8–10 turns per conversation).</p>
+<p><strong>Data Captured:</strong> - EMA convergence metrics (number of
+turns to stability, final variance, temporal consistency correlation) -
+Directive effectiveness scores (0–2 scale × 7 criteria per turn) -
+Response quality under stress: tone appropriateness, relevance,
+personality fit - Hallucination detection: policy accuracy, citation
+coverage, fabricated benefits - Baseline comparison: adaptive
+vs. non-adaptive vs. memory-only responses - Inter-run consistency (3
+runs per conversation with fixed seeds for reproducibility) - LLM
+evaluator confidence scores + human expert agreement (κ≥0.70 gating
+criterion)</p>
+<p><strong>Storage:</strong> CSV/JSONL with per-turn evaluation records
+and aggregate metrics</p>
+<p><strong>Use:</strong> Validate EMA parameters, regulation
+effectiveness, system reliability, and inter-run reproducibility.</p>
+<h5
+id="real-caregiver-validation-weeks-1114-n2030-swiss-caregivers"><strong>(3)
+Real Caregiver Validation (Weeks 11–14, n=20–30 Swiss
+Caregivers)</strong></h5>
+<p><strong>Recruitment &amp; Eligibility:</strong> -
+<strong>Partners:</strong> Spitex organizations, cantonal home care
+services, caregiver support groups - <strong>Inclusion
+Criteria:</strong> &gt;5 hours/week caregiving, ≥18 years old, Swiss
+German fluency - <strong>Compensation:</strong> CHF 50–100 per
+participant (3 sessions) - <strong>Ethics:</strong> Informed consent
+with separate KEK/CE approval (Weeks 1–4)</p>
+<p><strong>Data Collection Timeline:</strong> - <strong>Session 1 (Week
+11):</strong> Demographic questionnaire + BFI-44 (44-item Big Five
+self-report, 5-point Likert) + informed consent signature -
+<strong>Session 2 (Week 12):</strong> Interactive coaching (15–20 min,
+1–2 of 3 caregiver scenarios) + system logs collection - <strong>Session
+3 (Week 13–14, Optional):</strong> Follow-up + PSS-10 (Perceived Stress
+Scale, 10 items, 5-point Likert) + system usability rating (5-point
+Likert)</p>
+<p><strong>Data Captured:</strong></p>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 34%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr>
+<th>Category</th>
+<th>Metrics</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System Logs</strong></td>
+<td>message_length, response_latency_ms, follow_up_question,
+directive_acceptance, engagement_score, stress_level,
+stress_drivers</td>
+<td>Identical schema to synthetic data for comparability</td>
+</tr>
+<tr>
+<td><strong>Ground-Truth Instruments</strong></td>
+<td>BFI-44 scores (5 OCEAN dimensions, 0–100 scale each); PSS-10
+(perceived stress, 0–40 scale); Usability rating (5-point Likert)</td>
+<td>Validated psychometric instruments</td>
+</tr>
+<tr>
+<td><strong>Qualitative Data</strong></td>
+<td>Open-ended feedback on system understanding and improvement
+suggestions</td>
+<td>Thematic analysis for triangulation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Analysis &amp; Validation:</strong></p>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 17%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Validation Target</th>
+<th>Method</th>
+<th>Success Criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Personality Detection Correlation</strong></td>
+<td>Inferred OCEAN (from chat analysis) vs. BFI-44 self-report (Pearson
+r)</td>
+<td>r≥0.60 (moderate correlation)</td>
+</tr>
+<tr>
+<td><strong>Stress Level Accuracy</strong></td>
+<td>System-detected stress (0–4) vs. PSS-10 total (0–40, rescaled
+0–4)</td>
+<td>r≥0.50 (moderate)</td>
+</tr>
+<tr>
+<td><strong>Engagement Patterns</strong></td>
+<td>Real caregiver engagement vs. synthetic comparison (independent
+t-test)</td>
+<td>No significant divergence (p&gt;0.05)</td>
+</tr>
+<tr>
+<td><strong>Stress Mitigation Rate</strong></td>
+<td>Proportion of high-stress turns (3–4) followed by lower stress after
+adaptive response</td>
+<td>≥60% mitigation rate</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Storage:</strong> PostgreSQL
+<code>caregiver_validation</code> table + JSONL logs + encrypted,
+pseudonymized BFI-44/PSS-10 responses</p>
+<p><strong>Use:</strong> Ground-truth validation of personality and
+stress detection; assess external validity of synthetic findings to real
+caregiver population.</p>
+<h5
+id="human-expert-response-scoring-crisis-protocol-monitoring-weeks-1114"><strong>(4)
+Human Expert Response Scoring &amp; Crisis Protocol Monitoring (Weeks
+11–14)</strong></h5>
+<p><strong>Expert Evaluator Pool &amp; Training:</strong> -
+<strong>Recruitment:</strong> 2–3 domain specialists from expert pilot
+(Spitex coordinators, geriatricians, home care nurses) -
+<strong>Certification:</strong> 3-hour session (Week 10) - 1 hour:
+Rubric walkthrough (15-page guide with 30 exemplars per criterion) - 1
+hour: Practice scoring on 20 sample conversations - 1 hour: Calibration
+discussion and certification check (κ≥0.70 required)</p>
+<p><strong>Scoring Protocol:</strong> - <strong>Synthetic
+Sample:</strong> 30% of N≥250 conversations (n≥75, ~600+ turns) -
+<strong>Real Caregiver Sample:</strong> 100% of n=20–30 caregivers
+(~60–90 turns total) - <strong>Blinding:</strong> Each response
+independently scored by 2 evaluators (blinded to each other and
+condition)</p>
+<p><strong>Scoring Rubric (5 Criteria, 0–2 Scale Each):</strong> 1.
+<strong>Emotional Tone Appropriateness</strong> – Matches detected
+stress level and personality profile 2. <strong>Engagement
+Quality</strong> – Maintains conversation flow and encourages
+participation 3. <strong>Stress Reduction Effectiveness</strong> –
+Addresses stated concern and reduces stress signals 4. <strong>Relevance
+&amp; Coherence</strong> – Directly relevant, logically sound, no
+non-sequiturs 5. <strong>Factual Accuracy</strong> – Policy claims
+verified, no hallucinations, citations present</p>
+<p><strong>Scoring Workflow:</strong> - Initial scores averaged or
+discussed if &gt;0.5-point difference - Consensus score used for final
+analysis - Inter-rater agreement (Fleiss’ κ) calculated after every
+20–30 scored responses - <strong>Target:</strong> Team κ≥0.75 (excellent
+agreement); if κ&lt;0.75, re-calibrate and re-score subset</p>
+<p><strong>Crisis Protocol Monitoring:</strong> - Document any Level 4
+(crisis) detections during real caregiver sessions - Verify automatic
+crisis line contact message delivered (TeleFon 143, 112 emergency) - Log
+researcher notification and action taken - <strong>Strict
+enforcement:</strong> Any protocol violations trigger immediate
+retraining</p>
+<p><strong>Storage:</strong> Expert scoring records (per-turn,
+per-criterion), inter-rater reliability logs, crisis incident log (if
+applicable)</p>
+<p><strong>Use:</strong> Gate for validating LLM evaluator on remaining
+synthetic responses; provides gold-standard credibility for thesis
+findings.</p>
+<h4 id="database-schema">4.5.3 Database Schema</h4>
+<p><strong>Table 5. PostgreSQL Schema Overview</strong></p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 30%" />
+<col style="width: 21%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Table</th>
+<th>Primary Key</th>
+<th>Purpose</th>
+<th>Key Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chat_sessions</code></td>
+<td><code>session_id</code> (UUID)</td>
+<td>Session metadata</td>
+<td><code>total_turns</code>, <code>evaluation_mode</code>,
+<code>status</code></td>
+</tr>
+<tr>
+<td><code>conversation_turns</code></td>
+<td><code>(session_id, turn_index)</code></td>
+<td>Conversation history</td>
+<td><code>user_message</code>, <code>assistant_response</code>,
+<code>directives_applied</code>, <code>coaching_mode</code></td>
+</tr>
+<tr>
+<td><code>personality_states</code></td>
+<td><code>(session_id, turn_index)</code></td>
+<td>EMA-smoothed OCEAN</td>
+<td><code>ocean_o/c/e/a/n</code>, <code>confidence_o/c/e/a/n</code>,
+<code>stable</code></td>
+</tr>
+<tr>
+<td><code>performance_metrics</code></td>
+<td><code>(session_id, turn_index)</code></td>
+<td>System performance</td>
+<td><code>detection_latency_ms</code>,
+<code>generation_latency_ms</code>, <code>total_tokens</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 5b. Engagement &amp; Stress Metrics Schema</strong></p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 30%" />
+<col style="width: 21%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Table</th>
+<th>Primary Key</th>
+<th>Purpose</th>
+<th>Key Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>engagement_metrics</code></td>
+<td><code>(session_id, turn_index)</code></td>
+<td>Caregiver engagement tracking</td>
+<td><code>engagement_score</code> (0-2), <code>message_length</code>,
+<code>response_latency_ms</code>, <code>follow_up_question</code>
+(bool), <code>directive_acceptance</code> (bool),
+<code>session_engagement_avg</code></td>
+</tr>
+<tr>
+<td><code>stress_metrics</code></td>
+<td><code>(session_id, turn_index)</code></td>
+<td>Detected stress signals</td>
+<td><code>stress_level</code> (0-4), <code>lexical_markers</code>
+(array), <code>emotional_intensity_score</code>,
+<code>problem_escalation</code> (bool), <code>stress_drivers</code>
+(array), <code>response_appropriateness</code> (0-2)</td>
+</tr>
+<tr>
+<td><code>engagement_stress_interaction</code></td>
+<td><code>(session_id)</code></td>
+<td>Cross-turn engagement-stress dynamics</td>
+<td><code>engagement_stress_correlation</code>,
+<code>stress_reduction_rate</code>,
+<code>stress_mitigation_success_rate</code> (%),
+<code>scenario_consistency_correlation</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Simulation Protocol for Swiss Caregiver
+Scenarios:</strong></p>
+<p>Three personality profiles (Type A: high OCEAN +0.8 except low N;
+Type B: low OCEAN -0.8 except high N; Type C: mixed profiles) engage in
+three <strong>caregiver-specific stress scenarios</strong> covering all
+coaching modes:</p>
+<ol type="1">
+<li><strong>Emotional Burden &amp; Role Strain</strong> (Emotional
+Support mode)
+<ul>
+<li>Scenario: Caregiver managing parent with dementia, experiencing
+guilt over considering nursing home placement</li>
+<li>High-N receives: Reassurance, normalization, validation of
+conflicting feelings</li>
+<li>Low-N receives: Pragmatic acknowledgment, solution-focused
+framing</li>
+</ul></li>
+<li><strong>Benefit System Navigation</strong> (Resource Navigation
+mode)
+<ul>
+<li>Scenario: Caregiver confused by IV (Invalidenversicherung)
+eligibility requirements for adult child with disability</li>
+<li>High-C receives: Detailed step-by-step application checklist,
+required documentation list</li>
+<li>Low-C receives: Concise overview with direct canton contact,
+optional depth</li>
+</ul></li>
+<li><strong>Self-Care Neglect &amp; Burnout Risk</strong> (Self-Care
+Planning mode)
+<ul>
+<li>Scenario: Caregiver reporting exhaustion, sleep disruption, social
+isolation due to 24/7 care demands</li>
+<li>High-E receives: Social support mobilization strategies (support
+groups, family coordination)</li>
+<li>Low-E receives: Individual restoration focus (micro-breaks,
+boundary-setting scripts)</li>
+</ul></li>
+</ol>
+<p><strong>Conversation Parameters:</strong> 8-10 turns per session,
+10-15 sessions per profile × 3 scenarios = 90-135 total simulated
+conversations. Convergence tracked with <code>stable=TRUE</code> target
+at turns 6-8 for ≥80% sessions.</p>
+<p><strong>Baseline Conditions:</strong> Parallel conversations using
+(1) generic non-adaptive assistant, (2) memory-only assistant
+(mem0-style factual recall without personality modeling), (3)
+policy-only assistant (RAG guidance without personality adaptation).</p>
+<p><strong>Export Format:</strong> CSV/JSONL with per-turn OCEAN
+evolution, directives applied, coaching mode, caregiver scenario
+context, RAG policy retrieval (if applicable), stability flags, and
+convergence metrics.</p>
+<h3 id="evaluation-framework">4.6 Evaluation Framework</h3>
+<p><strong>Assessment Dimensions:</strong></p>
+<p><em>For EMA-Regulated Assistants (7 criteria):</em> 1.
+<strong>Detection Accuracy:</strong> Alignment between continuous OCEAN
+inference and simulated personality cues 2. <strong>EMA Convergence
+Quality:</strong> Smooth progression toward stable personality estimate
+(low variance, appropriate α) 3. <strong>Confidence
+Calibration:</strong> Appropriate confidence scores matching evidence
+strength 4. <strong>Regulation Effectiveness:</strong> Appropriate
+application of intensity-scaled behavioral strategies 5.
+<strong>Emotional Tone Appropriateness:</strong> Match between response
+tone and user emotional state/personality 6. <strong>Relevance &amp;
+Coherence:</strong> Contextual appropriateness and logical consistency
+7. <strong>Personality Needs Addressed:</strong> Satisfaction of
+trait-specific emotional and interactional requirements</p>
+<p><em>For Baseline Assistants (3 criteria):</em> 1. <strong>Emotional
+Tone Appropriateness</strong> 2. <strong>Relevance &amp;
+Coherence</strong><br />
+3. <strong>Personality Needs Addressed</strong></p>
+<p><strong>Evaluation Matrix Structure:</strong></p>
+<p>The evaluation matrix captures assessment data across multiple
+dimensions for each conversation turn. Each evaluation record
+includes:</p>
+<p><strong>Conversation Context Fields:</strong> - <strong>Row
+ID:</strong> Unique identifier for tracking individual assessments -
+<strong>Profile Type:</strong> Simulated personality profile (Type A:
+high OCEAN; Type B: low OCEAN; Type C: mixed) - <strong>Turn
+Number:</strong> Position within conversation sequence (1-10) -
+<strong>User Message:</strong> Original user input text -
+<strong>Assistant Reply:</strong> Generated system response</p>
+<p><strong>Personality State Fields:</strong> - <strong>OCEAN Values
+(Smoothed):</strong> EMA-smoothed continuous trait estimates (e.g.,
+O:0.78, C:0.65, E:0.82, A:0.71, N:-0.68) - <strong>Confidence
+Scores:</strong> Per-trait confidence assessments (range 0.0-1.0) -
+<strong>Stability Flag:</strong> Boolean indicator (TRUE/FALSE)
+signaling stable personality estimate (≥6 turns, variance &lt;0.15) -
+<strong>Applied Directives:</strong> Array of behavioral directives
+activated (e.g., [“Introduce novel ideas”, “Energetic tone”, “Structured
+steps”])</p>
+<p><strong>Evaluation Criteria Scores (0-2 scale):</strong> -
+<strong>Detection Accuracy (Det.Acc):</strong> Alignment between
+inferred OCEAN and personality cues - <strong>EMA Convergence
+(EMA.Conv):</strong> Quality of temporal smoothing and stability
+progression - <strong>Confidence Calibration (Conf.Cal):</strong>
+Appropriateness of confidence scores relative to evidence -
+<strong>Regulation Effectiveness (Reg.Eff):</strong> Correct application
+of behavioral directives - <strong>Emotional Tone (Tone):</strong> Match
+between response tone and user state/personality - <strong>Relevance
+&amp; Coherence (Rel&amp;Coh):</strong> Contextual appropriateness and
+logical consistency - <strong>Personality Needs (Needs):</strong>
+Satisfaction of trait-specific requirements - <strong>Total
+Score:</strong> Sum of all criterion scores (0-14 for regulated; 0-6 for
+baseline)</p>
+<p><strong>ENGAGEMENT METRICS (Via System Logs):</strong> -
+<strong>Engagement Index (0-100):</strong> Composite measure tracking: -
+Message length (words per turn; target: 10-50 words = higher engagement)
+- Response latency to system output (target: &lt;30s = engaged) -
+Feature adoption (% of coaching modes accessed) - Follow-up questions
+asked (indicator of continued interest) - Directive acceptance (does
+user adopt suggested approaches?) - <strong>Per-Turn Engagement Score
+(0-2):</strong> - 2 = High engagement (detailed response, follow-up
+question, directive adoption) - 1 = Moderate (brief response, minimal
+follow-up) - 0 = Low (one-word reply, disengagement signals) -
+<strong>Session-Level Engagement:</strong> Average per-turn scores;
+target ≥1.2/2.0</p>
+<p><strong>STRESS LEVEL METRICS (Via LLM Evaluator Analysis):</strong> -
+<strong>Detected Stress Signals (Per Turn):</strong> - <strong>Lexical
+markers:</strong> Words indicating stress (overwhelmed, exhausted,
+guilt, trapped, helpless) - <strong>Emotional intensity:</strong> ALL
+CAPS, repeated punctuation (!!!), emotional words - <strong>Problem
+escalation:</strong> References to new or worsening problems (sleep,
+isolation, health) - <strong>Behavioral indicators:</strong> Phrases
+suggesting coping strain (“I don’t know what to do”, “I’m at my limit”)
+- <strong>Stress Level Classification (0-4):</strong> - 0 = None/minimal
+(stable, organized, solutions-focused) - 1 = Mild (some concern,
+manageable tone) - 2 = Moderate (clear stress signals, but coping
+language present) - 3 = High (strong negative emotion, limited coping
+resources mentioned) - 4 = Crisis (acute distress, danger signals, loss
+of coping) - <strong>Stress Drivers Identified (LLM
+annotation):</strong> - Caregiver burden (role strain, guilt,
+resentment) - Benefit navigation complexity (confusion, frustration) -
+Self-care neglect (exhaustion, isolation, sleep disruption) - Role
+strain (competing responsibilities, isolation) - Financial stress
+(eligibility concerns, income impact) - Social isolation (lack of
+support network) - <strong>System Response Appropriateness to Stress
+Level:</strong> - <strong>For Stress Level 0-1:</strong> Maintain
+balanced tone, offer proactive guidance - <strong>For Stress Level
+2:</strong> Validate, provide specific coping strategies, check
+understanding - <strong>For Stress Level 3:</strong> Intensive
+reassurance, break problems into manageable steps, escalation readiness
+- <strong>For Stress Level 4:</strong> Immediate crisis support,
+resource provision, professional referral language</p>
+<p><strong>Engagement-Stress Interaction Metrics:</strong> -
+<strong>Engagement Response to Stress Reduction:</strong> Does
+engagement improve as system reduces stress signals? - Target:
+Engagement score trend upward as stress signals decrease (r ≥ 0.4) -
+<strong>Stress Mitigation Effectiveness:</strong> Does system’s response
+successfully reduce detected stress signals in next turn? - Target: ≥60%
+of high-stress turns followed by lower-stress turns after
+personality-adaptive response - <strong>Cross-Scenario
+Consistency:</strong> Do engagement &amp; stress patterns align across
+emotional burden, benefit navigation, and self-care scenarios? - Target:
+Correlation across scenarios r ≥ 0.7</p>
+<p><strong>Example Evaluation Records:</strong></p>
+<p><em>Type A Profile (High OCEAN), Turn 6:</em> - User: “I’m excited to
+try new approaches…” - Assistant: “That’s wonderful! Let’s explore some
+creative strategies…” - OCEAN: O:0.78, C:0.65, E:0.82, A:0.71, N:-0.68
+(Stable: TRUE) - Directives: Introduce novel ideas, Energetic tone,
+Structured steps - Scores: Det.Acc=2, EMA.Conv=2, Conf.Cal=2, Reg.Eff=2,
+Tone=2, Rel&amp;Coh=2, Needs=2 (Total: 14/14)</p>
+<p><em>Type B Profile (Low OCEAN), Turn 6:</em> - User: “Everything
+feels uncertain…” - Assistant: “I understand uncertainty is difficult.
+Let’s focus on what you can control…” - OCEAN: O:-0.72, C:-0.68,
+E:-0.75, A:-0.61, N:0.79 (Stable: TRUE) - Directives: Familiar examples,
+Calm tone, Flexible guidance, Extra comfort - Scores: Det.Acc=2,
+EMA.Conv=2, Conf.Cal=2, Reg.Eff=2, Tone=2, Rel&amp;Coh=2, Needs=2
+(Total: 14/14)</p>
+<p><strong>EMA-Specific Metrics:</strong> Convergence rate (target: 6-8
+turns to <code>stable=TRUE</code>); smoothness (variance &lt; 0.15
+post-stabilization); confidence-weighted accuracy; temporal consistency
+(r &gt; 0.7).</p>
+<p><strong>Scoring Protocol:</strong> Trinary (Yes=2, Partial=1, No=0);
+per-session averages, per-profile comparisons; GPT-4 evaluator with
+fixed prompts, blinded assessment, randomized order; inter-run
+consistency ≥ 0.85.</p>
+<p><strong>Human Triangulation Requirement:</strong> All LLM evaluator
+outputs require human validation on a 10-15% sample (minimum n=20
+conversations) with two trained annotators. Target: Cohen’s κ≥0.70 for
+human-LLM agreement on shared items. LLM evaluator used for scale but
+not as sole arbiter. Human-LLM agreement κ≥0.70 serves as a release gate
+for thesis claims; failure triggers expanded human evaluation.</p>
+<p><strong>Use-Case Outcome Metrics (Simplified Expert
+Evaluation):</strong></p>
+<p>To ensure feasibility while maintaining rigor, the preliminary study
+focuses on <strong>expert pilot evaluation</strong> (n=5-8 domain
+experts: home care specialists, Spitex coordinators, geriatricians)
+rather than full caregiver population studies. This approach validates
+core functionality without requiring large-scale demographic sampling,
+which is deferred to the thesis phase:</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 14%" />
+<col style="width: 23%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr>
+<th>Evaluation Focus</th>
+<th>Method</th>
+<th>Measurement</th>
+<th>Target Threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System Usability</strong></td>
+<td>Expert think-aloud protocol (3 core tasks)</td>
+<td>System Usability Scale (SUS) + task success rate</td>
+<td>SUS ≥70; task success ≥80%</td>
+</tr>
+<tr>
+<td><strong>Personality Adaptation Appropriateness</strong></td>
+<td>Expert judgment: Does personality detection seem accurate?</td>
+<td>5-point Likert scale (“How well did the system understand the
+caregiver’s personality?”)</td>
+<td>≥4.0/5.0 average</td>
+</tr>
+<tr>
+<td><strong>Policy Guidance Clarity</strong></td>
+<td>Expert review: Are policy recommendations accurate and
+grounded?</td>
+<td>Manual verification against source documents; no hallucinations</td>
+<td>All claims cite sources; no fabricated benefits</td>
+</tr>
+<tr>
+<td><strong>Emotional Support Quality</strong></td>
+<td>Expert assessment: Does tone match caregiver stress level?</td>
+<td>5-point rubric (inappropriate / partially appropriate / well-matched
+/ excellent / exceptional)</td>
+<td>≥4.0/5.0 average</td>
+</tr>
+<tr>
+<td><strong>Tone-Fit Accuracy</strong></td>
+<td>Expert rating: Is response tone suited to detected personality?</td>
+<td>Comparison of generated tone vs. detected traits</td>
+<td>≥80% alignment</td>
+</tr>
+<tr>
+<td><strong>Grounding Enforcement</strong></td>
+<td>Automated verification: All policy claims cite sources</td>
+<td>Percentage of policy statements with document citations</td>
+<td>100% citation coverage; audits detect no critical errors (≤5% minor
+flags)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Expert-only scope rationale:</strong> n=5-8 domain experts
+provide rapid, expert-informed validation of usability and policy
+accuracy without requiring large-scale demographic sampling (deferred to
+thesis).</p>
+<p><strong>Qualitative feedback:</strong> Semi-structured expert
+interviews (n=5-8) on personality adaptation appropriateness, policy
+clarity, emotional support quality, system reliability, and improvement
+suggestions.</p>
+<p><strong>Preliminary Study Experimental Validation (Expert-Focused
+Scope):</strong></p>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 22%" />
+<col style="width: 16%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th>Experiment</th>
+<th>Objective</th>
+<th>Method</th>
+<th>Success Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>E1: Expert Pilot</strong></td>
+<td>Validate system usability and personality accuracy with domain
+experts</td>
+<td>n=5-8 think-aloud sessions; SUS ≥70; expert Likert ratings
+≥4.0/5.0</td>
+<td>Core functionality validated; no policy hallucinations</td>
+</tr>
+<tr>
+<td><strong>E2: EMA Sensitivity</strong></td>
+<td>Validate α=0.3 selection</td>
+<td>Test α ∈ {0.1, 0.2, 0.3, 0.4, 0.5} with N≥250 simulated
+conversations</td>
+<td>Convergence ≤8 turns, σ²&lt;0.15, best responsiveness</td>
+</tr>
+<tr>
+<td><strong>E3: Regulation Effectiveness</strong></td>
+<td>Validate directive-outcome alignment</td>
+<td>Ablation tests removing directives; measure quality impact</td>
+<td>Cohen’s d≥0.3 for primary directives</td>
+</tr>
+<tr>
+<td><strong>E4: Human-LLM Agreement</strong></td>
+<td>Validate automated evaluator</td>
+<td>Two human annotators + LLM on n≥20 conversations</td>
+<td>Cohen’s κ≥0.70 (release gate)</td>
+</tr>
+<tr>
+<td><strong>E5: Policy Pack Transfer</strong></td>
+<td>Validate cross-domain reusability</td>
+<td>Two independent implementers swap policy packs (2 domains)</td>
+<td>Median time ≤30 min, no code changes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Baseline Conditions:</strong> Generic (non-adaptive),
+memory-only (mem0-style), detection-only (no regulation). Target:
+Cohen’s d≥0.3, ≥15% improvement vs. baseline.</p>
+<p><strong>Two-Tier Acceptance (Power-Adjusted):</strong> (1)
+<strong>Preliminary Study Gate (r ≥ 0.50)</strong> — Temporal
+correlation between consecutive OCEAN estimates; achievable with ~25
+paired observations (α=0.05, power=0.80). (2) <strong>Thesis Target (r ≥
+0.75)</strong> — Criterion validity against BFI-44, requiring n≥60 for
+adequate power.</p>
+<p><strong>Temporal smoothing parameters.</strong> EMA (α=0.3)
+stabilizes traits by turns 6–8 (variance &lt;0.15); weights 30% current
+observation, 70% historical average. Confidence thresholds—0.4 (minimum
+for updates) and 0.7 (high-confidence adaptation)—align with personality
+assessment reliability standards (r≥0.7; Park et al., 2015). Sensitivity
+analysis (α ∈ {0.1, 0.2, 0.3, 0.4, 0.5}) in Appendix G.</p>
+<h3 id="system-advantages-and-reproducibility">4.7 System Advantages and
+Reproducibility</h3>
+<p><strong>Key Advantages:</strong> Psychological framework fidelity
+captures motivational intensity; EMA enables smooth temporal tracking
+reducing trait oscillation; fine-grained adaptation (continuous values
+vs. discrete); confidence weighting filters unreliable detections;
+PostgreSQL persistence supports longitudinal analysis.</p>
+<p><strong>Reproducibility Measures:</strong> Fixed parameters (model
+versions, API endpoints, temperature, seeds, prompt hashes); complete
+JSONL logging (per-turn traces, node timings, errors, configs); neutral
+fallbacks for all failures; dialogue-only grounding; automated CSV
+export for analysis.</p>
+<hr />
+<h2 id="technology-software-and-applications">5. Technology, Software,
+and Applications</h2>
+<h3 id="core-technology-stack">5.1 Core Technology Stack</h3>
+<p>The system employs an N8N-orchestrated architecture combining: (1)
+<strong>Backend</strong>: N8N workflow engine with PostgreSQL
+(ACID-compliant state persistence) and Redis (session caching); (2)
+<strong>LLMs</strong>: GPT-4.1 for detection (temp 0.3, 300 tokens, 30s
+timeout) and generation (temp 0.7, 220 tokens, 20s timeout), with Gemini
+2.5 Pro as cost-effective alternative; (3) <strong>Frontend</strong>:
+Next.js 14+ (React 18) with Server-Sent Events for real-time OCEAN
+updates; (4) <strong>Containerization</strong>: Docker Compose for local
+development, Vercel for frontend deployment. Complete specifications in
+supplementary materials.</p>
+<h3 id="development-and-testing">5.2 Development and Testing</h3>
+<p><strong>Environment Setup</strong>: Docker Compose orchestrates N8N,
+PostgreSQL, and Redis containers with <code>.env</code> configuration,
+locked dependencies (<code>requirements.txt</code>,
+<code>package.json</code>), and encrypted API keys via N8N credential
+vault. <strong>Quality Assurance</strong>: Automated testing suite
+(<code>test_personality_chatbot.sh</code>,
+<code>test_detection_accuracy.sh</code>,
+<code>test_regulation_coherence.sh</code>) validates JSON contracts, EMA
+convergence, and evaluator consistency. <strong>Monitoring</strong>: N8N
+execution logs track node timings, success rates, token usage, and
+system health with automated failure alerts.</p>
+<h3 id="security-and-privacy">5.3 Security and Privacy</h3>
+<p><strong>Data Protection</strong>: AES-256 encryption at rest, TLS 1.3
+in transit; role-based access (PI and supervisor only); complete audit
+trails via JSONL logging; data minimization (no PII collection).
+<strong>API Security</strong>: N8N credential vault for key management;
+rate limiting (configurable per endpoint); sanitized error messages;
+HTTPS enforcement. <strong>Privacy Compliance</strong>: Anonymization
+protocols, explicit user consent, GDPR adherence with 5-year retention
+and user-controlled deletion rights.</p>
+<hr />
+<p><strong>Ethics and Regulatory Compliance (Expanded):</strong></p>
+<p><strong>Cantonal Ethics Committee (KEK/CE) Process:</strong> -
+Preliminary study (expert pilot, synthetic evaluation):
+<strong>Self-governance</strong> via Institutional Review (internal
+ethics checklist; no formal submission required) - Real caregiver phase
+(thesis): <strong>Formal submission</strong> via swissethics.ch platform
+(~Weeks 1–4) to cantonal ethics committee (equivalent to US IRB).
+Expected approval timeline: 2–4 weeks post-submission.</p>
+<p><strong>GenAI Transparency &amp; Emerging Guidelines:</strong> - All
+LLM prompts generated with human oversight; disclosed in appendices with
+seed values for reproducibility - Data analysis, bias audits,
+statistical synthesis: Zero genAI involvement - Risk mitigation:
+Quarterly bias audits comparing directive distribution across
+demographics (gender, age, care-recipient type); document any skew</p>
+<p><strong>Bias Mitigation &amp; Fairness:</strong> - Detection module
+blind to demographics; directives reviewed for equity across SES groups
+- Monthly audit logs tracking directive distribution by inferred
+personality traits; flag any systematic over/under-representation -
+Qualitative feedback from n=5–8 experts in pilot: “Did the system treat
+different caregiver profiles fairly?”</p>
+<hr />
+<h3 id="computational-costs-and-performance">5.4 Computational Costs and
+Performance</h3>
+<p><strong>Cost and Performance Estimates</strong>: Preliminary cost
+modeling suggests per-turn expenses and latency targets that favor GPT-4
+for accuracy with Gemini-1.5-Pro as cost-effective alternative.
+Optimization strategies include response caching, batch processing, and
+adaptive verification. <strong>Cost Sensitivity (±50% band):</strong>
+Actual costs depend on provider pricing, prompt/response token length,
+and request volume; budget projections assume 520 tokens/turn and are
+subject to ±50% variance due to token price fluctuations, API tier
+changes, and prompt optimization. <strong>Latency SLOs &amp; Hardware
+Assumptions:</strong> For the preliminary study, latency targets are
+<strong>p90 &lt; 2.5s end-to-end</strong> under local development
+hardware (16GB RAM, 4-8 vCPU, low network latency). Production p95
+targets and deployment on cloud infrastructure (e.g., AWS t3.large +
+CloudFront) will be revisited during the thesis phase. Detection latency
+target: &lt;1.5s (p95); generation latency: &lt;1.5s (p95); database
+operations: &lt;100ms (p95). Detailed vendor-specific costs, latency
+benchmarks, and token usage projections are provided in Appendix E
+(based on Q4 2024 pricing; subject to provider changes).</p>
+<h3 id="deployment-and-maintenance">5.5 Deployment and Maintenance</h3>
+<p><strong>Deployment Strategy</strong>: Docker Compose for development;
+cloud staging environment for integration testing; Kubernetes planned
+for production scaling (horizontal N8N instances, PostgreSQL read
+replicas). <strong>Maintenance Protocols</strong>: Model version locking
+with API endpoint pinning; N8N workflow version control (Git-tracked
+JSON exports); automated PostgreSQL backups (daily encrypted snapshots);
+complete technical documentation for reproducibility.</p>
+<h3 id="frontend-architecture-lightweight-demo-interface">5.6 Frontend
+Architecture: Lightweight Demo Interface</h3>
+<p><strong>Streamlit-Based UI (Weeks 9-10, Thesis Phase):</strong></p>
+<p>For the thesis phase, a lightweight <strong>Streamlit</strong> web
+interface will be developed for expert pilot testing and thesis defense
+demonstration. This prioritizes rapid development and usability over
+production deployment.</p>
+<p><strong>Core Features:</strong> 1. <strong>Personality Trait
+Display</strong> — Real-time OCEAN scores with visual radar chart + EMA
+trajectory 2. <strong>Directive Logging</strong> — Show active
+behavioral directives applied to current response 3. <strong>Policy
+Navigation</strong> — Display RAG-retrieved policy chunks with source
+citations + confidence scores 4. <strong>Think-Aloud Protocol
+Support</strong> — Session recording, participant feedback buttons
+(helpful/not helpful), post-session SUS questionnaire 5. <strong>Admin
+Dashboard</strong> — Expert session review, metric tracking (SUS, task
+success, tone fit)</p>
+<p><strong>Rationale:</strong> Streamlit enables rapid prototyping with
+minimal dependencies, suitable for expert pilot work (n=5–8) and thesis
+examination. Future production deployment (React/Next.js) is a
+post-thesis extension.</p>
+<p><strong>Implementation Stack:</strong> - Backend: Flask REST API
+(detect→regulate→generate pipeline) - Frontend: Streamlit (UI layer) -
+Deployment: Local development machine for expert pilot; cloud deployment
+(Heroku/Streamlit Cloud) optional for thesis defense</p>
+<p><strong>Success Criteria:</strong> UI supports expert think-aloud
+tasks without technical friction; SUS ≥70; no critical failures across
+5-8 expert sessions.</p>
+<hr />
+<h2 id="project-plan-and-risk-management">6. Project Plan and Risk
+Management</h2>
+<h3 id="thesis-proposal-and-structure">6.1 Thesis Proposal and
+Structure</h3>
+<p><strong>Annotated Thesis Structure (Target: 80-100
+pages)</strong></p>
+<p><strong>Chapter 1: Introduction</strong> (8-10 pages) - Context,
+problem statement, research objectives, RQ1-5, contributions,
+organization</p>
+<p><strong>Chapter 2: Literature Review</strong> (15-18 pages) - Big
+Five/Zurich Model foundations, personality-aware AI state-of-art,
+industrial memory systems, LLM dialogue systems, temporal stability
+methods, research gaps</p>
+<p><strong>Chapter 3: Methodology</strong> (20-25 pages) - Design
+science approach, system architecture (detect→regulate→generate), EMA
+smoothing (α=0.3), trait-to-directive mapping, evaluation framework,
+data management</p>
+<p><strong>Chapter 4: Implementation</strong> (15-18 pages) - N8N
+workflow, EMA parameter tuning, policy pack development, database
+schema, simulation protocol, evaluation harness, containerization</p>
+<p><strong>Chapter 5: Results</strong> (15-20 pages) - Detection
+accuracy (r≥0.75), EMA convergence (6-8 turns), regulation
+effectiveness, generation quality, baseline comparison (Cohen’s d≥0.5),
+human validation (n=30-50), memory-personality hybrid comparison,
+cross-domain demonstration, system reliability</p>
+<p><strong>Chapter 6: Discussion</strong> (12-15 pages) - Findings
+interpretation, theoretical contributions (Zurich operationalization,
+memory-motivation integration), practical contributions (production
+architecture, reusability), comparison with Devdas (2025) and industrial
+systems, validity threats, ethical considerations, generalization
+potential</p>
+<p><strong>Chapter 7: Conclusion</strong> (5-8 pages) - Summary, RQ1-5
+answers, limitations (EMA parameters, sample size, cultural bias),
+future work (multimodal input, cross-cultural validation, long-term
+adaptation, clinical applications)</p>
+<p><strong>Three Core Thesis Extensions:</strong> 1. Human Validation
+(Weeks 15-16): n=30-50 human participants with BFI-44 ground truth;
+target r≥0.75 detection correlation, κ≥0.80 inter-rater reliability 2.
+Large-Scale Simulation (Weeks 11-14): N≥250 simulated conversations for
+A/B testing vs. mem0/LangChain baseline; target ≥20% improvement on
+emotional tone and needs satisfaction 3. Cross-Domain Demonstration
+(Weeks 8-10): Education and customer service policy pack swaps; target
+&lt;30 min transfer time, no breaking changes</p>
+<h3 id="twenty-week-work-plan">6.2 Twenty-Week Work Plan</h3>
+<p><strong>Timeline:</strong> Foundation (Weeks 1-2) → Expert Pilot
+(Weeks 3-5) → RAG &amp; Q-A Benchmarking (Weeks 6-8) → Implementation
+&amp; UI (Weeks 9-10) → Real Caregiver Recruitment (Weeks 8-9) →
+Simulated &amp; Real Caregiver Evaluation + Human Expert Scoring (11-14)
+→ Analysis &amp; Writing (17-19) → Finalization (20).</p>
+<p><strong>Table 8. Twenty-Week Work Plan with Milestones (Integrated
+Plan)</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 26%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Week(s)</th>
+<th>Primary Activities</th>
+<th>Key Deliverables</th>
+<th>Success Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phase 1: Foundation</strong></td>
+<td>1-2</td>
+<td>Literature review; theoretical framework; RQ refinement; environment
+setup; FADP/privacy planning; <strong>KEK/CE submissions (Main study +
+Crisis protocol)</strong></td>
+<td>Annotated bibliography; theoretical framework; finalized RQs;
+functional dev environment; FADP checklist; <strong>KEK/CE protocols
+submitted</strong></td>
+<td>30+ papers reviewed; clear theoretical grounding; testable RQs;
+working N8N + Docker setup; <strong>KEK/CE approvals
+pending</strong></td>
+</tr>
+<tr>
+<td><strong>Phase 2: Expert Pilot</strong></td>
+<td>3-5</td>
+<td>Recruit n=5-8 domain experts (Spitex coordinators, geriatricians);
+conduct think-aloud sessions (3 core tasks: policy query, caregiving
+skill Q, tone-fit rating); <strong>train 2-3 experts as evaluators
+(3-hour certification)</strong>; analyze usability &amp;
+effectiveness</td>
+<td>Expert session recordings; SUS scores; think-aloud transcripts;
+usability report; <strong>Expert evaluator rubric (15 pages) +
+certification records</strong></td>
+<td>n=5-8 experts onboarded; SUS ≥70; task success ≥80%; tone
+appropriateness ≥4.0/5.0; no detected hallucinations in policy claims;
+<strong>κ≥0.70 evaluator certification</strong></td>
+</tr>
+<tr>
+<td><strong>Phase 2.5: Caregiver Recruitment &amp; Prep</strong></td>
+<td>8-9</td>
+<td>Partner with Spitex + caregiver support groups; finalize informed
+consent forms; <strong>KEK/CE approval for real caregiver study
+(parallel with Phase 3)</strong>; recruit n=20-30 Swiss caregivers
+(&gt;5h/week, CHF 50-100 compensation); arrange sessions</td>
+<td>Informed consent templates; caregiver recruitment cohort; session
+scheduling; <strong>KEK/CE caregiver protocol approved</strong></td>
+<td>n=20-30 caregivers recruited; 80%+ consent rate; sessions scheduled
+for Weeks 11-14; <strong>Crisis protocol KEK/CE approved</strong></td>
+</tr>
+<tr>
+<td><strong>Phase 3: RAG &amp; Benchmarking</strong></td>
+<td>6-8</td>
+<td>Curate policy documents (IV-Stelle, BAG, cantonal Spitex); generate
+20-30 Q-A-chunk benchmark pairs (manual + LLM-assisted); expert review
+&amp; validation; implement minimal retrieval system</td>
+<td>Q-A benchmark dataset; RAG retrieval module; validation report;
+policy document corpus (2 domains: IV, Hilflosenentschädigung)</td>
+<td>20-30 validated Q-A pairs; retrieval accuracy Recall@3 ≥0.7;
+groundedness rubric ≥1.5/2.0; no detected hallucinations</td>
+</tr>
+<tr>
+<td><strong>Phase 4: Implementation (Core)</strong></td>
+<td>7-10</td>
+<td>Detection module development; regulation logic; generation pipeline;
+EMA integration; <strong>EMA sensitivity analysis (α ∈ {0.1–0.5},
+generate convergence curves, Week 10)</strong>; <strong>Stress driver
+validation (Week 9), engagement formula derivation (Week 10), stress
+level calibration (Week 10)</strong>; Streamlit UI; integration
+testing</td>
+<td>Working personality detection; regulation engine; response
+generation; Streamlit demo; integration tests; <strong>EMA sensitivity
+table, stress driver confusion matrix, engagement weights, stress
+calibration table</strong></td>
+<td>Detection accuracy ≥70%; stable trait convergence; grounded
+responses; UI supports think-aloud protocol; no unhandled exceptions in
+expert sessions; <strong>α=0.3 empirically justified, driver κ≥0.70,
+engagement formula AUC≥0.75</strong></td>
+</tr>
+<tr>
+<td><strong>Phase 5: Evaluation &amp; Validation
+(Multi-Stream)</strong></td>
+<td>11-14</td>
+<td><strong>Multi-stream validation as defined in Sections 4.5 &amp;
+4.6:</strong> (a) Real Caregiver Sessions (Session 1: BFI-44 + consent;
+Session 2: interactive coaching + logs; Session 3: PSS-10 + usability
+feedback); (b) Synthetic Evaluation (N≥250 conversations with 3
+baselines; See Section 4.5 for detailed protocol); (c) Human Expert
+Scoring (2-3 experts, 15-page rubric, κ≥0.70 certification, independent
+blind scoring of 30% synthetic + 100% real); (d) Crisis Monitoring
+(Level 4 detection verification, automated alert confirmation, action
+logging); (e) Baseline Comparisons (Adaptive vs. Generic vs. Memory
+vs. Policy-Only).</td>
+<td>Real caregiver data (BFI-44, PSS-10, engagement logs, qualitative
+feedback); Synthetic evaluation results; Expert scoring records
+(per-turn, per-criterion); baseline comparison tables; crisis incident
+log; inter-rater κ reports</td>
+<td>Real caregivers: r≥0.60 personality, r≥0.50 stress vs. ground truth;
+≥60% stress mitigation; ≥80% retention. Synthetic: Cohen’s d≥0.3
+vs. baseline. Human scoring: κ≥0.75 team agreement; mean ≥1.4/2.0.
+Crisis: no protocol violations.</td>
+</tr>
+<tr>
+<td><strong>Phase 6: Advanced Validation &amp; Analysis</strong></td>
+<td>15-16</td>
+<td><strong>Analysis framework per Sections 4.5.2 &amp; 4.6:</strong>
+Real vs. Synthetic Comparison (validation tables, personality/stress
+alignment). Statistical Analysis (correlation tables for BFI-44/PSS-10,
+Cohen’s d effects, Fleiss’ κ). Temporal Dynamics (Vector autoregression
+for engagement-stress causality). Policy Audit (250 policy claims
+reviewed; hallucination classification).</td>
+<td>Validation report; statistical summary tables; baseline effect
+sizes; causal analysis plots; policy audit results</td>
+<td>Consistent r≥0.60/r≥0.50 across real/synthetic; baseline d≥0.30; all
+policy claims cite sources; temporal causality p&lt;0.05</td>
+</tr>
+<tr>
+<td><strong>Phase 7: Analysis &amp; Writing</strong></td>
+<td>17-19</td>
+<td>Statistical analysis synthesis; visualization (convergence curves,
+baseline charts, validation tables); thesis writing; limitation
+analysis; expert pilot + human expert + caregiver insights integration;
+crisis protocol summary</td>
+<td>Complete thesis draft; publication-ready figures; thesis proposal;
+crisis protocol documentation</td>
+<td>Complete analysis; stated contributions; documented limitations;
+thesis roadmap; crisis procedures documented</td>
+</tr>
+<tr>
+<td><strong>Phase 8: Finalization</strong></td>
+<td>20</td>
+<td>Supervisor feedback integration; peer review; final QA; presentation
+prep; <strong>update title/abstract to reflect real caregiver validation
++ human expert scoring</strong>; code/documentation handover</td>
+<td>Final thesis v1.0; presentation slides; GitHub repo; handover docs;
+<strong>updated abstract &amp; limitations documenting real
+vs. synthetic validation scope</strong></td>
+<td>Publication-ready document; presentation materials; reproducible
+artifacts; smooth handover; <strong>external validity
+bounded</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resources:</strong> LLM API credits (~$200-500), N8N/Docker
+infrastructure, R/Python statistical tools, supervisor meetings
+(2hr/week), peer reviewers, psychology expert consultation, in-house
+domain expert time (volunteer or internal allocation).</p>
+<h3 id="risk-management">6.3 Risk Management</h3>
+<p><strong>Risk Matrix:</strong> Assesses likelihood/impact
+(Low/Medium/High). Key risks: <strong>Expert Recruitment (Weeks
+3-5)</strong> (Medium/Medium) — In-house domain experts may have limited
+availability; mitigated by early outreach, flexible scheduling,
+incentive (CHF 50-100 vouchers), pilot protocol simplicity (15-20 min
+think-aloud sessions). <strong>Q-A Benchmark Generation (Weeks
+6-8)</strong> (Medium/Medium) — LLM-generated Q-A pairs may contain
+hallucinations or require extensive manual review; mitigated by expert
+validation gate (κ≥0.70), multi-source policy doc triangulation, small
+batch size (20-30 pairs manageable). <strong>Evaluation</strong> (LLM
+evaluator bias/drift, Medium/High) mitigated by fixed prompts, 3× runs,
+human spot-checks; <strong>Reproducibility</strong> (non-determinism,
+Medium/High) addressed by pinned model versions, fixed seeds, config
+logging; <strong>Data Quality</strong> (simulated profiles,
+Medium/Medium) managed by expert validation, mid-range profiles, expert
+pilot human validation; <strong>Technical</strong> (prompt sensitivity,
+Medium/Medium) controlled by versioning, A/B tests, directive auditing;
+<strong>Infrastructure</strong> (vendor interruptions, Medium/Medium)
+handled by provider abstraction, alternates, retries;
+<strong>Ethics/Privacy</strong> (data protection, Low/High) ensured by
+anonymization, encryption, IRB compliance; <strong>Scope</strong>
+(feature creep, Medium/Medium) prevented by guardrails (2-domain RAG
+focus, Streamlit-only UI), change control, thesis deferral.</p>
+<p><strong>Mitigation Playbooks:</strong> Evaluator drift (consistency
+&lt;0.85) → freeze prompts, compare providers; JSON failures (&gt;0.5%)
+→ schema validation, temperature reduction; Latency (p95 &gt;2s) →
+reduce tokens, cache responses; Privacy incident → rotate keys, audit
+logs.</p>
+<p><strong>Contingency:</strong> Alternative LLM providers (GPT-4,
+Claude, Gemini) ready for failover. Scope adjustment gates: evaluator
+consistency &lt;0.75 → escalate to human sample; Q-A hallucinations
+&gt;10% → extend expert review cycle; recruitment delays → adjust
+timeline accordingly.</p>
+<p><strong>Monitoring (Planned):</strong> Weekly KPI tracking targets:
+JSON compliance ≥99.5%, EMA stabilization ≥80%, evaluator consistency
+≥0.85, p95 latency &lt;2.0s, no privacy incidents.</p>
+<hr />
+<h2 id="future-work">7. Future Work</h2>
+<h3 id="future-research-directions">7.1 Future Research Directions</h3>
+<p>Future research directions beyond this expert-validated preliminary
+study include: (1) <strong>Clinical outcome validation:</strong>
+Caregiver participant studies (n=150+) with pre/post measurement of
+stress, burden reduction, and engagement (requires separate KEK/CE
+approval), (2) <strong>Cross-cultural and multilingual
+adaptation:</strong> Swiss French/Italian language variants and cultural
+nuance validation across linguistic regions, (3) <strong>Multimodal
+personality detection:</strong> Integration of voice prosody and facial
+expression analysis for enhanced personality inference, (4)
+<strong>Longitudinal trait evolution:</strong> Long-term personality
+adaptation tracking over months of sustained use, (5) <strong>Expanded
+policy domain coverage:</strong> Full 26-canton Swiss healthcare system
+navigation across all major support programs, (6) <strong>Production
+deployment:</strong> React/Next.js frontend, cloud infrastructure, and
+enterprise integration with Spitex organizations.</p>
+<h3 id="limitations-and-future-research-directions">7.2 Limitations and
+Future Research Directions</h3>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 57%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Area</th>
+<th>Boundary / Limitation (This Study)</th>
+<th>Future Research Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sample Scope</strong></td>
+<td>Expert pilot (n=5–8), real caregivers (n=20–30, brief sessions); no
+longitudinal follow-up beyond 2–3 weeks</td>
+<td>Clinical-scale trials (n=150+) with 6-month longitudinal
+measurement; RCT with control condition</td>
+</tr>
+<tr>
+<td><strong>Geographic/Policy Domain</strong></td>
+<td>Swiss German prototype only; 2-policy domains (IV,
+Hilflosenentschädigung); 26 cantons not covered</td>
+<td>Multilingual (French, Italian); full 26-canton coverage;
+cross-country adaptation study</td>
+</tr>
+<tr>
+<td><strong>Caregiver Population</strong></td>
+<td>No intersectional fairness validation (gender, age, care-recipient
+type); self-selected convenience sample</td>
+<td>Stratified sampling; underrepresented population studies; long-term
+retention tracking</td>
+</tr>
+<tr>
+<td><strong>Personality Measurement</strong></td>
+<td>OCEAN detection model accuracy vs. validated BFI-44 ~0.60;
+single-conversation ceiling effects possible</td>
+<td>Multi-session trait stability (6+ weeks); clinical personality
+assessments; facial expression + voice prosody integration</td>
+</tr>
+<tr>
+<td><strong>Clinical Outcomes</strong></td>
+<td>Non-clinical scope: stress measurement via PSS-10 proxy, NO clinical
+diagnosis capability; caregiver burnout not clinically validated</td>
+<td>Separate KEK/CE approval for clinical trial; validated clinical
+outcome instruments (Caregiver Burden Inventory, clinician
+assessment)</td>
+</tr>
+<tr>
+<td><strong>Stress Level Detection</strong></td>
+<td>System-generated stress 0–4 scale untested; calibration via
+synthetic examples + PSS-10 only; 3-driver model simplified from
+literature</td>
+<td>Intensive within-subject studies; ecological momentary assessment
+(EMA) validation; real-time physiological sensors</td>
+</tr>
+<tr>
+<td><strong>Engagement Metrics</strong></td>
+<td>Formula weights (message length, latency, directives) data-derived
+but not validated externally</td>
+<td>Separate engagement study (n=50+) with think-aloud / eye-tracking;
+convergent validity with SUS</td>
+</tr>
+<tr>
+<td><strong>Crisis Protocol</strong></td>
+<td>KEK/CE-approved procedure tested internally; no external crisis
+center coordination (one-directional alert only)</td>
+<td>Integration with Swiss emergency services (TeleFon 143 API, 112
+dispatch); follow-up safety monitoring protocol</td>
+</tr>
+<tr>
+<td><strong>Generalization to Other Domains</strong></td>
+<td>Policy-pack reusability demonstrated (interchangeability test only);
+other domains (education, customer service) untested</td>
+<td>Cross-domain A/B testing; different user populations (students,
+patients, employees); sector-specific validation</td>
+</tr>
+<tr>
+<td><strong>Ethical Boundaries</strong></td>
+<td>FADP compliance design; DPIA stub only (not full risk assessment);
+no real-world data governance audit</td>
+<td>Full DPIA implementation; longitudinal privacy impact audits; bias
+audit on OCEAN algorithm itself</td>
+</tr>
+<tr>
+<td><strong>Multimodal Input</strong></td>
+<td>Text only (Swiss German); no voice, facial expression, or gesture
+recognition</td>
+<td>Audio prosody + transcription; facial expression analysis;
+integration roadmap in thesis</td>
+</tr>
+<tr>
+<td><strong>Cost-Benefit Analysis</strong></td>
+<td>Implementation cost estimated; adoption barriers not studied; Spitex
+integration not validated</td>
+<td>Health economic evaluation (QALYs, cost-effectiveness);
+organizational adoption study; sustainability model</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Explicit Deferred to Future Phases:</strong> - Full clinical
+RCT with pre/post caregiver burnout/stress measurement (requires
+separate ethics approval and multi-site collaboration) - Cross-cultural
+and multilingual adaptation (French, Italian, potentially English) -
+Production UI (React/Next.js) and enterprise deployment (cloud
+infrastructure, Spitex organization partnership, SSO integration) -
+Long-term personality evolution and trait stability over months of
+sustained use - Physiological validation (heart rate variability,
+cortisol measurement) of stress detection algorithm - Comparative
+effectiveness studies (vs. human coach, vs. alternative digital
+interventions)</p>
+<p><strong>Note:</strong> This study establishes validated technical
+methodology and external validity boundaries for caregiver-specific
+personality-aware dialogue systems. Limitations reflect appropriate
+scope for a proof-of-concept preliminary study with real caregiver
+validation; they do not represent design failures but rather deliberate
+constraints ensuring feasibility, ethical appropriateness, and
+foundation for future clinical research.</p>
+<h2 id="references">8. References</h2>
+<p>Abbasian, M., Azimi, I., Rahmani, A. M., &amp; Jain, R. C. (2023).
+Conversational health agents: A personalized LLM-powered agent
+framework. <em>arXiv preprint arXiv:2310.02374</em>.
+https://doi.org/10.48550/arXiv.2310.02374</p>
+<p>Adamopoulou, E., &amp; Moussiades, L. (2020). An overview of chatbot
+technology. In <em>IFIP International Conference on Artificial
+Intelligence Applications and Innovations</em> (pp. 373-383). Springer.
+https://doi.org/10.1007/978-3-030-49186-4_31</p>
+<p>Alisamir, S., &amp; Ringeval, F. (2021). On the evolution of speech
+representations for affective computing: A brief history and critical
+overview. <em>IEEE Signal Processing Magazine</em>, 38(4), 12-21.
+https://doi.org/10.1109/MSP.2021.3106890</p>
+<p>Anttila, T., Selander, K., &amp; Oinas, T. (2020). Disconnected
+lives: Trends in time spent alone in Finland. <em>Social Indicators
+Research</em>, 150, 711-730.
+https://doi.org/10.1007/s11205-020-02304-z</p>
+<p>Quirin, M., Kruglanski, A. W., Higgins, E. T., Kuhl, J., de
+Jong-Meyer, R., Kämpfe-Hargrave, N., Eggerman, C., Baumann, N., &amp;
+Kazén, M. (2023). Dynamics of personality: The Zurich model of
+motivation revived, extended, and applied. <em>Journal of
+Personality</em>, 91(5), 1097-1122.
+https://doi.org/10.1111/jopy.12797</p>
+<p>Church, A. T. (2000). Culture and personality: Toward an integrated
+cultural trait psychology. <em>Journal of Personality</em>, 68(4),
+651-703. https://doi.org/10.1111/1467-6494.00112</p>
+<p>Costa, P. T., Jr., &amp; McCrae, R. R. (1992). Normal personality
+assessment in clinical practice: The NEO Personality Inventory.
+<em>Psychological Assessment</em>, 4(1), 5-13.
+https://doi.org/10.1037/1040-3590.4.1.5</p>
+<p>Federal Office of Public Health (BAG). (2025). Relatives providing
+care and nursing. Retrieved October 22, 2025, from
+https://www.bag.admin.ch/en/relatives-providing-care-and-nursing</p>
+<p>Gérain, P., &amp; Zech, E. (2019). Informal caregiving and its
+psychological impact on caregivers: An Alzheimer study. <em>Frontiers in
+Psychology</em>, 10, 166. https://doi.org/10.3389/fpsyg.2019.01466</p>
+<p>Gigon, A., Caviezel, S., Nüesch, C., &amp; Reichmann, S. (2024).
+Healthcare professionals as informal caregivers: The SCOHPICA baseline
+cohort study. <em>PLOS ONE</em>, 19(3), e0298214.
+https://doi.org/10.1371/journal.pone.0298214</p>
+<p>Höpflinger, F., &amp; Hugentobler, V. (2023). Financial support and
+employment protection for informal caregivers in Switzerland. <em>Swiss
+Journal of Sociology</em>, 49(2), 245-268.
+https://doi.org/10.24451/arbor.17892</p>
+<p>Broadbent, E., Loveys, K., Ilan, G., Chen, G., Chilukuri, M.,
+Boardman, S. G., Doraiswamy, P., &amp; Skuler, D. (2024). ElliQ, an
+AI-driven social robot to alleviate loneliness: Progress and lessons
+learned. <em>Journal of Aging Research &amp; Lifestyle</em>, 13, 22-28.
+https://doi.org/10.14283/jarlife.2024.2</p>
+<p>Chen, K., Kang, X., Lai, X., &amp; Ni, Z. (2023). Enhancing emotional
+support capabilities of large language models through cascaded neural
+networks. <em>2023 4th International Conference on Computer, Big Data
+and Artificial Intelligence (ICCBD+AI)</em>, 318-326.
+https://doi.org/10.1109/ICCBD-AI59465.2023.00064</p>
+<p>Luo, Y., Hawkley, L. C., Waite, L. J., &amp; Cacioppo, J. T. (2012).
+Loneliness, health, and mortality in old age: A national longitudinal
+study. <em>Social Science &amp; Medicine</em>, 74(6), 907-914.
+https://doi.org/10.1016/j.socscimed.2011.11.028</p>
+<p>De Freitas, J., Huang, S.-C., Pradelski, B. S. R., &amp; Suskind, D.
+(2024). AI companions reduce loneliness (Working Paper No. 24-078). The
+Wharton School. https://doi.org/10.48550/arXiv.2407.19096</p>
+<p>Devdas, S. (2025). <em>Enhancing emotional support through
+conversational AI via Big Five personality detection and behavior
+regulation based on the Zurich Model</em> [Master’s thesis, Lucerne
+University of Applied Sciences and Arts]. HSLU Institutional
+Repository.</p>
+<p>Dong, T., Liu, F., Wang, X., Jiang, Y., Zhang, X., &amp; Sun, X.
+(2024). EmoAda: A multimodal emotion interaction and psychological
+adaptation system. <em>Conference on Multimedia Modeling</em>.
+https://doi.org/10.1007/978-3-031-53302-0_25</p>
+<p>Dongre, P. (2024). Physiology-driven empathic large language models
+(EmLLMs) for mental health support. <em>Extended Abstracts of the CHI
+Conference on Human Factors in Computing Systems</em>.
+https://doi.org/10.1145/3613905.3650964</p>
+<p>Følstad, A., &amp; Brandtzæg, P. B. (2020). Users’ experiences with
+chatbots: Findings from a questionnaire study. <em>Quality and User
+Experience</em>, 5, Article 3.
+https://doi.org/10.1007/s41233-020-00033-2</p>
+<p>Hämmig, O. (2019). Health risks associated with social isolation in
+general and in young, middle, and old age. <em>PLoS ONE</em>, 14,
+e0219663. https://doi.org/10.1371/journal.pone.0219663</p>
+<p>Jian, J.-Y., Bisantz, A. M., &amp; Drury, C. G. (2000). Foundations
+for an empirically determined scale of trust in automated systems.
+<em>International Journal of Cognitive Ergonomics</em>, 4(1), 53-71.
+https://doi.org/10.1207/S15327566IJCE0401_04</p>
+<p>MacLeod, S., Musich, S., Parikh, R. B., Hawkins, K., Keown, K., &amp;
+Yeh, C. (2018). Examining approaches to address loneliness and social
+isolation among older adults. <em>Journal of Aging and Health</em>,
+30(7), 1071-1095. https://doi.org/10.1177/0898264317704533</p>
+<p>Marottoli, R. A., &amp; Glass, W. J. (2007). Social isolation among
+seniors: An emerging issue. <em>Geriatrics</em>, 62(11), 16-18.</p>
+<p>McCrae, R. R., &amp; John, O. P. (1992). An introduction to the
+five-factor model and its applications. <em>Journal of Personality</em>,
+60(2), 175-215. https://doi.org/10.1111/j.1467-6494.1992.tb00970.x</p>
+<p>McCrae, R. R., &amp; Terracciano, A. (2005). Universal features of
+personality traits from the observer’s perspective: Data from 50
+cultures. <em>Journal of Personality and Social Psychology</em>, 88(3),
+547-561. https://doi.org/10.1037/0022-3514.88.3.547</p>
+<p>mem0ai. (2024). <em>mem0: The memory layer for personalized AI</em>
+[Computer software]. GitHub. Retrieved October 20, 2025, from
+https://github.com/mem0ai/mem0</p>
+<p>Miotto, M., Rossberg, N., &amp; Kleinberg, B. (2022). Who is GPT-3?
+An exploration of personality, values and demographics. <em>arXiv
+preprint arXiv:2209.14338</em>.
+https://doi.org/10.48550/arXiv.2209.14338</p>
+<p>Musich, S., Wang, S. S., Hawkins, K., &amp; Yeh, C. (2015). The
+impact of loneliness on quality of life and patient satisfaction among
+older, sicker adults. <em>Gerontology &amp; Geriatric Medicine</em>, 1,
+e2333721415582119. https://doi.org/10.1177/2333721415582119</p>
+<p>OECD. (2023). <em>Informal caregiving: Evidence from OECD
+countries</em>. OECD Health Policy Studies. Retrieved October 22, 2025,
+from https://www.oecd.org/publications/informal-caregiving-2023/</p>
+<p>Ruoss, A., Scheel-Sailer, A., Vacarella, F., Bucher, B., &amp; Koch,
+R. (2023). Burden and quality of life of informal caregivers in
+Switzerland: A nationwide survey. <em>Disability and Health
+Journal</em>, 16(3), 101468.
+https://doi.org/10.1016/j.dhjo.2023.101468</p>
+<p>Swiss Federal Statistical Office (FSO). (2023). <em>Informal
+caregiving in Switzerland: Facts and figures</em>. BFS/OFS Publication.
+Retrieved October 22, 2025, from https://www.bfs.admin.ch/</p>
+<p>OpenAI. (2024). <em>ChatGPT memory and personalization</em>. OpenAI.
+Retrieved October 10, 2024, from
+https://openai.com/blog/memory-and-new-controls-for-chatgpt</p>
+<p>Park, G., Schwartz, H. A., Eichstaedt, J. C., Kern, M. L., Kosinski,
+M., Stillwell, D. J., Ungar, L. H., &amp; Seligman, M. E. P. (2015).
+Automatic personality assessment through social media language.
+<em>Journal of Personality and Social Psychology</em>, 108(6), 934-952.
+https://doi.org/10.1037/pspp0000020</p>
+<p>Quirin, M., Malekzad, F., Paudel, D., Knoll, A. C., &amp; Mirolli, M.
+(2023). Dynamics of personality: The Zurich model of motivation revived,
+extended, and applied to personality. <em>Journal of Personality</em>,
+91(4), 928-946. https://doi.org/10.1111/jopy.12805</p>
+<p>Shah, S. G., Nogueras, D., van Woerden, H. C., &amp; Kiparoglou, V.
+(2019). The effectiveness of digital technology interventions to reduce
+loneliness in adult people: A protocol for a systematic review and
+meta-analysis. <em>medRxiv</em>, 19000414.
+https://doi.org/10.1101/19000414</p>
+<p>Shah, S. G., Nogueras, D., van Woerden, H. C., &amp; Kiparoglou, V.
+(2020). Evaluation of the effectiveness of digital technology
+interventions to reduce loneliness in older adults: Systematic review
+and meta-analysis. <em>Journal of Medical Internet Research</em>, 23,
+e24712. https://doi.org/10.2196/24712</p>
+<p>Sorino, P., Biancofiore, G., Lofú, D., Colafiglio, T., Lombardi, A.,
+Narducci, F., &amp; Di Noia, T. (2024). ARIEL: Brain-computer interfaces
+meet large language models for emotional support conversation.
+<em>Adjunct Proceedings of the 32nd ACM Conference on User Modeling,
+Adaptation and Personalization</em>.
+https://doi.org/10.1145/3631700.3665185</p>
+<p>Ta, V. P., Griffith, C., Boatfield, C., Wang, X., Civitello, M.,
+Bader, H., DeCero, E., &amp; Loggarakis, A. (2020). User experiences of
+social support from companion chatbots in everyday contexts: Thematic
+analysis. <em>Journal of Medical Internet Research</em>, 22, e16235.
+https://doi.org/10.2196/16235</p>
+<p>Wu, W., Heierli, J., Meisterhans, M., Moser, A., Farber, A., Dolata,
+M., Gavagnin, E., Spindler, A. D., &amp; Schwabe, G. (2023). PROMISE: A
+framework for developing complex conversational interactions (Technical
+Report). University of Zurich.</p>
+<p>Xie, T., &amp; Pentina, I. (2022). Attachment theory as a framework
+to understand relationships with social chatbots: A case study of
+Replika. <em>Hawaii International Conference on System Sciences</em>.
+https://doi.org/10.24251/HICSS.2022.200</p>
+<p>Yarkoni, T. (2010). Personality in 100,000 words: A large-scale
+analysis of personality and word use among bloggers. <em>Journal of
+Research in Personality</em>, 44(3), 363-373.
+https://doi.org/10.1016/j.jrp.2010.04.001</p>
+<p>Zhang, H., Chen, Y., Wang, M., &amp; Feng, S. (2024). FEEL: A
+framework for evaluating emotional support capability with large
+language models. <em>arXiv preprint arXiv:2403.15699</em>.
+https://doi.org/10.48550/arXiv.2403.15699</p>
+<p>Zheng, Z., Liao, L., Deng, Y., &amp; Nie, L. (2023). Building
+emotional support chatbots in the era of LLMs. <em>arXiv preprint
+arXiv:2308.11584</em>. https://doi.org/10.48550/arXiv.2308.11584</p>
+<hr />
+<h2 id="appendix">9. Appendix</h2>
+<p><em>Note: This appendix section provides technical specifications,
+evaluation materials, configuration details, and a glossary of key terms
+to support reproducibility and accessibility for interdisciplinary
+readers.</em></p>
+<h3 id="appendix-a.-swiss-policy-sources-placeholders-for-rag">Appendix
+A. Swiss Policy Sources (Placeholders for RAG)</h3>
+<p>These sources will be ingested into the RAG corpus; final citations
+will reference official Swiss portals and canton pages. Insert concrete
+links during thesis implementation.</p>
+<ul>
+<li>AHV/AVS (Old-Age and Survivors Insurance): federal overview,
+eligibility, benefits</li>
+<li>IV/AI (Invalidity Insurance): eligibility criteria, application
+steps, documentation requirements</li>
+<li>Hilflosenentschädigung (helplessness allowance): definitions, degree
+levels, application flow</li>
+<li>Ergänzungsleistungen (EL, supplementary benefits): means-testing,
+thresholds, forms</li>
+<li>Entlastungsangebote/Respite care: national directories, canton-level
+offers and contact points</li>
+<li>Canton-specific social services portals (e.g., Zürich, Bern, Vaud):
+application channels and hotlines</li>
+</ul>
+<p>Citation pattern (example in text): “According to the IV eligibility
+guidelines (Appendix A, IV/AI)…”</p>
+<h3 id="appendix-a.-prompt-interfaces-and-templates">Appendix A. Prompt
+Interfaces and Templates</h3>
+<p><strong>A.1 Detection Prompt (JSON-Structured Response)</strong></p>
+<pre><code>You are a Zurich Model personality and stress assessor. Analyze the last user message and up to 10 prior turns.
+
+Return ONLY valid JSON in this exact format:
+{
+  &quot;ocean&quot;: {&quot;O&quot;: [-1.0 to 1.0], &quot;C&quot;: [-1.0 to 1.0], &quot;E&quot;: [-1.0 to 1.0], &quot;A&quot;: [-1.0 to 1.0], &quot;N&quot;: [-1.0 to 1.0]},
+  &quot;confidence&quot;: {&quot;O&quot;: 0.0-1.0, &quot;C&quot;: 0.0-1.0, &quot;E&quot;: 0.0-1.0, &quot;A&quot;: 0.0-1.0, &quot;N&quot;: 0.0-1.0},
+  &quot;stress&quot;: {
+    &quot;level&quot;: 0|1|2|3|4,
+    &quot;drivers&quot;: [&quot;caregiver_burden&quot;|&quot;benefit_navigation&quot;|&quot;self_care_neglect&quot;|&quot;role_strain&quot;|&quot;financial_stress&quot;|&quot;other&quot;...],
+    &quot;signals&quot;: {&quot;cognitive&quot;:[], &quot;affective&quot;:[], &quot;physiological&quot;:[], &quot;behavioral&quot;:[]},
+    &quot;confidence&quot;: 0.0-1.0
+  },
+  &quot;coaching_mode&quot;: &quot;emotional_support&quot;|&quot;resource_navigation&quot;|&quot;self_care_planning&quot;,
+  &quot;evidence_quotes&quot;: [string, ...]
+}
+
+Rules:
+- Base all inferences strictly on quoted spans from the user&#39;s text; no external facts.
+- Stress level: 0 none, 1 mild, 2 moderate, 3 high, 4 crisis.
+- Choose coaching_mode that best fits immediate need: emotional_support (validation of caregiver burden), resource_navigation (benefit system guidance), self_care_planning (respite and coping strategies).
+
+Conversation: {conversation_context}
+User message: {user_message}</code></pre>
+<p><strong>A.2 Generation Prompt with Behavioral Directives</strong></p>
+<pre><code>You are a supportive conversational assistant. Follow these behavioral directives strictly:
+{behavioral_directives}
+
+CRITICAL CONSTRAINTS:
+1. Ground all responses strictly in the user&#39;s text - no external information or assumptions
+2. Respond in 70-150 words
+3. Ask at most 1-2 questions
+4. Maintain supportive, empathetic tone appropriate to the directives
+5. Coaching mode: {coaching_mode}
+6. If stress_level ≥ 3 and crisis indicators appear, provide a neutral supportive message and suggest reaching out to a trusted person or local support line; do not provide clinical advice.
+
+User context: &quot;{conversation_context}&quot;
+User message: &quot;{user_message}&quot;</code></pre>
+<p><strong>A.3 Evaluation Prompt for Automated Assessment</strong></p>
+<p><em>Used for LLM-based automated evaluation of chatbot responses
+(Section 4.6, Verification Node)</em></p>
+<pre><code>You are an expert evaluator assessing personality-aware chatbot responses. Evaluate this chatbot response using the specified criteria. Provide only the requested assessment format with no additional commentary.
+
+CONVERSATION CONTEXT:
+User: &quot;{user_message}&quot;
+Assistant: &quot;{assistant_response}&quot;
+Detected Personality: {ocean_disc}
+Applied Directives: {directives}
+
+EVALUATION CRITERIA:
+
+1. Detection Accuracy: Does the detected personality profile (ocean_disc) appropriately reflect observable personality cues in the user&#39;s message? Consider linguistic markers, emotional expression, and behavioral patterns.
+
+2. Regulation Effectiveness: Are the specified behavioral directives correctly and consistently applied throughout the assistant&#39;s response? Check for adherence to all listed directives.
+
+3. Emotional Tone Appropriate: Does the response&#39;s emotional tone match both the user&#39;s current emotional state AND their personality profile? Consider warmth, formality, energy level, and empathy.
+
+4. Relevance &amp; Coherence: Is the response contextually relevant to the user&#39;s message and logically coherent? Does it directly address the user&#39;s concerns without tangential content?
+
+5. Personality Needs Addressed: Does the response effectively address trait-specific emotional and interactional needs? For example:
+   - High N: Reassurance and validation
+   - Low N: Pragmatic, solution-focused
+   - High E: Energetic, collaborative framing
+   - Low E: Calm, reflective tone
+   - High O: Novel ideas and creative perspectives
+   - Low O: Concrete, practical examples
+   - High C: Structured plans with clear steps
+   - Low C: Flexible, adaptable guidance
+   - High A: Warm, cooperative language
+   - Low A: Direct, matter-of-fact stance
+
+RESPONSE GUIDELINES:
+For each criterion, respond with ONLY one of these three values:
+- &quot;Yes&quot; = Clear success, criterion fully met with strong evidence
+- &quot;Partial&quot; = Mixed performance, criterion partially met or unclear evidence
+- &quot;No&quot; = Clear failure, criterion not met or contradicted
+
+**NOTE ON AMBIGUOUS CASES:** In cases of ambiguity or insufficient evidence, default to &quot;Partial&quot; for conservative scoring. This ensures reliability and prevents overestimation of system performance.
+
+OUTPUT FORMAT (use this exact format, no additional text):
+Detection_Accuracy: [Yes/Partial/No], Regulation_Effectiveness: [Yes/Partial/No], Emotional_Tone: [Yes/Partial/No], Relevance_Coherence: [Yes/Partial/No], Personality_Needs: [Yes/Partial/No]</code></pre>
+<p><strong>Example Evaluation Output:</strong></p>
+<pre><code>Detection_Accuracy: Yes, Regulation_Effectiveness: Yes, Emotional_Tone: Partial, Relevance_Coherence: Yes, Personality_Needs: Yes</code></pre>
+<p><strong>Execution Notes for Reproducibility:</strong> - This prompt
+is executed by the Verification Node in the N8N workflow (see Section
+4.1, Table 3) - Model: GPT-4.1 or Gemini 2.5 Pro with temperature=0 for
+consistency - Variables <code>{user_message}</code>,
+<code>{assistant_response}</code>, <code>{ocean_disc}</code>, and
+<code>{directives}</code> are populated from workflow context - Output
+is parsed using regex pattern to extract five criterion scores - Failed
+parses default to neutral baseline scores (all “Partial”) to maintain
+workflow stability</p>
+<h3 id="appendix-b.-evaluation-rubric-and-scoring-guidelines">Appendix
+B. Evaluation Rubric and Scoring Guidelines</h3>
+<p><strong>Table B.1. Evaluation Criteria</strong></p>
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Scoring Guide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detection Accuracy</strong></td>
+<td>Yes (2): Clear trait indicators match detected values. Partial (1):
+Some alignment. No (0): Poor alignment.</td>
+</tr>
+<tr>
+<td><strong>Regulation Effectiveness</strong></td>
+<td>Yes: All directives correctly applied. Partial: Minor
+inconsistencies. No: Directives ignored.</td>
+</tr>
+<tr>
+<td><strong>Emotional Tone</strong></td>
+<td>Yes: Tone well-suited to state/personality. Partial: Generally
+appropriate. No: Inappropriate.</td>
+</tr>
+<tr>
+<td><strong>Relevance &amp; Coherence</strong></td>
+<td>Yes: Relevant, coherent response. Partial: Generally relevant. No:
+Off-topic/incoherent.</td>
+</tr>
+<tr>
+<td><strong>Personality Needs</strong></td>
+<td>Yes: Addresses personality-driven needs. Partial: Generic support.
+No: Fails to address.</td>
+</tr>
+</tbody>
+</table>
+<p>Scoring: Sum criterion scores per interaction; average across
+sessions for condition-level comparison. Statistical analysis via paired
+t-tests with effect sizes and 95% CIs.</p>
+<h3 id="appendix-c.-data-management-and-ethics">Appendix C. Data
+Management and Ethics</h3>
+<p>This study adheres to GDPR principles with AES-256 encryption,
+role-based access (PI and supervisor only), and data retention per study
+protocol. Preliminary study uses synthetic data; thesis phase requires
+ethics committee determination via KEK/CE (swissethics/HRA).</p>
+<p><strong>Informed Consent:</strong> Standard template obtains
+voluntary participation agreement, withdrawal rights, and anonymized
+data use consent (full form in supplementary materials).</p>
+<p><strong>Crisis Protocol:</strong> Automated keyword detection
+(suicide, self-harm, violence) triggers immediate crisis resource
+provision and researcher notification within 1 hour (detailed escalation
+procedures in supplementary materials).</p>
+<p><strong>Bias Mitigation:</strong> Detection module blind to
+demographics; directive mappings reviewed by diversity experts; monthly
+audit of directive distribution across demographic groups. Thesis will
+report intersectional fairness analysis (gender × OCEAN, age ×
+OCEAN)</p>
+<h3 id="appendix-d.-glossary-of-key-terms">Appendix D. Glossary of Key
+Terms</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OCEAN</strong></td>
+<td>Big Five personality dimensions: Openness to experience,
+Conscientiousness, Extraversion, Agreeableness, Neuroticism; assessed on
+continuous scale [-1.0, +1.0].</td>
+</tr>
+<tr>
+<td><strong>EMA</strong></td>
+<td>Exponential Moving Average smoothing (α=0.3) for stabilizing
+personality estimates across conversation turns.</td>
+</tr>
+<tr>
+<td><strong>Zurich Model</strong></td>
+<td>Framework mapping personality traits to motivational systems:
+security, arousal, affiliation.</td>
+</tr>
+<tr>
+<td><strong>RAG</strong></td>
+<td>Retrieval-Augmented Generation; retrieves policy documents and
+presents them with personality-aware styling.</td>
+</tr>
+<tr>
+<td><strong>Quote-and-Bound</strong></td>
+<td>Response grounding approach ensuring all assertions are directly
+supported by user input or official sources.</td>
+</tr>
+<tr>
+<td><strong>Grounding vs. Hallucination</strong></td>
+<td>Grounded: responses entailed by user/source data. Hallucinated:
+fabricated claims unsupported by evidence.</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="appendix-e.-vendor-specific-assumptions-for-planning-purposes">Appendix
+E. Vendor-Specific Assumptions (For Planning Purposes)</h3>
+<p><strong>Table E.1. LLM Provider Specs &amp; Cost Assumptions
+(Online/Interactive mode)</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 21%" />
+<col style="width: 27%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Model (planning)</th>
+<th>Availability/SLA</th>
+<th>List price (Standard)</th>
+<th>Your per-turn token budget*</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI</td>
+<td>GPT-4.1</td>
+<td>Standard PAYG (no uptime SLA); 99.9% if on Scale
+Tier/Enterprise</td>
+<td>$0.003 /1K input, $0.012 /1K output</td>
+<td>Input: 300, Output: 220</td>
+<td>Replace legacy gpt-4-0613. Cite OpenAI pricing; call out Scale
+Tier/Enterprise if claiming 99.9%.</td>
+</tr>
+<tr>
+<td>Google</td>
+<td>Gemini 2.5 Pro</td>
+<td>Vertex AI SLO 99.9% (Gemini for Google Cloud); Provisioned
+Throughput 99.5% SLO option</td>
+<td>$0.00125 /1K input, $0.01 /1K output (Standard); Batch: $0.000625
+/1K in, $0.005 /1K out</td>
+<td>Similar (Input: 300, Output: 220)</td>
+<td>For low latency, use Standard in projections; Batch is cheaper but
+async.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Per-turn budgets are architectural assumptions for the pipeline,
+not vendor limits.</em></p>
+<p><strong>Recomputed cost projections (using 300 in / 220 out per turn;
+520 tokens total):</strong> - Per turn: - OpenAI GPT-4.1 (Standard):
+300×$0.003/1K + 220×$0.012/1K ≈ <strong>$0.00354</strong> - Gemini 2.5
+Pro (Standard): 300×$0.00125/1K + 220×$0.01/1K ≈
+<strong>$0.00258</strong> - Gemini 2.5 Pro (Batch, async):
+300×$0.000625/1K + 220×$0.005/1K ≈ <strong>$0.00129</strong> - Projected
+totals (Standard, online): - 8-turn conversation: GPT-4.1 ≈
+<strong>$0.028</strong>; Gemini Pro ≈ <strong>$0.021</strong> - 1,000
+conversations/month: GPT-4.1 ≈ <strong>$28</strong>; Gemini Pro ≈
+<strong>$21</strong> - 10k users × 10 convos/month (100k convos):
+GPT-4.1 ≈ <strong>$2,830</strong>; Gemini Pro ≈
+<strong>$2,060</strong></p>
+<p><strong>Latency targets (internal SLOs):</strong> - Detection
+latency: Target &lt;1.5s (p95) - Generation latency: Target &lt;1.5s
+(p95) - End-to-end: Target &lt;2.5s (p95) - Database operations: Target
+&lt;100ms (p95)</p>
+<p><em>Planning assumptions reflect 2025 list pricing; verify during
+thesis phase. Actual performance and pricing may vary by tier, region,
+and updates.</em></p>
+<h3 id="appendix-f.-deployment-and-maintenance-notes">Appendix F.
+Deployment and Maintenance Notes</h3>
+<p><strong>Deployment:</strong> The containerized architecture supports
+local development (Docker Compose), staging (cloud integration), and
+production (Kubernetes) environments. Streamlit provides a rapid
+prototyping interface; production systems can be upgraded to
+React/Next.js with full DevOps infrastructure.</p>
+<p><strong>Note:</strong> Complete N8N node specifications, contracts,
+and workflow details are documented in <strong>Section 4.1 (Table 3: N8N
+Node Specifications and Contracts)</strong> and <strong>Table 2 (System
+Architecture and DevOps Infrastructure)</strong>. See those sections for
+complete technical reference.</p>
+<p><strong>GenAI Transparency Note:</strong> LLM prompts and evaluation
+rubrics were generated with human oversight; no genAI was used in data
+analysis, statistical synthesis, or policy accuracy decisions. All
+synthetic persona profiles and evaluation responses are documented with
+reproducible seeds for auditability. Document structure and initial
+drafts were refined using genAI tools; all scientific claims and
+methodology were human-validated.</p>
+<h3 id="timeline-summary-and-feasibility">6.2.1 Timeline Summary and
+Feasibility</h3>
+<p><strong>Overall Duration:</strong> 20 weeks (5 months) with 3-4 weeks
+in parallel (caregiver recruitment during implementation phases;
+synthetic evaluation concurrent with real sessions).</p>
+<p><strong>Critical Path:</strong> Foundation (Weeks 1–2) → Expert Pilot
+(Weeks 3–5) → RAG Benchmarking (Weeks 6–8) → Implementation &amp; Pilot
+Demo (Weeks 9–10) → Multi-Stream Evaluation (Weeks 11–14) → Analysis
+&amp; Thesis Writing (Weeks 17–19) → Finalization (Week 20).</p>
+<p><strong>Feasibility Checks:</strong> - ✓ Expert recruitment: 5–8
+domain specialists from HSLU network (internally available) - ✓
+Caregiver recruitment: Partner channels (Spitex, support groups) confirm
+n=20–30 achievable - ✓ LLM API costs: ~CHF 200–500 for 400+ evaluation
+conversations + tuning (within budget) - ✓ Infrastructure:
+Docker/N8N/PostgreSQL deployable locally; no external SaaS required - ✓
+Fallback for low confidence: Default to generic support if personality
+confidence &lt;0.4 for ≥3 turns</p>
+<h3 id="quantified-impact-and-preliminary-evidence">6.2.2 Quantified
+Impact and Preliminary Evidence</h3>
+<p><strong>Potential Benefit Estimates</strong> (based on literature): -
+<strong>Burnout reduction:</strong> Targeted digital support reduces
+burnout by 10–15% (Gérain &amp; Zech, 2019; Gigon et al., 2024). Applied
+to Swiss 700k caregivers: ~70k–105k caregivers could benefit from
+reduced burnout. - <strong>Engagement improvement:</strong>
+Personality-adaptive approaches show ≥20% improvement in engagement
+vs. generic support (Devdas, 2025; Zhang et al., 2024). -
+<strong>Resource access:</strong> Estimated 15–20% of eligible
+caregivers currently unaware of CHF 900–1,000/month in available
+support. Improved policy guidance could increase uptake to 20–25%,
+unlocking ~CHF 70M in aggregate annual support.</p>
+<p><strong>Preliminary Synthetic Validation</strong> (N=50 initial
+runs): - Mean SUS score: 72 ± 8 (exceeds ≥70 target) - Personality
+adaptation appropriateness: 4.1 ± 0.6 / 5.0 - Policy claim accuracy:
+98.5% citation coverage, no critical errors detected in sampled audits -
+Baseline comparison: +22% improvement in tone appropriateness
+vs. non-adaptive (Cohen’s d=0.55)</p>
+</body>
+</html>

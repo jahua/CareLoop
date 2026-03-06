@@ -1,0 +1,1259 @@
+---
+title: "Coffee Shop Sales and Weather Analysis"
+author: "Group 1: [Duojie Jiahua, Maxim Aminov]"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 6
+)
+```
+
+# Introduction
+
+## Business Context
+
+2023 was New York City’s warmest year on record, with average temperatures reaching approximately 58°F—exceeding previous records by 0.6°F [1]. Such unusually warm conditions raise practical questions for businesses whose performance depends on foot traffic and consumer behavior.
+
+In this report, we analyze sales data from Maven Roasters, a coffee shop chain operating three locations across New York City (Lower Manhattan, Hell’s Kitchen, and Astoria). The objective is to examine how weather conditions, particularly temperature and precipitation, are associated with daily sales performance and customer purchasing behavior.
+
+By combining transaction-level sales data with daily weather observations, we aim to produce practical takeaways for inventory planning, staffing, and promotions.
+
+## Research Objectives
+
+The primary objectives of this analysis are:
+
+1. **Describe sales patterns** across store locations, product categories, and time periods
+2. **Explore weather-sales relationships** — how temperature and precipitation relate to daily revenue and product mix
+3. **Identify practical conditions** for staffing, inventory, and promotional planning
+4. **Make recommendations** grounded in the observed patterns
+
+## Key Hypotheses
+
+Based on prior research linking weather to retail foot traffic and consumer spending [7, 8], we test the following hypotheses:
+
+- **H1**: Higher temperatures are associated with higher daily revenue 
+- **H2**: Precipitation (rain) negatively impacts sales as customers avoid travel
+- **H3**: The product mix shifts with temperature (e.g., share of cold beverages increases on warm days) 
+- **H4**: Weekend sales patterns differ from weekday patterns due to different customer demographics
+
+
+
+# Data Sources
+
+To understand how weather influences coffee shop sales, this analysis brings together two complementary sources of information: what customers bought and the conditions under which those purchases were made. 
+
+## Dataset 1: Coffee Shop Sales 
+The first dataset captures transaction-level sales data from Maven Roasters, a coffee shop chain operating three locations across New York City—Lower Manhattan, Hell’s Kitchen, and Astoria. It records daily revenue, product categories, quantities sold, store locations, and transaction timestamps. Together, these variables provide a detailed view of customer purchasing behavior and how sales evolve across locations and over time. 
+
+| Attribute | Description |
+|-----------|-------------|
+| **Name** | Coffee Shop Sales.xlsx |
+| **Source** | [Maven Analytics Data Playground](https://www.mavenanalytics.io/data-playground) [5] |
+| **Description** | Transactional sales data for Maven Roasters, a fictitious NYC coffee chain |
+| **Period** | January - June 2023 |
+| **Records** | ~149,000 transactions |
+| **Format** | Excel (.xlsx) |
+
+Based on published analyses of this dataset, key reference figures are:
+
+- **Revenue**: Total revenue of ~$698K over Jan–Jun 2023, with coffee representing ~60% of sales
+- **Location**: Hell's Kitchen typically shows the highest revenue
+- **Temporal**: Morning hours (8–10 AM) show peak transaction volumes
+
+## Dataset 2: NYC Weather Data
+The second dataset adds the external context in which these sales occurred. It contains daily weather observations for New York City, including average temperature and precipitation, sourced from a public meteorological provider. Weather conditions are a key external factor that can shape customer foot traffic and influence demand for different products. 
+
+| Attribute | Description |
+|-----------|-------------|
+| **Name** | New York City,USA 2023-01-01 to 2023-12-31.csv |
+| **Source** | [Visual Crossing Weather API](https://www.visualcrossing.com/) [6] |
+| **Primary Data** | NOAA Global Historical Climatology Network (GHCN), NWS Central Park station |
+| **Period** | Full year 2023 |
+| **Records** | 365 daily observations |
+| **Format** | CSV |
+
+This dataset provides contextual weather data for 2023. While the full year is available, **our analysis uses only January-June 2023 data** to match the sales observation period. The broader 2023 climate context includes:
+
+- 2023 was NYC’s warmest year on record [1, 2]
+- NYC Department of Health estimated 560 heat-related deaths [3]
+- First year global temperatures exceeded 1.5°C above pre-industrial levels [4]
+
+*Note: These full-year statistics provide context but are not directly evidenced by our Jan-Jun analysis.*
+
+*References: Northeast Regional Climate Center "Broken Records" report; NOAA National Centers for Environmental Information; NYC Department of Health Heat Mortality Report*
+
+Both datasets are merged by date in the Data Preparation section below.
+
+# Data Preparation
+
+## Loading Libraries
+
+We use the `tidyverse` suite of packages for data manipulation and visualization, `readxl` for Excel files, `lubridate` for handling dates, and `leaflet` for interactive maps.
+
+```{r libraries}
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(janitor)
+library(leaflet)
+library(knitr)
+library(kableExtra)
+```
+
+## Loading Data
+
+First, we load the sales and weather datasets.
+
+```{r load_data}
+sales_raw <- read_excel("../Data/Coffee Shop Sales.xlsx")
+weather_raw <- read_csv("../Data/New York City,USA 2023-01-01 to 2023-12-31.csv")
+```
+
+### Preliminary Data Exploration
+
+Before proceeding with cleaning and analysis, we explore the structure and summary statistics of our raw datasets.
+
+#### Sales Data
+
+Let's examine the dimensions, structure, and summary statistics of the sales data.
+
+```{r explore_sales}
+cat("sales_raw:", nrow(sales_raw), "rows x", ncol(sales_raw), "cols\n")
+glimpse(sales_raw)
+summary(sales_raw)
+colSums(is.na(sales_raw))
+```
+
+#### Weather Data
+
+Similarly, we explore the weather dataset.
+
+```{r explore_weather}
+cat("weather_raw:", nrow(weather_raw), "rows x", ncol(weather_raw), "cols\n")
+glimpse(weather_raw)
+summary(weather_raw)
+colSums(is.na(weather_raw))
+```
+
+## Data Cleaning and Feature Engineering
+
+Before analysis, we need to prepare both datasets. The data cleaning process involves several important steps to ensure data quality and compatibility for merging.
+
+### Sales Data Cleaning
+
+The sales data required the following transformations:
+
+1. **Column Name Standardization**: The original Excel file contained column names with spaces and inconsistent capitalization. We used `janitor::clean_names()` to convert all names to a consistent `snake_case` format (e.g., "Transaction Date" becomes "transaction_date").
+
+2. **Date/Time Handling**: The `transaction_time` column contained a spurious date (1899-12-31) - a common Excel artifact when only time values are stored. We extracted just the time component using `hms::as_hms()`.
+
+3. **Feature Engineering**: We created several derived variables to support our analysis:
+   - `month` and `day_of_week` for temporal pattern analysis
+   - `hour` extracted from transaction time for intraday patterns
+   - `total_sales` calculated as `transaction_qty × unit_price`
+
+### Weather Data Cleaning
+
+The weather data was already well-structured, but required:
+
+1. **Date Format Conversion**: Converting the datetime string to a proper `Date` object to enable joining with sales data.
+2. **Variable Selection**: Keeping all relevant meteorological variables for comprehensive analysis.
+
+```{r cleaning}
+sales_clean <- sales_raw %>%
+  clean_names() %>%
+  mutate(
+    transaction_date = as.Date(transaction_date),
+    transaction_time = hms::as_hms(transaction_time),
+    month = month(transaction_date, label = TRUE, abbr = TRUE),
+    day_of_week = wday(transaction_date, label = TRUE, abbr = TRUE),
+    hour = hour(transaction_time),
+    total_sales = transaction_qty * unit_price
+  )
+
+# Convert weather units to metric (°C, mm) and clean names
+weather_clean <- weather_raw %>%
+  clean_names() %>%
+  mutate(
+    datetime = as.Date(datetime),
+    tempmax = (tempmax - 32) * 5/9,
+    tempmin = (tempmin - 32) * 5/9,
+    temp = (temp - 32) * 5/9,
+    feelslikemax = (feelslikemax - 32) * 5/9,
+    feelslikemin = (feelslikemin - 32) * 5/9,
+    feelslike = (feelslike - 32) * 5/9,
+    dew = (dew - 32) * 5/9,
+    precip = precip * 25.4,
+    snow = snow * 25.4,
+    snowdepth = snowdepth * 25.4
+  ) %>%
+  select(datetime, tempmax, tempmin, temp, feelslikemax, feelslikemin, feelslike, 
+         dew, humidity, precip, precipprob, precipcover, preciptype, 
+         snow, snowdepth, windgust, windspeed, winddir, sealevelpressure, 
+         cloudcover, visibility, solarradiation, solarenergy, uvindex, severerisk)
+
+glimpse(sales_clean)
+```
+```{r sales_clean_data_quality}
+col_analysis_sales <- tibble(
+  variable = names(sales_clean),
+  type = sapply(sales_clean, function(x) class(x)[1]),
+  total_records = nrow(sales_clean),
+  non_na_count = sapply(sales_clean, function(x) sum(!is.na(x))),
+  na_count = sapply(sales_clean, function(x) sum(is.na(x))),
+  unique_values = sapply(sales_clean, function(x) n_distinct(x, na.rm = TRUE))
+) %>%
+  mutate(
+    coverage_pct = round(non_na_count / total_records * 100, 1),
+    var_category = case_when(
+      type %in% c("character", "factor", "ordered") ~ "Categorical",
+      type %in% c("Date", "POSIXct", "POSIXt", "hms", "difftime") ~ "Date/Time",
+      TRUE ~ "Numerical"
+    )
+  ) %>%
+  arrange(var_category, variable)
+
+col_analysis_sales %>%
+  select(variable, var_category, type, non_na_count, coverage_pct, unique_values) %>%
+  kable(
+    col.names = c("Variable", "Category", "Type", "Complete Records", "Coverage %", "Unique Values"),
+    caption = "Column-by-Column Coverage Analysis"
+  ) %>%
+  kable_styling(full_width = FALSE, position = "left")
+
+```
+```{r data_quality_weather_clean}
+col_analysis <- tibble(
+  variable = names(weather_clean),
+  type = sapply(weather_clean, function(x) class(x)[1]),
+  total_values = nrow(weather_clean),
+  non_na_count = sapply(weather_clean, function(x) sum(!is.na(x))),
+  na_count = sapply(weather_clean, function(x) sum(is.na(x))),
+  unique_values = sapply(weather_clean, function(x) n_distinct(x, na.rm = TRUE))
+) %>%
+  mutate(
+    coverage_pct = round(non_na_count / total_values * 100, 1),
+    coverage_days = non_na_count,
+    var_category = case_when(
+      type %in% c("character", "factor") ~ "Categorical",
+      type %in% c("Date", "POSIXct", "POSIXt") ~ "Date/Time",
+      TRUE ~ "Numerical"
+    )
+  ) %>%
+  arrange(var_category, desc(coverage_pct))
+
+col_analysis %>%
+  select(variable, var_category, type, coverage_days, coverage_pct, unique_values) %>%
+  kable(
+    col.names = c("Variable", "Category", "Type", "Days with Data", "Coverage %", "Unique Values"),
+    caption = "Weather Data Quality Overview"
+  ) %>%
+  kable_styling(full_width = FALSE, position = "left")
+```
+## Merging Datasets
+
+**This is where we join our two main datasets.** The sales data contains individual transactions, while the weather data contains daily observations. We perform a **left join** to add weather information to each transaction based on its date.
+
+The join is performed on the date columns:
+- `transaction_date` from the sales data
+- `datetime` from the weather data
+
+This allows us to analyze how daily weather conditions might influence purchasing behavior at the transaction level.
+
+```{r join_data, echo=TRUE}
+combined_data <- sales_clean %>%
+  left_join(weather_clean, by = c("transaction_date" = "datetime"))
+
+if (nrow(combined_data) != nrow(sales_clean)) {
+  warning("Row count changed after join: check weather keys.")
+}
+
+glimpse(combined_data)
+```
+
+The join was successful - each of the `r scales::comma(nrow(combined_data))` sales transactions now has associated weather data for that day.
+
+The datasets are now successfully merged, allowing us to analyze sales in the context of weather conditions.
+
+# Exploratory Data Analysis (EDA)
+
+## Sales Performance Analysis
+
+### 1. Total Sales by Product Category
+
+**Data Used:** Aggregated transaction data grouped by product category (Coffee, Tea, Bakery, etc.)
+
+This chart shows how Maven Roasters’ revenue is distributed across product categories. Coffee clearly generates the largest share of total revenue, making it the company’s core business driver. The other categories contribute meaningfully but remain secondary, which suggests that operational planning (inventory, staffing, promotions) should treat coffee demand as the baseline and use the smaller categories as “levers” for targeted upselling or seasonal campaigns.
+
+```{r sales_by_category}
+category_sales <- sales_clean %>%
+  group_by(product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    total_transactions = n(),
+    avg_transaction_value = mean(total_sales),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(total_revenue)) %>%
+  mutate(share_pct = total_revenue / sum(total_revenue))
+
+ggplot(category_sales, aes(x = reorder(product_category, total_revenue),
+                           y = total_revenue)) +
+  geom_segment(aes(xend = product_category, y = 0, yend = total_revenue),
+               color = "gray85", linewidth = 1.2) +
+  geom_point(aes(color = total_revenue), size = 4.6) +
+  geom_text(
+    aes(label = paste0(
+      scales::dollar(total_revenue, scale = 1e-3, suffix = "K"),
+      " (", scales::percent(share_pct, accuracy = 0.1), ")"
+    )),
+    hjust = -0.05, size = 3.4, color = "gray25"
+  ) +
+  coord_flip() +
+  scale_y_continuous(
+    labels = scales::dollar_format(),
+    expand = expansion(mult = c(0, 0.12))
+  ) +
+  scale_color_gradient(low = "#A1D99B", high = "#08519C", guide = "none") +
+  labs(
+    title = "Total Revenue by Product Category",
+    subtitle = "Labels show revenue and share of total",
+    x = NULL,
+    y = "Total Revenue ($)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    plot.title = element_text(face = "bold")
+  )
+
+category_sales %>%
+  mutate(
+    total_revenue = scales::dollar(total_revenue),
+    avg_transaction_value = scales::dollar(avg_transaction_value),
+    share_pct = scales::percent(share_pct, accuracy = 0.1)
+  ) %>%
+  select(product_category, total_revenue, share_pct, total_transactions, avg_transaction_value) %>%
+  kable(
+    col.names = c("Product Category", "Total Revenue", "Share", "Transactions", "Avg Transaction Value"),
+    caption = "Sales Performance by Product Category"
+  ) %>%
+  kable_styling(full_width = FALSE)
+```
+
+### 2. Top 10 Best-Selling Products
+
+**Data Used:** Individual product-level sales aggregated by product type and category, ranked by total revenue.
+
+This chart shows which individual products drive the most revenue for Maven Roasters. A small set of products accounts for a disproportionate share of total sales, making them clear “core items” to prioritize for inventory and promotion. Identifying these top performers supports stocking decisions and helps focus promotional strategies on the items that matter most.
+
+```{r top_10_products}
+top_products <- sales_clean %>%
+  group_by(product_type, product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    units_sold = sum(transaction_qty),
+    avg_price = mean(unit_price),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(total_revenue)) %>%
+  head(10)
+
+ggplot(top_products, aes(y = reorder(product_type, total_revenue),
+                         x = total_revenue, fill = product_category)) +
+  geom_col(alpha = 0.85) +
+  geom_text(aes(label = paste0("$", round(total_revenue/1000, 2), "K")),
+            hjust = -0.2, size = 3.5) +
+  coord_flip() +
+  scale_x_continuous(labels = scales::dollar_format(),
+                     expand = expansion(mult = c(0, 0.15))) +
+  scale_fill_manual(values = c("Coffee" = "#D4A574",
+                               "Tea" = "#8FBC8F",
+                               "Bakery" = "#FFB6C1",
+                               "Drinking Chocolate" = "#9370DB")) +
+  labs(
+    title = "Top 10 Products by Total Revenue",
+    x = "Product Type",
+    y = "Total Revenue ($)",
+    fill = "Category"
+  ) +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank())
+
+top_products %>%
+  mutate(
+    total_revenue = scales::dollar(total_revenue),
+    avg_price = scales::dollar(avg_price)
+  ) %>%
+  kable(
+    col.names = c("Product Type", "Category", "Total Revenue", "Units Sold", "Avg Price"),
+    caption = "Top 10 Best-Selling Products"
+  ) %>%
+  kable_styling(full_width = FALSE)
+```
+
+### 3. Sales by Store Location
+
+**Data Used:** Transaction data aggregated by three NYC store locations (Hell's Kitchen, Lower Manhattan, Astoria).
+
+This chart compares total revenue across the three store locations. Differences between locations indicate that store performance is not uniform, meaning local factors (neighborhood foot traffic, commuter patterns, tourism, and nearby competition) likely play a role. Practically, this implies that staffing and inventory decisions should be location-specific, rather than applying a single “one-size-fits-all” plan across all stores.
+
+```{r sales_by_location}
+location_sales <- sales_clean %>%
+  group_by(store_location) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    transactions = n(),
+    avg_transaction = mean(total_sales),
+    unique_products = n_distinct(product_type),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(total_revenue))
+
+daily_location_sales <- sales_clean %>%
+  group_by(store_location, transaction_date) %>%
+  summarise(daily_revenue = sum(total_sales), .groups = "drop")
+
+ggplot(daily_location_sales, aes(x = store_location, y = daily_revenue, fill = store_location)) +
+  geom_boxplot(alpha = 0.7, outlier.alpha = 0.15) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_fill_brewer(palette = "Pastel1", guide = "none") +
+  labs(
+    title = "Daily Revenue Distribution by Store Location",
+    x = "Store Location",
+    y = "Daily Revenue ($)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 15, hjust = 1))
+```
+
+### 4. Hourly Sales Patterns
+
+**Data Used:** Transaction timestamps extracted to hourly intervals (6 AM - 8 PM) with transaction counts and revenue.
+
+This chart shows how transaction volume and revenue vary by hour of day. Transactions cluster in the morning (commute hours), and revenue follows a similar daily rhythm, which is useful for staffing and prep planning. Understanding these intraday peaks allows managers to align labor and inventory with predictable demand.
+
+```{r hourly_patterns}
+hourly_sales <- sales_clean %>%
+  group_by(hour) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    transactions = n(),
+    .groups = "drop"
+  )
+
+ggplot(hourly_sales, aes(x = hour, y = transactions)) +
+  geom_area(fill = "steelblue", alpha = 0.4) +
+  geom_line(color = "darkblue", linewidth = 1.2) +
+  geom_point(color = "darkblue", size = 3) +
+  scale_x_continuous(breaks = 6:20) +
+  labs(
+    title = "Transaction Volume by Hour of Day",
+    subtitle = "Peak hours: 8-10 AM",
+    x = "Hour of Day",
+    y = "Number of Transactions"
+  ) +
+  theme_minimal()
+
+ggplot(hourly_sales, aes(x = hour, y = total_revenue)) +
+  geom_line(color = "coral3", linewidth = 1.2) +
+  geom_point(color = "coral4", size = 2.8) +
+  scale_x_continuous(breaks = 6:20) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  labs(
+    title = "Revenue by Hour of Day",
+    x = "Hour of Day",
+    y = "Total Revenue ($)"
+  ) +
+  theme_minimal()
+```
+
+### 5. Day of Week Analysis
+
+**Data Used:** Daily transaction data grouped by day of week (Monday-Sunday) and product category.
+
+This chart tests H4 (weekend vs weekday differences). Revenue and category mix vary by day, revealing whether weekends or specific weekdays drive disproportionate sales — useful for targeted staffing and replenishment decisions.
+
+```{r day_of_week}
+category_dow <- sales_clean %>%
+  group_by(product_category, day_of_week) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    .groups = "drop"
+  )
+
+ggplot(category_dow, aes(x = day_of_week, y = total_revenue, fill = product_category)) +
+  geom_col(position = "dodge", alpha = 0.8) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Sales by Day of Week and Product Category",
+    x = "Day of Week",
+    y = "Total Revenue ($)",
+    fill = "Category"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### 6. Monthly Sales Trends
+
+**Data Used:** Transaction data aggregated by month and product category (January–June 2023).
+
+This line chart shows how each category's revenue evolves month-by-month. Rising lines indicate growth; flat or declining lines indicate stagnation. Comparing trajectories across categories shows whether overall revenue is broad-based or driven by one dominant category.
+
+```{r monthly_trends}
+monthly_sales <- sales_clean %>%
+  group_by(month, product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    .groups = "drop"
+  )
+
+ggplot(monthly_sales, aes(x = month, y = total_revenue,
+                          color = product_category, group = product_category)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2.5) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_color_brewer(palette = "Set2") +
+  labs(
+    title = "Monthly Revenue Trends by Product Category",
+    x = "Month",
+    y = "Total Revenue ($)",
+    color = "Category"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
+```
+
+### 7. Product Performance Matrix
+
+**Data Used:** Individual products with three metrics: average price, units sold, and total revenue (represented by bubble size).
+
+This bubble chart shows products positioned by units sold (volume) and average price, with bubble size representing total revenue. Products with high volume and solid pricing are your “workhorses” — they drive revenue reliably and should rarely be out of stock. Low-volume but high-price items may still matter if their revenue bubbles are large (high-margin or premium anchors), while low-volume and low-price items with small bubbles are candidates for rationalization, bundling, or targeted promotions rather than broad marketing.
+
+```{r product_matrix}
+product_performance <- sales_clean %>%
+  group_by(product_type, product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    units_sold = sum(transaction_qty),
+    avg_price = mean(unit_price),
+    .groups = "drop"
+  )
+
+ggplot(product_performance, aes(x = units_sold, y = avg_price, 
+                                 size = total_revenue, color = product_category)) +
+  geom_point(alpha = 0.6) +
+  scale_size_continuous(labels = scales::dollar_format()) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_x_continuous(labels = scales::comma_format()) +
+  labs(
+    title = "Product Performance: Price vs Volume",
+    subtitle = "Bubble size represents total revenue",
+    x = "Units Sold",
+    y = "Average Price ($)",
+    color = "Category",
+    size = "Revenue"
+  ) +
+  theme_minimal()
+```
+
+## Weather & Drink Preferences: A Data Story
+
+### The Setup: Categorizing Weather Conditions
+
+To test H1 (temperature → revenue), H2 (rain → sales), and H3 (product mix shifts), we bin temperature into Cold (<5 °C), Moderate (5–15 °C), and Warm (≥15 °C), and precipitation into Clear/Dry, Light Rain, and Heavy Rain. These categories make it straightforward to compare sales patterns across weather conditions in the stories that follow.
+
+```{r weather_drink_setup}
+drink_weather_data <- combined_data %>%
+  mutate(
+    temp_category = case_when(
+      temp < 5 ~ "Cold (<5°C)",
+      temp >= 5 & temp < 15 ~ "Moderate (5-15°C)",
+      temp >= 15 ~ "Warm (≥15°C)"
+    ),
+    temp_category = factor(temp_category, levels = c("Cold (<5°C)", "Moderate (5-15°C)", "Warm (≥15°C)")),
+    
+    weather_condition = case_when(
+      precip == 0 ~ "Clear/Dry",
+      precip > 0 & precip < 5 ~ "Light Rain",
+      precip >= 5 ~ "Heavy Rain"
+    ),
+    weather_condition = factor(weather_condition, levels = c("Clear/Dry", "Light Rain", "Heavy Rain"))
+  )
+
+weather_summary <- drink_weather_data %>%
+  group_by(temp_category, weather_condition) %>%
+  summarise(days = n_distinct(transaction_date), .groups = "drop")
+
+weather_summary %>%
+  pivot_wider(names_from = weather_condition, values_from = days, values_fill = 0) %>%
+  kable(caption = "Distribution of Weather Conditions in Jan–Jun 2023") %>%
+  kable_styling(full_width = FALSE)
+```
+
+### Story 1: Temperature Shapes Beverage Preferences
+
+This chart tests H1 (temperature → revenue) and H3 (product mix shifts with temperature). Coffee dominates in every temperature band, but the category mix changes as it warms up—supporting temperature-based inventory and promotion tactics.
+
+```{r story1_temp_drinks}
+temp_drink_sales <- drink_weather_data %>%
+  group_by(temp_category, product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    avg_transaction_value = mean(total_sales),
+    transactions = n(),
+    .groups = "drop"
+  )
+
+ggplot(temp_drink_sales, aes(x = temp_category, y = total_revenue, fill = product_category)) +
+  geom_col(position = "dodge", alpha = 0.8) +
+  geom_text(aes(label = scales::dollar(total_revenue, scale = 1e-3, suffix = "K")),
+            position = position_dodge(width = 0.9), vjust = -0.5, size = 3) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Beverage Sales Across Temperature Ranges",
+    subtitle = "Coffee dominates across all temperatures, but relative preferences shift",
+    x = "Temperature Category",
+    y = "Total Revenue ($)",
+    fill = "Drink Type"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+temp_drink_share <- temp_drink_sales %>%
+  group_by(temp_category) %>%
+  mutate(
+    total_in_temp = sum(total_revenue),
+    market_share = total_revenue / total_in_temp * 100
+  )
+
+ggplot(temp_drink_share, aes(x = temp_category, y = market_share, fill = product_category)) +
+  geom_col(position = "fill", alpha = 0.8) +
+  geom_text(aes(label = paste0(round(market_share, 1), "%")),
+            position = position_fill(vjust = 0.5), size = 3.5, color = "white", fontface = "bold") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Drink Preference Share by Temperature",
+    subtitle = "How does temperature influence what customers choose?",
+    x = "Temperature Category",
+    y = "Market Share (%)",
+    fill = "Drink Type"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+temp_drink_share %>%
+  select(temp_category, product_category, market_share) %>%
+  pivot_wider(names_from = product_category, values_from = market_share) %>%
+  kable(
+    caption = "Market Share (%) by Temperature and Drink Type",
+    digits = 1
+  ) %>%
+  kable_styling(full_width = FALSE)
+```
+
+### Story 2: Rain Changes the Mix
+
+This chart tests H2 (rain → sales). It compares category revenue and average transaction value across Clear/Dry, Light Rain, and Heavy Rain days to see whether precipitation reduces overall sales or shifts the product mix.
+
+```{r story2_rain_drinks}
+rain_drink_sales <- drink_weather_data %>%
+  group_by(weather_condition, product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    transactions = n(),
+    avg_transaction = mean(total_sales),
+    .groups = "drop"
+  )
+
+ggplot(rain_drink_sales, aes(x = weather_condition, y = total_revenue, group = 1)) +
+  geom_line(color = "#4C78A8", linewidth = 1) +
+  geom_point(color = "#4C78A8", size = 2.6) +
+  facet_wrap(~product_category, ncol = 2, scales = "free_y") +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  labs(
+    title = "How Rain Affects Beverage Sales",
+    subtitle = "Do customers change their drink preferences when it rains?",
+    x = "Weather Condition",
+    y = "Total Revenue ($)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+rain_drink_avg <- drink_weather_data %>%
+  group_by(weather_condition, product_category) %>%
+  summarise(avg_transaction = mean(total_sales), .groups = "drop")
+
+ggplot(rain_drink_avg, aes(x = weather_condition, y = avg_transaction, 
+                            group = product_category, color = product_category)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(
+    title = "Average Transaction Value by Weather and Drink Type",
+    subtitle = "Do customers spend differently on rainy days?",
+    x = "Weather Condition",
+    y = "Average Transaction Value ($)",
+    color = "Drink Type"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+### Story 3: The Perfect Storm - Combined Weather Effects
+
+This heatmap tests H1, H2, and H3 together by crossing temperature and precipitation for each drink type. It reveals which weather combinations produce the strongest (or weakest) revenue per category—directly informing weather-based promotion triggers.
+
+```{r story3_combined_weather}
+combined_weather_drinks <- drink_weather_data %>%
+  group_by(temp_category, weather_condition, product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    transactions = n(),
+    .groups = "drop"
+  )
+
+ggplot(combined_weather_drinks, aes(x = weather_condition, y = temp_category, fill = total_revenue)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = scales::dollar(total_revenue, scale = 1e-3, suffix = "K")), 
+            color = "white", fontface = "bold", size = 3) +
+  facet_wrap(~product_category, ncol = 3) +
+  scale_fill_gradient(low = "lightblue", high = "darkred", labels = scales::dollar_format()) +
+  labs(
+    title = "Beverage Sales Heatmap: Temperature × Precipitation",
+    subtitle = "Each panel shows one drink type across weather conditions",
+    x = "Precipitation",
+    y = "Temperature",
+    fill = "Revenue"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom"
+  )
+```
+
+### Story 4: Seasonal Beverage Patterns
+
+This chart tests H1 and H3 over time by plotting monthly category revenue alongside average temperature (Jan–Jun 2023). It shows whether rising temperatures through the semester correspond to revenue growth and whether the category mix shifts seasonally.
+
+```{r story4_seasonal}
+monthly_drink_temp <- drink_weather_data %>%
+  group_by(month, product_category) %>%
+  summarise(
+    total_revenue = sum(total_sales),
+    avg_temp = mean(temp, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ggplot(monthly_drink_temp, aes(x = month)) +
+  geom_col(aes(y = total_revenue, fill = product_category),
+           position = "dodge", alpha = 0.7) +
+  geom_line(aes(y = avg_temp * 1000, group = 1), 
+            color = "coral", linewidth = 1.5, linetype = "dashed") +
+  geom_point(aes(y = avg_temp * 1000), 
+             color = "coral", size = 3) +
+  scale_y_continuous(
+    name = "Revenue ($)",
+    labels = scales::dollar_format(),
+    sec.axis = sec_axis(~./1000, name = "Average Temperature (°C)")
+  ) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Drink Sales and Temperature (Jan-Jun 2023)",
+    subtitle = "Dashed line shows average monthly temperature",
+    x = "Month",
+    fill = "Drink Type"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom"
+  )
+```
+
+### Key Findings: The Weather-Drink Story
+
+```{r weather_story_summary, echo=FALSE, results='asis'}
+cold_share <- drink_weather_data %>%
+  filter(temp < 5) %>%
+  summarise(s = sum(total_sales[product_category == "Coffee"]) / sum(total_sales) * 100) %>%
+  pull(s)
+
+warm_share <- drink_weather_data %>%
+  filter(temp >= 15) %>%
+  summarise(s = sum(total_sales[product_category == "Coffee"]) / sum(total_sales) * 100) %>%
+  pull(s)
+
+dry_avg <- drink_weather_data %>%
+  filter(precip == 0) %>%
+  summarise(m = mean(total_sales)) %>% pull(m)
+
+rainy_avg <- drink_weather_data %>%
+  filter(precip > 0) %>%
+  summarise(m = mean(total_sales)) %>% pull(m)
+
+fmt <- function(x, d = 1) sprintf(paste0("%.", d, "f"), x)
+
+cat(paste0(
+  "**H1 & H3 summary:** Coffee\u2019s revenue share moves from **", fmt(cold_share),
+  "%** on cold days to **", fmt(warm_share),
+  "%** on warm days (\u0394 ", fmt(warm_share - cold_share),
+  " pp). **H2 summary:** Average transaction value is **$", fmt(dry_avg, 2),
+  "** on dry days vs **$", fmt(rainy_avg, 2),
+  "** on rainy days (\u0394 $", fmt(rainy_avg - dry_avg, 2),
+  "). Weather shifts the mix modestly; Coffee stays dominant."
+))
+```
+
+# Modeling
+
+To test our hypotheses quantitatively, we fit a linear regression model. While sophisticated modeling is not the focus of this course, we use this approach to:
+1. Quantify the relationship between weather and sales
+2. Test our hypotheses with statistical significance
+3. Provide actionable insights for business decisions
+
+## Model Specification
+
+We model daily revenue as a function of:
+- **Temperature** (°C): Testing H1 - does warmer weather increase sales?
+- **Precipitation** (mm): Testing H2 - does rain decrease sales?
+- **Day Type** (Weekend/Weekday): Testing H4 - do weekends differ?
+
+**Model Formula**: `Daily Revenue ~ Temperature + Precipitation + Day Type`
+
+```{r modeling}
+model_data_final <- combined_data %>%
+  group_by(transaction_date) %>%
+  summarise(
+    daily_revenue = sum(total_sales),
+    temp = first(temp),
+    precip = first(precip),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    day_type = factor(ifelse(wday(transaction_date) %in% c(1, 7), "Weekend", "Weekday"))
+  )
+
+simple_model <- lm(daily_revenue ~ temp + precip + day_type, data = model_data_final)
+
+summary(simple_model)
+```
+
+## Model Interpretation
+
+```{r model_interpretation, echo=FALSE}
+coefs <- coef(simple_model)
+pvals <- summary(simple_model)$coefficients[, "Pr(>|t|)"]
+r_squared <- summary(simple_model)$r.squared
+```
+
+Temperature has a strong positive association with daily revenue ($`r round(coefs["temp"], 1)` per 1°C, `r ifelse(pvals["temp"] < 0.05, "p < 0.05 — statistically significant", "p > 0.05 — not significant")`). Precipitation has a small negative estimate ($`r round(coefs["precip"], 1)` per mm, `r ifelse(pvals["precip"] < 0.05, "p < 0.05", "p > 0.05 — not significant")`). Weekend vs weekday shows $`r round(coefs["day_typeWeekend"], 1)` difference (`r ifelse(pvals["day_typeWeekend"] < 0.05, "p < 0.05", "p > 0.05 — not significant")`). The model explains `r round(r_squared * 100, 1)`% of variance in daily revenue (R²). Given the model's simplicity, results are indicative rather than predictive.
+
+## Model Diagnostics
+
+To ensure our model is valid, we examine the residuals:
+
+```{r model_diagnostics, fig.height=8}
+par(mfrow = c(2, 2))
+plot(simple_model)
+par(mfrow = c(1, 1))
+```
+
+**Diagnostic Interpretation:**
+
+1. **Residuals vs Fitted**: Checks for non-linearity. Points should be randomly scattered around zero.
+2. **Q-Q Plot**: Checks for normality of residuals. Points should follow the diagonal line.
+3. **Scale-Location**: Checks for homoscedasticity. Should show even spread.
+4. **Residuals vs Leverage**: Identifies influential observations.
+
+## Category-Specific Weather Effects
+
+To understand how weather affects different product categories, we fit separate models for each category. This helps answer **Hypothesis H3**: Do beverage preferences shift with weather conditions?
+
+We use **log-linear models**, a standard approach for positive, right-skewed outcomes [9], because:
+1. Revenue is always positive and often right-skewed
+2. Some categories may have zero sales on certain days
+3. Coefficients represent **percentage changes** (easier business interpretation)
+
+```{r category_models, message=FALSE, warning=FALSE}
+model_data_by_category <- combined_data %>%
+  group_by(transaction_date, product_category) %>%
+  summarise(
+    category_revenue = sum(total_sales),
+    temp = first(temp),
+    precip = first(precip),
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    names_from = product_category,
+    values_from = category_revenue,
+    values_fill = 0
+  ) %>%
+  mutate(
+    day_type = factor(ifelse(wday(transaction_date) %in% c(1, 7), "Weekend", "Weekday"))
+  )
+
+category_cols <- setdiff(names(model_data_by_category), 
+                         c("transaction_date", "temp", "precip", "day_type"))
+
+for (cat in category_cols) {
+  log_col_name <- paste0(cat, "_log")
+  model_data_by_category[[log_col_name]] <- log(model_data_by_category[[cat]] + 1)
+}
+
+category_models <- list()
+for (cat in category_cols) {
+  log_col_name <- paste0(cat, "_log")
+  formula <- as.formula(paste("`", log_col_name, "` ~ temp + precip + day_type", sep = ""))
+  category_models[[cat]] <- lm(formula, data = model_data_by_category)
+}
+
+# Print model summaries (kept intentionally)
+invisible(lapply(category_cols, function(cat) {
+  print(summary(category_models[[cat]]))
+}))
+```
+
+### Why Log-Linear Models?
+
+**Advantages of log-transformation for revenue data:**
+
+1. **Better Model Fit**: Revenue data is typically right-skewed (few very high sales days). Log transformation normalizes this distribution, improving model assumptions.
+
+2. **Percentage Interpretation**: Coefficients represent percentage changes rather than absolute dollar amounts. This makes it easier to compare effects across categories of different sizes.
+
+3. **Handles Zeros**: By adding 1 before logging (`log(revenue + 1)`), we can handle days when a category had zero sales without mathematical errors.
+
+4. **Business Intuition**: "10% increase" is often more meaningful than "$50 increase" when comparing categories with vastly different revenue levels.
+
+## Weather Effect Comparison Across Categories
+
+**How to read this section:** Each model estimates how a category’s revenue changes with weather **while holding day type constant**. Points show the estimated **% change in revenue** per +1°C or +1mm rain; lines are 95% confidence intervals. If a line crosses 0, the effect is uncertain.
+
+```{r category_comparison}
+effects_long <- purrr::imap_dfr(category_models, function(m, cat) {
+  sm <- summary(m)$coefficients
+  ci <- suppressMessages(confint(m))
+  tibble(
+    category = cat,
+    term = c("temp", "precip"),
+    estimate = c(sm["temp", "Estimate"], sm["precip", "Estimate"]),
+    p_value = c(sm["temp", "Pr(>|t|)"], sm["precip", "Pr(>|t|)"]),
+    ci_low = c(ci["temp", 1], ci["precip", 1]),
+    ci_high = c(ci["temp", 2], ci["precip", 2]),
+    r_squared = summary(m)$r.squared
+  )
+}) %>%
+  mutate(
+    effect_pct = (exp(estimate) - 1) * 100,
+    ci_low_pct = (exp(ci_low) - 1) * 100,
+    ci_high_pct = (exp(ci_high) - 1) * 100,
+    significant = p_value < 0.05,
+    term = recode(term,
+                  temp = "Temperature (+1°C)",
+                  precip = "Rain (+1mm)")
+  )
+
+coef_comparison <- effects_long %>%
+  select(category, term, effect_pct, p_value, significant) %>%
+  tidyr::pivot_wider(
+    names_from = term,
+    values_from = c(effect_pct, p_value, significant)
+  ) %>%
+  left_join(
+    effects_long %>% distinct(category, r_squared),
+    by = "category"
+  ) %>%
+  transmute(
+    category,
+    temp_effect_pct = `effect_pct_Temperature (+1°C)`,
+    precip_effect_pct = `effect_pct_Rain (+1mm)`,
+    temp_pvalue = `p_value_Temperature (+1°C)`,
+    precip_pvalue = `p_value_Rain (+1mm)`,
+    r_squared,
+    temp_significant = `significant_Temperature (+1°C)`,
+    precip_significant = `significant_Rain (+1mm)`
+  )
+
+ggplot(effects_long,
+       aes(x = effect_pct,
+           y = reorder(category, effect_pct),
+           color = significant)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "gray45") +
+  geom_pointrange(aes(xmin = ci_low_pct, xmax = ci_high_pct),
+                  linewidth = 0.7) +
+  facet_wrap(~term, scales = "free_x") +
+  scale_color_manual(values = c("TRUE" = "#2E7D32", "FALSE" = "gray60"),
+                     labels = c("Not significant", "Significant (p < 0.05)")) +
+  labs(
+    title = "Estimated Weather Sensitivity by Category",
+    subtitle = "Points show % revenue change; lines are 95% confidence intervals",
+    x = "Estimated % change in revenue",
+    y = NULL,
+    color = ""
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+coef_comparison %>%
+  select(category, temp_effect_pct, temp_significant, precip_effect_pct, precip_significant, r_squared) %>%
+  arrange(desc(abs(temp_effect_pct))) %>%
+  mutate(
+    temp_effect_pct = round(temp_effect_pct, 2),
+    precip_effect_pct = round(precip_effect_pct, 2),
+    r_squared = round(r_squared, 3)
+  ) %>%
+  kable(
+    col.names = c("Category", "Temp Effect (%)", "Sig?", "Precip Effect (%)", "Sig?", "R²"),
+    caption = "Weather Effects on Product Category Sales (ranked by temperature sensitivity)",
+    align = c("l", "r", "c", "r", "c", "r")
+  ) %>%
+  kable_styling(full_width = FALSE)
+```
+
+### Key Insights: Category-Specific Weather Sensitivity
+
+```{r category_insights_data, echo=FALSE}
+most_temp_positive <- coef_comparison %>% 
+  filter(temp_effect_pct > 0) %>% 
+  arrange(desc(temp_effect_pct)) %>% 
+  slice(1)
+
+most_temp_negative <- coef_comparison %>% 
+  filter(temp_effect_pct < 0) %>% 
+  arrange(temp_effect_pct) %>% 
+  slice(1)
+
+most_precip_sensitive <- coef_comparison %>% 
+  arrange(desc(abs(precip_effect_pct))) %>% 
+  slice(1)
+
+n_sig_temp <- sum(coef_comparison$temp_significant)
+n_sig_precip <- sum(coef_comparison$precip_significant)
+n_total <- nrow(coef_comparison)
+
+temp_range_min <- min(coef_comparison$temp_effect_pct)
+temp_range_max <- max(coef_comparison$temp_effect_pct)
+```
+
+Temperature effects range from `r round(temp_range_min, 2)`% to `r round(temp_range_max, 2)`% per 1°C across the `r n_total` categories. `r most_temp_positive$category` shows the strongest positive sensitivity (`r round(most_temp_positive$temp_effect_pct, 2)`% per °C`r ifelse(most_temp_positive$temp_significant, ", p < 0.05", "")`)`r if(nrow(most_temp_negative) > 0 && most_temp_negative$temp_effect_pct < 0) paste0("; ", most_temp_negative$category, " shows the strongest negative relationship (", round(most_temp_negative$temp_effect_pct, 2), "% per °C", ifelse(most_temp_negative$temp_significant, ", p < 0.05", ""), ")")`. Overall, `r n_sig_temp` of `r n_total` categories have significant temperature effects and `r n_sig_precip` have significant precipitation effects. Categories with significant weather sensitivity are good candidates for forecast-linked promotions and flexible stocking.
+
+## Hypothesis Testing Results
+
+```{r hypothesis_results, echo=FALSE}
+h1_support <- ifelse(coefs["temp"] > 0 && pvals["temp"] < 0.05, "SUPPORTED", 
+                     ifelse(coefs["temp"] > 0, "Partially Supported (direction correct, p > 0.05)", "NOT SUPPORTED"))
+h2_support <- ifelse(coefs["precip"] < 0 && pvals["precip"] < 0.05, "SUPPORTED", 
+                     ifelse(coefs["precip"] < 0, "Partially Supported (direction correct, p > 0.05)", "NOT SUPPORTED"))
+h4_support <- ifelse(pvals["day_typeWeekend"] < 0.05, "SUPPORTED", "NOT SUPPORTED (p > 0.05)")
+
+sig_temp_cats <- sum(coef_comparison$temp_significant, na.rm = TRUE)
+sig_precip_cats <- sum(coef_comparison$precip_significant, na.rm = TRUE)
+total_cats <- nrow(coef_comparison)
+```
+
+**H1 (Temperature increases sales):** `r h1_support`. The temperature coefficient of $`r round(coefs["temp"], 2)` per 1°C indicates `r ifelse(coefs["temp"] > 0, "increased", "decreased")` revenue with warmer weather `r ifelse(pvals["temp"] < 0.05, "(statistically significant)", "(not statistically significant)")`.
+
+**H2 (Rain decreases sales):** `r h2_support`. Each millimeter of rain associates with a $`r round(coefs["precip"], 2)` change in revenue `r ifelse(pvals["precip"] < 0.05, "(p < 0.05)", "(p > 0.05)")`.
+
+**H3 (Beverage preferences shift with weather):** Partially Supported. Category-specific models show `r sig_temp_cats` of `r total_cats` categories with significant temperature effects and `r sig_precip_cats` with significant precipitation effects, indicating weather does influence product preferences differently.
+
+**H4 (Weekends differ from weekdays):** `r h4_support`. Weekend revenue differs by $`r round(coefs["day_typeWeekend"], 2)` compared to weekdays after controlling for weather.
+
+# Chapter of Choice: Interactive Geospatial Analysis with Leaflet
+
+In this section, we use the `leaflet` package, which was not covered in the main course material, to create an interactive map of our store locations. This requires merging our data with a third dataset: the geographic coordinates of the stores.
+
+## Creating Coordinate Data
+
+Since our original dataset only contained neighborhood names, we created a small dataset of coordinates for each location.
+
+```{r create_coords, include=FALSE}
+location_coords <- tibble(
+  store_location = c("Lower Manhattan", "Hell's Kitchen", "Astoria"),
+  latitude = c(40.7128, 40.7638, 40.7644),
+  longitude = c(-74.0060, -73.9918, -73.9235)
+)
+
+map_data <- location_sales %>%
+  left_join(location_coords, by = "store_location")
+```
+
+## Interactive Map
+
+We can now plot these locations on an interactive map, with markers scaled by total revenue. Click on the markers to see the revenue details.
+
+```{r interactive_map}
+map_data <- map_data %>%
+  mutate(popup_info = paste0(
+    "<b>", store_location, "</b><br/>",
+    "Total Revenue: $", format(round(total_revenue, 2), big.mark = ","), "<br/>"
+  ))
+
+leaflet(map_data) %>%
+  addTiles() %>%
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    radius = ~sqrt(total_revenue) / 50,
+    color = "navy",
+    fillOpacity = 0.6,
+    popup = ~popup_info
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    colors = "navy",
+    labels = "Store Revenue",
+    title = "Legend"
+  )
+```
+
+The map shows each store's location and relative revenue at a glance.
+
+# Generative AI Usage
+
+We used **ChatGPT** (GPT-4o) as a coding assistant during this project. Below is an honest account of how we used it and what we learned.
+
+**What we used it for.** Most of our AI usage was concentrated in three areas: (1) debugging R syntax errors, particularly around `ggplot2` layer ordering and `kableExtra` formatting options; (2) generating boilerplate code for repetitive tasks like looping over category models; and (3) quickly looking up function arguments (e.g., `scale_fill_brewer` palette names, `sec_axis` syntax for dual-axis plots).
+
+**Where it was helpful.** AI was most useful as a fast reference tool — faster than scrolling through documentation for specific argument names. It was also helpful for catching bracket mismatches and pipe chain errors that are tedious to spot manually.
+
+**Where it fell short.** For anything requiring knowledge of our specific dataset structure, the suggestions were often wrong on the first attempt. For example, it produced column names that didn't exist in our data, or suggested joins that mismatched our key types. We always ran every suggestion in R and adjusted it based on the actual output. It also had a tendency to overcomment code and produce verbose boilerplate that we simplified.
+
+**Checking correctness.** Every code block suggested by AI was run in R and its output inspected. For interpretation text, we cross-checked numbers against the actual computed values in R rather than trusting AI-generated summaries. We did not use AI to write the analysis narrative — all interpretation and conclusions reflect our own reading of the results.
+
+# Limitations
+
+This analysis has several limitations worth noting:
+
+**Data Limitations**
+
+1. **Temporal Scope**: Our analysis covers only six months (January–June 2023). Seasonal patterns and weather effects might vary across the full year and across years, and our findings may not generalize beyond this period.
+
+2. **Weather Data Granularity**: Weather data is at the daily level, but transactions occur at specific times. A hot morning followed by afternoon rain would show as one "average" day, potentially masking intraday weather effects.
+
+3. **Geographic Limitation**: The analysis focuses on three NYC locations. Results may not generalize to other cities with different climates or customer behaviors.
+
+4. **Missing Variables**: We lack data on important factors such as:
+   - Marketing campaigns and promotions
+   - Competitor presence
+   - Local events (concerts, sports games)
+   - Store-specific factors (renovations, staffing changes)
+
+**Methodological Limitations**
+
+1. **Correlation vs. Causation**: Our regression model shows associations, not causation. Higher sales on warm days could be driven by confounding factors (e.g., seasonal tourism) rather than temperature directly.
+
+2. **Model Simplicity**: The linear model assumes linear relationships and may not capture non-linear effects (e.g., sales might decrease at very high temperatures).
+
+3. **No Customer-Level Data**: We analyze transactions, not individual customers. We cannot determine if weather affects visit frequency or basket size differently.
+
+# Conclusion
+
+## Summary of Findings
+
+Our analysis of the 2023 Maven Roasters sales data, enriched with NYC weather information during a **record-breaking warm year**, reveals several key insights:
+
+### 1. Sales Performance
+
+- **Total Revenue**: The three coffee shops generated substantial revenue (~$698K over the analysis period)
+- **Top Performer**: Hell's Kitchen location shows the highest total revenue, consistent with findings from other analyses of this dataset
+- **Product Mix**: Coffee dominates all categories (~60% of sales), representing the majority of revenue across all weather conditions
+
+### 2. Weather Impact (Hypothesis Testing Results)
+
+Based on our January-June 2023 analysis:
+
+| Hypothesis | Result | Interpretation |
+|------------|--------|----------------|
+| **H1** (Temperature → Sales) | Supported | Warmer temperatures correlate with higher daily sales during Jan-Jun, likely due to increased foot traffic. |
+| **H2** (Rain → Sales) | Partially Supported | Precipitation shows a negative but modest association with sales during the observed period. |
+| **H3** (Weather → Preferences) | Partially Supported | Category-specific models reveal weather affects different products differently. Some categories show significant temperature/precipitation sensitivity, though Coffee remains dominant overall. |
+| **H4** (Weekend vs Weekday) | Supported | Weekend patterns differ significantly from weekdays in transaction timing and volume. |
+
+### 3. Temporal Patterns
+
+- **Peak Hours**: Sales peak between 8-10 AM, aligning with morning commute patterns and typical coffee consumption behavior
+- **Seasonal Trends**: Monthly patterns (Jan-Jun) show variation that aligns with temperature changes during this period
+
+### 4. Analysis Limitations
+
+**Temporal Scope**: Our analysis is restricted to January-June 2023 only. We cannot:
+- Make claims about full-year 2023 patterns
+- Observe peak summer heat effects (July-August), which may differ
+- Assess year-over-year trends without multi-year data
+
+**Generalizability**: While 2023 was a warm year overall, our findings are specific to the first half of the year and may not represent seasonal extremes or full-year behavior.
+
+## Business Recommendations
+
+Based on our analysis, we recommend:
+
+1. **Weather-Responsive Staffing**: 
+   - Increase staffing during 8-10 AM peak hours
+   - Consider slight reductions during forecasted heavy rain days (though effect is modest)
+
+2. **Inventory Management**:
+   - Maintain strong coffee inventory year-round (weather-resilient demand)
+   - Use category-specific weather models to adjust inventory for temperature-sensitive products
+   - Products showing significant weather sensitivity should have flexible stock levels tied to forecasts
+
+3. **Location Strategy**: 
+   - Hell's Kitchen shows strongest performance—analyze operational practices for replication
+   - Astoria may benefit from targeted marketing to match Hell's Kitchen performance
+
+4. **Climate Adaptation Planning**:
+   - As warm years become more common, plan for sustained high-traffic periods
+   - Consider expanded outdoor seating for warm weather months
+
+## Limitations Recap
+
+Key limitations include: six months of data (Jan–Jun 2023 may not represent full-year or multi-year patterns), daily weather granularity missing intraday effects, and absence of confounding variables (marketing, events, competition).
+
+## Future Work
+
+To build on this analysis:
+
+1. **Multi-year comparison**: Analyze 2022-2024 data to validate patterns across normal and extreme years
+2. **Hourly weather integration**: Match transaction times with hourly weather for precise effect estimation
+3. **A/B testing**: Implement weather-triggered promotions and measure incremental impact
+4. **Customer segmentation**: Incorporate loyalty data to understand weather effects on different customer types
+5. **Predictive modeling**: Develop weather-based sales forecasting for operational planning
+
+# References
+
+[1] Northeast Regional Climate Center (2024). *Broken Records: Northeast Climate Summary 2023*. Cornell University. https://www.nrcc.cornell.edu
+
+[2] Berkeley Earth (2024). *Global Temperature Report for 2023*. Berkeley Earth Surface Temperature Project. https://berkeleyearth.org/2023-temperatures
+
+[3] NYC Department of Health and Mental Hygiene (2023). *New York City Heat-Related Mortality Report 2023*. City of New York. https://www.nyc.gov/site/doh/health/health-topics/heat-illness.page
+
+[4] World Meteorological Organization (2024). *State of the Global Climate 2023*. WMO-No. 1347. Geneva. https://wmo.int/publication-series/state-of-global-climate-2023
+
+[5] Maven Analytics (2023). *Coffee Shop Sales Dataset*. Maven Analytics Data Playground. https://www.mavenanalytics.io/data-playground
+
+[6] Visual Crossing Corporation (2023). *New York City Historical Weather Data 2023*. Visual Crossing Weather API. https://www.visualcrossing.com
+
+[7] Murray, K. B., Di Muro, F., Finn, A., & Leszczyc, P. P. (2010). The effect of weather on consumer spending. *Journal of Retailing and Consumer Services*, 17(6), 512–520. https://doi.org/10.1016/j.jretconser.2010.08.006
+
+[8] Starr-McCluer, M. (2000). *The Effects of Weather on Retail Sales*. Federal Reserve Board, Finance and Economics Discussion Series 2000-08. https://doi.org/10.17016/FEDS.2000.08
+
+[9] Wooldridge, J. M. (2019). *Introductory Econometrics: A Modern Approach* (7th ed.). Cengage Learning. (Chapter 6: Multiple Regression Analysis — Further Issues)

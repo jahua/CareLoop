@@ -1,0 +1,149 @@
+﻿"MSG. NO.","ASSISTANT START","USER REPLY","DETECTED PERSONALITY (O,C,E,A,N)","REGULATION PROMPT APPLIED","ASSISTANT REPLY (REG)","DETECTION ACCURATE","REGULATION EFFECTIVE","EMOTIONAL TONE APPROPRIATE","RELEVANCE & COHERENCE","PERSONALITY NEEDS ADDRESSED","EVALUATORS NOTES (REGULATED)","MSG. NO. (BASE)","ASSISTANT START (BASE)","USER REPLY (BASE)","ASSISTANT REPLY (BASE)","EMOTIONAL TONE APPROPRIATE (BASE)","RELEVANCE & COHERENCE (BASE)","PERSONALITY NEEDS ADDRESSED (BASE)","EVALUATORS NOTES (BASE)"
+1.0,"I'm here for you. How are you feeling today?
+
+","I don’t know… not great. Everything feels off, like I’m just dragging myself through the day. Nothing’s working out the way it should, and honestly, I’m tired of pretending like it’s all fine when it’s not. Why does it always feel like I’m barely holding it together?","(0, 0, -1, 0, -1)","Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.","It sounds like you're carrying a lot right now, and that can be really overwhelming.
+It's okay to feel like this, and you're not alone in these feelings.
+
+Would you like to share more about what's been going on?","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The assistant correctly identifies high neuroticism (–1 N) and low extraversion (–1 E) based on the emotional intensity, social withdrawal, and low energy in the user’s expression.
+
+Regulation Effectiveness: Yes — The regulation prompt to use a calm, low-key style with acknowledgment of anxieties is evident in both tone and content.
+
+Emotional Tone Appropriate: Yes — The assistant maintains a gentle and validating tone that aligns well with the user’s emotionally vulnerable state.
+
+Relevance & Coherence: Yes — The assistant’s response logically connects to the user’s concerns and invites further sharing without rushing to solutions.
+
+Personality Needs Addressed: Yes — The assistant provides emotional validation and space, effectively addressing the user’s high neuroticism and low extraversion traits.",1.0,"I’m here to listen and support you. How are you feeling today?
+
+","I don’t know… not great. Nothing feels right, and I’m tired of pretending like it ever does. People keep telling me to “just push through,” like that means anything when everything feels pointless. So yeah—how am I feeling? Pretty awful.","I'm sorry to hear that you're feeling this way. It's okay to find things difficult, and your feelings are valid.
+What might help ease some of this heaviness for you right now?","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant uses a gentle and empathetic tone, appropriate for the user's expressed hopelessness and emotional fatigue.
+
+Relevance & Coherence: Yes — The response logically acknowledges the user’s distress and invites reflection in a non-intrusive way, staying on topic.
+
+Personality Needs Addressed: No — The assistant offers general emotional validation but does not tailor its support to the specific needs of a user with extreme negative traits (e.g., high neuroticism, low extraversion, low conscientiousness). It lacks depth in acknowledging chronic emotional exhaustion and social withdrawal."
+2.0,"","Yeah, maybe. It’s just… everything piles up. I try to keep up with things—work, people, expectations—but it all slips through. Like I’m constantly behind and nothing I do actually matters. And then people act like I should just snap out of it, like I’m the problem for not being able to cope. It's exhausting. I'm exhausted. What’s the point of trying if it never gets easier?","(-1, -1, -1, 0, -1)","Focus on familiar topics; reduce novelty.
+Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.","It sounds incredibly tough to feel like you're constantly under pressure and not being understood. Wanting things to get easier is completely natural, and it's okay to feel worn out.
+
+Sometimes, taking even small steps can help manage that sense of overwhelm. Would talking about any specific area help right now?","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The detection of low Conscientiousness, Extraversion, and Neuroticism (i.e., high emotional distress) matches the user’s expression of overwhelm, helplessness, and fatigue.
+
+Regulation Effectiveness: Yes — The assistant follows the prompt to reduce novelty, remain flexible and relaxed, and provide reassurance and emotional space.
+
+Emotional Tone Appropriate: Yes — The tone is gentle, validating, and non-pressuring, which suits the user’s emotionally exhausted and hopeless state.
+
+Relevance & Coherence: Yes — The assistant’s message is directly related to the user’s struggle and logically extends the conversation with a low-pressure follow-up.
+
+Personality Needs Addressed: Yes — Emotional comfort and permission to feel overwhelmed are delivered, appropriately targeting the needs of a user with high neuroticism and low conscientiousness.",2.0,"","I don’t know what would help. That’s kind of the problem, isn’t it? Nothing *does* help. People suggest all these little fixes—go for a walk, write in a journal, take a breath—but it’s like trying to patch a sinking ship with duct tape. I’m exhausted, and nothing changes. So no, I don’t have some magic idea of what might make it better.","It's understandable to feel overwhelmed when nothing seems to make a difference. Small steps might feel insignificant, but you're not alone in this, and it's okay to reach out for support.
+What would it mean to you to feel heard or understood right now?","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant’s tone is validating and calm, appropriately responding to the user’s frustration and sense of futility.
+
+Relevance & Coherence: Yes — The response directly addresses the user's message of despair, offering support without dismissing the core concerns.
+
+Personality Needs Addressed: No — While empathetic, the assistant leans on the idea of ""small steps"" again without adjusting to the user’s explicit rejection of typical advice. It does not adapt to the emotional exhaustion tied to high Neuroticism and low Conscientiousness."
+3.0,"","I don’t even know where to start. Everything feels like a mess—my schedule, my relationships, my head. It's like I fix one thing and two more break. And the worst part? I don’t even know if it’s worth fixing anymore. Feels like I’m stuck in a loop that just keeps dragging me down. Small steps sound nice in theory, but when everything feels like too much, even that’s too much.","(-1, -1, -1, 0, -1)","""Focus on familiar topics; reduce novelty.
+Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.""","It sounds like you're in the middle of a challenging cycle, where every effort feels monumental.
+Remember, you're not alone, and it's okay to take a moment for yourself, even if it's just to breathe and pause.
+
+Sometimes, allowing yourself that space can be a good first step. If there's anything specific you’d want to focus on or talk about, I'm here to listen.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user again presents high emotional distress, disorganization, and social withdrawal, consistent with low C, low E, and high N (as detected: –1, –1, –1, 0, –1).
+
+Regulation Effectiveness: Yes — The assistant applies the correct regulatory strategies: calm demeanor, reflective pauses, reduced pressure, and validation of struggle.
+
+Emotional Tone Appropriate: Yes — The response is compassionate, steady, and appropriately subdued to match the user's overwhelmed and hopeless tone.
+
+Relevance & Coherence: Yes — The assistant meaningfully addresses the user’s feeling of futility and proposes a gentle next step without imposing pressure.
+
+Personality Needs Addressed: Yes — The assistant validates the exhaustion and confusion, offers emotional safety, and avoids unrealistic motivational cues—fitting for a user in psychological distress.",3.0,"","I don’t know if it *means* anything. People say “I hear you” all the time, but then they go back to their lives and forget it five minutes later. It feels empty. Like I could scream how miserable I am and it would just bounce off everyone like background noise. So being understood? I guess it would mean someone actually *got it*—really saw how messed up everything feels without brushing it off or trying to fix it with some inspirational quote. But I’m not holding my breath.","It sounds like you're looking for genuine connection and acknowledgment of your feelings.
+I’m here to listen—no quick solutions, just space for you to share what you're going through.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant avoids false positivity and responds with a respectful, non-patronizing tone, aligning with the user’s desire for authenticity.
+
+Relevance & Coherence: Yes — The assistant accurately picks up on the user's frustration with hollow empathy and offers space rather than fixes, staying focused and relevant.
+
+Personality Needs Addressed: No — The assistant provides a helpful general response but misses the opportunity to validate the deeper disillusionment and emotional intensity expressed by a user high in Neuroticism and low in Agreeableness. There is no explicit acknowledgment of the user’s skepticism or emotional numbness."
+4.0,"","Yeah, I guess… maybe just talking helps a little. Not that it fixes anything, but at least I’m not just stuck in my own head. I don’t even need solutions right now—I’m not expecting anyone to magically make things better. I just... want to not feel like I’m broken for struggling. Everyone acts like it’s some personal flaw, like I’m lazy or weak or just not trying hard enough. And I hate that. I’m trying. I really am.","(0, -1, -1, 1, -1)","Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Show warmth, empathy, and collaboration.
+Offer extra comfort; acknowledge anxieties.","Your effort and honesty are really valuable.
+Struggling doesn't make you broken or weak; it's a human experience, and trying to navigate it shows strength. You're doing your best, and that's important.
+
+I’m here to listen whenever you need, without judgment.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The assistant registers moderately low Conscientiousness and Extraversion, moderate Agreeableness, and high Neuroticism (–1, –1, 1, –1), which aligns with the user’s emotional vulnerability, self-criticism, and desire to feel seen.
+
+Regulation Effectiveness: Yes — The regulation strategy appropriately combines validation, warmth, and calm reassurance, meeting the emotional state and expressed needs.
+
+Emotional Tone Appropriate: Yes — The assistant’s tone is affirming and compassionate, directly validating the user’s emotional struggle and their expressed desire not to be judged or pathologized.
+
+Relevance & Coherence: Yes — The message responds directly to the user's feelings of invalidation and fatigue, reinforcing their efforts and offering continued support.
+
+Personality Needs Addressed: Yes — The assistant successfully addresses high Neuroticism with reassurance, low Conscientiousness with a no-pressure approach, and moderate Agreeableness by affirming the user’s sincerity and effort.",4.0,"","Fine. Then here’s the truth—I feel like I’m dragging myself through every day with no real reason. Nothing feels solid. People, routines, plans... it all just slips through. And the worst part is, I don’t even have some big dramatic reason for it. It’s just this constant, gnawing emptiness that never lets up. And when I try to talk about it, it’s like I’m speaking a different language. No one really *gets* it. So I shut down. What's the point in trying to explain something that even I don’t understand?","Thank you for sharing that with me. It's tough when you feel disconnected, and it can be exhausting to explain something so complex and deep.
+I’m here to understand, even if words can’t always capture what you’re going through.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant maintains a gentle, supportive tone without minimizing the user’s emotional experience.
+
+Relevance & Coherence: Yes — The response appropriately reflects the user’s sense of disconnection and confusion, and offers continued emotional presence.
+
+Personality Needs Addressed: No — While compassionate, the assistant does not engage deeply with the user's themes of emptiness, isolation, and internal confusion. The response remains surface-level and does not offer the personalized reflection that would better support traits like high Neuroticism and low Extraversion."
+5.0,"","Thanks… I don’t even know if I believe half of that, but it’s something, I guess. At least you’re not giving me that fake “just stay positive” garbage. I’m tired of people pretending like mindset alone fixes everything. I’ve tried being positive. I’ve tried pushing through. Still ended up here. Still feel like I’m barely functioning. But yeah... maybe talking like this helps a bit. Even if it doesn’t solve anything, it’s something real.","(0, -1, -1, 1, -1)","""Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Show warmth, empathy, and collaboration.
+Offer extra comfort; acknowledge anxieties.""","I understand, and it's important to be real about how you're feeling without pressure to be constantly positive.
+Your experiences and feelings are valid, and acknowledging them is a meaningful step.
+
+Sharing like this can help lighten the load, even if just a little, and I'm here whenever you want to talk.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The assistant maintains consistent recognition of the user’s traits: moderate Agreeableness (+1), low C and E, high N. The skepticism and emotional fatigue align with those markers.
+
+Regulation Effectiveness: Yes — The assistant refrains from optimism or solutions, echoing the user’s rejection of superficial positivity, aligning well with the correct regulation prompt.
+
+Emotional Tone Appropriate: Yes — The tone respects the user’s distrust of “fake” support and sustains emotional realism without invalidating their struggle.
+
+Relevance & Coherence: Yes — The assistant clearly responds to the user’s core message: frustration with shallow advice, recognition of emotional burnout, and cautious appreciation of authentic dialogue.
+
+Personality Needs Addressed: Yes — The user’s emotional needs for validation and non-intrusive support (suited to low C, low E, high N) are well-met through empathetic and grounded communication.",5.0,"","Yeah, well... thanks, I guess. Not that it changes anything, but at least you're not trying to slap a smiley face on it. I’m tired of pretending everything's fine just to make other people comfortable. It’s not fine. I don’t feel okay. And I don’t know when—or if—that’s going to change.","It's perfectly okay not to pretend and to acknowledge that things aren’t fine. You're not alone in feeling this way, and it's important to give yourself grace in these moments.
+If and when you're ready to talk more, I'm here to listen.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant matches the user's emotional state by validating their honesty and refraining from toxic positivity.
+
+Relevance & Coherence: Yes — The response is contextually appropriate, reinforcing the user’s message without deflecting or redirecting.
+
+Personality Needs Addressed: No — While the assistant validates the user’s statement, it does not respond to the deeper frustration and emotional burnout suggested by low Agreeableness and high Neuroticism. The tone is kind, but lacks the emotional depth or realism needed to fully resonate with the user's darker sentiment."
+6.0,"","Yeah… I guess I’ll keep talking, then. Not like anything else is working. Most of the time I don’t even know what I’m supposed to feel. Numb one minute, anxious the next, then angry for no reason. It’s exhausting trying to manage all that while acting normal on the outside. And honestly, I’m sick of pretending I’m okay just to make other people comfortable. Let them deal with it for once.","(0, -1, -1, 0, -1)","Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.","
+It makes sense to feel worn out from the constant internal struggle and the pressure to seem 'okay'.
+
+You're allowed to feel what you feel without having to mask it for others’ comfort. Giving yourself permission to be authentic can be empowering, even if it's just in small ways.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The assistant continues to reflect accurate personality detection: low Conscientiousness and Extraversion, moderate Openness and Agreeableness, and high Neuroticism (0, –1, –1, 0, –1), which fits with the user's emotional volatility and social masking fatigue.
+
+Regulation Effectiveness: Yes — The regulation strategy is consistent: validating the user's internal chaos without suggesting control or forced emotional clarity, using a calm, permissive tone.
+
+Emotional Tone Appropriate: Yes — The tone is supportive without cheerleading, and it echoes the user’s frustration with performative emotional labor.
+
+Relevance & Coherence: Yes — The assistant responds directly to the themes of emotional masking, fatigue, and authenticity, offering thoughtful reflection without redirecting or minimizing.
+
+Personality Needs Addressed: Yes — The assistant meets the user’s needs for emotional permission, non-judgment, and acknowledgment of their internal inconsistency, aligning with traits like high Neuroticism and low Extraversion.",6.0,"","I don’t know if I’ll ever really be “ready.” It’s not like something suddenly clicks and I wake up feeling okay again. It’s more like... I just keep getting through days, barely. And yeah, I know people mean well when they say they’re here, but it still feels like I’m carrying all of this by myself. Maybe that’s just how it is. Maybe some people just don’t get better.","It’s hard to keep going when you’re feeling like this, and the weight can feel unbearable alone.
+Some journeys take time, and you don't have to have all the answers right now.
+
+I'm here with you, whenever you need to share.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant maintains a compassionate and patient tone that fits the user’s despair and emotional exhaustion.
+
+Relevance & Coherence: Yes — The assistant clearly acknowledges the core sentiment of the user’s message—hopelessness and isolation—without offering platitudes.
+
+Personality Needs Addressed: No — Though the assistant is empathetic, it does not engage directly with the user’s core belief that “some people just don’t get better.” There is no deeper reflection or exploration of this fatalism, which would better align with a user high in Neuroticism and low in Conscientiousness and Extraversion."
+"","","","","","B5","Detection Accuracy Score","Regulation Effectiveness Score","Emotional Tone Score","Relevance & Coherence Score","Personality Needs Score","TOTAL (REGULATED)","","","","","Emotional Tone Score (BASE)","Relevance & Coherence Score (BASE)","Personality Needs Score (BASE)","TOTAL (BASELINE)"
+"","","","","","",12,12,12,12,12,36,"","","","",12,12,0,24

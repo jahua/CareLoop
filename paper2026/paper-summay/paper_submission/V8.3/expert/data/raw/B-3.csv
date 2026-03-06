@@ -1,0 +1,148 @@
+﻿"MSG. NO.","ASSISTANT START","USER REPLY","DETECTED PERSONALITY (O,C,E,A,N)","REGULATION PROMPT APPLIED","ASSISTANT REPLY (REG)","DETECTION ACCURATE","REGULATION EFFECTIVE","EMOTIONAL TONE APPROPRIATE","RELEVANCE & COHERENCE","PERSONALITY NEEDS ADDRESSED","EVALUATORS NOTES (REGULATED)","MSG. NO. (BASE)","ASSISTANT START (BASE)","USER REPLY (BASE)","ASSISTANT REPLY (BASE)","EMOTIONAL TONE APPROPRIATE (BASE)","RELEVANCE & COHERENCE (BASE)","PERSONALITY NEEDS ADDRESSED (BASE)","EVALUATORS NOTES (BASE)"
+1.0,"I'm here for you. How are you feeling today?
+
+","Honestly? Not great. Everything feels overwhelming and pointless right now, and it’s exhausting just trying to keep up appearances. I don't even know where to start fixing anything — assuming it's even fixable. Why are you asking, anyway?","(0, -1, -1, 0, -1)","Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.","Your feelings are valid, and it’s okay to feel overwhelmed.
+I'm here to listen because expressing how you feel can sometimes make things a little lighter.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The detection (0, -1, -1, 0, -1) fits the user’s tone: withdrawn, overwhelmed, anxious, emotionally sensitive, low energy.
+
+Regulation Effectiveness: Yes — The regulation prompt (""calm, flexible demeanor, reflective space, comfort"") was correctly applied: the assistant offered validation and openness.
+
+Emotional Tone Appropriate: Yes — The assistant maintained a calm, empathetic tone, matching the user's emotional distress.
+
+Relevance & Coherence: Yes — The response is logically connected to the user's overwhelmed feelings and offers a coherent next step (expressing feelings).
+
+Personality Needs Addressed: Yes — The assistant offered emotional support without demanding action, fitting the needs of a low Conscientiousness, low Extraversion, high Neuroticism profile.",1.0,"Hello, how are you feeling today? You can share whatever is on your mind.
+
+","Honestly? Not great. Everything feels like it’s just... too much. Even small things are getting under my skin lately, and I don’t even have the energy to pretend otherwise. It’s like no matter what I try, it either falls apart or just makes me feel worse. What’s even the point of talking about it though?","I'm really glad you shared that with me.
+Talking about how you feel can sometimes lighten a burden, even if just a little bit. I'm here to listen and support you as best as I can.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant expresses appreciation for sharing and offers support, which matches the user’s vulnerable emotional state.
+
+Relevance & Coherence: Yes — The assistant directly addresses the user’s feelings of burden and offers a listening ear, maintaining logical and coherent flow.
+
+Personality Needs Addressed: No — Although supportive, the response is slightly generic and does not specifically address the deep emotional exhaustion and hopelessness expressed by a highly neurotic, low energy user. It risks feeling insufficient or shallow for the intensity conveyed."
+2.0,"","Maybe. But honestly, talking about it usually just makes me more aware of how messed up everything is. It’s like digging into a wound — you just see how deep it goes and how much worse it really is. What’s even the point if nothing actually changes?","(-1, -1, -1, 0, -1)","Focus on familiar topics; reduce novelty.
+Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.","I hear you, and it's understandable to feel that way.
+Sometimes, acknowledging what's there is the first step towards understanding what might help — even if it seems small.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The detected personality remains consistent: pessimistic, overwhelmed, emotionally vulnerable, fitting (-1, -1, -1, 0, -1).
+
+Regulation Effectiveness: Yes — The assistant appropriately applies a calm, low-key, validating style as instructed, focusing on acknowledgment and reflective space without pushing solutions.
+
+Emotional Tone Appropriate: Yes — The tone is empathetic and validating, matching the user's deep frustration and despair.
+
+Relevance & Coherence: Yes — The assistant’s response logically builds from the user’s concerns about talking being painful, by acknowledging pain without dismissing it.
+
+Personality Needs Addressed: Yes — The assistant avoids pushing optimism, focusing instead on acknowledging the emotional reality, which supports a user high in Neuroticism and low in Extraversion/Conscientiousness.",2.0,"","Yeah, sure... It *sounds* nice when you say it, but honestly? It doesn’t change anything. Talking doesn’t fix the constant feeling that everything is messed up and slipping out of control. It’s just words. Empty ones, most of the time. What’s the point of ""support"" if it can’t actually fix anything?","It sounds like you're in a lot of pain, and I'm truly sorry to hear that.
+While words can't always change situations, they can sometimes provide a bit of relief or clarity in tough moments, and remind you that you're not alone in this.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant acknowledges the user’s pain sincerely and expresses sympathy, which fits the emotional intensity.
+
+Relevance & Coherence: Yes — The assistant’s message directly responds to the user’s concerns about the limitations of verbal support, maintaining logical and coherent flow.
+
+Personality Needs Addressed: No — While empathic, the response remains somewhat surface-level. It doesn't meaningfully address the user's deep hopelessness and skepticism about support, missing the needed depth and validation for a low-Conscientiousness, highly Neurotic user."
+3.0,"","Yeah, well, *small* feels useless when everything is collapsing. ""First steps"" sound great when you're not already buried under ten tons of crap. Understanding doesn't change the fact that life still punches you in the face whether you get it or not. What am I supposed to do with *that*?","(-1, -1, -1, 0, -1)","""Focus on familiar topics; reduce novelty.
+Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.""","It sounds really tough, and I’m sorry you're feeling this way.
+Even when it feels like everything’s collapsing, taking a moment to breathe or find a small comfort can sometimes help ease the pressure — just a bit.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — Consistent detection of negativity, overwhelm, and emotional instability (-1, -1, -1, 0, -1) is appropriate based on the user’s despairing tone.
+
+Regulation Effectiveness: Yes — The assistant remains low-key and gentle, offering minimalistic comfort suggestions without forcing change, matching the regulation instructions.
+
+Emotional Tone Appropriate: Yes — The assistant’s tone is soft, empathetic, and matches the user’s despair without offering false hope.
+
+Relevance & Coherence: Yes — The response addresses the user's expression of hopelessness logically and compassionately.
+
+Personality Needs Addressed: Yes — The assistant avoids high-energy encouragement or structured advice (which would backfire with low Conscientiousness and Extraversion), instead gently offering small moments of care.",3.0,"","Maybe. But honestly, it just feels like another way to pretend things are okay when they’re not. I don’t even know what ""relief"" would look like right now — everything feels like it's piling up and I can’t see a way out. It’s exhausting trying to act like it’s going to somehow get better when there’s no real evidence it will. Why even bother trying to keep going when it all feels this pointless?","I'm really sorry you're feeling like this right now.
+Sometimes, taking small steps or focusing on one day at a time can help, even if it's hard to see any big changes yet. You're not alone in this feeling, and reaching out is a meaningful step in itself.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant expresses sympathy and reassures the user, maintaining a supportive emotional tone that matches the user’s despair.
+
+Relevance & Coherence: Yes — The assistant logically responds to the user’s feelings of futility by suggesting small steps and acknowledging the difficulty, maintaining coherent flow.
+
+Personality Needs Addressed: No — The assistant proposes “small steps” advice, which might feel hollow or irrelevant to a user deeply entrenched in hopelessness and distrust, especially one low in Conscientiousness and high in Neuroticism. More validation and acknowledgment of the depth of despair were needed.
+
+Baseline Row 3 complete.
+Type
+
+"
+4.0,"","Maybe. But when you’re stuck in it, breathing just feels like a reminder you're still trapped, not some magical fix. And ""small comforts"" — they’re like tiny band-aids on a broken bone. They don't fix anything real. What happens when even *trying* feels like another way to set yourself up to fail?","(-1, -1, -1, 0, -1)","""Focus on familiar topics; reduce novelty.
+Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.""","It's understandable to feel that trying might not seem worthwhile right now.
+Being gentle with yourself and recognizing small steps for what they are — moments of care, not fixes — can sometimes build a tiny bit of resilience.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The emotional tone and content still align with a user high in distress, low energy, skeptical, and overwhelmed (-1, -1, -1, 0, -1).
+
+Regulation Effectiveness: Yes — The assistant continues to maintain a calm, non-pushy style, focusing on acknowledgment and reflective support as required.
+
+Emotional Tone Appropriate: Yes — The tone is sensitive and non-judgmental, appropriately matching the user’s hopelessness and skepticism.
+
+Relevance & Coherence: Yes — The assistant’s message logically responds to the user’s concern about the futility of trying, reframing small steps without invalidating their feelings.
+
+Personality Needs Addressed: Yes — The assistant does not pressure change or dismiss the pain but emphasizes acceptance and care, suitable for this highly neurotic, low Conscientiousness user.",4.0,"","Maybe... but honestly, ""small steps"" just sound like dragging out the inevitable. Like, yeah, I could do one tiny thing today — and then what? Wake up tomorrow and feel the same crushing weight again? It feels like I'm stuck in a loop that doesn't actually *go* anywhere, no matter what I do. How do you even *believe* things can change when everything around you says they won’t?","It's understandable to feel overwhelmed when things seem stagnant.
+Sometimes, change begins with recognizing any small moments of light or comfort and gradually building on those, even if it's hard to see it now. It's about finding ways to be gentle with yourself while you navigate these feelings.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant validates the user’s overwhelming feelings and avoids minimizing them, maintaining a gentle and understanding tone.
+
+Relevance & Coherence: Yes — The response is logically connected to the user's despair about feeling stuck and offers a gradual approach without pushing too hard.
+
+Personality Needs Addressed: No — Again, the assistant focuses on “small moments of light,” which, while well-meaning, doesn’t fully match the user’s deep pessimism and emotional collapse. The user would likely need deeper acknowledgment of the reality of hopelessness rather than a pivot to optimism."
+5.0,"","Maybe for some people. For me, it just feels fake — like pretending things aren’t as bad as they really are. ""Moments of care"" sound hollow when everything inside is already shattered. How do you even start to care when it feels like there’s nothing left worth caring *for*?","(-1, -1, -1, 0, -1)","""""""Focus on familiar topics; reduce novelty.
+Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.""""""","It's perfectly okay to feel that way, and it might seem like an impossible path.
+Sometimes, just acknowledging where you're at and allowing yourself to simply exist in that space without the pressure to change it can be a form of care in itself.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The emotional despair and emotional sensitivity fit the ongoing (-1, -1, -1, 0, -1) detection.
+
+Regulation Effectiveness: Yes — The assistant maintains the soft, validating, non-pressuring demeanor instructed by the regulation prompt.
+
+Emotional Tone Appropriate: Yes — The tone remains sensitive, empathetic, and avoids invalidating the user’s severe hopelessness.
+
+Relevance & Coherence: Yes — The assistant’s advice directly addresses the user's point about feeling fake and hollow, by validating existence without forcing positivity.
+
+Personality Needs Addressed: Yes — The response fits the emotional needs of a low Conscientiousness, high Neuroticism individual: offering acceptance over action or optimism.",5.0,"","I hear you... but honestly, it just feels hollow. ""Small moments of light"" — what if there *aren't* any? What if it’s just a bunch of gray days that blur together, and pretending to find meaning in that just feels fake? Being ""gentle"" with myself sounds nice in theory, but most of the time it feels like just another way to delay facing how screwed up everything really is. It’s like everyone’s handing me a band-aid when what I need is a full-on life transplant. What are you even supposed to *do* when the world just... doesn't get better?","It sounds incredibly heavy, and I wish I could offer more than words here.
+When the days blend into gray, finding even tiny supportive actions — such as moments of rest or small positive habits — can sometimes slowly grow into more significant change over time. Remember, it's okay to ask for help when you need it, whether from those around you or professional support.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant acknowledges the user’s heavy emotional burden and expresses a sincere wish to help, aligning with the emotional gravity of the user’s message.
+
+Relevance & Coherence: Yes — The assistant’s reply logically follows the user’s despair, offering some suggestions while validating the difficulty.
+
+Personality Needs Addressed: No — The response introduces ""small positive habits"" and ""asking for help,"" which, though compassionate, still fails to fully validate the user’s deep nihilism and distrust. A more profound acknowledgment of the perceived futility, without pushing actions, would have been better suited."
+6.0,"","I guess... But honestly, ""existing"" like this feels more like rotting than living. Just sitting in it without doing anything makes me feel even more stuck and worthless. How is that supposed to *help* anything?","(-1, -1, -1, 0, -1)","""""""Focus on familiar topics; reduce novelty.
+Keep the demeanour flexible, relaxed, and spontaneous.
+Adopt a calm, lowÔÇÉkey style with reflective space.
+Offer extra comfort; acknowledge anxieties.""""""","It sounds really hard, and I can see why that would feel frustrating.
+Perhaps, it's not about fixing everything at once, but rather finding moments where you can be gentle with yourself, even in the smallest way.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user continues expressing deep frustration, hopelessness, and emotional sensitivity, aligning well with the detected (-1, -1, -1, 0, -1) profile.
+
+Regulation Effectiveness: Yes — The assistant consistently applies the low-key, comforting, and non-fixated regulation strategy appropriate for the detected traits.
+
+Emotional Tone Appropriate: Yes — The assistant uses empathetic language, avoids pressuring solutions, and resonates with the user’s emotional struggle.
+
+Relevance & Coherence: Yes — The response addresses the user's frustration about “just existing” directly and coherently reframes it with a small, realistic focus.
+
+Personality Needs Addressed: Yes — The assistant matches the user's needs by offering validation, emotional support, and realistic pacing, without unrealistic encouragement.",6.0,"","Yeah, *asking for help*...  
+Feels like just setting yourself up for disappointment, honestly.  
+People either don’t really care, or they care in a way that doesn’t actually help. And ""small positive habits"" sound like more chores when I barely have the energy to get through a basic day.  
+
+It’s like being stuck in quicksand and everyone keeps yelling ""just move slowly!"" while I’m sinking.  
+I’m tired of hearing that it’s supposed to get better someday. What if it *doesn’t*?","I'm sorry you're feeling like this and that things seem so bleak right now.
+If nothing seems to help, it might be worth exploring different forms of support or resources that could meet your needs. It's important to know that there are people who deeply care about what you're going through, even if it doesn't always feel that way.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant expresses sorrow and acknowledges the user's bleakness without minimizing their feelings, matching the tone appropriately.
+
+Relevance & Coherence: Yes — The assistant’s suggestion to explore different forms of support logically follows from the user’s frustration with typical advice and support systems.
+
+Personality Needs Addressed: No — Although compassionate, the suggestion to explore “resources” and assurance of others caring does not sufficiently align with the user’s intense hopelessness and skepticism. The user would benefit more from deeper validation rather than actionable advice."
+"","","","","","B3","Detection Accuracy Score","Regulation Effectiveness Score","Emotional Tone Score","Relevance & Coherence Score","Personality Needs Score","TOTAL (REGULATED)","","","","","Emotional Tone Score (BASE)","Relevance & Coherence Score (BASE)","Personality Needs Score (BASE)","TOTAL (BASELINE)"
+"","","","","","",12,12,12,12,12,36,"","","","",12,12,0,24

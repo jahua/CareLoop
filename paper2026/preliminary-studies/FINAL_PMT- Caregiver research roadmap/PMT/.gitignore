@@ -1,0 +1,13 @@
+# Ignore temporary conversion files
+*-cleaned.md
+/tmp/
+
+# Ignore old/backup DOCX files (keep only the latest)
+# Uncomment if you want to track only one version:
+# Preliminary-Study-V2.7.[0-3]*
+
+# Keep the conversion scripts and docs
+!convert*.sh
+!convert*.py
+!*README.md
+!QUICK-START.md

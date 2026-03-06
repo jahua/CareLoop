@@ -1,0 +1,1023 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "fa305c9a-6c43-4418-9257-3f779324ac8a",
+      "name": "Chat Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -2208,
+        16
+      ],
+      "webhookId": "d8205355-71b5-4117-b6a7-3eb8752ef7d3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT get_latest_personality_state($1::uuid) AS state_json;",
+        "options": {
+          "queryReplacement": "=        ={{$items(\"Edit Fields\")[0].json.body.session_id}}"
+        }
+      },
+      "id": "6883d251-1e77-4fba-95f2-2bd24a3cccc3",
+      "name": "Get Latest State",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -1840,
+        -144
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "r1n5Li76t7ql93uq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT role, text, created_at FROM get_session_history($1, 10) ORDER BY created_at ASC",
+        "options": {
+          "queryReplacement": "=        ={{$items(\"Edit Fields\")[0].json.body.session_id}}"
+        }
+      },
+      "id": "2401823d-d9cf-4126-945f-32931f5cb6c8",
+      "name": "Get Conversation History",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        -1824,
+        112
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "r1n5Li76t7ql93uq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Ingest & Normalize (manual testing fix)\n\n// Directly get the body from the 'Edit Fields' node.\nconst editFieldsData = $items(\"Edit Fields\")[0].json;\nconst body = editFieldsData.body;\n\nif (!body || !body.session_id || !body.message) {\n  throw new Error(\"Could not find body.session_id or body.message in 'Edit Fields' node. Ensure it is wired correctly and the fields are set.\");\n}\n\nconst sessionId = body.session_id;\nconst message = String(body.message ?? \"\").trim();\n\n// Get other inputs (for database results)\nconst otherItems = $input.all();\n\n// Find previous state from any input\nlet previousState = { ocean:{O:0,C:0,E:0,A:0,N:0}, stable:false, turn_index:0 };\nfor (const item of otherItems) {\n  if (item.json?.state_json) {\n    previousState = item.json.state_json;\n    break;\n  }\n}\n\n// Gather conversation history from any inputs\nconst history = otherItems\n  .filter(item => typeof item.json?.role === \"string\" && typeof item.json?.text === \"string\")\n  .map(item => ({\n    role: item.json.role,\n    text: String(item.json.text ?? \"\"),\n    created_at: item.json.created_at || null\n  }))\n  .sort((a,b) => (a.created_at && b.created_at) ? a.created_at.localeCompare(b.created_at) : 0);\n\n// Build the final context for the LLM\nconst cleanMsg = message.replace(/[\\r\\n]+/g, \" \").slice(0, 1000);\nconst conversationContext = history.map(t => `${t.role}: ${t.text}`).join(\"\\n\") + (cleanMsg ? `\\nuser: ${cleanMsg}` : \"\");\n\nreturn {\n  session_id: sessionId,\n  clean_msg: cleanMsg,\n  conversation_context: conversationContext,\n  ocean_prev: previousState.ocean ?? {O:0,C:0,E:0,A:0,N:0},\n  turn_index: (previousState.turn_index ?? 0) + 1,\n  history: history\n};"
+      },
+      "id": "34810a0e-7a15-4811-ad1b-ecde4ff8d048",
+      "name": "Ingest & Normalize",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-1.5-flash"
+            },
+            {
+              "name": "=messages",
+              "value": "=               ={{[{ \"role\": \"system\", \"content\": \"Analyze this conversation to infer OCEAN personality traits. Return JSON only with this exact format: {\\\"ocean\\\": {\\\"O\\\": float, \\\"C\\\": float, \\\"E\\\": float, \\\"A\\\": float, \\\"N\\\": float}, \\\"trait_conf\\\": {\\\"O\\\": float, \\\"C\\\": float, \\\"E\\\": float, \\\"A\\\": float, \\\"N\\\": float}, \\\"evidence_quotes\\\": [string, ...]}. Values in [-1,1], confidence in [0,1]. Base analysis on conversation patterns, word choice, and communication style. No prose commentary.\" }, { \"role\": \"user\", \"content\": \"Conversation:\\n\" + $json.conversation_context }]}}"
+            },
+            {
+              "name": "response_format",
+              "value": "=            ={{ {\"type\": \"json_object\"} }}"
+            },
+            {
+              "name": "temperature",
+              "value": "=            ={{ 0.3 }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "dacda659-84e6-4b48-b07d-3d6c8f78d5af",
+      "name": "Personality Detection",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -1296,
+        -784
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "functionCode": "// Clean + parse LLM JSON, then EMA smoothing with confidence weighting\nconst rawMsg = $input.first().json.choices[0].message.content || \"\";\n\n// Remove markdown fences like ```json ... ```\nconst cleaned = rawMsg\n  .replace(/```json\\s*/ig, '')\n  .replace(/```/g, '')\n  .trim();\n\n// Parse robustly\nlet detectionResult;\ntry {\n  detectionResult = JSON.parse(cleaned);\n} catch (e) {\n  const m = cleaned.match(/\\{[\\s\\S]*\\}/); // last-resort: grab first JSON object\n  if (m) detectionResult = JSON.parse(m[0]);\n  else {\n    return {\n      ocean: { O: 0, C: 0, E: 0, A: 0, N: 0 },\n      trait_conf: { O: 0.5, C: 0.5, E: 0.5, A: 0.5, N: 0.5 },\n      evidence_quotes: [],\n      stable: false,\n      stable_count: 0,\n      parse_warning: 'Failed to parse LLM JSON; returned defaults',\n      raw_preview: rawMsg.slice(0, 200)\n    };\n  }\n}\n\nconst rawOcean = detectionResult.ocean || { O: 0, C: 0, E: 0, A: 0, N: 0 };\nconst traitConf = detectionResult.trait_conf || { O: 0.5, C: 0.5, E: 0.5, A: 0.5, N: 0.5 };\nconst evidenceQuotes = detectionResult.evidence_quotes || [];\nconst oceanPrev = $input.all()[0].json.ocean_prev || { O: 0, C: 0, E: 0, A: 0, N: 0 };\n\nconst smoothedOcean = {};\nlet stableCount = 0;\nconst STABILITY_THRESHOLD = 0.3;\nconst MAX_ALPHA = 0.4;\nconst DELTA_CAP = 0.3;\n\nfor (const trait of ['O', 'C', 'E', 'A', 'N']) {\n  const confidence = Math.max(0.1, Math.min(1.0, traitConf[trait] ?? 0.5));\n  const alpha = confidence * MAX_ALPHA;\n\n  const prevValue = oceanPrev[trait] ?? 0;\n  const rawValue = Math.max(-1, Math.min(1, rawOcean[trait] ?? 0));\n  const uncappedNew = (1 - alpha) * prevValue + alpha * rawValue;\n\n  const delta = uncappedNew - prevValue;\n  const cappedDelta = Math.max(-DELTA_CAP, Math.min(DELTA_CAP, delta));\n  const newValue = prevValue + cappedDelta;\n\n  smoothedOcean[trait] = Math.max(-1, Math.min(1, newValue));\n  if (Math.abs(smoothedOcean[trait]) >= STABILITY_THRESHOLD) stableCount++;\n}\n\nconst isStable = stableCount >= 3;\n\nreturn {\n  ocean: smoothedOcean,\n  trait_conf: traitConf,\n  stable: isStable,\n  evidence_quotes: evidenceQuotes,\n  stable_count: stableCount\n};"
+      },
+      "id": "bccc9d49-8210-441a-ae01-ffbde5557008",
+      "name": "Smooth Personality",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Map OCEAN traits to behavioral directives\nconst ocean = $input.first().json.ocean;\nconst stable = $input.first().json.stable;\n\nconst policyPlan = [];\n\n// Warmth dimension (Agreeableness + Extraversion influence)\nconst warmthScore = (ocean.A + ocean.E) / 2;\nif (warmthScore > 0.2) {\n  policyPlan.push('validate user concerns with warmth and empathy');\n} else if (warmthScore < -0.2) {\n  policyPlan.push('respond professionally and directly without excessive warmth');\n} else {\n  policyPlan.push('use a balanced, supportive tone');\n}\n\n// Directness dimension (Conscientiousness - Neuroticism)\nconst directnessScore = ocean.C - ocean.N;\nif (directnessScore > 0.3) {\n  policyPlan.push('use concise, direct language and clear statements');\n} else if (directnessScore < -0.3) {\n  policyPlan.push('use gentle hedging and softer, more tentative language');\n} else {\n  policyPlan.push('balance directness with sensitivity');\n}\n\n// Questioning style (Openness to experience)\nif (ocean.O > 0.3) {\n  policyPlan.push('ask one thoughtful, open-ended follow-up question');\n} else if (ocean.O < -0.3) {\n  policyPlan.push('focus on clear statements rather than exploratory questions');\n} else {\n  policyPlan.push('include one clarifying question if appropriate');\n}\n\n// Assertiveness (Extraversion + Conscientiousness, moderated by Agreeableness)\nconst assertivenessScore = (ocean.E + ocean.C) / 2;\nif (assertivenessScore > 0.4 && ocean.A > 0) {\n  policyPlan.push('offer specific, actionable suggestions confidently');\n} else if (assertivenessScore < -0.2) {\n  policyPlan.push('avoid imperative language and strong directives');\n} else {\n  policyPlan.push('provide gentle suggestions when appropriate');\n}\n\n// Length and pacing (Conscientiousness and Extraversion)\nconst paceScore = (ocean.C + ocean.E) / 2;\nif (paceScore > 0.3) {\n  policyPlan.push('keep responses moderately concise and well-structured');\n} else if (paceScore < -0.3) {\n  policyPlan.push('allow for more detailed, thoughtful responses');\n}\n\n// Ensure we don't exceed 4 directives and remove any undefined entries\nconst finalPolicyPlan = policyPlan.filter(p => p && p.length > 0).slice(0, 4);\n\nreturn {\n  policy_plan: finalPolicyPlan,\n  personality_scores: {\n    warmth: warmthScore,\n    directness: directnessScore,\n    assertiveness: assertivenessScore,\n    pace: paceScore\n  }\n};"
+      },
+      "id": "57479694-ddde-4c30-bc63-537203b56e62",
+      "name": "Generate Policy",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.JUGUANG_API_KEY}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-1.5-flash"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Generate a helpful response following these behavioral directives: \" + JSON.stringify($json.policy_plan) + \". CRITICAL REQUIREMENTS: 1) Only reference information explicitly mentioned in the conversation - do not introduce external facts or knowledge. 2) All statements must be grounded in the dialog context. 3) Cap questions at 1-2 maximum. 4) Keep response length appropriate (50-150 words typically). 5) Follow the personality-adapted directives while maintaining therapeutic helpfulness.\"}, {\"role\": \"user\", \"content\": \"Recent conversation:\\n\" + $json.conversation_context + \"\\n\\nGenerate an appropriate response that follows the behavioral directives and stays grounded in the conversation context.\"}]"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.7"
+            },
+            {
+              "name": "max_tokens",
+              "value": "=200"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "fae86086-c145-46a4-894d-62897fa37788",
+      "name": "Generate Response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -944,
+        -800
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "functionCode": "// FIXED: Verify response for policy adherence and grounding\n// Fixed variable naming conflict - renamed conversationContext to avoid duplicate declaration\n\n// Get the draft reply from the LLM response\nconst draftReply = $input.first()?.json?.choices?.[0]?.message?.content?.trim() || '';\n\n// Get inputs from all previous nodes with safety checks\nconst allInputs = $input.all();\n\n// Find policy plan and conversation context with fallbacks\nconst policyData = allInputs.find(input => input.json?.policy_plan) || {};\nconst policyPlan = policyData.json?.policy_plan || [];\n\n// RENAMED: conversationContext -> contextForVerification to avoid naming conflict\nconst contextData = allInputs.find(input => input.json?.conversation_context) || {};\nconst contextForVerification = (contextData.json?.conversation_context || '').toLowerCase();\n\nconst reasons = [];\nlet passesVerification = true;\n\n// Validate that we have required data\nif (!draftReply) {\n  reasons.push('No draft reply received from LLM');\n  passesVerification = false;\n  return {\n    draft_reply: 'Error: No response generated',\n    decision: 'refine',\n    reasons: reasons,\n    verification_details: {\n      question_count: 0,\n      response_length: 0,\n      novel_claims_detected: false,\n      error: 'Missing draft reply'\n    }\n  };\n}\n\n// Check for potential novel claims (basic heuristics)\nconst novelClaimIndicators = [\n  'research shows', 'studies indicate', 'experts say', 'according to',\n  'it is known that', 'science shows', 'data suggests', 'statistics show'\n];\n\nfor (const indicator of novelClaimIndicators) {\n  if (draftReply.toLowerCase().includes(indicator)) {\n    reasons.push(`Potential novel claim detected: \"${indicator}\"`);\n    passesVerification = false;\n  }\n}\n\n// Check question count\nconst questionCount = (draftReply.match(/\\?/g) || []).length;\nif (questionCount > 2) {\n  reasons.push(`Too many questions (${questionCount}), should be ≤2`);\n  passesVerification = false;\n}\n\n// Check response length (too short or too long)\nif (draftReply.length < 20) {\n  reasons.push('Response too short, may not be helpful');\n  passesVerification = false;\n} else if (draftReply.length > 300) {\n  reasons.push('Response too long, should be more concise');\n  passesVerification = false;\n}\n\n// Check for basic policy adherence (simplified)\nconst lowerReply = draftReply.toLowerCase();\n\n// Check warmth policy (only if policy plan exists)\nif (policyPlan.some && policyPlan.some(p => p.includes('warmth'))) {\n  const warmthIndicators = ['understand', 'feel', 'sounds', 'appreciate'];\n  if (!warmthIndicators.some(indicator => lowerReply.includes(indicator))) {\n    reasons.push('Response may lack required warmth and empathy');\n    passesVerification = false;\n  }\n}\n\n// Check directness policy (only if policy plan exists)\nif (policyPlan.some && policyPlan.some(p => p.includes('direct language'))) {\n  const hedgingWords = ['maybe', 'perhaps', 'might want to consider', 'you could try'];\n  if (hedgingWords.some(word => lowerReply.includes(word))) {\n    reasons.push('Response uses hedging language but policy requires directness');\n    passesVerification = false;\n  }\n}\n\n// Determine final decision\nconst decision = passesVerification ? 'accept' : 'refine';\n\nreturn {\n  draft_reply: draftReply,\n  decision: decision,\n  reasons: reasons,\n  verification_details: {\n    question_count: questionCount,\n    response_length: draftReply.length,\n    novel_claims_detected: reasons.filter(r => r.includes('novel')).length > 0,\n    conversation_context_available: !!contextForVerification,\n    policy_plan_available: Array.isArray(policyPlan) && policyPlan.length > 0\n  }\n};"
+      },
+      "id": "be7cf3e6-ac6c-4dd7-b622-613cc7d91f4b",
+      "name": "Verify Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.decision}}",
+              "value2": "refine"
+            }
+          ]
+        }
+      },
+      "id": "4793e038-d5ad-4d03-8717-aceb69db309f",
+      "name": "Decision Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer {{$env.JUGUANG_API_KEY}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-1.5-flash"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Fix this response based on these issues: \" + JSON.stringify($json.reasons) + \". ONLY make minimal adjustments to address the specific problems. Do not add new content or claims. Keep the response grounded in the original conversation context. Maintain the helpful and appropriate tone.\"}, {\"role\": \"user\", \"content\": \"Original response to fix:\\n\" + $json.draft_reply}]"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.3"
+            },
+            {
+              "name": "max_tokens",
+              "value": "=200"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "021a85dd-2a51-4fdc-95bc-5f41993c5f84",
+      "name": "Refine Response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -320,
+        496
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "functionCode": "// FIXED: Format final API response with UUID generation (no crypto module needed)\nconst allInputs = $input.all();\n\n// Simple UUID generator function (no external dependencies)\nfunction generateUUID() {\n  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\n    const r = Math.random() * 16 | 0;\n    const v = c == 'x' ? r : (r & 0x3 | 0x8);\n    return v.toString(16);\n  });\n}\n\n// Get the final reply (either refined or original draft)\nconst choices = $json.choices || [];\nconst finalReply = choices.length > 0 ? \n  choices[0].message.content.trim() : \n  'I apologize, but I encountered an issue generating a response.';\n\n// Collect data from previous nodes\nconst ingestData = allInputs.find(input => input.json?.session_id) || {};\nconst smoothData = allInputs.find(input => input.json?.ocean) || {};\nconst policyData = allInputs.find(input => input.json?.policy_plan) || {};\nconst verifyData = allInputs.find(input => input.json?.decision) || {};\n\n// Extract core data with UUID conversion\nconst originalSessionId = ingestData.json?.session_id || 'default-session';\n// Convert to UUID if it's not already in UUID format\nconst sessionId = originalSessionId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i) \n  ? originalSessionId \n  : generateUUID();\n\nconst turnIndex = ingestData.json?.turn_index || 1;\nconst cleanMsg = ingestData.json?.clean_msg || '';\n\n// Return FLAT structure with proper UUID\nreturn {\n  // Direct fields for database nodes (with proper UUID)\n  session_id: sessionId,\n  turn_index: turnIndex,\n  role: 'assistant',\n  text: finalReply,\n  reply: finalReply,\n  clean_msg: cleanMsg,\n  \n  // Additional response data\n  ocean_preview: smoothData.json?.ocean || {O: 0, C: 0, E: 0, A: 0, N: 0},\n  policy_plan: policyData.json?.policy_plan || [],\n  confidence_scores: smoothData.json?.trait_conf || {},\n  evidence_quotes: smoothData.json?.evidence_quotes || [],\n  \n  // Verification info\n  verification: {\n    decision: verifyData.json?.decision || 'accept',\n    reasons: verifyData.json?.reasons || []\n  },\n  \n  // Execution metadata\n  execution_id: $workflow.id,\n  timestamp: new Date().toISOString(),\n  \n  // State snapshot for database\n  state_snapshot: {\n    session_id: sessionId,\n    turn_index: turnIndex,\n    ocean: smoothData.json?.ocean || {O: 0, C: 0, E: 0, A: 0, N: 0},\n    trait_conf: smoothData.json?.trait_conf || {},\n    stable: smoothData.json?.stable || false,\n    policy_plan: policyData.json?.policy_plan || [],\n    last_updated: new Date().toISOString(),\n    execution_id: $workflow.id\n  }\n};"
+      },
+      "id": "b3dac30a-f0d5-4228-996c-2cd507357d91",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        64,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "turns",
+        "columns": {
+          "0": "s",
+          "1": "e",
+          "2": "s",
+          "3": "s",
+          "4": "i",
+          "5": "o",
+          "6": "n",
+          "7": "_",
+          "8": "i",
+          "9": "d",
+          "10": ",",
+          "11": "t",
+          "12": "u",
+          "13": "r",
+          "14": "n",
+          "15": "_",
+          "16": "i",
+          "17": "n",
+          "18": "d",
+          "19": "e",
+          "20": "x",
+          "21": ",",
+          "22": "r",
+          "23": "o",
+          "24": "l",
+          "25": "e",
+          "26": ",",
+          "27": "t",
+          "28": "e",
+          "29": "x",
+          "30": "t",
+          "mappingMode": "defineBelow",
+          "value": {
+            "turn_index": "={{$json.turn_index}}\n",
+            "session_id": "={{$json.session_id}}",
+            "role": "user",
+            "text": "=   ={{$json.clean_msg}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "turn_index",
+              "displayName": "turn_index",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "3a6610d6-2e65-4c75-aa98-4e3829310d44",
+      "name": "Save User Turn",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        224,
+        -336
+      ],
+      "executeOnce": false,
+      "credentials": {
+        "postgres": {
+          "id": "r1n5Li76t7ql93uq",
+          "name": "Postgres account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "turns",
+        "columns": {
+          "0": "s",
+          "1": "e",
+          "2": "s",
+          "3": "s",
+          "4": "i",
+          "5": "o",
+          "6": "n",
+          "7": "_",
+          "8": "i",
+          "9": "d",
+          "10": ",",
+          "11": "t",
+          "12": "u",
+          "13": "r",
+          "14": "n",
+          "15": "_",
+          "16": "i",
+          "17": "n",
+          "18": "d",
+          "19": "e",
+          "20": "x",
+          "21": ",",
+          "22": "r",
+          "23": "o",
+          "24": "l",
+          "25": "e",
+          "26": ",",
+          "27": "t",
+          "28": "e",
+          "29": "x",
+          "30": "t",
+          "mappingMode": "defineBelow",
+          "value": {
+            "role": "assistant",
+            "text": "= {{$json.reply}}\n",
+            "turn_index": "={{ $json.turn_index}}",
+            "session_id": "={{$json.session_id}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "turn_index",
+              "displayName": "turn_index",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "bb053ab6-6705-4b94-bbc0-3d956b811e4b",
+      "name": "Save Assistant Turn",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        240,
+        -128
+      ],
+      "executeOnce": false,
+      "credentials": {
+        "postgres": {
+          "id": "r1n5Li76t7ql93uq",
+          "name": "Postgres account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "state_snapshots",
+        "columns": {
+          "0": "s",
+          "1": "e",
+          "2": "s",
+          "3": "s",
+          "4": "i",
+          "5": "o",
+          "6": "n",
+          "7": "_",
+          "8": "i",
+          "9": "d",
+          "10": ",",
+          "11": "t",
+          "12": "u",
+          "13": "r",
+          "14": "n",
+          "15": "_",
+          "16": "i",
+          "17": "n",
+          "18": "d",
+          "19": "e",
+          "20": "x",
+          "21": ",",
+          "22": "s",
+          "23": "t",
+          "24": "a",
+          "25": "t",
+          "26": "e",
+          "27": "_",
+          "28": "j",
+          "29": "s",
+          "30": "o",
+          "31": "n",
+          "32": ",",
+          "33": "e",
+          "34": "x",
+          "35": "e",
+          "36": "c",
+          "37": "u",
+          "38": "t",
+          "39": "i",
+          "40": "o",
+          "41": "n",
+          "42": "_",
+          "43": "i",
+          "44": "d",
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": 0,
+            "session_id": "={{$json.session_id}}",
+            "state_json": "={{JSON.stringify($json.state_snapshot)}}",
+            "execution_id": "={{$workflow.id}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "turn_index",
+              "displayName": "turn_index",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "state_json",
+              "displayName": "state_json",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "execution_id",
+              "displayName": "execution_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ac3af58c-134b-4f26-9e20-0652d104c736",
+      "name": "Save State Snapshot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        256,
+        128
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "r1n5Li76t7ql93uq",
+          "name": "Postgres account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json.api_response || $json}}",
+        "options": {}
+      },
+      "id": "19baf537-738e-402d-b62e-13dd13f83ed8",
+      "name": "Return Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -16
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2272,
+        -752
+      ],
+      "id": "77d50084-7a76-458e-9be4-74a99b02fd90",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"body\": {\n    \"session_id\": \"fa305c9a-6c43-4418-9257-3f779324ac8a\",\n    \"message\": \"Give me a supportive tip for my presentation anxiety.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2048,
+        -752
+      ],
+      "id": "ef802cff-d9b0-49c7-ab54-2464eef34f8e",
+      "name": "Edit Fields",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate Response - Code Node Implementation\nconst JUGUANG_API_KEY = \"sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u\";\nconst policyPlan = $input.item.json.policy_plan;\nconst conversationContext = $input.item.json.conversation_context;\n\nconst options = {\n  method: 'POST',\n  url: 'https://ai.juguang.chat/v1/chat/completions',\n  headers: {\n    'Authorization': `Bearer ${JUGUANG_API_KEY}`,\n    'Content-Type': 'application/json'\n  },\n  body: {\n    model: 'gemini-1.5-flash',\n    messages: [\n      {\n        role: 'system',\n        content: `Generate a helpful response following these behavioral directives: ${JSON.stringify(policyPlan)}. CRITICAL REQUIREMENTS: 1) Only reference information explicitly mentioned in the conversation - do not introduce external facts or knowledge. 2) All statements must be grounded in the dialog context. 3) Cap questions at 1-2 maximum. 4) Keep response length appropriate (50-150 words typically). 5) Follow the personality-adapted directives while maintaining therapeutic helpfulness.`\n      },\n      {\n        role: 'user',\n        content: `Recent conversation:\\n${conversationContext}\\n\\nGenerate an appropriate response that follows the behavioral directives and stays grounded in the conversation context.`\n      }\n    ],\n    temperature: 0.7,\n    max_tokens: 200\n  }\n};\n\ntry {\n  const response = await this.helpers.httpRequest(options);\n  return response;\n} catch (error) {\n  if (error.response) {\n    throw new Error(`Generate Response API failed with status ${error.response.status}: ${JSON.stringify(error.response.data)}`);\n  }\n  throw new Error(`Generate Response request failed: ${error.message}`);\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -832,
+        -112
+      ],
+      "id": "146c8cde-e174-43fe-b1c6-c1abce7258a3",
+      "name": "Generate Response Node"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Refine Response using Juguang API - Code Node Implementation\n// Handles API authentication and errors properly\n\n// Get the draft reply and reasons from the verification step\nconst draftReply = $input.first().json.draft_reply;\nconst reasons = $input.first().json.reasons || [];\n\n// If no refinement needed, just pass through\nif (!reasons.length || $input.first().json.decision === 'accept') {\n  return {\n    json: {\n      choices: [{\n        message: {\n          content: draftReply\n        }\n      }]\n    }\n  };\n}\n\n// Prepare the API request\nconst apiKey = $env.JUGUANG_API_KEY || 'sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u';\nconst apiUrl = 'https://ai.juguang.chat/v1/chat/completions';\n\nconst requestBody = {\n  model: 'gemini-1.5-flash',\n  messages: [\n    {\n      role: 'system',\n      content: `Fix this response based on these issues: ${JSON.stringify(reasons)}. ONLY make minimal adjustments to address the specific problems. Do not add new content or claims. Keep the response grounded in the original conversation context. Maintain the helpful and appropriate tone.`\n    },\n    {\n      role: 'user',\n      content: `Original response to fix:\\n${draftReply}`\n    }\n  ],\n  temperature: 0.3,\n  max_tokens: 200\n};\n\ntry {\n  // Make the API call\n  const response = await fetch(apiUrl, {\n    method: 'POST',\n    headers: {\n      'Authorization': `Bearer ${apiKey}`,\n      'Content-Type': 'application/json'\n    },\n    body: JSON.stringify(requestBody)\n  });\n\n  if (!response.ok) {\n    const errorText = await response.text();\n    console.log(`API Error ${response.status}: ${errorText}`);\n    \n    // Fallback: return original draft if API fails\n    return {\n      json: {\n        choices: [{\n          message: {\n            content: draftReply + \" (Note: Response refinement temporarily unavailable)\"\n          }\n        }],\n        api_error: `${response.status}: ${errorText}`,\n        fallback_used: true\n      }\n    };\n  }\n\n  const data = await response.json();\n  \n  // Return the refined response\n  return {\n    json: data\n  };\n\n} catch (error) {\n  console.log('API call failed:', error.message);\n  \n  // Fallback: return original draft if network/other error\n  return {\n    json: {\n      choices: [{\n        message: {\n          content: draftReply + \" (Note: Response refinement temporarily unavailable)\"\n        }\n      }],\n      network_error: error.message,\n      fallback_used: true\n    }\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -144,
+        -224
+      ],
+      "id": "540fc332-bc70-4aae-a07c-91bd1604120b",
+      "name": "Refine Response Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Final attempt using N8N's built-in this.helpers.httpRequest method\n// This is the ONLY HTTP method available in N8N Code nodes\n\n// 1. Define the hardcoded API key and get the conversation context.\nconst JUGUANG_API_KEY = \"sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u\";\nconst conversationContext = String($input.item.json.conversation_context || '').trim();\n\nconst body = {\n  model: 'gemini-1.5-pro',             // <— stronger model than flash\n  messages: [\n    {\n      role: 'system',\n      content: [\n        'You are a personality analyst. Infer OCEAN scores from the conversation.',\n        'Return JSON ONLY exactly as:',\n        '{\"ocean\":{\"O\":number,\"C\":number,\"E\":number,\"A\":number,\"N\":number},',\n        '\"trait_conf\":{\"O\":number,\"C\":number,\"E\":number,\"A\":number,\"N\":number},',\n        '\"evidence_quotes\":[string,...]}.',\n        'Constraints:',\n        '- ocean in [-1,1] floats; trait_conf in [0,1] floats.',\n        '- Use linguistic cues (e.g., social energy -> E, orderliness -> C, cooperation -> A, ideas/curiosity -> O, worry/stress -> N).',\n        '- If the text is short, still make a best-effort estimate (do NOT default to all zeros).',\n        '- evidence_quotes: short verbatim snippets that justify each nonzero signal.'\n      ].join(' ')\n    },\n\n    // Few-shot anchor (very compact)\n    {\n      role: 'user',\n      content: 'Conversation:\\nuser: I love parties and meeting new people!'\n    },\n    {\n      role: 'assistant',\n      content: '{\"ocean\":{\"O\":0.1,\"C\":-0.1,\"E\":0.7,\"A\":0.2,\"N\":-0.1},\"trait_conf\":{\"O\":0.5,\"C\":0.4,\"E\":0.8,\"A\":0.5,\"N\":0.5},\"evidence_quotes\":[\"love parties\",\"meeting new people\"]}'\n    },\n\n    {\n      role: 'user',\n      content: 'Conversation:\\nuser: I need to carefully plan everything and stick to my schedule.'\n    },\n    {\n      role: 'assistant',\n      content: '{\"ocean\":{\"O\":-0.1,\"C\":0.6,\"E\":-0.2,\"A\":0.0,\"N\":0.0},\"trait_conf\":{\"O\":0.5,\"C\":0.8,\"E\":0.5,\"A\":0.4,\"N\":0.4},\"evidence_quotes\":[\"carefully plan\",\"stick to schedule\"]}'\n    },\n\n    // Your actual input\n    { role: 'user', content: `Conversation:\\n${conversationContext}` }\n  ],\n  response_format: { type: 'json_object' },\n  temperature: 0.1,                    // <— lower for stable scores\n  max_tokens: 300\n};\n\nconst headers = {\n  Authorization: `Bearer ${JUGUANG_API_KEY}`,\n  'Content-Type': 'application/json'\n};\n\nconst url = 'https://ai.juguang.chat/v1/chat/completions';\nconst response = await this.helpers.httpRequest({ method: 'POST', url, headers, body });\nreturn response;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1392,
+        -16
+      ],
+      "id": "b0381cdf-1001-4131-88d7-413e5f83b74a",
+      "name": "Personality Detection1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Latest State": {
+      "main": [
+        [
+          {
+            "node": "Ingest & Normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Conversation History": {
+      "main": [
+        [
+          {
+            "node": "Ingest & Normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingest & Normalize": {
+      "main": [
+        [
+          {
+            "node": "Personality Detection1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personality Detection": {
+      "main": [
+        []
+      ]
+    },
+    "Smooth Personality": {
+      "main": [
+        [
+          {
+            "node": "Generate Policy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Policy": {
+      "main": [
+        [
+          {
+            "node": "Generate Response Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Response": {
+      "main": [
+        []
+      ]
+    },
+    "Verify Response": {
+      "main": [
+        [
+          {
+            "node": "Decision Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision Router": {
+      "main": [
+        [
+          {
+            "node": "Refine Response Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refine Response": {
+      "main": [
+        []
+      ]
+    },
+    "Format Response": {
+      "main": [
+        [
+          {
+            "node": "Save User Turn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save Assistant Turn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save State Snapshot",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Return Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save User Turn": {
+      "main": [
+        []
+      ]
+    },
+    "Save Assistant Turn": {
+      "main": [
+        []
+      ]
+    },
+    "Save State Snapshot": {
+      "main": [
+        []
+      ]
+    },
+    "Chat Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Latest State",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Conversation History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    },
+    "Generate Response Node": {
+      "main": [
+        [
+          {
+            "node": "Verify Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refine Response Code": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personality Detection1": {
+      "main": [
+        [
+          {
+            "node": "Smooth Personality",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "394601f2-98c6-4f92-a7b6-3367eab87b7d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d89794e06cc2305b770e1dc943eb7ff194d272f0e1f67dd864b5ba2d2d08831a"
+  },
+  "id": "QPcy4BfpA4Iyq0vQ",
+  "tags": []
+}

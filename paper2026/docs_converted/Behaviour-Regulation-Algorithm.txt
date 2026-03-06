@@ -1,0 +1,427 @@
+UPDATED IMPLEMENTATION FOR
+ZURICH MODEL BEHAVIOUR
+REGULATION MODULE
+1. Trait‐to‐Prompt Mappings
+Each Big Five trait has three possible triggers (+1, –1, 0). We update our previous prompts to make
+them concise, precise, and ground them to Zurich Model ideas of security, arousal, and power, as
+well as coping/affiliation.
+1. Openness
++1: “Invite exploration and novelty.”
+–1: “Focus on familiar topics; reduce novelty.”
+2. Conscientiousness
++1: “Provide organized, structured guidance.”
+–1: “Keep the demeanour flexible, relaxed, and spontaneous.”
+3. Extraversion
++1: “Maintain an energetic, sociable tone.”
+–1: “Adopt a calm, low‐key style with reflective space.”
+4. Agreeableness
++1: “Show warmth, empathy, and collaboration.”
+–1: “Use a neutral, matter‐of‐fact stance; limit personal bonding.”
+5. Neuroticism
++1: “Reassure stability and confidence.” (User is calm/secure)
+–1: “Offer extra comfort; acknowledge anxieties.” (User is more anxious)
+Note: These phrases are each grounded in Zurich Model insights:
+“Basic Needs Drive Behavior” (e.g., security ↔ neuroticism, arousal ↔ openness/extraversion,
+affiliation ↔ agreeableness).
+“Graded Responses Instead of Binary Choices” (We keep it short but parse each trait as +1 or –
+1).
+“Harmonize Conflicting Prompts” (We simply list them, expecting future “fixing” if needed).
+
+2. All Non‐Zero Combinations
+We now list all 32 combinations (2^5) of (+1 or –1) for each trait O, C, E, A, N. When a detected trait
+is 0 (the detection prompts takes care of this) due to lack of information , nothing is added for that
+dimension. The final prompt is a concatenation of whichever trait prompts apply to the Emotional
+support assistant baseline behaviour prompt.
+For clarity:
+O = Openness (+1 or –1)
+C = Conscientiousness (+1 or –1)
+E = Extraversion (+1 or –1)
+A = Agreeableness (+1 or –1)
+N = Neuroticism (+1 or –1)
+We show them in a systematic order to ensure that each combination is coherent (Each negative is
+in bold for easy verification):
+
+1) O=+1, C=+1, E=+1, A=+1, N=+1
+Final Prompt:
+Invite exploration and novelty;
+Provide organized, structured guidance;
+Maintain an energetic, sociable tone;
+Show warmth, empathy, and collaboration
+Reassure stability and confidence.
+
+2) O=+1, C=+1, E=+1, A=+1, N=–1
+Invite exploration and novelty
+Provide organized, structured guidance
+Maintain an energetic, sociable tone
+Show warmth, empathy, and collaboration
+Offer extra comfort; acknowledge anxieties.
+
+3) O=+1, C=+1, E=+1, A=–1, N=+1
+Invite exploration and novelty
+Provide organized, structured guidance
+Maintain an energetic, sociable tone
+Use a neutral, matter‐of‐fact stance; limit personal bonding
+Reassure stability and confidence.
+
+4) O=+1, C=+1, E=+1, A=–1, N=–1
+Invite exploration and novelty
+Provide organized, structured guidance
+Maintain an energetic, sociable tone
+Use a neutral, matter‐of‐fact stance; limit personal bonding
+Offer extra comfort; acknowledge anxieties.
+
+5) O=+1, C=+1, E=–1, A=+1, N=+1
+Invite exploration and novelty
+Provide organized, structured guidance
+Adopt a calm, low‐key style with reflective space
+Show warmth, empathy, and collaboration
+Reassure stability and confidence.
+
+6) O=+1, C=+1, E=–1, A=+1, N=–1
+Invite exploration and novelty;
+Provide organized, structured guidance;
+Adopt a calm, low‐key style with reflective space
+Show warmth, empathy, and collaboration;
+Offer extra comfort; acknowledge anxieties.
+
+7) O=+1, C=+1, E=–1, A=–1, N=+1
+Invite exploration and novelty
+Provide organized, structured guidance
+Adopt a calm, low‐key style with reflective space
+Use a neutral, matter‐of‐fact stance; limit personal bonding
+Reassure stability and confidence.
+
+8) O=+1, C=+1, E=–1, A=–1, N=–1
+Invite exploration and novelty
+Provide organized, structured guidance
+Adopt a calm, low‐key style with reflective space
+Use a neutral, matter‐of‐fact stance
+limit personal bonding; Offer extra comfort; acknowledge anxieties.
+
+9) O=+1, C=–1, E=+1, A=+1, N=+1
+Invite exploration and novelty
+Keep the demeanour flexible, relaxed, and spontaneous
+Maintain an energetic, sociable tone
+Show warmth, empathy, and collaboration
+Reassure stability and confidence.
+
+10) O=+1, C=–1, E=+1, A=+1, N=–1
+Invite exploration and novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Maintain an energetic, sociable tone;
+Show warmth, empathy, and collaboration;
+Offer extra comfort; acknowledge anxieties.”
+
+11) O=+1, C=–1, E=+1, A=–1, N=+1
+Invite exploration and novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Maintain an energetic, sociable tone;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Reassure stability and confidence.”
+
+12) O=+1, C=–1, E=+1, A=–1, N=–1
+Invite exploration and novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Maintain an energetic, sociable tone;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Offer extra comfort; acknowledge anxieties.”
+
+13) O=+1, C=–1, E=–1, A=+1, N=+1
+Invite exploration and novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space;
+Show warmth, empathy, and collaboration;
+Reassure stability and confidence.”
+
+14) O=+1, C=–1, E=–1, A=+1, N=–1
+Invite exploration and novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space;
+Show warmth, empathy, and collaboration;
+Offer extra comfort; acknowledge anxieties.”
+
+15) O=+1, C=–1, E=–1, A=–1, N=+1
+Invite exploration and novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Reassure stability and confidence.”
+
+16) O=+1, C=–1, E=–1, A=–1, N=–1
+Invite exploration and novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Offer extra comfort; acknowledge anxieties.
+
+17) O=–1, C=+1, E=+1, A=+1, N=+1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Maintain an energetic, sociable tone;
+Show warmth, empathy, and collaboration;
+Reassure stability and confidence.
+
+18) O=–1, C=+1, E=+1, A=+1, N=–1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Maintain an energetic, sociable tone;
+Show warmth, empathy, and collaboration;
+Offer extra comfort; acknowledge anxieties.”
+
+19) O=–1, C=+1, E=+1, A=–1, N=+1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Maintain an energetic, sociable tone;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Reassure stability and confidence.”
+
+20) O=–1, C=+1, E=+1, A=–1, N=–1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Maintain an energetic, sociable tone;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Offer extra comfort; acknowledge anxieties.”
+
+21) O=–1, C=+1, E=–1, A=+1, N=+1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Adopt a calm, low‐key style with reflective space;
+Show warmth, empathy, and collaboration;
+Reassure stability and confidence.”
+
+22) O=–1, C=+1, E=–1, A=+1, N=–1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Adopt a calm, low‐key style with reflective space;
+Show warmth, empathy, and collaboration;
+Offer extra comfort; acknowledge anxieties.”
+
+23) O=–1, C=+1, E=–1, A=–1, N=+1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Adopt a calm, low‐key style with reflective space;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Reassure stability and confidence.”
+
+24) O=–1, C=+1, E=–1, A=–1, N=–1
+Focus on familiar topics; reduce novelty;
+Provide organized, structured guidance;
+Adopt a calm, low‐key style with reflective space;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Offer extra comfort; acknowledge anxieties.
+
+25) O=–1, C=–1, E=+1, A=+1, N=+1
+Focus on familiar topics; reduce novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Maintain an energetic, sociable tone;
+Show warmth, empathy, and collaboration;
+Reassure stability and confidence.”
+
+26) O=–1, C=–1, E=+1, A=+1, N=–1
+Focus on familiar topics; reduce novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Maintain an energetic, sociable tone;
+Show warmth, empathy, and collaboration;
+Offer extra comfort; acknowledge anxieties.”
+
+27) O=–1, C=–1, E=+1, A=–1, N=+1
+Focus on familiar topics; reduce novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Maintain an energetic, sociable tone;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Reassure stability and confidence.”
+
+28) O=–1, C=–1, E=+1, A=–1, N=–1
+Focus on familiar topics; reduce novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Maintain an energetic, sociable tone;
+**Use a neutral, matter‐of‐fact stance; limit personal bonding; **
+Offer extra comfort; acknowledge anxieties.
+
+29) O=–1, C=–1, E=–1, A=+1, N=+1
+Focus on familiar topics; reduce novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space;
+Show warmth, empathy, and collaboration;
+Reassure stability and confidence.”
+
+30) O=–1, C=–1, E=–1, A=+1, N=–1
+Focus on familiar topics; reduce novelty;
+**Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space; **
+Show warmth, empathy, and collaboration;
+Offer extra comfort; acknowledge anxieties.
+
+31) O=–1, C=–1, E=–1, A=–1, N=+1
+Focus on familiar topics; reduce novelty;
+**Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space;
+Use a neutral, matter‐of‐fact stance; limit personal bonding; **
+Reassure stability and confidence.”
+
+32) O=–1, C=–1, E=–1, A=–1, N=–1
+Focus on familiar topics; reduce novelty;
+Keep the demeanour flexible, relaxed, and spontaneous;
+Adopt a calm, low‐key style with reflective space;
+Use a neutral, matter‐of‐fact stance; limit personal bonding;
+Offer extra comfort; acknowledge anxieties.
+
+3. Using These Prompts
+Implementation: When an OCEAN detection is updated (for each trait ±1), the system
+concatenates the relevant short behaviour regulation prompts. If a trait is 0, nothing is added for
+that dimension.
+Zurich Model Alignment:
+“Personality is Dynamic”: Each detection shift can alter the prompts in real time.
+“Interdependent Coping Strategies”: For example, if someone is anxious (N=–1) and
+unstructured (C=–1), the system responds with more supportive, flexible language.
+
+4. Benefits of This Simple Mapping Approach
+1. Progressively More Accurate Personality Detection
+Because the detection module updates OCEAN scores after every new user message
+(incorporating the entire chat history), personality estimates become incrementally more
+accurate as the conversation unfolds.
+2. Transparent and Traceable Logic
+By directly mapping trait values (±1) to short behavior prompts (rather than formulas), we
+reduce “black‐box” complexity.
+This makes it easier to debug, explain to stakeholders, and modify if any prompt feels off
+or contradictory.
+3. Easy for Iterative Development
+Developers can quickly adjust or fine‐tune prompts without overhauling a complex formula
+layer.
+If new insights or test data show a need to refine how a particular trait influences the
+Assistant’s tone, it’s just one quick change in the prompt mapping.
+4. Flexible for Other Real‐Time Signals
+The same approach can accommodate other frameworks, such as real‐time emotion
+detection.
+You simply swap “if OCEAN = ±1” for “if user sentiment is positive/negative, ” or any other
+detection system, and attach suitable prompts.
+
+CODE IMPLEMENTATION
+Note: This is only for inspiration, the implementation will need to take into account how the original
+implemented classes work.
+Below is a straightforward way (Please check the PROMISE implementation first for
+compatibility) to store these mappings in Java using enums and maps. This setup makes it easy to:
+1. Look up each trait’s prompt for +1 or -1 .
+2. Ignore the trait if its value is 0 (no prompt).
+You can then concatenate the resulting prompts into the final behavior string.
+
+1. Define an Enum for Each OCEAN Trait
+public enum OceanTrait {
+OPENNESS,
+CONSCIENTIOUSNESS,
+EXTRAVERSION,
+AGREEABLENESS,
+NEUROTICISM
+}
+
+2. Store Prompts in a Nested Map
+Here, the outer map keys are your OceanTrait values, and the inner map keys are Integer trait
+scores (+1 or –1). The value in the inner map is the prompt string.
+
+import java.util.HashMap;
+import java.util.Map;
+public class OceanPrompts {
+private static final Map<OceanTrait, Map<Integer, String>> PROMPT_MAP = new HashMap<>();
+static {
+// For Openness
+Map<Integer, String> opennessMap = new HashMap<>();
+opennessMap.put(+1, "Invite exploration and novelty.");
+opennessMap.put(-1, "Focus on familiar topics; reduce novelty.");
+PROMPT_MAP.put(OceanTrait.OPENNESS, opennessMap);
+// For Conscientiousness
+Map<Integer, String> conscMap = new HashMap<>();
+conscMap.put(+1, "Provide organized, structured guidance.");
+conscMap.put(-1, "Keep the demeanour flexible, relaxed, and spontaneous.");
+PROMPT_MAP.put(OceanTrait.CONSCIENTIOUSNESS, conscMap);
+// For Extraversion
+Map<Integer, String> extraMap = new HashMap<>();
+extraMap.put(+1, "Maintain an energetic, sociable tone.");
+extraMap.put(-1, "Adopt a calm, low-key style with reflective space.");
+PROMPT_MAP.put(OceanTrait.EXTRAVERSION, extraMap);
+// For Agreeableness
+Map<Integer, String> agreeMap = new HashMap<>();
+agreeMap.put(+1, "Show warmth, empathy, and collaboration.");
+agreeMap.put(-1, "Use a neutral, matter-of-fact stance; limit personal bonding.");
+PROMPT_MAP.put(OceanTrait.AGREEABLENESS, agreeMap);
+// For Neuroticism
+Map<Integer, String> neuroMap = new HashMap<>();
+neuroMap.put(+1, "Reassure stability and confidence.");
+neuroMap.put(-1, "Offer extra comfort; acknowledge anxieties.");
+PROMPT_MAP.put(OceanTrait.NEUROTICISM, neuroMap);
+}
+// Public accessor
+public static String getPrompt(OceanTrait trait, int value) {
+// Return the matching prompt, or null if no match
+Map<Integer, String> traitMap = PROMPT_MAP.get(trait);
+
+if (traitMap == null) {
+return null;
+}
+return traitMap.get(value);
+}
+}
+
+3. Generating the Final Prompt
+When the detection module detects an updated OCEAN tuple, for example (o, c, e, a, n), you can
+do:
+
+public class BehaviorRegulator {
+// Example method: build final prompt for an OCEAN tuple
+public static String buildPrompt(
+int opennessValue,
+int conscientiousnessValue,
+int extraversionValue,
+int agreeablenessValue,
+int neuroticismValue
+) {
+StringBuilder sb = new StringBuilder();
+// For each trait, if the integer != 0, look up the prompt
+if (opennessValue != 0) {
+String prompt = OceanPrompts.getPrompt(OceanTrait.OPENNESS, opennessValue);
+if (prompt != null) sb.append(prompt).append(" ");
+}
+if (conscientiousnessValue != 0) {
+String prompt = OceanPrompts.getPrompt(OceanTrait.CONSCIENTIOUSNESS, conscientiousne
+if (prompt != null) sb.append(prompt).append(" ");
+}
+if (extraversionValue != 0) {
+String prompt = OceanPrompts.getPrompt(OceanTrait.EXTRAVERSION, extraversionValue);
+if (prompt != null) sb.append(prompt).append(" ");
+}
+if (agreeablenessValue != 0) {
+String prompt = OceanPrompts.getPrompt(OceanTrait.AGREEABLENESS, agreeablenessValue)
+if (prompt != null) sb.append(prompt).append(" ");
+}
+if (neuroticismValue != 0) {
+String prompt = OceanPrompts.getPrompt(OceanTrait.NEUROTICISM, neuroticismValue);
+if (prompt != null) sb.append(prompt).append(" ");
+}
+return sb.toString().trim();
+}
+// Example usage
+public static void main(String[] args) {
+// Suppose we detected a user with O=-1, C=+1, E=+1, A=-1, N=+1
+String finalPrompt = buildPrompt(-1, +1, +1, -1, +1);
+System.out.println(finalPrompt);
+// Output (example):
+
+// Focus on familiar topics; reduce novelty. Provide organized, structured guidance.
+// Maintain an energetic, sociable tone. Use a neutral, matter-of-fact stance; limit per
+// Reassure stability and confidence.
+}
+}
+
+1. Check if a trait value is 0 . If so, skip adding any text.
+2. Concatenate non‐null prompts into a final string.
+3. Return or display it to the user.
+
+Why This Setup
+Transparency: Each trait’s text is explicitly in the PROMPT_MAP .
+Maintainability: If you want to edit a single prompt (e.g., changing wording for Openness +1),
+you do it in one place.
+Modularity: The dictionary approach can easily be extended or replaced (e.g., new frameworks
+for emotion detection) without refactoring your entire codebase.
+Iterative: You can tweak or add partial logic (like conflict resolution) later in a well‐structured
+manner.
+
+

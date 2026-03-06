@@ -1,0 +1,42 @@
+╔═══════════════════════════════════════════════════════════════╗
+║  🎯 YOU'RE HERE: Import a Fresh Workflow                      ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Status:
+  ✅ Old workflows deleted
+  ❌ No workflow active yet
+  ⏩ Next: Import a fresh workflow
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUICK IMPORT (2 minutes):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open N8N: http://localhost:5678
+
+2. Click "Create Workflow" (red button, top-right)
+
+3. Click "Import from File"
+
+4. Select this file:
+   /Users/huaduojiejia/MyProject/hslu/2026/preliminary-studies/w9-Technical-Specifications/MVP/Phase-1/workflows/phase1-2.json
+
+5. Click "Open"
+
+6. Toggle "Active" to ON (green) ← IMPORTANT!
+
+7. Click "Save"
+
+8. Run test again:
+   ./test-workflow-after-activation.sh
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  CRITICAL: Must Toggle Active ON!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After importing, you MUST:
+  • Toggle "Active" to ON (green)
+  • Click "Save"
+
+Otherwise the workflow won't handle any requests!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

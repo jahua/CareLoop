@@ -1,0 +1,5 @@
+Metric,Unit,N_conversations,Mean_Diff,CI_95_Lower,CI_95_Upper,t_statistic_paired,p_value_t_paired,Wilcoxon_statistic,p_value_wilcoxon,Cohens_dz
+Emotional Tone,conversation_mean (paired),10,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0
+Relevance Coherence,conversation_mean (paired),10,0.033333333333333326,0.0,0.09999999999999998,1.0,0.34343639613791355,0.0,1.0,0.31622776601683794
+Personality Needs,conversation_mean (paired),10,1.8,1.4666666666666668,2.0,12.650074712977093,4.906620661607922e-07,0.0,0.001953125,4.000304866430838
+Total,conversation_mean (paired),10,1.8333333333333335,1.5333333333333332,2.066666666666667,12.13104126454783,7.019105746891964e-07,0.0,0.001953125,3.836172078546037

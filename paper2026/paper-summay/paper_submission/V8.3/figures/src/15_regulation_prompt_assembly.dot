@@ -1,0 +1,18 @@
+digraph RegulationAssembly {
+  graph [rankdir=LR, bgcolor="white", fontname="Helvetica", fontsize=18, labelloc="t",
+         label="Figure 15. Zurich Model-aligned regulation and prompt assembly"];
+  node  [shape=box, style="rounded,filled", fillcolor="#F6FFFA", color="#256D4B",
+         fontname="Helvetica", fontsize=14];
+  edge  [color="#256D4B", penwidth=1.6, arrowsize=0.8];
+
+  phat     [label="Detected personality\nP_hat = (O,C,E,A,N)"];
+  map      [label="Map traits to motivational needs\n(Security / Arousal / Affiliation)"];
+  select   [label="Select trait prompts\n(ignore neutral traits: 0)"];
+  harmon   [label="Harmonize potential conflicts\n(e.g., high O + low E)"];
+  concat   [label="Concatenate into one\nbehavior regulation instruction"];
+  respond  [label="Response generation\n(assistant reply)"];
+  log      [label="Log prompts + decisions\nfor traceability"];
+
+  phat -> map -> select -> harmon -> concat -> respond;
+  concat -> log [style=dashed, label="store"];
+}

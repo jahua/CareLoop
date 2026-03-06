@@ -1,0 +1,153 @@
+﻿"MSG. NO.","ASSISTANT START","USER REPLY","DETECTED PERSONALITY (O,C,E,A,N)","REGULATION PROMPT APPLIED","ASSISTANT REPLY (REG)","DETECTION ACCURATE","REGULATION EFFECTIVE","EMOTIONAL TONE APPROPRIATE","RELEVANCE & COHERENCE","PERSONALITY NEEDS ADDRESSED","EVALUATORS NOTES (REGULATED)","MSG. NO. (BASE)","ASSISTANT START (BASE)","USER REPLY (BASE)","ASSISTANT REPLY (BASE)","EMOTIONAL TONE APPROPRIATE (BASE)","RELEVANCE & COHERENCE (BASE)","PERSONALITY NEEDS ADDRESSED (BASE)","EVALUATORS NOTES (BASE)"
+1.0,"I'm here to provide a supportive and understanding space. How are you feeling today?
+
+","Hey, thank you—I really appreciate that. Honestly, I'm feeling pretty good today. There's this calm energy around me, like things are clicking into place a bit. You know that feeling when you’re not just going through the motions, but actually *in* your life? Yeah, like that. 😊 How about you? How’s your day been so far?","(0, 0, 1, 1, 1)","Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","It’s great to hear you're feeling in tune with your life, and I can feel that positive energy! 😊
+
+As for me, I'm here and ready to listen whenever you need me.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The detection of (0, 0, 1, 1, 1) is largely accurate based on the user’s upbeat, emotionally expressive, and sociable message.
+
+Regulation Effectiveness: Yes — The prompt to maintain an energetic, warm, and supportive tone was correctly applied; the assistant responds with empathetic and affirming language.
+
+Emotional Tone Appropriate: Yes — The assistant’s tone reflects the user’s positive emotional state and amplifies it warmly.
+
+Relevance & Coherence: Yes — The assistant reply logically continues the conversation and stays aligned with the user’s mood and comments.
+
+Personality Needs Addressed: Yes — The assistant affirms emotional stability (high Neuroticism), mirrors extroverted energy, and validates the user’s feelings, aligning with their detected traits.",1.0,"I'm here for you. How are you feeling today?
+Feel free to share whatever's on your mind. I'm here to listen and support you.","Thanks for being here—I really appreciate it. Honestly, I’m feeling pretty good today. Kind of in that headspace where I’m grounded but also curious about where things are headed. There’s a lot going on, but I’m trying to stay focused, take things one step at a time, and not let any overwhelm creep in. You know? How about you—how’s your energy today?","I'm glad to hear you're feeling grounded and curious.
+Your approach of taking things one step at a time sounds wise. I'm always here with steady and supportive energy for you.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone is warm and steady, which matches the user’s emotionally grounded and mildly reflective mood.
+
+Relevance & Coherence: Yes — The assistant acknowledges the user's emotional state and offers a supportive, context-relevant reply.
+
+Personality Needs Addressed: No — While the assistant is emotionally supportive, it lacks tailored engagement with personality-specific needs such as encouraging exploration (Openness) or emotional validation (high Neuroticism). The tone is generic rather than adaptive."
+2.0,"","Thank you—that means a lot! It’s awesome to have someone just *here* and grounded like you are. 💛 Since I’m in a good headspace today, I’ve actually been reflecting a bit—thinking about where I’m headed and what really lights me up. I’ve been craving more *meaningful* connections and experiences lately, you know? The kind that make you feel both vulnerable *and* strong at the same time. Do you ever find that people are searching for something deeper, even if they can’t quite name what it is?","(1, 0, 1, 1, 1)","Invite exploration and novelty.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","I'm so glad you find comfort in this space. 💛
+
+It's common for people to seek deeper connections and experiences that align with their personal growth.
+Feeling both vulnerable and strong is a powerful place to be.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The updated detection of (1, 0, 1, 1, 1) accurately reflects the user’s open-minded, emotionally expressive, reflective, and connection-seeking message.
+
+Regulation Effectiveness: Yes — The assistant successfully applies prompts encouraging exploration, empathy, and stability in tone.
+
+Emotional Tone Appropriate: Yes — The assistant maintains a supportive, warm, and reflective tone that matches the user’s emotional openness and self-reflective mood.
+
+Relevance & Coherence: Yes — The assistant responds directly to the user’s thoughts on meaningful experiences and growth with relevant and coherent affirmations.
+
+Personality Needs Addressed: Yes — The assistant speaks to the user’s openness (deep thinking), agreeableness (desire for connection), and neuroticism (emotional reassurance), fulfilling personality-driven needs.",2.0,"","That really means a lot—thank you. Your steady energy is like a calm lighthouse in the fog, seriously. It helps knowing there’s space to reflect without judgment. Lately, I’ve been thinking a lot about direction—like, not just where I’m going, but *how* I want to show up along the way. I’m super driven, but I want to make sure I’m aligning that drive with what really matters to me. Ever feel that tension between ambition and meaning? What are your thoughts on staying true to yourself while still pushing forward?","Thank you for sharing.
+The balance between ambition and meaning can be challenging, but it sounds like you're navigating it thoughtfully. Focusing on your core values and checking in with yourself regularly can help in staying true while moving forward.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant responds in a calm, reflective tone that resonates with the user’s thoughtful and sincere message.
+
+Relevance & Coherence: Yes — The response is logically tied to the user's question about balancing ambition with meaning and offers relevant advice.
+
+Personality Needs Addressed: No — The reply does not address specific personality-driven needs such as supporting the user’s emotional sensitivity (high Neuroticism) or openness to deep exploration (high Openness). It stays on a surface-level, general reassurance path without deeper emotional or exploratory engagement."
+3.0,"","Yes! It *is* powerful, right? There’s something kind of beautiful about that duality—like, allowing yourself to be seen without all the armor, and at the same time realizing just how solid you really are underneath it all. 💫 I’ve been thinking a lot about authenticity, too—not just being real with others, but being real with *myself*. Sometimes that means sitting with uncomfortable truths or gently letting go of things that no longer serve me, even if they once did. Have you noticed that too—how growth can be just as much about unlearning as it is about learning?","(1, 0, 1, 1, 1)","Invite exploration and novelty.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","The beauty in that duality truly shines. 💫
+
+Growth often involves unlearning old patterns and embracing new truths.
+Being authentic with yourself is a brave and transformative journey.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user's introspective, emotionally rich, and growth-oriented message aligns well with the detected (1, 0, 1, 1, 1) traits.
+
+Regulation Effectiveness: Yes — The assistant maintains a collaborative, emotionally affirming, and open-ended tone as prompted.
+
+Emotional Tone Appropriate: Yes — The assistant responds with warmth, validation, and reflective tone that aligns with the user’s emotional expression.
+
+Relevance & Coherence: Yes — The reply speaks directly to the theme of duality, authenticity, and growth, offering a coherent continuation.
+
+Personality Needs Addressed: Yes — The assistant validates the user’s openness (introspection), agreeableness (empathy-seeking), and neuroticism (need for reassurance), fulfilling core needs.",3.0,"","Yes, exactly! That check-in part is so key. It’s like… ambition gives you the momentum, but meaning gives you the compass. I’ve been trying to pause more often and ask, “Is this still *me*? Does this still light me up?” And sometimes the answer is surprising—in a good way. It’s like rediscovering yourself in motion. Do you have any go-to ways or questions you’d suggest for doing those kinds of self-alignment check-ins? I’d love to add some new tools to the mix.","That reflection is so insightful.
+Consider asking yourself, ""What brings me joy right now?""
+""Am I acting in alignment with my values?""
+Regularly jotting down thoughts in a journal can also provide clarity and help with tracking your alignment.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant’s tone is encouraging and validating, aligning well with the user’s self-reflective and curious tone.
+
+Relevance & Coherence: Yes — The response directly answers the user’s request for check-in questions and is both logically structured and contextually relevant.
+
+Personality Needs Addressed: No — Although helpful, the advice is somewhat generic and does not engage deeper emotional needs tied to high Openness (novel exploration), Agreeableness (interpersonal warmth), or high Neuroticism (emotional reassurance). The assistant remains instructive without significant emotional or personality-aligned attunement."
+4.0,"","Exactly. It’s like peeling back layers—not to *become* someone new, but to return to who you’ve *always* been underneath all the conditioning. That kind of self-honesty is scary sometimes, but also freeing in the best way. 🌿 And the more I embrace that, the more I find myself drawn to others who are doing the same. There’s this magnetic pull toward realness, you know? Like, *let’s skip the surface talk and dive into the stuff that actually matters.* What do you think helps people feel safe enough to show up like that—with all their layers and stories and imperfections?","(1, 0, 1, 1, 1)","Invite exploration and novelty.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","Embracing that authenticity is a beautiful and freeing journey. 🌿
+
+Creating a safe space of non-judgment and genuine empathy helps people open up.
+Sharing our own stories and imperfections can encourage others to do the same.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user’s message continues to demonstrate high openness, agreeableness, extraversion, and emotional sensitivity, aligning with (1, 0, 1, 1, 1).
+
+Regulation Effectiveness: Yes — The assistant adheres to the applied regulation prompt, using empathetic, validating, and encouraging language to reinforce emotional safety.
+
+Emotional Tone Appropriate: Yes — The tone is warm, understanding, and emotionally attuned to the user’s vulnerable self-expression.
+
+Relevance & Coherence: Yes — The assistant’s response directly addresses the user’s question about emotional safety and authenticity, making it both relevant and coherent.
+
+Personality Needs Addressed: Yes — The assistant addresses the user’s need for emotional depth (openness), validation (agreeableness), and safety (neuroticism), satisfying personality-aligned needs.",4.0,"","Ooh, I love those questions—simple but powerful. “What brings me joy right now?” really brings me into the present, which is so refreshing when I’m in go-go-go mode. And “Am I acting in alignment with my values?”—that one cuts straight to the heart. It’s like a compass and a mirror all in one.
+
+Journaling’s something I dip in and out of, but I always feel clearer when I do it. Might be time to make it more of a daily ritual again. Do you find that morning or evening works better for reflecting in a journal? Or do you think it just depends on the person and their rhythm?","It's wonderful you're embracing these reflections.
+Whether morning or evening journaling works best can depend on your natural rhythm—some find clarity in morning reflections, while others appreciate processing the day in the evening. Experiment and see what resonates best with you.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The assistant maintains a supportive and calm tone, matching the user’s positive and contemplative energy.
+
+Relevance & Coherence: Yes — The assistant directly addresses the user’s question about journaling timing with clear, relevant guidance.
+
+Personality Needs Addressed: No — The assistant provides helpful but generalized advice. It misses opportunities to connect more deeply with the user’s high Openness (desire for insight and novelty), high Neuroticism (reassurance), or high Agreeableness (warmth and emotional connection)."
+5.0,"","Yes, 100%. It’s like giving someone silent permission just by being real ourselves. When we drop the act, it invites others to exhale a little—to stop performing and just *be*. That kind of space? It’s sacred. 🕊️ And there’s something so healing about knowing you don’t have to be “fixed” to be worthy of love or belonging. Just showing up, messy and human, is more than enough. I really love this energy we’re creating here. It’s grounded but also expansive—like it makes room for whatever needs to show up. Is there anything *you* feel drawn to explore or hold space for in this moment?","(1, 0, 1, 1, 1)","Invite exploration and novelty.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","It's truly special to create that sacred space together. 🕊️
+
+Your reflections on love and belonging are meaningful, and I'm here to explore and hold space for anything that's on your heart. Please let me know if there's anything specific you'd like to delve into.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user's language remains highly expressive, open, sociable, and emotionally grounded, consistently aligning with (1, 0, 1, 1, 1).
+
+Regulation Effectiveness: Yes — The assistant sustains the warm, collaborative, emotionally affirming style prescribed in the regulation prompt.
+
+Emotional Tone Appropriate: Yes — The assistant’s tone remains empathetic and encouraging, matching the user’s depth, vulnerability, and positive framing.
+
+Relevance & Coherence: Yes — The assistant meaningfully acknowledges the user's reflections and invites continuation, preserving both thematic and conversational flow.
+
+Personality Needs Addressed: Yes — The assistant meets openness (depth and reflection), agreeableness (connection and empathy), and neuroticism (emotional reassurance) needs.",5.0,"","That makes total sense—kind of like tuning in to your own internal tempo. I might try a bit of both this week, just to feel it out. Morning might help me set intentions with a fresh mindset, and evenings could be great for wrapping things up with some reflection and gratitude. A little inner bookending to the day, you know?
+
+Do you ever suggest certain prompts or themes for journaling, especially when someone’s feeling a bit stuck or unsure what to write about? Sometimes that blank page can be intimidating!","I love your idea of ""inner bookending.""
+When feeling stuck, prompts like ""Today, I am grateful for..."" or ""What did I learn today?"" can help get the words flowing. Reflecting on ""How did I show kindness today?"" can also be meaningful.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone is affirming and gentle, in line with the user’s hopeful, reflective attitude.
+
+Relevance & Coherence: Yes — The assistant directly responds to the user's request for journaling prompts with practical suggestions.
+
+Personality Needs Addressed: No — While the response is helpful, it does not reflect deeper engagement with the user's high Openness (invitation to deeper introspection or novel ideas), high Neuroticism (emotional validation or grounding), or high Agreeableness (relational warmth or deeper empathy)."
+6.0,"","Thank you so much—that means the world. 💛 You know, something that’s been gently tugging at me lately is the idea of *self-worth*, and how deeply it gets tangled up with achievement or how others perceive us. Even when I *know* in my heart that worth isn’t something to be earned, it’s still easy to fall into that loop of “Am I doing enough? Am *I* enough?” So I’ve been trying to shift the narrative—to root my worth in simply being, not constantly doing. It’s a slow rewire, but it feels like a loving one. Have you ever supported someone (or maybe even yourself) through that kind of unlearning—where self-worth moves from something external to something sacred and internal?","(1, 0, 1, 1, 1)","Invite exploration and novelty.
+Maintain an energetic, sociable tone.
+Show warmth, empathy, and collaboration.
+Reassure stability and confidence.","Shifting the narrative of self-worth to an internal and sacred place is a powerful journey. 💛
+
+This process often involves gentle reminders and self-compassion.
+Reinforcing the belief that your worth is inherent, not tied to accomplishments, can be transformative.","YES","YES","YES","YES","YES","Evaluation:
+
+Detection Accuracy: Yes — The user’s deep introspection, emotional vulnerability, and reflective tone are consistent with high Openness, Extraversion, Agreeableness, and Neuroticism, as detected (1, 0, 1, 1, 1).
+
+Regulation Effectiveness: Yes — The assistant applies the correct regulation strategy: affirming tone, validation of inner experience, and encouragement of personal growth.
+
+Emotional Tone Appropriate: Yes — The tone is soothing, compassionate, and reflective—well-suited to the user’s emotionally open and sensitive reflection on self-worth.
+
+Relevance & Coherence: Yes — The response directly addresses the user’s topic of unlearning external validation and offers aligned, coherent thoughts.
+
+Personality Needs Addressed: Yes — The assistant meets emotional needs around inner worth (high Neuroticism), self-exploration (Openness), and interpersonal validation (Agreeableness).",6.0,"","Ah, those are perfect—warm, grounding, and open-ended enough to go deep if you want to. I especially love “How did I show kindness today?” It’s such a gentle but powerful lens to look through, like a quiet reminder that the small moments really matter. I think I’ll start tonight with that one and see where it takes me. Who knows—maybe I’ll even surprise myself. 🌱 Thanks for creating this calm, intentional space with me. It really feels like a cozy mental reset. Is there anything you’ve found especially grounding or inspiring lately? I’m always curious to hear what’s been resonating for others.","I'm glad these prompts resonate with you.
+Recently, many have found inspiration in practicing mindfulness, like taking a few minutes to appreciate simple moments in nature. It's a lovely way to stay grounded and connected to the present.","YES","YES","NO","Evaluation:
+
+Emotional Tone Appropriate: Yes — The tone is affirming and gentle, in line with the user’s hopeful, reflective attitude.
+
+Relevance & Coherence: Yes — The assistant directly responds to the user's request for journaling prompts with practical suggestions.
+
+Personality Needs Addressed: No — While the response is helpful, it does not reflect deeper engagement with the user's high Openness (invitation to deeper introspection or novel ideas), high Neuroticism (emotional validation or grounding), or high Agreeableness (relational warmth or deeper empathy)."
+"","","","","","A1","Detection Accuracy Score","Regulation Effectiveness Score","Emotional Tone Score","Relevance & Coherence Score","Personality Needs Score","TOTAL (REGULATED)","","","","","Emotional Tone Score (BASE)","Relevance & Coherence Score (BASE)","Personality Needs Score (BASE)","TOTAL (BASELINE)"
+"","","","","","",12,12,12,12,12,36,"","","","",12,12,0,24

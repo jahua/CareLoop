@@ -1,0 +1,51 @@
+digraph TraitToZurich {
+  graph [rankdir=LR, bgcolor="white", fontname="Helvetica", fontsize=18, labelloc="t",
+         label="Figure 16. Mapping Big Five traits to Zurich Model domains and behavioral effects"];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=14];
+  edge  [color="#333333", penwidth=1.4, arrowsize=0.8];
+
+  subgraph cluster_traits {
+    label="Big Five traits (inputs)";
+    color="#D0D7DE";
+    style="rounded";
+    node [fillcolor="#FFF7ED", color="#9A5B13"];
+    O [label="Openness (O)"];
+    C [label="Conscientiousness (C)"];
+    E [label="Extraversion (E)"];
+    A [label="Agreeableness (A)"];
+    N [label="Neuroticism / Emotional stability (N)"];
+  }
+
+  subgraph cluster_domains {
+    label="Zurich Model domains (needs)";
+    color="#D0D7DE";
+    style="rounded";
+    node [fillcolor="#EEF2FF", color="#3730A3"];
+    security   [label="Security\n(reassurance / comfort)"];
+    arousal    [label="Arousal\n(novelty & energy regulation)"];
+    affiliation[label="Affiliation\n(warmth & relational proximity)"];
+    structure  [label="Structure / self-regulation\n(task guidance & pacing)"];
+  }
+
+  subgraph cluster_effects {
+    label="Behavioral effects (outputs)";
+    color="#D0D7DE";
+    style="rounded";
+    node [fillcolor="#F0FDF4", color="#166534"];
+    eff_sec   [label="Provide reassurance / reduce threat\n(or add comfort when vulnerable)"];
+    eff_ar    [label="Adjust novelty & stimulation\n(invite exploration vs. keep familiar)"];
+    eff_aff   [label="Adjust warmth & collaboration\n(empathic vs. neutral stance)"];
+    eff_str   [label="Adjust structure & pacing\n(organized vs. flexible guidance)"];
+  }
+
+  N -> security;
+  O -> arousal;
+  E -> arousal;
+  A -> affiliation;
+  C -> structure;
+
+  security -> eff_sec;
+  arousal -> eff_ar;
+  affiliation -> eff_aff;
+  structure -> eff_str;
+}

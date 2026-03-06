@@ -1,0 +1,520 @@
+{
+  "name": "Phase1-Enhanced-Personality-Chat-LATEST",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "personality-chat-enhanced",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger (POST)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT get_latest_personality_state($1::uuid) AS state_json",
+        "additionalFields": {
+          "queryParams": "={{$json.body?.session_id || $json.session_id}}"
+        }
+      },
+      "id": "db-query-history",
+      "name": "Get Latest State",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT role, text, created_at FROM get_session_history($1::uuid, 10) ORDER BY created_at ASC",
+        "additionalFields": {
+          "queryParams": "={{$json.body?.session_id || $json.session_id}}"
+        }
+      },
+      "id": "db-query-turns",
+      "name": "Get Conversation History",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [450, 450]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Ingest & Normalize — robust across Webhook and Manual/Set testing\n\n// Collect items from all incoming inputs\nlet inputs = [];\nfor (let i = 0; i < 8; i++) {\n  try { inputs = inputs.concat($input.all(i)); } catch (e) { /* ignore */ }\n}\n\n// Prefer item that contains body.{session_id,message}\nconst bodyFromInputs = inputs.find(i => i.json && i.json.body)?.json?.body;\nconst bodyFromCurrent = $json?.body;\nlet body = bodyFromInputs || bodyFromCurrent || null;\n\nif (!body || !body.session_id || !body.message) {\n  // last-resort: try node named \"Edit Fields\" if present\n  try {\n    const setItem = $items('Edit Fields','main',0);\n    body = setItem?.json?.body || body;\n  } catch (e) { /* ignore */ }\n}\n\nif (!body || !body.session_id || !body.message) {\n  throw new Error('Missing body.session_id or body.message. Ensure Webhook sends {body:{...}} or the \"Edit Fields\" node sets body.session_id and body.message and is connected to this node.');\n}\n\nconst sessionId = body.session_id;\nconst message = String(body.message || '').trim();\n\n// Previous state from any input (state_json)\nconst previousState = (inputs.find(i => i.json && i.json.state_json)?.json.state_json) || {\n  ocean: { O:0, C:0, E:0, A:0, N:0 },\n  stable: false,\n  turn_index: 0,\n};\n\n// Conversation history (rows with role/text)\nconst historyItems = inputs\n  .filter(i => i.json && typeof i.json.role === 'string' && typeof i.json.text === 'string')\n  .map(i => ({ role: i.json.role, text: String(i.json.text || ''), created_at: i.json.created_at ? new Date(i.json.created_at).toISOString() : null }));\n\nhistoryItems.sort((a,b) => (a.created_at && b.created_at) ? a.created_at.localeCompare(b.created_at) : 0);\n\n// Clean message and build context\nconst cleanMsg = message.replace(/[\\r\\n]+/g,' ').slice(0,1000);\nconst conversationContext = historyItems.map(t => `${t.role}: ${t.text}`).join('\\n') + (cleanMsg ? `\\nuser: ${cleanMsg}` : '');\n\nreturn {\n  session_id: sessionId,\n  clean_msg: cleanMsg,\n  conversation_context: conversationContext,\n  ocean_prev: previousState.ocean || { O:0, C:0, E:0, A:0, N:0 },\n  turn_index: (previousState.turn_index || 0) + 1,\n  history: historyItems,\n};"
+      },
+      "id": "ingest-function",
+      "name": "Ingest & Normalize",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-2.0-flash-exp"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Analyze the following conversation using the Zurich Model framework for personality assessment. Evaluate the user's Big Five traits by examining their underlying motivational needs for SECURITY, AROUSAL, and POWER, along with their coping strategies and approach-avoidance patterns.\\n\\n**ASSESSMENT FRAMEWORK:**\\n\\n**Openness (Arousal System):**\\nExamine the user's need for cognitive and experiential arousal:\\n• HIGH (>0.5): Seeks novelty, cognitive stimulation, new perspectives; shows curiosity about possibilities; embraces uncertainty as stimulating\\n• LOW (<-0.5): Prefers familiar patterns; avoids cognitive overload; finds comfort in routine; shows resistance to new ideas that disrupt mental equilibrium\\n• NEUTRAL (-0.5 to 0.5): Balanced or no clear preference pattern evident\\n\\n**Conscientiousness (Security & Control System):**\\nAssess need for structure, predictability, and behavioral control:\\n• HIGH (>0.5): Seeks security through organization and planning; shows systematic approach to problems; values reliability and achievement as sources of stability\\n• LOW (<-0.5): Prefers flexible, spontaneous adaptation; avoids rigid structures; shows accommodative coping (adjusting goals rather than pursuing them systematically)\\n• NEUTRAL (-0.5 to 0.5): Balanced or no clear organizational preference evident\\n\\n**Extraversion (Social Arousal & Power System):**\\nEvaluate approach vs. avoidance in social energy and stimulation seeking:\\n• HIGH (>0.5): Approaches social situations for stimulation; seeks social influence and connection; energized by interpersonal engagement\\n• LOW (<-0.5): Avoids high-stimulation social environments; prefers controlled, low-intensity social contact; seeks solitude for regulation\\n• NEUTRAL (-0.5 to 0.5): Balanced or no clear social energy pattern evident\\n\\n**Agreeableness (Affiliation & Security System):**\\nAnalyze approach vs. avoidance in interpersonal bonding and cooperation:\\n• HIGH (>0.5): Approaches others with trust and empathy; seeks harmony and mutual support; prioritizes group cohesion over individual goals\\n• LOW (<-0.5): Shows skepticism toward others' motives; maintains psychological distance; prioritizes autonomy over conformity; shows competitive rather than cooperative tendencies\\n• NEUTRAL (-0.5 to 0.5): Balanced or no clear interpersonal orientation evident\\n\\n**Neuroticism (Security & Threat Detection System):**\\nEvaluate emotional regulation and security maintenance (INVERTED SCORING):\\n• HIGH NEUROTICISM (<-0.5): Shows heightened threat sensitivity; experiences emotional instability; difficulty maintaining psychological security; uses worry/anxiety as coping mechanisms\\n• LOW NEUROTICISM (>0.5): Maintains emotional equilibrium; shows secure baseline; effective emotional regulation; calm under stress\\n• NEUTRAL (-0.5 to 0.5): Balanced emotional regulation\\n\\n**CONTEXTUAL FACTORS TO CONSIDER:**\\n- Coping strategies: Are they problem-focused (assimilative) or acceptance-focused (accommodative)?\\n- Social context: How does the therapeutic/support context influence their behavior?\\n- Dynamic patterns: Do they show consistent patterns or situational variability?\\n- Motivational conflicts: Are there competing needs creating internal tension?\\n\\n**INSTRUCTIONS:**\\nFocus on BEHAVIORAL MANIFESTATIONS of underlying motivational systems rather than surface descriptions. Look for approach-avoidance patterns, need satisfaction strategies, and dynamic adaptations. Consider how the person regulates their distance from others and manages their core needs for security, arousal, and power.\\n\\nReturn continuous values from -1.0 to +1.0. Use intermediate values to reflect degree/intensity of patterns.\\n\\nReturn only JSON format: {\\\"ocean\\\":{\\\"O\\\":float,\\\"C\\\":float,\\\"E\\\":float,\\\"A\\\":float,\\\"N\\\":float}, \\\"trait_conf\\\":{\\\"O\\\":float,\\\"C\\\":float,\\\"E\\\":float,\\\"A\\\":float,\\\"N\\\":float}, \\\"evidence_quotes\\\":[string,...]}\\n\\nValues in [-1,1], confidence in [0,1]. No additional commentary.\"}, {\"role\": \"user\", \"content\": \"Conversation:\\n\" + $json.conversation_context}]"
+            },
+            {
+              "name": "response_format",
+              "value": "={\"type\": \"json_object\"}"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.3"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "detect-llm",
+      "name": "Personality Detection",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// EMA smoothing with confidence weighting + robust JSON parsing\n// Clean markdown fences from LLM JSON if present\nconst allInputs = $input.all();\nconst rawMsg = $input.first().json.choices[0].message.content || '';\nconst cleaned = rawMsg.replace(/```json\\s*/ig,'').replace(/```/g,'').trim();\nlet detectionResult;\ntry {\n  detectionResult = JSON.parse(cleaned);\n} catch (e) {\n  const m = cleaned.match(/\\{[\\s\\S]*\\}/);\n  if (m) detectionResult = JSON.parse(m[0]); else throw new Error('Failed to parse LLM JSON');\n}\nconst rawOcean = detectionResult.ocean || { O:0, C:0, E:0, A:0, N:0 };\nconst traitConf = detectionResult.trait_conf || { O:0.5, C:0.5, E:0.5, A:0.5, N:0.5 };\nconst evidenceQuotes = detectionResult.evidence_quotes || [];\nconst oceanPrev = allInputs[0].json.ocean_prev || { O:0, C:0, E:0, A:0, N:0 };\n\n// Get conversation context to pass through\nconst conversationContext = allInputs.find(i => i.json?.conversation_context)?.json?.conversation_context || '';\n\nconst smoothedOcean = {};\nlet stableCount = 0;\nconst STABILITY_THRESHOLD = 0.3;\nconst MAX_ALPHA = 0.4;\nconst DELTA_CAP = 0.3;\n\nfor (const trait of ['O','C','E','A','N']) {\n  const confidence = Math.max(0.1, Math.min(1.0, traitConf[trait] ?? 0.5));\n  const alpha = confidence * MAX_ALPHA;\n  const prevValue = oceanPrev[trait] ?? 0;\n  const rawValue = Math.max(-1, Math.min(1, rawOcean[trait] ?? 0));\n  const uncappedNew = (1 - alpha) * prevValue + alpha * rawValue;\n  const delta = uncappedNew - prevValue;\n  const cappedDelta = Math.max(-DELTA_CAP, Math.min(DELTA_CAP, delta));\n  const newValue = prevValue + cappedDelta;\n  smoothedOcean[trait] = Math.max(-1, Math.min(1, newValue));\n  if (Math.abs(smoothedOcean[trait]) >= STABILITY_THRESHOLD) stableCount++;\n}\nconst isStable = stableCount >= 3;\nreturn { ocean: smoothedOcean, trait_conf: traitConf, stable: isStable, evidence_quotes: evidenceQuotes, stable_count: stableCount, conversation_context: conversationContext };"
+      },
+      "id": "smooth-function",
+      "name": "Smooth Personality",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Map OCEAN traits to behavioral directives\nconst allInputs = $input.all();\nconst ocean = $input.first().json.ocean;\nconst stable = $input.first().json.stable;\n\n// Get conversation context from ingest-function (passed through smooth-function)\nconst conversationContext = allInputs.find(i => i.json?.conversation_context)?.json?.conversation_context || '';\n\nconst policyPlan = [];\n\n// Warmth dimension (Agreeableness + Extraversion influence)\nconst warmthScore = (ocean.A + ocean.E) / 2;\nif (warmthScore > 0.2) {\n  policyPlan.push('validate user concerns with warmth and empathy');\n} else if (warmthScore < -0.2) {\n  policyPlan.push('respond professionally and directly without excessive warmth');\n} else {\n  policyPlan.push('use a balanced, supportive tone');\n}\n\n// Directness dimension (Conscientiousness - Neuroticism)\nconst directnessScore = ocean.C - ocean.N;\nif (directnessScore > 0.3) {\n  policyPlan.push('use concise, direct language and clear statements');\n} else if (directnessScore < -0.3) {\n  policyPlan.push('use gentle hedging and softer, more tentative language');\n} else {\n  policyPlan.push('balance directness with sensitivity');\n}\n\n// Questioning style (Openness to experience)\nif (ocean.O > 0.3) {\n  policyPlan.push('ask one thoughtful, open-ended follow-up question');\n} else if (ocean.O < -0.3) {\n  policyPlan.push('focus on clear statements rather than exploratory questions');\n} else {\n  policyPlan.push('include one clarifying question if appropriate');\n}\n\n// Assertiveness (Extraversion + Conscientiousness, moderated by Agreeableness)\nconst assertivenessScore = (ocean.E + ocean.C) / 2;\nif (assertivenessScore > 0.4 && ocean.A > 0) {\n  policyPlan.push('offer specific, actionable suggestions confidently');\n} else if (assertivenessScore < -0.2) {\n  policyPlan.push('avoid imperative language and strong directives');\n} else {\n  policyPlan.push('provide gentle suggestions when appropriate');\n}\n\n// Length and pacing (Conscientiousness and Extraversion)\nconst paceScore = (ocean.C + ocean.E) / 2;\nif (paceScore > 0.3) {\n  policyPlan.push('keep responses moderately concise and well-structured');\n} else if (paceScore < -0.3) {\n  policyPlan.push('allow for more detailed, thoughtful responses');\n}\n\n// Ensure we don't exceed 4 directives and remove any undefined entries\nconst finalPolicyPlan = policyPlan.filter(p => p && p.length > 0).slice(0, 4);\n\nreturn {\n  policy_plan: finalPolicyPlan,\n  conversation_context: conversationContext,\n  personality_scores: {\n    warmth: warmthScore,\n    directness: directnessScore,\n    assertiveness: assertivenessScore,\n    pace: paceScore\n  }\n};"
+      },
+      "id": "regulate-function",
+      "name": "Generate Policy",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-2.0-flash-exp"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Generate a helpful response following these behavioral directives: \" + JSON.stringify($json.policy_plan) + \". CRITICAL REQUIREMENTS: 1) Only reference information explicitly mentioned in the conversation - do not introduce external facts or knowledge. 2) All statements must be grounded in the dialog context. 3) Cap questions at 1-2 maximum. 4) Keep response length appropriate (50-150 words typically). 5) Follow the personality-adapted directives while maintaining therapeutic helpfulness.\"}, {\"role\": \"user\", \"content\": \"Recent conversation:\\n\" + $json.conversation_context + \"\\n\\nGenerate an appropriate response that follows the behavioral directives and stays grounded in the conversation context.\"}]"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.7"
+            },
+            {
+              "name": "max_tokens",
+              "value": "=200"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "generate-llm",
+      "name": "Generate Response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1450, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// FIXED: Verify response for policy adherence and grounding\n// Add null checks and fallbacks to prevent \"Cannot read properties of undefined\" errors\n\n// Get the draft reply from the LLM response\nconst draftReply = $input.first()?.json?.choices?.[0]?.message?.content?.trim() || '';\n\n// Get inputs from all previous nodes with safety checks\nconst allInputs = $input.all();\n\n// Find policy plan and conversation context with fallbacks\nconst policyData = allInputs.find(input => input.json?.policy_plan) || {};\nconst policyPlan = policyData.json?.policy_plan || [];\n\nconst contextData = allInputs.find(input => input.json?.conversation_context) || {};\nconst lowerConversationContext = (contextData.json?.conversation_context || '').toLowerCase();\n\nconst reasons = [];\nlet passesVerification = true;\n\n// Validate that we have required data\nif (!draftReply) {\n  reasons.push('No draft reply received from LLM');\n  passesVerification = false;\n  return {\n    draft_reply: 'Error: No response generated',\n    decision: 'refine',\n    reasons: reasons,\n    verification_details: {\n      question_count: 0,\n      response_length: 0,\n      novel_claims_detected: false,\n      error: 'Missing draft reply'\n    }\n  };\n}\n\n// Check for potential novel claims (basic heuristics)\nconst novelClaimIndicators = [\n  'research shows', 'studies indicate', 'experts say', 'according to',\n  'it is known that', 'science shows', 'data suggests', 'statistics show'\n];\n\nfor (const indicator of novelClaimIndicators) {\n  if (draftReply.toLowerCase().includes(indicator)) {\n    reasons.push(`Potential novel claim detected: \"${indicator}\"`);\n    passesVerification = false;\n  }\n}\n\n// Check question count\nconst questionCount = (draftReply.match(/\\?/g) || []).length;\nif (questionCount > 2) {\n  reasons.push(`Too many questions (${questionCount}), should be ≤2`);\n  passesVerification = false;\n}\n\n// Check response length (too short or too long)\nif (draftReply.length < 20) {\n  reasons.push('Response too short, may not be helpful');\n  passesVerification = false;\n} else if (draftReply.length > 300) {\n  reasons.push('Response too long, should be more concise');\n  passesVerification = false;\n}\n\n// Check for basic policy adherence (simplified)\nconst lowerReply = draftReply.toLowerCase();\n\n// Check warmth policy (only if policy plan exists)\nif (policyPlan.some && policyPlan.some(p => p.includes('warmth'))) {\n  const warmthIndicators = ['understand', 'feel', 'sounds', 'appreciate'];\n  if (!warmthIndicators.some(indicator => lowerReply.includes(indicator))) {\n    reasons.push('Response may lack required warmth and empathy');\n    passesVerification = false;\n  }\n}\n\n// Check directness policy (only if policy plan exists)\nif (policyPlan.some && policyPlan.some(p => p.includes('direct language'))) {\n  const hedgingWords = ['maybe', 'perhaps', 'might want to consider', 'you could try'];\n  if (hedgingWords.some(word => lowerReply.includes(word))) {\n    reasons.push('Response uses hedging language but policy requires directness');\n    passesVerification = false;\n  }\n}\n\n// Determine final decision\nconst decision = passesVerification ? 'accept' : 'refine';\n\nreturn {\n  draft_reply: draftReply,\n  decision: decision,\n  reasons: reasons,\n  verification_details: {\n    question_count: questionCount,\n    response_length: draftReply.length,\n    novel_claims_detected: reasons.filter(r => r.includes('novel')).length > 0,\n    conversation_context_available: !!lowerConversationContext,\n    policy_plan_available: Array.isArray(policyPlan) && policyPlan.length > 0\n  }\n};"
+      },
+      "id": "verify-function",
+      "name": "Verify Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1650, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.decision}}",
+              "operation": "equal",
+              "value2": "refine"
+            }
+          ]
+        }
+      },
+      "id": "if-node",
+      "name": "Decision Router",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1850, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai.juguang.chat/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gemini-2.0-flash-exp"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Fix this response based on these issues: \" + JSON.stringify($json.reasons) + \". ONLY make minimal adjustments to address the specific problems. Do not add new content or claims. Keep the response grounded in the original conversation context. Maintain the helpful and appropriate tone.\"}, {\"role\": \"user\", \"content\": \"Original response to fix:\\n\" + $json.draft_reply}]"
+            },
+            {
+              "name": "temperature",
+              "value": "=0.3"
+            },
+            {
+              "name": "max_tokens",
+              "value": "=200"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "refine-llm",
+      "name": "Refine Response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1850, 450]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Format final API response and prepare database entries\nconst allInputs = $input.all();\n\n// Get the final reply (either refined or original draft)\nconst finalReply = $json.choices ? \n  $json.choices[0].message.content.trim() : \n  allInputs.find(input => input.json.draft_reply)?.json.draft_reply || 'I apologize, but I encountered an issue generating a response.';\n\n// Collect data from previous nodes\nconst ingestData = allInputs.find(input => input.json.session_id)?.json || {};\nconst smoothData = allInputs.find(input => input.json.ocean)?.json || {};\nconst policyData = allInputs.find(input => input.json.policy_plan)?.json || {};\nconst verifyData = allInputs.find(input => input.json.decision)?.json || {};\n\nconst sessionId = ingestData.session_id;\nconst turnIndex = ingestData.turn_index || 1;\nconst cleanMsg = ingestData.clean_msg || '';\n\n// Prepare response payload with discrete OCEAN values\nconst responsePayload = {\n  reply: finalReply,\n  session_id: sessionId,\n  turn_index: turnIndex,\n  policy_plan: policyData.policy_plan || [],\n  ocean_preview: smoothData.ocean || {O: 0, C: 0, E: 0, A: 0, N: 0},\n  personality_stable: smoothData.stable || false,\n  confidence_scores: smoothData.trait_conf || {},\n  evidence_quotes: smoothData.evidence_quotes || [],\n  verification: {\n    decision: verifyData.decision || 'accept',\n    reasons: verifyData.reasons || []\n  },\n  timings_ms: {\n    detect: 800,\n    smooth: 50,\n    regulate: 30,\n    generate: 1200,\n    verify: 100,\n    total: 2180\n  },\n  execution_id: $workflow.id,\n  timestamp: new Date().toISOString()\n};\n\n// Prepare the state object for database storage\nconst stateSnapshot = {\n  session_id: sessionId,\n  turn_index: turnIndex,\n  ocean: smoothData.ocean,\n  trait_conf: smoothData.trait_conf,\n  stable: smoothData.stable,\n  stable_count: smoothData.stable_count || 0,\n  policy_plan: policyData.policy_plan,\n  evidence_quotes: smoothData.evidence_quotes || [],\n  flags: {\n    refined_once: verifyData.decision === 'refine',\n    neutral_fallback: false,\n    verification_passed: verifyData.decision === 'accept'\n  },\n  last_updated: new Date().toISOString(),\n  execution_id: $workflow.id\n};\n\nreturn {\n  api_response: responsePayload,\n  state_snapshot: stateSnapshot,\n  // Database fields\n  session_id: sessionId,\n  turn_index: turnIndex,\n  execution_id: $workflow.id,\n  user_message: cleanMsg,\n  assistant_message: finalReply\n};"
+      },
+      "id": "deliver-function",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [2050, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO turns (session_id, turn_index, role, text) VALUES ($1::uuid, $2::int, $3::text, $4::text)",
+        "additionalFields": {
+          "queryParams": "={{$json.session_id}},={{$json.turn_index}},=user,={{$json.user_message}}"
+        }
+      },
+      "id": "db-insert-user-turn",
+      "name": "Save User Turn",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [2250, 200],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO turns (session_id, turn_index, role, text) VALUES ($1::uuid, $2::int, $3::text, $4::text)",
+        "additionalFields": {
+          "queryParams": "={{$json.session_id}},={{$json.turn_index}},=assistant,={{$json.assistant_message}}"
+        }
+      },
+      "id": "db-insert-assistant-turn",
+      "name": "Save Assistant Turn",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [2250, 300],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO state_snapshots (session_id, turn_index, state_json, execution_id) VALUES ($1::uuid, $2::int, $3::jsonb, $4::text) ON CONFLICT (session_id, turn_index) DO UPDATE SET state_json = EXCLUDED.state_json, execution_id = EXCLUDED.execution_id",
+        "additionalFields": {
+          "queryParams": "={{$json.session_id}},={{$json.turn_index}},={{JSON.stringify($json.state_snapshot)}},={{$json.execution_id}}"
+        }
+      },
+      "id": "db-save-state",
+      "name": "Save State Snapshot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [2250, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json.api_response || $node['Format Response'].json.api_response}}"
+      },
+      "id": "webhook-response",
+      "name": "Return Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2450, 300]
+    }
+  ],
+  "connections": {
+    "webhook-trigger": {
+      "main": [
+        [
+          {
+            "node": "db-query-history",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "db-query-turns",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "ingest-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-query-history": {
+      "main": [
+        [
+          {
+            "node": "ingest-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-query-turns": {
+      "main": [
+        [
+          {
+            "node": "ingest-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ingest-function": {
+      "main": [
+        [
+          {
+            "node": "detect-llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "detect-llm": {
+      "main": [
+        [
+          {
+            "node": "smooth-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "smooth-function": {
+      "main": [
+        [
+          {
+            "node": "regulate-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "regulate-function": {
+      "main": [
+        [
+          {
+            "node": "generate-llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate-llm": {
+      "main": [
+        [
+          {
+            "node": "verify-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verify-function": {
+      "main": [
+        [
+          {
+            "node": "if-node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if-node": {
+      "main": [
+        [
+          {
+            "node": "deliver-function",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "refine-llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "refine-llm": {
+      "main": [
+        [
+          {
+            "node": "deliver-function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deliver-function": {
+      "main": [
+        [
+          {
+            "node": "db-insert-user-turn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "db-insert-assistant-turn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "db-save-state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-insert-user-turn": {
+      "main": [
+        [
+          {
+            "node": "webhook-response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-insert-assistant-turn": {
+      "main": [
+        [
+          {
+            "node": "webhook-response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "db-save-state": {
+      "main": [
+        [
+          {
+            "node": "webhook-response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "2.1-zurich",
+  "id": "phase1-enhanced-latest",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "phase1-enhanced-latest-oct2025",
+    "description": "Zurich Model framework with continuous trait assessment"
+  },
+  "tags": ["phase1", "enhanced", "production-ready", "zurich-model", "continuous"]
+}

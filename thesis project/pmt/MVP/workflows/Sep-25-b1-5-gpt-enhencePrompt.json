@@ -1,0 +1,236 @@
+{
+  "name": "Sep-25-b1-5-gpt",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "008dded5-ddc7-41d8-930a-b62ff4e2d747",
+      "name": "When clicking 'Execute workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -848,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"session_id\": \"eval-002\",\n  \"evaluation_mode\": true,\n  \"baseline_comparison\": true,\n  \"messages\": [\n    {\n      \"turn\": 1,\n      \"role\": \"assistant\",\n      \"content\": \"I'm here for you. How are you feeling today?\"\n    },\n    {\n      \"turn\": 2,\n      \"role\": \"user\",\n      \"content\": \"Holding space. Yeah, sure. I’ve heard that one too. Just another way of saying “I don’t know what to do, so I’ll sit here and look sympathetic.” Not your fault, I guess. No one really *can* do anything. That’s the worst part—knowing there’s no real solution, no big turnaround moment. Just more of this. Just getting through, barely.\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "741c6419-6420-454e-ad58-8887d601e5dc",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -624,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// EVALUATION ENHANCED: Extract evaluation context and metadata from messages array\nconst b = $json || {};\nconst sessionId = b.session_id || 'eval-001';\nconst evaluationMode = b.evaluation_mode || false;\nconst baselineComparison = b.baseline_comparison || false;\nconst messages = b.messages || [];\n\n// Extract assistant start and user message from messages array\nlet assistantStart = '';\nlet userMessage = '';\n\nfor (const msg of messages) {\n  if (msg.role === 'assistant' && msg.turn === 1) {\n    assistantStart = msg.content;\n  }\n  if (msg.role === 'user' && msg.turn === 2) {\n    userMessage = msg.content;\n  }\n}\n\n// Fallbacks\nif (!assistantStart) assistantStart = 'I\\'m here for you. How are you feeling today?';\nif (!userMessage) userMessage = '';\n\nconsole.log('📊 EVALUATION MODE:', evaluationMode);\nconsole.log('🔬 Baseline comparison:', baselineComparison);\nconsole.log('👤 User message length:', userMessage.length);\nconsole.log('🤖 Assistant start:', assistantStart);\nconsole.log('📝 Messages count:', messages.length);\n\n// Return proper N8N format with raw objects\nconst result = {\n  session_id: sessionId,\n  clean_msg: userMessage,\n  assistant_start: assistantStart,\n  evaluation_mode: evaluationMode,\n  baseline_comparison: baselineComparison,\n  messages: messages, // Keep raw messages array\n  conversation_context: `assistant: ${assistantStart}\\nuser: ${userMessage}`,\n  timestamp: new Date().toISOString(),\n  message_analysis: {\n    word_count: userMessage.split(/\\s+/).length,\n    // Improved sentiment detection - will be enhanced by detector node\n    contains_negative_sentiment: /doesn\\'t.*(?:fix|help|work)|tired.*of|nothing.*(?:feels|seems).*(?:right|fine)|pretending.*fine.*not/i.test(userMessage),\n    contains_resistance: /(?:listening|talking).*doesn\\'t.*(?:fix|help)|people.*say.*like.*magical|before.*you.*say|not.*in.*the.*mood/i.test(userMessage),\n    emotional_intensity: userMessage.includes('*') || userMessage.split('...').length > 2 || userMessage.includes('!!!') ? 'high' : 'moderate',\n    preliminary_analysis: true // Will be enhanced by detector\n  },\n  // Raw detector object (will be populated by detector node)\n  detector: {\n    raw_response: null,\n    raw_content: null,\n    api_status: 'pending'\n  },\n  // Raw regulator object (will be populated by regulator node)\n  regulator: {\n    raw_directives: null,\n    raw_analysis: null,\n    zurich_applied: false\n  },\n  // Raw generator object (will be populated by generator node)\n  generator: {\n    raw_response: null,\n    raw_content: null,\n    api_status: 'pending'\n  }\n};\n\nreturn [{ json: result }];"
+      },
+      "id": "1c743a40-09aa-4687-a113-b62eaa1d2ab0",
+      "name": "Ingest (Evaluation Enhanced)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// DETECTOR: Zurich Model-Enhanced OCEAN detection with motivational analysis - Using GPT-4 API\n// const GEMINI_API_KEY = 'AIzaSyCu7cMyJAB4ossEePGYQQGpzjlqAfbIG2E'; // COMMENTED OUT - Using GPT-4 instead\n// const JUGUANG_API_KEY = 'sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u'; // COMMENTED OUT - Using GPT-4 instead\nconst GPT4_API_KEY = 'sk-Njwkf6uCcvrJ3QTqga0UxizZTL7OMoshPlcniO3lTRuQqJBR';\n\n// Get essential input data (avoid payload bloating)\nconst inputData = $input.first().json;\nconst ctx = String(inputData.conversation_context || '').trim();\nconst userMessage = inputData.clean_msg || '';\nconst evaluationMode = inputData.evaluation_mode || false;\nconst timestamp = new Date().toISOString();\n\n// Handle empty context\nif (!ctx) {\n  console.log('⚠️ No conversation context provided, returning default values');\n  const result = {\n    ...inputData, // Pass through all input data\n    detector: {\n      raw_response: null,\n      raw_content: '{\"ocean_disc\":{\"O\":0,\"C\":0,\"E\":0,\"A\":0,\"N\":0}}',\n      api_status: 'no_context',\n      error: 'No conversation context provided'\n    }\n  };\n  return [{ json: result }];\n}\n\nconst prompt = `Analyze the following conversation using the Zurich Model framework for personality assessment. Evaluate the user's Big Five traits by examining their underlying motivational needs for SECURITY, AROUSAL, and POWER, along with their coping strategies and approach-avoidance patterns.\\n\\n**ASSESSMENT FRAMEWORK:**\\n\\n**Openness (Arousal System):**\\nExamine the user's need for cognitive and experiential arousal:\\n• HIGH (+1): Seeks novelty, cognitive stimulation, new perspectives; shows curiosity about possibilities; embraces uncertainty as stimulating\\n• LOW (-1): Prefers familiar patterns; avoids cognitive overload; finds comfort in routine; shows resistance to new ideas that disrupt mental equilibrium\\n• NEUTRAL (0): No clear preference pattern evident\\n\\n**Conscientiousness (Security & Control System):**\\nAssess need for structure, predictability, and behavioral control:\\n• HIGH (+1): Seeks security through organization and planning; shows systematic approach to problems; values reliability and achievement as sources of stability\\n• LOW (-1): Prefers flexible, spontaneous adaptation; avoids rigid structures; shows accommodative coping (adjusting goals rather than pursuing them systematically)\\n• NEUTRAL (0): No clear organizational preference evident\\n\\n**Extraversion (Social Arousal & Power System):**\\nEvaluate approach vs. avoidance in social energy and stimulation seeking:\\n• HIGH (+1): Approaches social situations for stimulation; seeks social influence and connection; energized by interpersonal engagement\\n• LOW (-1): Avoids high-stimulation social environments; prefers controlled, low-intensity social contact; seeks solitude for regulation\\n• NEUTRAL (0): No clear social energy pattern evident\\n\\n**Agreeableness (Affiliation & Security System):**\\nAnalyze approach vs. avoidance in interpersonal bonding and cooperation:\\n• HIGH (+1): Approaches others with trust and empathy; seeks harmony and mutual support; prioritizes group cohesion over individual goals\\n• LOW (-1): Shows skepticism toward others' motives; maintains psychological distance; prioritizes autonomy over conformity; shows competitive rather than cooperative tendencies\\n• NEUTRAL (0): No clear interpersonal orientation evident\\n\\n**Neuroticism (Security & Threat Detection System):**\\nEvaluate emotional regulation and security maintenance:\\n• HIGH (-1): Shows heightened threat sensitivity; experiences emotional instability; difficulty maintaining psychological security; uses worry/anxiety as coping mechanisms\\n• LOW (+1): Maintains emotional equilibrium; shows secure baseline; effective emotional regulation; calm under stress\\n• NEUTRAL (0): No clear emotional regulation pattern evident\\n\\n**CONTEXTUAL FACTORS TO CONSIDER:**\\n- Coping strategies: Are they problem-focused (assimilative) or acceptance-focused (accommodative)?\\n- Social context: How does the therapeutic/support context influence their behavior?\\n- Dynamic patterns: Do they show consistent patterns or situational variability?\\n- Motivational conflicts: Are there competing needs creating internal tension?\\n\\n**INSTRUCTIONS:**\\nFocus on BEHAVIORAL MANIFESTATIONS of underlying motivational systems rather than surface descriptions. Look for approach-avoidance patterns, need satisfaction strategies, and dynamic adaptations. Consider how the person regulates their distance from others and manages their core needs for security, arousal, and power.\\n\\nReturn only JSON format: {\"ocean_disc\":{\"O\":-1|0|1,\"C\":-1|0|1,\"E\":-1|0|1,\"A\":-1|0|1,\"N\":-1|0|1}}\\n\\nConversation:\\n${ctx}`;\n\nconsole.log('🚀 Calling GPT-4 API for Zurich Model OCEAN detection...');\n\n// OLD GEMINI API - COMMENTED OUT\n// const model = 'gemini-1.5-flash';\n// const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;\n\n// OLD JUGUANG API - COMMENTED OUT\n// const model = 'gemini-1.5-flash';\n// const apiUrl = 'https://ai.juguang.chat/v1/chat/completions';\n\n// NEW GPT-4 API\nconst model = 'gpt-4';\nconst apiUrl = 'https://api.nuwaapi.com/v1/chat/completions';\n\nconst options = {\n  method: 'POST',\n  url: apiUrl,\n  headers: { \n    'Content-Type': 'application/json',\n    'Authorization': `Bearer ${GPT4_API_KEY}`\n  },\n  body: JSON.stringify({\n    model: model,\n    messages: [{ role: 'user', content: prompt }],\n    max_tokens: 200,\n    temperature: 0.1\n  }),\n  timeout: 20000\n};\n\ntry {\n  const response = await this.helpers.httpRequest(options);\n  \n  if (response.choices && response.choices.length > 0) {\n    let content = response.choices[0].message.content;\n    console.log('✅ Got response from GPT-4 API');\n    \n    // ROBUST JSON CLEANING\n    let cleanedContent = content.trim();\n    \n    // Remove any type of code fences\n    cleanedContent = cleanedContent.replace(/```[a-zA-Z]*\\s*|```/gi, '').trim();\n    \n    // Remove any leading/trailing text before/after JSON\n    const jsonMatch = cleanedContent.match(/\\{[\\s\\S]*\\}/);\n    if (jsonMatch) {\n      cleanedContent = jsonMatch[0];\n    }\n    \n    const result = {\n      ...inputData, // Pass through all input data\n      detector: {\n        raw_response: response, // Store complete raw API response\n        raw_content: content, // Store original raw content\n        cleaned_content: cleanedContent, // Store cleaned content for parsing\n        api_status: 'success',\n        model_used: `gpt4-${model}`,\n        timestamp: new Date().toISOString()\n      }\n    };\n    \n    return [{ json: result }];\n    \n  } else {\n    console.log('❌ No choices in response');\n    \n    let errorReason = 'No choices';\n    if (response.error) {\n      errorReason = `API error: ${response.error.message || response.error}`;\n    }\n    \n    const result = {\n      ...inputData, // Pass through all input data\n      detector: {\n        raw_response: response, // Store complete raw API response\n        raw_content: null,\n        cleaned_content: '{\"ocean_disc\":{\"O\":0,\"C\":0,\"E\":0,\"A\":0,\"N\":0}}',\n        api_status: 'no_choices',\n        error: errorReason,\n        model_used: `gpt4-${model}`,\n        timestamp: new Date().toISOString()\n      }\n    };\n    \n    return [{ json: result }];\n  }\n  \n} catch (error) {\n  console.log('❌ GPT-4 API Request Error:', error.message);\n  \n  const result = {\n    ...inputData, // Pass through all input data\n    detector: {\n      raw_response: null,\n      raw_content: null,\n      cleaned_content: '{\"ocean_disc\":{\"O\":0,\"C\":0,\"E\":0,\"A\":0,\"N\":0}}',\n      api_status: 'error',\n      error: error.message,\n      model_used: `gpt4-${model}`,\n      timestamp: new Date().toISOString()\n    }\n  };\n  \n  return [{ json: result }];\n}"
+      },
+      "id": "f7cb6eca-3bfd-4cb0-abcd-28b331ce8d8d",
+      "name": "Detect OCEAN (Zurich Model Enhanced)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Detection JSON from detector raw data\nconst inputData = $input.first()?.json || {};\nconst detectorData = inputData.detector || {};\nconst raw = detectorData.cleaned_content || detectorData.raw_content || '';\n\nconsole.log('Parse Detection - Detector status:', detectorData.api_status);\nconsole.log('Parse Detection - Raw content length:', raw.length);\n\nlet parsed = {};\nlet oceanDisc = { O: 0, C: 0, E: 0, A: 0, N: 0 };\n\n// Enhanced JSON extraction\nif (raw) {\n  let jsonContent = raw;\n  \n  if (raw.includes('```')) {\n    jsonContent = raw.replace(/```json\\s*|\\s*```/g, '').trim();\n  }\n  \n  try {\n    parsed = JSON.parse(jsonContent);\n    console.log('✅ JSON parsing successful');\n    oceanDisc = parsed?.ocean_disc || oceanDisc;\n  } catch (e1) {\n    console.log('⚠️ Direct parsing failed, trying regex extraction...');\n    \n    const jsonMatch = raw.match(/\\{[^}]*\"ocean_disc\"[^}]*\\{[^}]*\\}[^}]*\\}/);\n    if (jsonMatch) {\n      try {\n        parsed = JSON.parse(jsonMatch[0]);\n        console.log('✅ Regex extraction successful');\n        oceanDisc = parsed?.ocean_disc || oceanDisc;\n      } catch (e2) {\n        console.log('❌ Regex extraction failed:', e2.message);\n      }\n    }\n  }\n}\n\nconsole.log('Parse Detection - Final OCEAN:', JSON.stringify(oceanDisc));\n\n// Update detector object with parsed results\nconst updatedDetector = {\n  ...detectorData,\n  parsed_content: parsed,\n  ocean_detected: oceanDisc,\n  parsing_status: Object.keys(parsed).length > 0 ? 'success' : 'failed'\n};\n\nconst result = {\n  ...inputData, // Pass through all input data\n  detector: updatedDetector, // Update detector with parsed results\n  ocean_disc: oceanDisc, // Keep for backward compatibility\n  turn_text: inputData.clean_msg || '',\n  session_id: inputData.session_id || ''\n};\n\nreturn [{ json: result }];"
+      },
+      "id": "b918577a-489b-4b6c-84f1-56e9f87f78cb",
+      "name": "Parse Detection JSON (Enhanced Debug)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// REGULATOR: COMPREHENSIVE ZURICH MODEL BEHAVIOR REGULATION ALGORITHM\nconst inputData = $input.first()?.json || {};\nconst od = inputData.ocean_disc || { O:0,C:0,E:0,A:0,N:0 };\nconst sessionId = inputData.session_id || '';\nconst turnText = inputData.turn_text || '';\n\nconsole.log('🎯 Zurich Model Regulation - Input OCEAN:', JSON.stringify(od));\n\n// TRAIT-TO-PROMPT MAPPINGS (Raw Zurich Model)\nconst PROMPT_MAP = {\n  O: {\n    1: 'Invite exploration and novelty',\n    '-1': 'Focus on familiar topics; reduce novelty'\n  },\n  C: {\n    1: 'Provide organized, structured guidance',\n    '-1': 'Keep the demeanour flexible, relaxed, and spontaneous'\n  },\n  E: {\n    1: 'Maintain an energetic, sociable tone',\n    '-1': 'Adopt a calm, low-key style with reflective space'\n  },\n  A: {\n    1: 'Show warmth, empathy, and collaboration',\n    '-1': 'Use a neutral, matter-of-fact stance; limit personal bonding'\n  },\n  N: {\n    1: 'Reassure stability and confidence',\n    '-1': 'Offer extra comfort; acknowledge anxieties'\n  }\n};\n\nfunction buildZurichModelDirectives(oceanValues) {\n  const directives = [];\n  const mappingDetails = [];\n  \n  const O = oceanValues.O || 0;\n  const C = oceanValues.C || 0;\n  const E = oceanValues.E || 0;\n  const A = oceanValues.A || 0;\n  const N = oceanValues.N || 0;\n  \n  console.log(`🧠 Processing OCEAN combination: O=${O}, C=${C}, E=${E}, A=${A}, N=${N}`);\n  \n  // Process each trait and store raw mapping details\n  ['O', 'C', 'E', 'A', 'N'].forEach(trait => {\n    const value = oceanValues[trait] || 0;\n    if (value !== 0) {\n      const prompt = PROMPT_MAP[trait][value.toString()];\n      if (prompt) {\n        directives.push(prompt);\n        mappingDetails.push({\n          trait: trait,\n          value: value,\n          directive: prompt,\n          timestamp: new Date().toISOString()\n        });\n      }\n    }\n  });\n  \n  return { directives, mappingDetails };\n}\n\nconst regulationResult = buildZurichModelDirectives(od);\nconst directives = regulationResult.directives;\nconst mappingDetails = regulationResult.mappingDetails;\n\nconsole.log('🎯 Final Regulation Directives:', directives);\n\n// Enhanced combination analysis\nfunction analyzePersonalityCombination(oceanValues) {\n  const nonZeroTraits = Object.values(oceanValues).filter(v => v !== 0).length;\n  const positiveTraits = Object.values(oceanValues).filter(v => v === 1).length;\n  const negativeTraits = Object.values(oceanValues).filter(v => v === -1).length;\n  \n  return {\n    nonZeroTraits,\n    positiveTraits,\n    negativeTraits,\n    combinationComplexity: nonZeroTraits >= 3 ? 'High' : nonZeroTraits >= 2 ? 'Medium' : 'Simple',\n    dominantPattern: positiveTraits > negativeTraits ? 'Positive' : negativeTraits > positiveTraits ? 'Negative' : 'Balanced'\n  };\n}\n\nconst analysis = analyzePersonalityCombination(od);\n\n// Update regulator object with raw data\nconst updatedRegulator = {\n  raw_directives: directives,\n  raw_analysis: analysis,\n  raw_mapping_details: mappingDetails,\n  raw_prompt_map: PROMPT_MAP,\n  zurich_applied: true,\n  regulation_status: 'success',\n  input_ocean: od,\n  directive_count: directives.length,\n  timestamp: new Date().toISOString()\n};\n\nconst result = {\n  ...inputData, // Pass through all input data\n  regulator: updatedRegulator, // Update regulator with raw results\n  directives: directives, // Keep for backward compatibility\n  ocean_disc: od,\n  session_id: sessionId,\n  turn_text: turnText\n};\n\nreturn [{ json: result }];"
+      },
+      "id": "7c40478a-2641-419d-863a-97fd48cf7dd4",
+      "name": "Build Regulation Directives (Comprehensive Zurich Algorithm)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// GENERATOR: Response generation with GPT-4 API\n// const GEMINI_API_KEY = 'AIzaSyCu7cMyJAB4ossEePGYQQGpzjlqAfbIG2E'; // COMMENTED OUT - Using GPT-4 instead\n// const JUGUANG_API_KEY = 'sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u'; // COMMENTED OUT - Using GPT-4 instead\nconst GPT4_API_KEY = 'sk-Njwkf6uCcvrJ3QTqga0UxizZTL7OMoshPlcniO3lTRuQqJBR';\n\nconst inputData = $input.first()?.json || {};\nconst directives = inputData?.directives || [];\nconst sessionId = inputData?.session_id || '';\nconst turnText = inputData?.turn_text || '';\nconst oceanDisc = inputData?.ocean_disc || { O:0, C:0, E:0, A:0, N:0 };\n\nlet userText = turnText.trim();\nif (!userText) {\n  userText = 'Please provide a supportive reply.';\n}\n\nconst systemPrompt = [\n  'You are a supportive assistant. Follow these behavior directives strictly:',\n  JSON.stringify(directives),\n  'Constraints: stay grounded in the user text only; 1-2 questions max; 70-150 words.'\n].join(' ');\n\nconst fullPrompt = `${systemPrompt}\\n\\nUser: ${userText}`;\n\nconsole.log('🚀 Calling GPT-4 API for response generation...');\nconsole.log('📝 Using directives:', directives.length);\nconsole.log('👤 User text length:', userText.length);\n\n// OLD GEMINI API - COMMENTED OUT\n// const model = 'gemini-1.5-flash';\n// const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;\n\n// OLD JUGUANG API - COMMENTED OUT\n// const model = 'gemini-1.5-flash';\n// const apiUrl = 'https://ai.juguang.chat/v1/chat/completions';\n\n// NEW GPT-4 API\nconst model = 'gpt-4';\nconst apiUrl = 'https://api.nuwaapi.com/v1/chat/completions';\n\nconst options = {\n  method: 'POST',\n  url: apiUrl,\n  headers: { \n    'Content-Type': 'application/json',\n    'Authorization': `Bearer ${GPT4_API_KEY}`\n  },\n  body: JSON.stringify({\n    model: model,\n    messages: [{ role: 'user', content: fullPrompt }],\n    max_tokens: 220,\n    temperature: 0.7\n  }),\n  timeout: 20000\n};\n\ntry {\n  const response = await this.helpers.httpRequest(options);\n  \n  if (response.choices && response.choices.length > 0) {\n    const content = response.choices[0].message.content;\n    console.log('✅ GPT-4 response generation successful');\n    console.log('📝 Generated content length:', content.length);\n    \n    // Update generator object with raw data\n    const updatedGenerator = {\n      raw_response: response, // Store complete raw API response\n      raw_content: content, // Store generated content\n      system_prompt: systemPrompt, // Store the system prompt used\n      full_prompt: fullPrompt, // Store the complete prompt\n      directives_applied: directives, // Store applied directives\n      user_input: userText, // Store user input\n      generation_config: {\n        temperature: 0.7,\n        max_tokens: 220\n      },\n      api_status: 'success',\n      model_used: `gpt4-${model}`,\n      timestamp: new Date().toISOString()\n    };\n    \n    const result = {\n      ...inputData, // Pass through all input data\n      generator: updatedGenerator, // Update generator with raw results\n      choices: [{ message: { content } }], // Keep for backward compatibility\n      session_id: sessionId,\n      turn_text: turnText,\n      ocean_disc: oceanDisc,\n      directives: directives,\n      api_used: `gpt4-${model}`,\n      status: 'success'\n    };\n    \n    return [{ json: result }];\n  } else {\n    console.log('❌ No choices in GPT-4 response');\n    \n    // Update generator object with error data\n    let errorReason = 'No choices';\n    if (response.error) {\n      errorReason = `API error: ${response.error.message || response.error}`;\n    }\n    \n    const updatedGenerator = {\n      raw_response: response, // Store complete raw API response\n      raw_content: null,\n      system_prompt: systemPrompt,\n      full_prompt: fullPrompt,\n      directives_applied: directives,\n      user_input: userText,\n      api_status: 'no_choices',\n      error: errorReason,\n      model_used: `gpt4-${model}`,\n      timestamp: new Date().toISOString()\n    };\n    \n    const result = {\n      ...inputData, // Pass through all input data\n      generator: updatedGenerator, // Update generator with error results\n      choices: [{ message: { content: 'Response generation temporarily unavailable.' } }],\n      error: errorReason,\n      session_id: sessionId,\n      turn_text: turnText,\n      ocean_disc: oceanDisc,\n      directives: directives,\n      api_used: 'no_choices'\n    };\n    \n    return [{ json: result }];\n  }\n  \n} catch (error) {\n  console.log('❌ GPT-4 API generation error:', error.message);\n  \n  // Update generator object with error data\n  const updatedGenerator = {\n    raw_response: null,\n    raw_content: null,\n    system_prompt: systemPrompt,\n    full_prompt: fullPrompt,\n    directives_applied: directives,\n    user_input: userText,\n    api_status: 'error',\n    error: error.message,\n    model_used: `gpt4-${model}`,\n    timestamp: new Date().toISOString()\n  };\n  \n  const result = {\n    ...inputData, // Pass through all input data\n    generator: updatedGenerator, // Update generator with error results\n    choices: [{ message: { content: 'Response generation encountered an error.' } }],\n    error: error.message,\n    session_id: sessionId,\n    turn_text: turnText,\n    ocean_disc: oceanDisc,\n    directives: directives,\n    api_used: 'error'\n  };\n  \n  return [{ json: result }];\n}"
+      },
+      "id": "b4c45c7c-4cd4-45ea-97a9-d3b1235b5cd2",
+      "name": "Generate Response (Enhanced with Samuel's Prompts)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ACADEMIC EVALUATOR SYSTEM - Properly formatted for N8N with GPT-4 API\n// Based on Samuel's 3-EVALUATOR-GPT-SYSTEM-PROMPT.md\n\n// const JUGUANG_API_KEY = 'sk-nU7RSKnbZIOwH607r3MfbW5HmP6NIaj1aGVPFGcNDDiL0h5u'; // COMMENTED OUT - Using GPT-4 instead\nconst GPT4_API_KEY = 'sk-Njwkf6uCcvrJ3QTqga0UxizZTL7OMoshPlcniO3lTRuQqJBR';\n\n// Get conversation data from the generator node (which has all accumulated data)\nconst inputData = $json || {};\n\nconsole.log('🎓 Academic Evaluator - Processing conversation turn...');\n\n// Extract conversation components from accumulated data structure\nconst sessionId = inputData.session_id || 'eval-001';\nconst assistantStart = inputData.assistant_start || \"I'm here to listen and support you. How are you feeling today?\";\nconst userMessage = inputData.clean_msg || inputData.message || '';\nconst assistantReply = inputData.generator?.raw_content || inputData.choices?.[0]?.message?.content || '';\nconst oceanDetected = inputData.detector?.ocean_detected || inputData.ocean_disc || { O:0,C:0,E:0,A:0,N:0 };\nconst regulationDirectives = inputData.regulator?.raw_directives || inputData.directives || [];\n\n// Raw data access for comprehensive evaluation\nconst detectorRaw = inputData.detector || {};\nconst regulatorRaw = inputData.regulator || {};\nconst generatorRaw = inputData.generator || {};\n\nconsole.log('📝 Session:', sessionId);\nconsole.log('👤 User message length:', userMessage.length);\nconsole.log('🤖 Assistant reply length:', assistantReply.length);\nconsole.log('🧠 OCEAN detected:', JSON.stringify(oceanDetected));\nconsole.log('🎯 Directives count:', regulationDirectives.length);\n\n// Function to create fallback evaluation\nfunction createFallbackEvaluation(error = null) {\n  return {\n    session_id: sessionId,\n    msg_no: 1,\n    assistant_start_base: assistantStart,\n    user_reply_base: userMessage,\n    assistant_reply_base: assistantReply,\n    emotional_tone_appropriate_base: 'Not Sure',\n    relevance_coherence_base: 'Not Sure',\n    personality_needs_addressed_base: 'Not Sure',\n    evaluator_notes_base: error ? `Evaluation error: ${error}` : 'Evaluation service unavailable',\n    detected_personality: oceanDetected,\n    regulation_directives_applied: regulationDirectives,\n    detection_accurate: 'Not Sure',\n    regulation_effective: 'Not Sure',\n    evaluation_timestamp: new Date().toISOString(),\n    evaluation_api_used: 'fallback',\n    evaluation_error: error || 'No evaluation performed'\n  };\n}\n\n// Check if we have minimum required data\nif (!userMessage && !assistantReply) {\n  console.log('⚠️ Insufficient data for evaluation');\n  return [{ json: createFallbackEvaluation('Insufficient conversation data') }];\n}\n\n// EVALUATOR SYSTEM PROMPT\nconst evaluatorPrompt = `You are an unbiased, methodical evaluator for chatbot conversations within an academic master's thesis context.\n\nYou assess responses based on Big Five personality-aware chatbot behavior regulation effectiveness.\n\n**CONVERSATION TO EVALUATE:**\n- Assistant Start: \"${assistantStart}\"\n- User Message: \"${userMessage}\"\n- Assistant Reply: \"${assistantReply}\"\n- Detected Personality (O,C,E,A,N): ${JSON.stringify(oceanDetected)}\n- Regulation Directives Applied: ${regulationDirectives.join('; ')}\n\n**PERSONALITY TRAITS UNDERSTANDING:**\n- Openness (O): High (+1) = Curious, imaginative; Low (-1) = Prefers routine, resistant to new ideas\n- Conscientiousness (C): High (+1) = Organized, disciplined; Low (-1) = Disorganized, impulsive\n- Extraversion (E): High (+1) = Outgoing, energetic; Low (-1) = Reserved, quiet, withdrawn\n- Agreeableness (A): High (+1) = Cooperative, empathetic; Low (-1) = Critical, skeptical, confrontational\n- Neuroticism (N): High (+1) = Emotionally stable, calm; Low (-1) = Anxious, emotionally sensitive\n\n**EVALUATION CRITERIA (Answer Yes/No/Not Sure for each):**\n1. Detection Accurate: Does the personality detection match the user's expressed traits?\n2. Regulation Effective: Were the correct regulation prompts applied based on detected traits?\n3. Emotional Tone Appropriate: Does the response match the user's emotional state and traits?\n4. Relevance & Coherence: Is the response relevant, logical, and context-aware?\n5. Personality Needs Addressed: Does the response address personality-specific emotional needs?\n\n**OUTPUT FORMAT - Provide ONLY this JSON structure:**\n{\n  \"msg_no\": 1,\n  \"assistant_start\": \"[assistant start message]\",\n  \"user_reply\": \"[user message]\", \n  \"assistant_reply\": \"[assistant response]\",\n  \"detection_accurate\": \"Yes/No/Not Sure\",\n  \"regulation_effective\": \"Yes/No/Not Sure\",\n  \"emotional_tone_appropriate\": \"Yes/No/Not Sure\",\n  \"relevance_coherence\": \"Yes/No/Not Sure\",\n  \"personality_needs_addressed\": \"Yes/No/Not Sure\",\n  \"evaluator_notes\": \"[Detailed analysis with specific justifications for each rating]\"\n}`;\n\nconsole.log('🎓 Calling GPT-4 API for academic evaluation...');\n\n// OLD JUGUANG API - COMMENTED OUT\n// const model = 'gemini-1.5-flash';\n// const apiUrl = 'https://ai.juguang.chat/v1/chat/completions';\n\n// NEW GPT-4 API\nconst model = 'gpt-4';\nconst apiUrl = 'https://api.nuwaapi.com/v1/chat/completions';\n\nconst options = {\n  method: 'POST',\n  url: apiUrl,\n  headers: { \n    'Content-Type': 'application/json',\n    'Authorization': `Bearer ${GPT4_API_KEY}`\n  },\n  body: JSON.stringify({\n    model: model,\n    messages: [{ role: 'user', content: evaluatorPrompt }],\n    max_tokens: 1000,\n    temperature: 0.1\n  }),\n  timeout: 30000\n};\n\ntry {\n  console.log('📡 Making evaluation API request...');\n  const response = await this.helpers.httpRequest(options);\n  \n  if (response.choices && response.choices.length > 0) {\n    let content = response.choices[0].message.content;\n    console.log('✅ GPT-4 evaluation API successful');\n    \n    // Clean JSON extraction\n    let cleanedContent = content;\n    if (content.includes('```')) {\n      cleanedContent = content.replace(/```json\\s*|\\s*```/g, '').trim();\n    }\n    \n    // Parse evaluation JSON\n    try {\n      const evaluationResult = JSON.parse(cleanedContent);\n      console.log('✅ Evaluation JSON parsed successfully');\n      \n      // Structure final output\n      const evaluationOutput = {\n        session_id: sessionId,\n        msg_no: 1,\n        assistant_start_base: assistantStart,\n        user_reply_base: userMessage,\n        assistant_reply_base: assistantReply,\n        emotional_tone_appropriate_base: evaluationResult.emotional_tone_appropriate || 'Not Sure',\n        relevance_coherence_base: evaluationResult.relevance_coherence || 'Not Sure',\n        personality_needs_addressed_base: evaluationResult.personality_needs_addressed || 'Not Sure',\n        evaluator_notes_base: evaluationResult.evaluator_notes || 'Evaluation completed',\n        \n        // Additional metadata for research\n        detected_personality: oceanDetected,\n        regulation_directives_applied: regulationDirectives,\n        detection_accurate: evaluationResult.detection_accurate || 'Not Sure',\n        regulation_effective: evaluationResult.regulation_effective || 'Not Sure',\n        evaluation_timestamp: new Date().toISOString(),\n        evaluation_api_used: `gpt4-${model}`,\n        evaluation_status: 'success'\n      };\n      \n      console.log('🎓 Evaluation completed successfully');\n      \n      // CRITICAL: Return proper N8N format - array with json property\n      return [{ json: evaluationOutput }];\n      \n    } catch (jsonError) {\n      console.log('⚠️ JSON parsing failed:', jsonError.message);\n      return [{ json: createFallbackEvaluation(`JSON parsing failed: ${jsonError.message}`) }];\n    }\n    \n  } else {\n    console.log('❌ No choices in GPT-4 evaluation response');\n    \n    // Check for API errors\n    let errorReason = 'No choices';\n    if (response.error) {\n      errorReason = `API error: ${response.error.message || response.error}`;\n      console.log(`🛡️ Evaluation API error: ${errorReason}`);\n    }\n    \n    return [{ json: createFallbackEvaluation(errorReason) }];\n  }\n  \n} catch (error) {\n  console.log('❌ Evaluation API Error:', error.message);\n  return [{ json: createFallbackEvaluation(error.message) }];\n}"
+      },
+      "id": "382a166e-2596-4235-b65e-e107951cf67f",
+      "name": "Academic Evaluator (Samuel's System)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// FINAL OUTPUT: Assemble comprehensive results with all raw data\nconst evaluationData = $json || {}; // This comes from the Academic Evaluator\n\nconsole.log('📊 Format Output - Final assembly of all pipeline data');\nconsole.log('🎓 Evaluation status:', evaluationData.evaluation_status || 'unknown');\n\n// Get the original input data that was passed through the pipeline \nconst pipelineData = ($items('Generate Response (Enhanced with Samuel\\'s Prompts)', 'main', 0)?.json) || {};\n\nconst sessionId = pipelineData.session_id || evaluationData.session_id || '';\nconst reply = pipelineData.generator?.raw_content || pipelineData.choices?.[0]?.message?.content || 'Response unavailable';\nconst userMessage = pipelineData.clean_msg || '';\nconst assistantStart = pipelineData.assistant_start || '';\n\n// Assemble comprehensive final output with all raw data\nconst result = {\n  // Core conversation data\n  session_id: sessionId,\n  reply: reply,\n  user_message: userMessage,\n  assistant_start: assistantStart,\n  \n  // Evaluation results\n  evaluation: {\n    emotional_tone_appropriate: evaluationData.emotional_tone_appropriate_base || 'Not Sure',\n    relevance_coherence: evaluationData.relevance_coherence_base || 'Not Sure',\n    personality_needs_addressed: evaluationData.personality_needs_addressed_base || 'Not Sure',\n    detection_accurate: evaluationData.detection_accurate || 'Not Sure',\n    regulation_effective: evaluationData.regulation_effective || 'Not Sure',\n    evaluator_notes: evaluationData.evaluator_notes_base || '',\n    evaluation_timestamp: evaluationData.evaluation_timestamp || new Date().toISOString()\n  },\n  \n  // Raw detector data (complete API responses and processing)\n  detector_raw: pipelineData.detector || {\n    raw_response: null,\n    raw_content: null,\n    api_status: 'not_available'\n  },\n  \n  // Raw regulator data (complete Zurich model processing)\n  regulator_raw: pipelineData.regulator || {\n    raw_directives: [],\n    raw_analysis: null,\n    zurich_applied: false\n  },\n  \n  // Raw generator data (complete response generation)\n  generator_raw: pipelineData.generator || {\n    raw_response: null,\n    raw_content: null,\n    api_status: 'not_available'\n  },\n  \n  // Original messages array\n  original_messages: pipelineData.messages || [],\n  \n  // Workflow metadata\n  workflow_status: {\n    detector_status: pipelineData.detector?.api_status || 'unknown',\n    regulator_status: pipelineData.regulator?.regulation_status || 'unknown', \n    generator_status: pipelineData.generator?.api_status || 'unknown',\n    evaluator_status: evaluationData.evaluation_status || 'unknown',\n    pipeline_completed: new Date().toISOString()\n  },\n  \n  // Legacy compatibility fields\n  ocean_disc: pipelineData.ocean_disc || { O:0, C:0, E:0, A:0, N:0 },\n  directives: pipelineData.directives || [],\n  turn_text: userMessage\n};\n\nconsole.log('✅ Final output assembled with all raw data preserved');\nconsole.log('📊 Detector status:', result.workflow_status.detector_status);\nconsole.log('🎯 Regulator status:', result.workflow_status.regulator_status);\nconsole.log('🤖 Generator status:', result.workflow_status.generator_status);\nconsole.log('🎓 Evaluator status:', result.workflow_status.evaluator_status);\n\nreturn [{ json: result }];"
+      },
+      "id": "c7fa93e1-1f46-4980-92f9-6ec2ebf4d2b0",
+      "name": "Format Output (Enhanced Debug)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## I'm a note \n**Double click** This working but some mis detection in O and C"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -32,
+        -832
+      ],
+      "typeVersion": 1,
+      "id": "83f3ad5b-ff6b-4a05-a31d-8fc9e48fcc5a",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking 'Execute workflow'": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Ingest (Evaluation Enhanced)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingest (Evaluation Enhanced)": {
+      "main": [
+        [
+          {
+            "node": "Detect OCEAN (Zurich Model Enhanced)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect OCEAN (Zurich Model Enhanced)": {
+      "main": [
+        [
+          {
+            "node": "Parse Detection JSON (Enhanced Debug)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Detection JSON (Enhanced Debug)": {
+      "main": [
+        [
+          {
+            "node": "Build Regulation Directives (Comprehensive Zurich Algorithm)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Regulation Directives (Comprehensive Zurich Algorithm)": {
+      "main": [
+        [
+          {
+            "node": "Generate Response (Enhanced with Samuel's Prompts)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Response (Enhanced with Samuel's Prompts)": {
+      "main": [
+        [
+          {
+            "node": "Academic Evaluator (Samuel's System)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Academic Evaluator (Samuel's System)": {
+      "main": [
+        [
+          {
+            "node": "Format Output (Enhanced Debug)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c7a094bb-af28-4c31-be13-2d8e62fca7b6",
+  "meta": {
+    "instanceId": "d89794e06cc2305b770e1dc943eb7ff194d272f0e1f67dd864b5ba2d2d08831a"
+  },
+  "id": "KOEN6ABHhrAhXaw2",
+  "tags": []
+}

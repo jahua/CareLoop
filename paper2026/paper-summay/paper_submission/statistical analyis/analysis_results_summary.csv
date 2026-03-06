@@ -1,0 +1,4 @@
+Metric,Regulated_Mean,Regulated_SD,Baseline_Mean,Baseline_SD,Mean_Diff,Cohens_d,Improvement_%
+Emotional Tone,2.0,0.0,2.0,0.0,0.0,0.0,0.0
+Relevance & Coherence,2.0,0.0,1.9666666666666666,0.25819888974716115,0.03333333333333344,0.1825741858350559,1.6666666666666718
+Personality Needs,2.0,0.0,0.2,0.5763708787148327,1.8,4.4165736095959724,90.0

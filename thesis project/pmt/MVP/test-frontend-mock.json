@@ -1,0 +1,83 @@
+{
+  "session_id": "550e8400-e29b-41d4-a716-446655440002",
+  "turn_index": 1,
+  "reply": "I understand you're feeling overwhelmed right now. Let's take this step by step. What specific aspect of your work is causing you the most stress at the moment?",
+  "personality_state": {
+    "ocean": {
+      "O": 0.2,
+      "C": -0.5,
+      "E": -0.3,
+      "A": 0.4,
+      "N": -0.7
+    },
+    "stable": false,
+    "confidence": {
+      "O": 0.65,
+      "C": 0.75,
+      "E": 0.60,
+      "A": 0.70,
+      "N": 0.82
+    },
+    "ema_applied": false
+  },
+  "regulation": {
+    "directives": [
+      "Provide organized, structured guidance (confidence: 0.75)",
+      "Show warmth, empathy, and collaboration (confidence: 0.70)",
+      "Offer extra comfort; acknowledge anxieties (confidence: 0.82)"
+    ]
+  },
+  "verification": {
+    "status": "verified",
+    "adherence_score": 0.85,
+    "refinement_applied": false
+  },
+  "pipeline_status": {
+    "detector": "success",
+    "regulator": "success",
+    "generator": "success",
+    "verifier": "success",
+    "database": "success"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

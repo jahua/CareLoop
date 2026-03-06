@@ -1,0 +1,40 @@
+---
+title: "Personality-Adaptive Conversational AI for Emotional Support: A Simulation Study Integrating Big Five Detection with Zurich Model Regulation"
+documentclass: article
+geometry: "a4paper, top=1.5cm, bottom=3.5cm, left=1.75cm, right=1.75cm"
+fontfamily: "times"
+fontsize: "12pt"
+linestretch: 1.5
+numbersections: true
+secnumdepth: 3
+indent: true
+header-includes:
+  - \usepackage{setspace}
+  - \onehalfspacing
+  - \usepackage{amsmath}
+  - \usepackage{amsfonts}
+  - \usepackage{amssymb}
+  - \usepackage{graphicx}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
+  - \usepackage{xcolor}
+---
+
+## Abstract 
+
+Conversational agents for mental health support lack mechanisms to adapt to individual personality differences, potentially limiting therapeutic effectiveness and personalization quality. We evaluated a personality-adaptive framework integrating real-time Big Five trait detection with Zurich Model-aligned behavior regulation through controlled simulation. Two hundred dialogue turns were generated across extreme personality profiles (Type A: high-functioning; Type B: vulnerable) using ten regulated and ten baseline agents, each with six conversational turns. Performance was assessed using a GPT-4-based evaluator validated against three clinical psychologists (κ = 0.89). Regulated agents achieved perfect detection accuracy (100%, 58/58) and regulation effectiveness (100%, 59/59). Most significantly, personality-adaptive regulation dramatically improved the system's capacity to address personality-specific needs: regulated agents succeeded on 100% of trials versus baseline's 8.62% (Cohen's *d* = 4.58, *p* < 0.001), representing a 91.38 percentage point improvement with very large effect magnitude. Notably, both conditions performed equivalently on fundamental conversational quality dimensions (Emotional Tone: 100% vs. 100%; Relevance & Coherence: 100% vs. 98.33%), demonstrating selective enhancement of personalization without degradation of basic competence. These simulation-based findings establish technical feasibility of personality-adaptive mechanisms, though results represent an upper bound under idealized conditions and require extensive human subject validation before clinical implementation.
+
+**Keywords:** conversational agents; personality detection; adaptive interaction; Big Five personality model; Zurich Model of motivation; behavior regulation; digital therapeutics; artificial intelligence; healthcare AI; mental health support
+
+# Introduction

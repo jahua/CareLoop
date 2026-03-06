@@ -1,0 +1,17 @@
+---
+description: Always respond in English for this workspace
+alwaysApply: true
+---
+
+# Language Rule
+
+**Always respond in English** when working in this workspace (thesis project / CareLoop).
+
+This applies to:
+- All explanations and descriptions
+- Code comments
+- Documentation content
+- Git commit messages
+- Technical discussions
+
+Exception: If the user explicitly requests a different language, follow their preference.
