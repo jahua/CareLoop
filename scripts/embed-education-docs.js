@@ -32,7 +32,7 @@ const NVIDIA_EMBED_URL = "https://integrate.api.nvidia.com/v1/embeddings";
 const NVIDIA_EMBED_MODEL = process.env.NVIDIA_EMBED_MODEL || "nvidia/nv-embedqa-e5-v5";
 
 // DB config: prefer explicit host/port for IPv6 to avoid URL parsing issues
-const EXPLICIT_DB_CONFIG = { host: "::1", port: 5432, user: "careloop", password: "changeme", database: "careloop" };
+const EXPLICIT_DB_CONFIG = { host: "::1", port: 5432, user: "big5loop", password: "changeme", database: "big5loop" };
 const DB_CONFIG = (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes("[::1]"))
   ? { connectionString: process.env.DATABASE_URL }
   : EXPLICIT_DB_CONFIG;
@@ -240,7 +240,7 @@ async function run() {
     process.exit(1);
   }
 
-  console.log("=== CareLoop: Embed & Load Education Documents ===\n");
+  console.log("=== Big5Loop: Embed & Load Education Documents ===\n");
   console.log(`Embedding model: ${NVIDIA_EMBED_MODEL}`);
   // For display only — mask password if using connection string
   const dbDisplay = process.env.DATABASE_URL

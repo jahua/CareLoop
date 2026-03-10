@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@careloop/contracts": "1.0.0",
+    "@big5loop/contracts": "1.0.0",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^12.35.0",
     "jose": "^6.2.0",

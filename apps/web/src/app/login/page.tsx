@@ -72,7 +72,7 @@ export default function LoginPage() {
             />
             <circle cx="24" cy="24" r="3" fill="currentColor" />
           </svg>
-          <h1>CareLoop</h1>
+          <h1>Big5Loop</h1>
         </div>
         <p className="login-subtitle">
           Adaptive personality-aware caregiver assistant

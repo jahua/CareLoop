@@ -1,5 +1,5 @@
 {
-  "name": "careloop",
+  "name": "big5loop",
   "version": "0.1.0",
   "private": true,
   "workspaces": [
@@ -10,7 +10,7 @@
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
-    "test:parse": "npm run test:parse --workspace=@careloop/contracts",
+    "test:parse": "npm run test:parse --workspace=@big5loop/contracts",
     "test:runtime:phase1": "node scripts/phase1-runtime-check.js",
     "test:golden:phase1": "node scripts/phase1-golden-check.js",
     "test:intent:policy": "node scripts/policy-intent-check.js",

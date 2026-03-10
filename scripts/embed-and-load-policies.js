@@ -26,7 +26,7 @@ const NVIDIA_EMBED_URL = "https://integrate.api.nvidia.com/v1/embeddings";
 const NVIDIA_EMBED_MODEL = process.env.NVIDIA_EMBED_MODEL || "nvidia/nv-embedqa-e5-v5";
 const DB_CONFIG = process.env.DATABASE_URL
   ? { connectionString: process.env.DATABASE_URL }
-  : { host: "::1", port: 5432, user: "careloop", password: "changeme", database: "careloop" };
+  : { host: "::1", port: 5432, user: "big5loop", password: "changeme", database: "big5loop" };
 
 const CANTONAL_PATH = path.resolve(
   __dirname,
@@ -302,7 +302,7 @@ async function run() {
     process.exit(1);
   }
 
-  console.log("=== CareLoop: Embed & Load Policy Documents ===\n");
+  console.log("=== Big5Loop: Embed & Load Policy Documents ===\n");
   console.log(`Embedding model: ${NVIDIA_EMBED_MODEL}`);
   const dbLabel = DB_CONFIG.connectionString
     ? DB_CONFIG.connectionString.replace(/:[^:@]+@/, ":***@")

@@ -23,18 +23,18 @@ export default function SplashScreen({ onDone, duration = 1800 }: SplashScreenPr
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="careloop-splash"
+          className="big5loop-splash"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
           <motion.div
-            className="careloop-splash__content"
+            className="big5loop-splash__content"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="careloop-splash__icon">
+            <div className="big5loop-splash__icon">
               <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
                 <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="2" opacity="0.3" />
                 <path
@@ -42,18 +42,18 @@ export default function SplashScreen({ onDone, duration = 1800 }: SplashScreenPr
                   stroke="currentColor"
                   strokeWidth="2.5"
                   strokeLinecap="round"
-                  className="careloop-splash__arc"
+                  className="big5loop-splash__arc"
                 />
                 <circle cx="24" cy="24" r="3" fill="currentColor" />
               </svg>
             </div>
-            <h1 className="careloop-splash__title">CareLoop</h1>
-            <p className="careloop-splash__sub">
+            <h1 className="big5loop-splash__title">Big5Loop</h1>
+            <p className="big5loop-splash__sub">
               Adaptive personality-aware caregiver assistant
             </p>
-            <div className="careloop-splash__loader">
+            <div className="big5loop-splash__loader">
               <motion.div
-                className="careloop-splash__loader-bar"
+                className="big5loop-splash__loader-bar"
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
                 transition={{ duration: duration / 1000, ease: "easeInOut" }}

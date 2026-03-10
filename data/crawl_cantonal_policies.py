@@ -206,7 +206,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--user-agent",
         type=str,
-        default="CareLoopPolicyCrawler/1.0 (+https://github.com/jahua/CareLoop)",
+        default="Big5LoopPolicyCrawler/1.0 (+https://github.com/jahua/Big5Loop)",
         help="HTTP User-Agent string",
     )
     return parser.parse_args()

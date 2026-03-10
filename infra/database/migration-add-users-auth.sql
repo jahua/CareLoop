@@ -1,5 +1,5 @@
 -- Migration: Add user authentication + personality profiles
--- Run on existing CareLoop databases that already have the base schema
+-- Run on existing Big5Loop databases that already have the base schema
 
 -- 1. Users table
 CREATE TABLE IF NOT EXISTS users (
@@ -26,11 +26,11 @@ CREATE TABLE IF NOT EXISTS user_personality_profiles (
   last_updated   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 4. Seed 5 test users (password for all: careloop123)
+-- 4. Seed 5 test users (password for all: big5loop123)
 INSERT INTO users (email, password_hash, display_name, locale, canton) VALUES
-('alice@careloop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Alice Müller', 'de', 'ZH'),
-('bob@careloop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Bob Schneider', 'de', 'BE'),
-('carol@careloop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Carol Weber', 'de', 'LU'),
-('david@careloop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'David Fischer', 'de', 'ZH'),
-('eva@careloop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Eva Brunner', 'de', 'BS')
+('alice@big5loop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Alice Müller', 'de', 'ZH'),
+('bob@big5loop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Bob Schneider', 'de', 'BE'),
+('carol@big5loop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Carol Weber', 'de', 'LU'),
+('david@big5loop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'David Fischer', 'de', 'ZH'),
+('eva@big5loop.ch', '$2a$10$BrS0H/n/.MEfEIUfQS7.0u33SSK2Ja197qOrKg9Kng5r77qPk3zdu', 'Eva Brunner', 'de', 'BS')
 ON CONFLICT (email) DO NOTHING;

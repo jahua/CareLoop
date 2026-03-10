@@ -52,8 +52,8 @@ Use the script **`scripts/chunk-and-load-policy.js`** (see below). It:
 **Run:**
 
 ```bash
-cd CareLoop
-export DATABASE_URL="postgresql://careloop:PASSWORD@localhost:5432/careloop"
+cd Big5Loop
+export DATABASE_URL="postgresql://big5loop:PASSWORD@localhost:5432/big5loop"
 npm run chunk:policy -- data/documents/cantonal/documents.json
 ```
 

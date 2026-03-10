@@ -57,17 +57,17 @@ export default function ChatMessage({
 
   return (
     <div
-      className={`careloop-msg ${isUser ? "careloop-msg--user" : "careloop-msg--assistant"}`}
+      className={`big5loop-msg ${isUser ? "big5loop-msg--user" : "big5loop-msg--assistant"}`}
     >
-      <div className="careloop-msg__bubble">
+      <div className="big5loop-msg__bubble">
         {isUser ? (
-          <span className="careloop-msg__text">{message.content}</span>
+          <span className="big5loop-msg__text">{message.content}</span>
         ) : (
           <MarkdownContent content={message.content} />
         )}
         <button
           type="button"
-          className="careloop-msg__copy"
+          className="big5loop-msg__copy"
           onClick={handleCopy}
           aria-label="Copy message"
         >
@@ -76,7 +76,7 @@ export default function ChatMessage({
       </div>
 
       {/* Compact meta line */}
-      <div className="careloop-msg__meta">
+      <div className="big5loop-msg__meta">
         {timeStr && <span>{timeStr}</span>}
         {latencyStr && <span>{latencyStr}</span>}
         {!isUser && message.turn_index != null && (
@@ -86,11 +86,11 @@ export default function ChatMessage({
 
       {/* Feedback buttons for assistant messages */}
       {canFeedback && (
-        <div className="careloop-msg__actions">
+        <div className="big5loop-msg__actions">
           <button
             type="button"
             aria-label="Helpful"
-            className={`careloop-msg__btn careloop-msg__btn--up ${feedback === "up" ? "careloop-msg__btn--active" : ""}`}
+            className={`big5loop-msg__btn big5loop-msg__btn--up ${feedback === "up" ? "big5loop-msg__btn--active" : ""}`}
             onClick={() => onFeedback?.(index, "up")}
             disabled={!!feedback}
           >
@@ -99,14 +99,14 @@ export default function ChatMessage({
           <button
             type="button"
             aria-label="Not helpful"
-            className={`careloop-msg__btn careloop-msg__btn--down ${feedback === "down" ? "careloop-msg__btn--active" : ""}`}
+            className={`big5loop-msg__btn big5loop-msg__btn--down ${feedback === "down" ? "big5loop-msg__btn--active" : ""}`}
             onClick={() => onFeedback?.(index, "down")}
             disabled={!!feedback}
           >
             👎
           </button>
           {showThanks && (
-            <span className="careloop-msg__thanks" role="status">
+            <span className="big5loop-msg__thanks" role="status">
               Thanks!
             </span>
           )}
@@ -126,16 +126,16 @@ export default function ChatMessage({
 
       {/* Citations */}
       {!isUser && message.citations && message.citations.length > 0 && (
-        <details className="careloop-msg__citations">
+        <details className="big5loop-msg__citations">
           <summary>Sources ({message.citations.length})</summary>
-          <ul className="careloop-msg__citations-list">
+          <ul className="big5loop-msg__citations-list">
             {message.citations.map((c, i) => (
               <li key={c.source_id + String(i)}>
                 <a
                   href={c.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="careloop-msg__citation-link"
+                  className="big5loop-msg__citation-link"
                 >
                   {c.title || c.source_id}
                 </a>

@@ -1,6 +1,6 @@
 # Cantonal policy data source (side project)
 
-**Scope:** Data source – **cantonal** policy content for CareLoop RAG.  
+**Scope:** Data source – **cantonal** policy content for Big5Loop RAG.  
 **Purpose:** Define data formats, document standards, and scope for the cantonal policy download task. Download/ingest scripts are implemented separately; this directory holds only format, config, and standards.
 
 ---

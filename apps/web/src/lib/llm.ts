@@ -94,7 +94,7 @@ export interface PolicyEvidence {
 }
 
 /**
- * Build the system prompt for CareLoop, incorporating evidence and directives.
+ * Build the system prompt for Big5Loop, incorporating evidence and directives.
  */
 export function buildSystemPrompt(
   coachingMode: string,
@@ -102,7 +102,7 @@ export function buildSystemPrompt(
   directives?: string[]
 ): string {
   let prompt =
-    "You are CareLoop, a supportive, personality-aware caregiver coaching assistant " +
+    "You are Big5Loop, a supportive, personality-aware caregiver coaching assistant " +
     "for informal caregivers in Switzerland.\n\n";
 
   if (coachingMode === "policy_navigation" || coachingMode === "mixed") {

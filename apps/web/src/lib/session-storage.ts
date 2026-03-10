@@ -1,4 +1,4 @@
-const KEY = "careloop_recent_sessions";
+const KEY = "big5loop_recent_sessions";
 const MAX = 20;
 
 export type RecentSession = {

@@ -1,4 +1,4 @@
--- CareLoop Phase 0 schema per Technical Specification §9
+-- Big5Loop Phase 0 schema per Technical Specification §9
 -- Run once on fresh PostgreSQL (e.g. docker exec or init volume)
 
 -- ── Users (simple email/password auth) ──

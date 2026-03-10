@@ -29,9 +29,9 @@ export default function PersonalityPanel({ personality }: PersonalityPanelProps)
 
   if (!personality?.ocean || Object.keys(personality.ocean).length === 0) {
     return (
-      <div className="careloop-panel__section">
-        <h3 className="careloop-panel__title">Personality</h3>
-        <p className="careloop-panel__hint">
+      <div className="big5loop-panel__section">
+        <h3 className="big5loop-panel__title">Personality</h3>
+        <p className="big5loop-panel__hint">
           OCEAN traits will appear as the assistant learns your style.
         </p>
       </div>
@@ -39,11 +39,11 @@ export default function PersonalityPanel({ personality }: PersonalityPanelProps)
   }
 
   return (
-    <div className="careloop-panel__section">
-      <h3 className="careloop-panel__title">
+    <div className="big5loop-panel__section">
+      <h3 className="big5loop-panel__title">
         Personality
         <span
-          className={`careloop-badge ${personality.stable ? "careloop-badge--stable" : "careloop-badge--learning"}`}
+          className={`big5loop-badge ${personality.stable ? "big5loop-badge--stable" : "big5loop-badge--learning"}`}
         >
           {personality.stable ? "Stable" : "Learning"}
         </span>
@@ -55,23 +55,23 @@ export default function PersonalityPanel({ personality }: PersonalityPanelProps)
         const variant = barVariant(value);
         const confidence = personality.confidence_scores?.[key];
         return (
-          <div key={key} className="careloop-trait">
-            <div className="careloop-trait__header">
-              <span className="careloop-trait__name">
+          <div key={key} className="big5loop-trait">
+            <div className="big5loop-trait__header">
+              <span className="big5loop-trait__name">
                 {TRAIT_NAMES[key] ?? key}
               </span>
-              <span className="careloop-trait__value">
+              <span className="big5loop-trait__value">
                 {value.toFixed(2)}
                 {confidence != null && (
-                  <span className="careloop-trait__conf">
+                  <span className="big5loop-trait__conf">
                     {" "}({Math.round(confidence * 100)}%)
                   </span>
                 )}
               </span>
             </div>
-            <div className="careloop-trait__bar">
+            <div className="big5loop-trait__bar">
               <div
-                className={`careloop-trait__bar-fill careloop-trait__bar-fill--${variant}`}
+                className={`big5loop-trait__bar-fill big5loop-trait__bar-fill--${variant}`}
                 style={{ width: `${pct}%` }}
               />
             </div>
@@ -80,7 +80,7 @@ export default function PersonalityPanel({ personality }: PersonalityPanelProps)
       })}
 
       {personality.ema_applied && (
-        <p className="careloop-panel__hint" style={{ marginTop: 8 }}>
+        <p className="big5loop-panel__hint" style={{ marginTop: 8 }}>
           EMA smoothing applied
         </p>
       )}

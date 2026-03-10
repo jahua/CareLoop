@@ -1,4 +1,4 @@
-# CareLoop CI – lint, typecheck, contract parse (ROADMAP Phase 0 DoD)
+# Big5Loop CI – lint, typecheck, contract parse (ROADMAP Phase 0 DoD)
 name: CI
 
 on:

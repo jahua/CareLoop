@@ -89,10 +89,10 @@ const DOW_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function modeBadgeClass(mode: string | null) {
   switch (mode) {
-    case "emotional_support": return "careloop-badge--emotional";
-    case "practical_education": return "careloop-badge--education";
-    case "policy_navigation": return "careloop-badge--policy";
-    case "mixed": return "careloop-badge--mixed";
+    case "emotional_support": return "big5loop-badge--emotional";
+    case "practical_education": return "big5loop-badge--education";
+    case "policy_navigation": return "big5loop-badge--policy";
+    case "mixed": return "big5loop-badge--mixed";
     default: return "";
   }
 }
@@ -103,13 +103,13 @@ function BarChart({ data, width = 620, height = 170, color }: {
   data: { label: string; value: number }[]; width?: number; height?: number; color?: string;
 }) {
   if (data.length === 0 || data.every((d) => d.value === 0))
-    return <p className="careloop-chart__empty">No activity in this period</p>;
+    return <p className="big5loop-chart__empty">No activity in this period</p>;
   const max = Math.max(...data.map((d) => d.value), 1);
   const barW = Math.max(4, (width - 44) / data.length - 2);
   const chartH = height - 32;
 
   return (
-    <svg width="100%" viewBox={`0 0 ${width} ${height}`} className="careloop-chart-svg" preserveAspectRatio="xMidYMid meet">
+    <svg width="100%" viewBox={`0 0 ${width} ${height}`} className="big5loop-chart-svg" preserveAspectRatio="xMidYMid meet">
       {data.map((d, i) => {
         const bh = (d.value / max) * (chartH - 10);
         const x = 34 + i * (barW + 2);
@@ -141,14 +141,14 @@ function BarChart({ data, width = 620, height = 170, color }: {
 function DonutChart({ data, size = 180 }: {
   data: { label: string; value: number; color: string }[]; size?: number;
 }) {
-  if (data.length === 0) return <p className="careloop-chart__empty">No data</p>;
+  if (data.length === 0) return <p className="big5loop-chart__empty">No data</p>;
   const total = data.reduce((s, d) => s + d.value, 0);
   const cx = size / 2, cy = size / 2, r = size * 0.35, strokeW = size * 0.12;
   const circ = 2 * Math.PI * r;
   let offset = 0;
 
   return (
-    <div className="careloop-donut-wrap">
+    <div className="big5loop-donut-wrap">
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         {data.map((d, i) => {
           const pct = d.value / total;
@@ -173,12 +173,12 @@ function DonutChart({ data, size = 180 }: {
           total turns
         </text>
       </svg>
-      <div className="careloop-donut-legend">
+      <div className="big5loop-donut-legend">
         {data.map((d) => (
-          <div key={d.label} className="careloop-donut-legend__item">
-            <span className="careloop-donut-legend__dot" style={{ background: d.color }} />
-            <span className="careloop-donut-legend__label">{d.label.replace(/_/g, " ")}</span>
-            <span className="careloop-donut-legend__value">
+          <div key={d.label} className="big5loop-donut-legend__item">
+            <span className="big5loop-donut-legend__dot" style={{ background: d.color }} />
+            <span className="big5loop-donut-legend__label">{d.label.replace(/_/g, " ")}</span>
+            <span className="big5loop-donut-legend__value">
               {d.value} <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}>
                 ({(d.value / total * 100).toFixed(0)}%)
               </span>
@@ -196,14 +196,14 @@ function HourlyHeatmap({ data }: { data: { hour: number; count: number }[] }) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   return (
-    <div className="careloop-heatmap">
+    <div className="big5loop-heatmap">
       {hours.map((h) => {
         const val = map.get(h) ?? 0;
         const intensity = val / max;
         return (
-          <div key={h} className="careloop-heatmap__cell" title={`${h}:00 — ${val} messages`}
+          <div key={h} className="big5loop-heatmap__cell" title={`${h}:00 — ${val} messages`}
             style={{ opacity: Math.max(0.08, intensity), background: "var(--color-primary)" }}>
-            <span className="careloop-heatmap__hour">{h}</span>
+            <span className="big5loop-heatmap__hour">{h}</span>
           </div>
         );
       })}
@@ -212,7 +212,7 @@ function HourlyHeatmap({ data }: { data: { hour: number; count: number }[] }) {
 }
 
 function LatencyHistogram({ data }: { data: { bucket: string; count: number }[] }) {
-  if (data.length === 0) return <p className="careloop-chart__empty">No latency data</p>;
+  if (data.length === 0) return <p className="big5loop-chart__empty">No latency data</p>;
   const max = Math.max(...data.map((d) => d.count), 1);
   const w = 420, h = 140, barW = Math.min(52, (w - 50) / data.length - 6);
   const chartH = h - 30;
@@ -220,7 +220,7 @@ function LatencyHistogram({ data }: { data: { bucket: string; count: number }[] 
   const bucketColors = ["#43a047", "#66bb6a", "#fdd835", "#fb8c00", "#e53935", "#b71c1c"];
 
   return (
-    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="careloop-chart-svg">
+    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="big5loop-chart-svg">
       {data.map((d, i) => {
         const bh = (d.count / max) * (chartH - 8);
         const x = 40 + i * (barW + 8);
@@ -243,14 +243,14 @@ function LatencyHistogram({ data }: { data: { bucket: string; count: number }[] 
 
 function PersonalityTimeline({ data }: { data: Analytics["personality_evolution"] }) {
   const traits = ["O", "C", "E", "A", "N"] as const;
-  if (data.length < 2) return <p className="careloop-chart__empty">Need more conversation data for personality evolution</p>;
+  if (data.length < 2) return <p className="big5loop-chart__empty">Need more conversation data for personality evolution</p>;
 
   const w = 620, h = 200, pad = 44;
   const plotW = w - pad * 2, plotH = h - 44;
   const stepX = plotW / Math.max(data.length - 1, 1);
 
   return (
-    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="careloop-chart-svg">
+    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="big5loop-chart-svg">
       <line x1={pad} y1={22 + plotH / 2} x2={w - pad} y2={22 + plotH / 2}
         stroke="var(--color-border)" strokeWidth="1" strokeDasharray="4 4" />
       <text x={pad - 6} y={26} textAnchor="end" fill="var(--color-text-muted)" fontSize="9">+1</text>
@@ -278,13 +278,13 @@ function PersonalityTimeline({ data }: { data: Analytics["personality_evolution"
 }
 
 function MsgLengthChart({ data }: { data: Analytics["msg_length_distribution"] }) {
-  if (data.length === 0) return <p className="careloop-chart__empty">No data</p>;
+  if (data.length === 0) return <p className="big5loop-chart__empty">No data</p>;
   const maxUser = Math.max(...data.map((d) => d.user_count), 1);
   const w = 440, h = 160, barW = Math.min(36, (w - 60) / data.length - 8);
   const chartH = h - 30;
 
   return (
-    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="careloop-chart-svg">
+    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="big5loop-chart-svg">
       {data.map((d, i) => {
         const bh = (d.user_count / maxUser) * (chartH - 10);
         const x = 44 + i * (barW * 2 + 14);
@@ -318,68 +318,68 @@ function WeekdayChart({ data }: { data: { dow: number; count: number }[] }) {
 /* ── Architecture Diagram ── */
 function ArchitectureDiagram() {
   return (
-    <div className="careloop-arch">
-      <div className="careloop-arch__row">
-        <div className="careloop-arch__node careloop-arch__node--user">
-          <div className="careloop-arch__node-icon">User</div>
-          <div className="careloop-arch__node-label">Next.js Frontend</div>
+    <div className="big5loop-arch">
+      <div className="big5loop-arch__row">
+        <div className="big5loop-arch__node big5loop-arch__node--user">
+          <div className="big5loop-arch__node-icon">User</div>
+          <div className="big5loop-arch__node-label">Next.js Frontend</div>
         </div>
-        <div className="careloop-arch__arrow">&#8594;</div>
-        <div className="careloop-arch__node careloop-arch__node--api">
-          <div className="careloop-arch__node-icon">API</div>
-          <div className="careloop-arch__node-label">Chat Route</div>
+        <div className="big5loop-arch__arrow">&#8594;</div>
+        <div className="big5loop-arch__node big5loop-arch__node--api">
+          <div className="big5loop-arch__node-icon">API</div>
+          <div className="big5loop-arch__node-label">Chat Route</div>
         </div>
-        <div className="careloop-arch__arrow">&#8594;</div>
-        <div className="careloop-arch__node careloop-arch__node--n8n">
-          <div className="careloop-arch__node-icon">n8n</div>
-          <div className="careloop-arch__node-label">Orchestrator</div>
-        </div>
-      </div>
-
-      <div className="careloop-arch__pipeline">
-        <div className="careloop-arch__stage careloop-arch__stage--routing">
-          <span className="careloop-arch__stage-num">1</span>
-          <span className="careloop-arch__stage-name">Routing</span>
-          <span className="careloop-arch__stage-desc">Classify intent &amp; mode</span>
-        </div>
-        <div className="careloop-arch__connector" />
-        <div className="careloop-arch__stage careloop-arch__stage--detection">
-          <span className="careloop-arch__stage-num">2</span>
-          <span className="careloop-arch__stage-name">Detection</span>
-          <span className="careloop-arch__stage-desc">OCEAN personality analysis</span>
-        </div>
-        <div className="careloop-arch__connector" />
-        <div className="careloop-arch__stage careloop-arch__stage--retrieval">
-          <span className="careloop-arch__stage-num">3</span>
-          <span className="careloop-arch__stage-name">Retrieval</span>
-          <span className="careloop-arch__stage-desc">RAG policy search</span>
-        </div>
-        <div className="careloop-arch__connector" />
-        <div className="careloop-arch__stage careloop-arch__stage--grounding">
-          <span className="careloop-arch__stage-num">4</span>
-          <span className="careloop-arch__stage-name">Grounding</span>
-          <span className="careloop-arch__stage-desc">Context + personality</span>
-        </div>
-        <div className="careloop-arch__connector" />
-        <div className="careloop-arch__stage careloop-arch__stage--generation">
-          <span className="careloop-arch__stage-num">5</span>
-          <span className="careloop-arch__stage-name">Generation</span>
-          <span className="careloop-arch__stage-desc">LLM response synthesis</span>
-        </div>
-        <div className="careloop-arch__connector" />
-        <div className="careloop-arch__stage careloop-arch__stage--verification">
-          <span className="careloop-arch__stage-num">6</span>
-          <span className="careloop-arch__stage-name">Verification</span>
-          <span className="careloop-arch__stage-desc">Fact-check &amp; citations</span>
+        <div className="big5loop-arch__arrow">&#8594;</div>
+        <div className="big5loop-arch__node big5loop-arch__node--n8n">
+          <div className="big5loop-arch__node-icon">n8n</div>
+          <div className="big5loop-arch__node-label">Orchestrator</div>
         </div>
       </div>
 
-      <div className="careloop-arch__row careloop-arch__row--bottom">
-        <div className="careloop-arch__node careloop-arch__node--db">
-          <div className="careloop-arch__node-icon">DB</div>
-          <div className="careloop-arch__node-label">PostgreSQL + pgvector</div>
+      <div className="big5loop-arch__pipeline">
+        <div className="big5loop-arch__stage big5loop-arch__stage--routing">
+          <span className="big5loop-arch__stage-num">1</span>
+          <span className="big5loop-arch__stage-name">Routing</span>
+          <span className="big5loop-arch__stage-desc">Classify intent &amp; mode</span>
         </div>
-        <div className="careloop-arch__storage-items">
+        <div className="big5loop-arch__connector" />
+        <div className="big5loop-arch__stage big5loop-arch__stage--detection">
+          <span className="big5loop-arch__stage-num">2</span>
+          <span className="big5loop-arch__stage-name">Detection</span>
+          <span className="big5loop-arch__stage-desc">OCEAN personality analysis</span>
+        </div>
+        <div className="big5loop-arch__connector" />
+        <div className="big5loop-arch__stage big5loop-arch__stage--retrieval">
+          <span className="big5loop-arch__stage-num">3</span>
+          <span className="big5loop-arch__stage-name">Retrieval</span>
+          <span className="big5loop-arch__stage-desc">RAG policy search</span>
+        </div>
+        <div className="big5loop-arch__connector" />
+        <div className="big5loop-arch__stage big5loop-arch__stage--grounding">
+          <span className="big5loop-arch__stage-num">4</span>
+          <span className="big5loop-arch__stage-name">Grounding</span>
+          <span className="big5loop-arch__stage-desc">Context + personality</span>
+        </div>
+        <div className="big5loop-arch__connector" />
+        <div className="big5loop-arch__stage big5loop-arch__stage--generation">
+          <span className="big5loop-arch__stage-num">5</span>
+          <span className="big5loop-arch__stage-name">Generation</span>
+          <span className="big5loop-arch__stage-desc">LLM response synthesis</span>
+        </div>
+        <div className="big5loop-arch__connector" />
+        <div className="big5loop-arch__stage big5loop-arch__stage--verification">
+          <span className="big5loop-arch__stage-num">6</span>
+          <span className="big5loop-arch__stage-name">Verification</span>
+          <span className="big5loop-arch__stage-desc">Fact-check &amp; citations</span>
+        </div>
+      </div>
+
+      <div className="big5loop-arch__row big5loop-arch__row--bottom">
+        <div className="big5loop-arch__node big5loop-arch__node--db">
+          <div className="big5loop-arch__node-icon">DB</div>
+          <div className="big5loop-arch__node-label">PostgreSQL + pgvector</div>
+        </div>
+        <div className="big5loop-arch__storage-items">
           <span>Sessions</span>
           <span>Turns</span>
           <span>Personality</span>
@@ -447,39 +447,39 @@ export default function AuditPage() {
 
   if (loading) {
     return (
-      <div className="careloop-page">
-        <div className="careloop-page__header"><h1>Audit & Analytics</h1></div>
-        <div className="careloop-page__content"><p className="careloop-page__loading">Loading analytics…</p></div>
+      <div className="big5loop-page">
+        <div className="big5loop-page__header"><h1>Audit & Analytics</h1></div>
+        <div className="big5loop-page__content"><p className="big5loop-page__loading">Loading analytics…</p></div>
       </div>
     );
   }
 
   return (
-    <div className="careloop-page">
-      <div className="careloop-page__header">
+    <div className="big5loop-page">
+      <div className="big5loop-page__header">
         <h1>Audit & Analytics</h1>
-        <p className="careloop-page__subtitle">Usage analytics, pipeline performance, and conversation history</p>
-        <div className="careloop-page__tabs">
-          <button type="button" className={`careloop-page__tab ${tab === "overview" ? "careloop-page__tab--active" : ""}`}
+        <p className="big5loop-page__subtitle">Usage analytics, pipeline performance, and conversation history</p>
+        <div className="big5loop-page__tabs">
+          <button type="button" className={`big5loop-page__tab ${tab === "overview" ? "big5loop-page__tab--active" : ""}`}
             onClick={() => setTab("overview")}>Overview</button>
-          <button type="button" className={`careloop-page__tab ${tab === "pipeline" ? "careloop-page__tab--active" : ""}`}
+          <button type="button" className={`big5loop-page__tab ${tab === "pipeline" ? "big5loop-page__tab--active" : ""}`}
             onClick={() => setTab("pipeline")}>Pipeline & Architecture</button>
-          <button type="button" className={`careloop-page__tab ${tab === "sessions" ? "careloop-page__tab--active" : ""}`}
+          <button type="button" className={`big5loop-page__tab ${tab === "sessions" ? "big5loop-page__tab--active" : ""}`}
             onClick={() => setTab("sessions")}>Sessions ({sessions.length})</button>
         </div>
       </div>
 
-      <div className="careloop-page__content">
+      <div className="big5loop-page__content">
 
         {/* ═══════ OVERVIEW TAB ═══════ */}
         {tab === "overview" && (
           <>
             {/* Project Overview */}
-            <section className="careloop-card careloop-text-section">
-              <h2 className="careloop-card__title">CareLoop System Overview</h2>
-              <div className="careloop-text-block">
+            <section className="big5loop-card big5loop-text-section">
+              <h2 className="big5loop-card__title">Big5Loop System Overview</h2>
+              <div className="big5loop-text-block">
                 <p>
-                  <strong>CareLoop</strong> is a personality-aware conversational assistant for Swiss social insurance (IV/AHV/EL) navigation, developed as a thesis project at HSLU. It combines <strong>RAG-based policy retrieval</strong>, <strong>Big Five personality detection</strong>, and <strong>adaptive response generation</strong> to deliver personalized guidance to users navigating complex social insurance processes.
+                  <strong>Big5Loop</strong> is a personality-aware conversational assistant for Swiss social insurance (IV/AHV/EL) navigation, developed as a thesis project at HSLU. It combines <strong>RAG-based policy retrieval</strong>, <strong>Big Five personality detection</strong>, and <strong>adaptive response generation</strong> to deliver personalized guidance to users navigating complex social insurance processes.
                 </p>
                 <p>
                   The system architecture consists of a <strong>Next.js frontend</strong>, an <strong>n8n workflow orchestrator</strong> implementing a 6-stage pipeline (routing, detection, retrieval, grounding, generation, verification), and a <strong>PostgreSQL + pgvector</strong> backend for session persistence, personality state tracking, and policy chunk storage.
@@ -491,98 +491,98 @@ export default function AuditPage() {
             </section>
 
             {/* KPI Row */}
-            <div className="careloop-page__grid careloop-page__grid--5">
-              <div className="careloop-stat-card">
-                <span className="careloop-stat-card__value">{fmtNum(s?.session_count)}</span>
-                <span className="careloop-stat-card__label">Sessions</span>
+            <div className="big5loop-page__grid big5loop-page__grid--5">
+              <div className="big5loop-stat-card">
+                <span className="big5loop-stat-card__value">{fmtNum(s?.session_count)}</span>
+                <span className="big5loop-stat-card__label">Sessions</span>
               </div>
-              <div className="careloop-stat-card">
-                <span className="careloop-stat-card__value">{fmtNum(s?.turn_count)}</span>
-                <span className="careloop-stat-card__label">Total Turns</span>
+              <div className="big5loop-stat-card">
+                <span className="big5loop-stat-card__value">{fmtNum(s?.turn_count)}</span>
+                <span className="big5loop-stat-card__label">Total Turns</span>
               </div>
-              <div className="careloop-stat-card">
-                <span className="careloop-stat-card__value">{fmtMs(s?.avg_latency_ms)}</span>
-                <span className="careloop-stat-card__label">Avg Latency</span>
+              <div className="big5loop-stat-card">
+                <span className="big5loop-stat-card__value">{fmtMs(s?.avg_latency_ms)}</span>
+                <span className="big5loop-stat-card__label">Avg Latency</span>
               </div>
-              <div className="careloop-stat-card">
-                <span className="careloop-stat-card__value">{fmtMs(s?.median_latency_ms)}</span>
-                <span className="careloop-stat-card__label">Median</span>
+              <div className="big5loop-stat-card">
+                <span className="big5loop-stat-card__value">{fmtMs(s?.median_latency_ms)}</span>
+                <span className="big5loop-stat-card__label">Median</span>
               </div>
-              <div className="careloop-stat-card">
-                <span className="careloop-stat-card__value">{fmtMs(s?.p95_latency_ms)}</span>
-                <span className="careloop-stat-card__label">P95</span>
+              <div className="big5loop-stat-card">
+                <span className="big5loop-stat-card__value">{fmtMs(s?.p95_latency_ms)}</span>
+                <span className="big5loop-stat-card__label">P95</span>
               </div>
             </div>
 
             {/* Activity + Modes */}
-            <div className="careloop-page__grid careloop-page__grid--2">
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Daily Activity (Last 30 Days)</h2>
+            <div className="big5loop-page__grid big5loop-page__grid--2">
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Daily Activity (Last 30 Days)</h2>
                 <BarChart data={dailyData} />
               </section>
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Coaching Mode Distribution</h2>
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Coaching Mode Distribution</h2>
                 <DonutChart data={modeData} />
               </section>
             </div>
 
             {/* Latency + Hourly */}
-            <div className="careloop-page__grid careloop-page__grid--2">
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">End-to-End Latency Distribution</h2>
+            <div className="big5loop-page__grid big5loop-page__grid--2">
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">End-to-End Latency Distribution</h2>
                 <LatencyHistogram data={analytics?.latency_distribution ?? []} />
-                <div className="careloop-card__stats-row">
+                <div className="big5loop-card__stats-row">
                   <span>Min: <strong>{fmtMs(s?.min_latency_ms)}</strong></span>
                   <span>Median: <strong>{fmtMs(s?.median_latency_ms)}</strong></span>
                   <span>P95: <strong>{fmtMs(s?.p95_latency_ms)}</strong></span>
                   <span>Max: <strong>{fmtMs(s?.max_latency_ms)}</strong></span>
                 </div>
               </section>
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Activity by Hour of Day</h2>
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Activity by Hour of Day</h2>
                 <HourlyHeatmap data={analytics?.hourly_activity ?? []} />
-                <div className="careloop-card__subtitle">Brighter = more messages at that hour</div>
+                <div className="big5loop-card__subtitle">Brighter = more messages at that hour</div>
               </section>
             </div>
 
             {/* Message Lengths + Weekday + Volume */}
-            <div className="careloop-page__grid careloop-page__grid--3">
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Message Length</h2>
+            <div className="big5loop-page__grid big5loop-page__grid--3">
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Message Length</h2>
                 <MsgLengthChart data={analytics?.msg_length_distribution ?? []} />
               </section>
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Activity by Day of Week</h2>
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Activity by Day of Week</h2>
                 <WeekdayChart data={analytics?.weekday_activity ?? []} />
               </section>
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Volume Summary</h2>
-                <div className="careloop-info-grid careloop-info-grid--2x3">
-                  <div className="careloop-info-item">
-                    <span className="careloop-info-label">User Chars</span>
-                    <span className="careloop-info-value">{fmtNum(s?.total_user_chars)}</span>
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Volume Summary</h2>
+                <div className="big5loop-info-grid big5loop-info-grid--2x3">
+                  <div className="big5loop-info-item">
+                    <span className="big5loop-info-label">User Chars</span>
+                    <span className="big5loop-info-value">{fmtNum(s?.total_user_chars)}</span>
                   </div>
-                  <div className="careloop-info-item">
-                    <span className="careloop-info-label">AI Chars</span>
-                    <span className="careloop-info-value">{fmtNum(s?.total_assistant_chars)}</span>
+                  <div className="big5loop-info-item">
+                    <span className="big5loop-info-label">AI Chars</span>
+                    <span className="big5loop-info-value">{fmtNum(s?.total_assistant_chars)}</span>
                   </div>
-                  <div className="careloop-info-item">
-                    <span className="careloop-info-label">First Activity</span>
-                    <span className="careloop-info-value">{s?.first_activity ? new Date(s.first_activity).toLocaleDateString() : "—"}</span>
+                  <div className="big5loop-info-item">
+                    <span className="big5loop-info-label">First Activity</span>
+                    <span className="big5loop-info-value">{s?.first_activity ? new Date(s.first_activity).toLocaleDateString() : "—"}</span>
                   </div>
-                  <div className="careloop-info-item">
-                    <span className="careloop-info-label">Last Activity</span>
-                    <span className="careloop-info-value">{s?.last_activity ? timeAgo(s.last_activity) : "—"}</span>
+                  <div className="big5loop-info-item">
+                    <span className="big5loop-info-label">Last Activity</span>
+                    <span className="big5loop-info-value">{s?.last_activity ? timeAgo(s.last_activity) : "—"}</span>
                   </div>
-                  <div className="careloop-info-item">
-                    <span className="careloop-info-label">Avg Turns/Session</span>
-                    <span className="careloop-info-value">
+                  <div className="big5loop-info-item">
+                    <span className="big5loop-info-label">Avg Turns/Session</span>
+                    <span className="big5loop-info-value">
                       {s && s.session_count > 0 ? (s.turn_count / s.session_count).toFixed(1) : "—"}
                     </span>
                   </div>
-                  <div className="careloop-info-item">
-                    <span className="careloop-info-label">Active Days</span>
-                    <span className="careloop-info-value">{dailyData.filter((d) => d.value > 0).length}/30</span>
+                  <div className="big5loop-info-item">
+                    <span className="big5loop-info-label">Active Days</span>
+                    <span className="big5loop-info-value">{dailyData.filter((d) => d.value > 0).length}/30</span>
                   </div>
                 </div>
               </section>
@@ -590,13 +590,13 @@ export default function AuditPage() {
 
             {/* Personality evolution */}
             {(analytics?.personality_evolution ?? []).length > 1 && (
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Personality Trait Evolution</h2>
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Personality Trait Evolution</h2>
                 <PersonalityTimeline data={analytics!.personality_evolution} />
-                <div className="careloop-ocean-legend">
+                <div className="big5loop-ocean-legend">
                   {(["O", "C", "E", "A", "N"] as const).map((t) => (
-                    <span key={t} className="careloop-ocean-legend__item" style={{ color: OCEAN_COLORS[t] }}>
-                      <span className="careloop-ocean-legend__dot" style={{ background: OCEAN_COLORS[t] }} />
+                    <span key={t} className="big5loop-ocean-legend__item" style={{ color: OCEAN_COLORS[t] }}>
+                      <span className="big5loop-ocean-legend__dot" style={{ background: OCEAN_COLORS[t] }} />
                       {OCEAN_NAMES[t]}
                     </span>
                   ))}
@@ -606,10 +606,10 @@ export default function AuditPage() {
 
             {/* Session detail table */}
             {(analytics?.session_stats ?? []).length > 0 && (
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Recent Sessions</h2>
-                <div className="careloop-table-wrap">
-                  <table className="careloop-table">
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Recent Sessions</h2>
+                <div className="big5loop-table-wrap">
+                  <table className="big5loop-table">
                     <thead>
                       <tr>
                         <th>Session</th><th>Date</th><th>Turns</th>
@@ -618,9 +618,9 @@ export default function AuditPage() {
                     </thead>
                     <tbody>
                       {analytics!.session_stats.slice(0, 20).map((ss) => (
-                        <tr key={ss.session_id} className="careloop-table__clickable"
+                        <tr key={ss.session_id} className="big5loop-table__clickable"
                           onClick={() => { setTab("sessions"); loadTurns(ss.session_id); }}>
-                          <td className="careloop-table__mono">{ss.session_id.slice(0, 8)}…</td>
+                          <td className="big5loop-table__mono">{ss.session_id.slice(0, 8)}…</td>
                           <td>{new Date(ss.created_at).toLocaleDateString()}</td>
                           <td>{ss.turns}</td>
                           <td>{fmtDuration(ss.duration_secs)}</td>
@@ -636,42 +636,42 @@ export default function AuditPage() {
             )}
 
             {/* Metric Definitions */}
-            <section className="careloop-card careloop-text-section">
-              <h2 className="careloop-card__title">Metric Definitions</h2>
-              <div className="careloop-text-block">
-                <div className="careloop-def-grid">
-                  <div className="careloop-def-item">
+            <section className="big5loop-card big5loop-text-section">
+              <h2 className="big5loop-card__title">Metric Definitions</h2>
+              <div className="big5loop-text-block">
+                <div className="big5loop-def-grid">
+                  <div className="big5loop-def-item">
                     <h4>Sessions</h4>
-                    <p>A session is a single conversation between the user and CareLoop, identified by a unique UUID. A new session is created each time the user clicks &quot;New Chat&quot; or starts a fresh conversation. Sessions persist across page reloads and are stored in PostgreSQL.</p>
+                    <p>A session is a single conversation between the user and Big5Loop, identified by a unique UUID. A new session is created each time the user clicks &quot;New Chat&quot; or starts a fresh conversation. Sessions persist across page reloads and are stored in PostgreSQL.</p>
                   </div>
-                  <div className="careloop-def-item">
+                  <div className="big5loop-def-item">
                     <h4>Turns</h4>
                     <p>A turn is one user message + one assistant response pair. Each turn passes through the full 6-stage pipeline (in standard mode) or a direct LLM call (in simple mode). Turn count is the primary indicator of system usage volume.</p>
                   </div>
-                  <div className="careloop-def-item">
+                  <div className="big5loop-def-item">
                     <h4>Average Latency</h4>
                     <p>The arithmetic mean of end-to-end response times across all turns, measured in milliseconds. This includes all pipeline stages: routing, personality detection, RAG retrieval, grounding, LLM generation, and verification. Lower is better for user experience.</p>
                   </div>
-                  <div className="careloop-def-item">
+                  <div className="big5loop-def-item">
                     <h4>Median Latency</h4>
                     <p>The 50th percentile of response times — half of all responses were faster, half were slower. Median is more robust than average because it is not skewed by occasional slow outliers. This is often the best single indicator of typical user experience.</p>
                   </div>
-                  <div className="careloop-def-item">
+                  <div className="big5loop-def-item">
                     <h4>P95 Latency</h4>
                     <p>The 95th percentile — 95% of responses were faster than this value. P95 captures the &quot;worst typical&quot; experience. If P95 is significantly higher than the median, it indicates occasional slow responses, often caused by complex RAG retrieval or LLM generation for detailed queries.</p>
                   </div>
-                  <div className="careloop-def-item">
+                  <div className="big5loop-def-item">
                     <h4>Coaching Modes</h4>
-                    <p>CareLoop classifies each user message into one of three coaching modes: <strong>Emotional Support</strong> (empathetic, feeling-focused responses), <strong>Practical Education</strong> (informational, how-to guidance), or <strong>Policy Navigation</strong> (specific IV/AHV/EL regulation lookup with citations). The mode determines which pipeline branch is prioritized.</p>
+                    <p>Big5Loop classifies each user message into one of three coaching modes: <strong>Emotional Support</strong> (empathetic, feeling-focused responses), <strong>Practical Education</strong> (informational, how-to guidance), or <strong>Policy Navigation</strong> (specific IV/AHV/EL regulation lookup with citations). The mode determines which pipeline branch is prioritized.</p>
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Data Interpretation */}
-            <section className="careloop-card careloop-text-section">
-              <h2 className="careloop-card__title">Interpreting the Data</h2>
-              <div className="careloop-text-block">
+            <section className="big5loop-card big5loop-text-section">
+              <h2 className="big5loop-card__title">Interpreting the Data</h2>
+              <div className="big5loop-text-block">
                 {s && s.turn_count > 0 ? (
                   <>
                     <p>
@@ -705,7 +705,7 @@ export default function AuditPage() {
                     </p>
                   </>
                 ) : (
-                  <p>No conversation data available yet. Start chatting with CareLoop to generate usage analytics and see how the system performs across different coaching modes and personality adaptations.</p>
+                  <p>No conversation data available yet. Start chatting with Big5Loop to generate usage analytics and see how the system performs across different coaching modes and personality adaptations.</p>
                 )}
               </div>
             </section>
@@ -716,23 +716,23 @@ export default function AuditPage() {
         {tab === "pipeline" && (
           <>
             {/* Architecture diagram */}
-            <section className="careloop-card">
-              <h2 className="careloop-card__title">System Architecture</h2>
-              <p className="careloop-card__desc">
-                CareLoop processes each user message through a 6-stage pipeline orchestrated by n8n, with personality-aware response generation and evidence-based verification.
+            <section className="big5loop-card">
+              <h2 className="big5loop-card__title">System Architecture</h2>
+              <p className="big5loop-card__desc">
+                Big5Loop processes each user message through a 6-stage pipeline orchestrated by n8n, with personality-aware response generation and evidence-based verification.
               </p>
               <ArchitectureDiagram />
             </section>
 
             {/* Pipeline Performance Table */}
             {pp.length > 0 && (
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Pipeline Stage Performance</h2>
-                <p className="careloop-card__desc">
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Pipeline Stage Performance</h2>
+                <p className="big5loop-card__desc">
                   Measured across {pp[0]?.invocations ?? 0} requests. Each turn passes through all stages sequentially.
                 </p>
-                <div className="careloop-table-wrap">
-                  <table className="careloop-table">
+                <div className="big5loop-table-wrap">
+                  <table className="big5loop-table">
                     <thead>
                       <tr>
                         <th>Stage</th><th>Invocations</th>
@@ -743,14 +743,14 @@ export default function AuditPage() {
                       {pp.map((p) => (
                         <tr key={p.stage}>
                           <td>
-                            <span className="careloop-table__mono">{p.stage}</span>
+                            <span className="big5loop-table__mono">{p.stage}</span>
                           </td>
                           <td>{fmtNum(p.invocations)}</td>
                           <td><strong>{fmtMs(p.avg_ms)}</strong></td>
                           <td>{fmtMs(p.median_ms)}</td>
                           <td>{fmtMs(p.p95_ms)}</td>
                           <td>{fmtMs(p.max_ms)}</td>
-                          <td className={p.errors > 0 ? "careloop-table__error" : ""}>
+                          <td className={p.errors > 0 ? "big5loop-table__error" : ""}>
                             {p.errors > 0 ? p.errors : "—"}
                           </td>
                         </tr>
@@ -763,16 +763,16 @@ export default function AuditPage() {
 
             {/* Pipeline breakdown as stacked bar */}
             {pp.length > 0 && (
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Pipeline Breakdown (Avg Latency)</h2>
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Pipeline Breakdown (Avg Latency)</h2>
                 <PipelineBreakdown stages={pp} />
               </section>
             )}
 
             {/* How it works explanation */}
-            <section className="careloop-card">
-              <h2 className="careloop-card__title">How It Works</h2>
-              <div className="careloop-how-grid">
+            <section className="big5loop-card">
+              <h2 className="big5loop-card__title">How It Works</h2>
+              <div className="big5loop-how-grid">
                 <HowItem num="1" title="Routing" color="#1e88e5"
                   desc="Classifies user intent into coaching modes: emotional support, practical education, or policy navigation. Determines the response strategy." />
                 <HowItem num="2" title="Personality Detection" color="#7c4dff"
@@ -789,9 +789,9 @@ export default function AuditPage() {
             </section>
 
             {/* Data stored */}
-            <section className="careloop-card">
-              <h2 className="careloop-card__title">Data Collected Per Turn</h2>
-              <div className="careloop-data-items">
+            <section className="big5loop-card">
+              <h2 className="big5loop-card__title">Data Collected Per Turn</h2>
+              <div className="big5loop-data-items">
                 <DataItem icon="💬" title="Conversation" desc="User message, assistant response, coaching mode, timestamp" />
                 <DataItem icon="🧠" title="Personality State" desc="OCEAN scores (O/C/E/A/N), confidence per trait, EMA alpha, stability flag" />
                 <DataItem icon="⏱️" title="Performance Metrics" desc="Per-stage latency: routing, detection, retrieval, grounding, generation, verification, end-to-end" />
@@ -802,14 +802,14 @@ export default function AuditPage() {
 
             {/* Top citations */}
             {(analytics?.top_citations ?? []).length > 0 && (
-              <section className="careloop-card">
-                <h2 className="careloop-card__title">Top Policy Citations</h2>
-                <div className="careloop-citations-list">
+              <section className="big5loop-card">
+                <h2 className="big5loop-card__title">Top Policy Citations</h2>
+                <div className="big5loop-citations-list">
                   {analytics!.top_citations.map((c, i) => (
-                    <div key={`${c.source_id}-${i}`} className="careloop-citation-row">
-                      <span className="careloop-citation-row__rank">#{i + 1}</span>
-                      <span className="careloop-citation-row__title">{c.title || c.source_id}</span>
-                      <span className="careloop-citation-row__count">{c.cite_count}x</span>
+                    <div key={`${c.source_id}-${i}`} className="big5loop-citation-row">
+                      <span className="big5loop-citation-row__rank">#{i + 1}</span>
+                      <span className="big5loop-citation-row__title">{c.title || c.source_id}</span>
+                      <span className="big5loop-citation-row__count">{c.cite_count}x</span>
                     </div>
                   ))}
                 </div>
@@ -821,23 +821,23 @@ export default function AuditPage() {
         {/* ═══════ SESSIONS TAB ═══════ */}
         {tab === "sessions" && (
           sessions.length === 0 ? (
-            <div className="careloop-card"><p className="careloop-page__empty">No sessions recorded yet.</p></div>
+            <div className="big5loop-card"><p className="big5loop-page__empty">No sessions recorded yet.</p></div>
           ) : (
-            <div className="careloop-audit-layout">
-              <div className="careloop-audit-sessions">
-                <h2 className="careloop-card__title">Sessions</h2>
+            <div className="big5loop-audit-layout">
+              <div className="big5loop-audit-sessions">
+                <h2 className="big5loop-card__title">Sessions</h2>
                 {sessions.map((ses) => (
                   <button key={ses.session_id} type="button"
-                    className={`careloop-audit-session-item ${selectedSession === ses.session_id ? "careloop-audit-session-item--active" : ""}`}
+                    className={`big5loop-audit-session-item ${selectedSession === ses.session_id ? "big5loop-audit-session-item--active" : ""}`}
                     onClick={() => loadTurns(ses.session_id)}>
-                    <div className="careloop-audit-session-item__top">
-                      <span className="careloop-audit-session-item__id">{ses.session_id.slice(0, 8)}…</span>
-                      <span className="careloop-audit-session-item__time">{timeAgo(ses.created_at)}</span>
+                    <div className="big5loop-audit-session-item__top">
+                      <span className="big5loop-audit-session-item__id">{ses.session_id.slice(0, 8)}…</span>
+                      <span className="big5loop-audit-session-item__time">{timeAgo(ses.created_at)}</span>
                     </div>
-                    <div className="careloop-audit-session-item__bottom">
+                    <div className="big5loop-audit-session-item__bottom">
                       <span>{ses.turn_count} turns</span>
                       {ses.modes?.length > 0 && (
-                        <span className={`careloop-badge careloop-badge--sm ${modeBadgeClass(ses.modes[0])}`}>
+                        <span className={`big5loop-badge big5loop-badge--sm ${modeBadgeClass(ses.modes[0])}`}>
                           {(ses.modes[0] ?? "").replace(/_/g, " ")}
                         </span>
                       )}
@@ -845,33 +845,33 @@ export default function AuditPage() {
                   </button>
                 ))}
               </div>
-              <div className="careloop-audit-turns">
+              <div className="big5loop-audit-turns">
                 {!selectedSession ? (
-                  <div className="careloop-audit-turns__empty">Select a session to view its conversation</div>
+                  <div className="big5loop-audit-turns__empty">Select a session to view its conversation</div>
                 ) : loadingTurns ? (
-                  <p className="careloop-page__loading">Loading turns…</p>
+                  <p className="big5loop-page__loading">Loading turns…</p>
                 ) : turns.length === 0 ? (
-                  <div className="careloop-audit-turns__empty">No turns in this session</div>
+                  <div className="big5loop-audit-turns__empty">No turns in this session</div>
                 ) : (
                   turns.map((t) => (
-                    <div key={t.turn_index} className="careloop-audit-turn">
-                      <div className="careloop-audit-turn__header">
-                        <span className="careloop-audit-turn__index">#{t.turn_index}</span>
+                    <div key={t.turn_index} className="big5loop-audit-turn">
+                      <div className="big5loop-audit-turn__header">
+                        <span className="big5loop-audit-turn__index">#{t.turn_index}</span>
                         {t.mode && (
-                          <span className={`careloop-badge careloop-badge--sm ${modeBadgeClass(t.mode)}`}>
+                          <span className={`big5loop-badge big5loop-badge--sm ${modeBadgeClass(t.mode)}`}>
                             {t.mode.replace(/_/g, " ")}
                           </span>
                         )}
                         {t.latency_ms != null && (
-                          <span className="careloop-audit-turn__latency">{fmtMs(t.latency_ms)}</span>
+                          <span className="big5loop-audit-turn__latency">{fmtMs(t.latency_ms)}</span>
                         )}
-                        <span className="careloop-audit-turn__time">{new Date(t.created_at).toLocaleString()}</span>
+                        <span className="big5loop-audit-turn__time">{new Date(t.created_at).toLocaleString()}</span>
                       </div>
-                      <div className="careloop-audit-turn__msg careloop-audit-turn__msg--user">
+                      <div className="big5loop-audit-turn__msg big5loop-audit-turn__msg--user">
                         <strong>User:</strong> {t.user_msg}
                       </div>
                       {t.assistant_msg && (
-                        <div className="careloop-audit-turn__msg careloop-audit-turn__msg--assistant">
+                        <div className="big5loop-audit-turn__msg big5loop-audit-turn__msg--assistant">
                           <strong>Assistant:</strong> {t.assistant_msg}
                         </div>
                       )}
@@ -898,24 +898,24 @@ function PipelineBreakdown({ stages }: { stages: Analytics["pipeline_performance
   };
 
   return (
-    <div className="careloop-pipeline-bar">
-      <div className="careloop-pipeline-bar__track">
+    <div className="big5loop-pipeline-bar">
+      <div className="big5loop-pipeline-bar__track">
         {filtered.map((p) => {
           const pct = total > 0 ? (p.avg_ms / total) * 100 : 0;
           if (pct < 0.5) return null;
           return (
-            <div key={p.stage} className="careloop-pipeline-bar__segment"
+            <div key={p.stage} className="big5loop-pipeline-bar__segment"
               style={{ width: `${pct}%`, background: stageColors[p.stage] ?? "#9e9e9e" }}
               title={`${p.stage}: ${fmtMs(p.avg_ms)} avg (${pct.toFixed(0)}%)`} />
           );
         })}
       </div>
-      <div className="careloop-pipeline-bar__legend">
+      <div className="big5loop-pipeline-bar__legend">
         {filtered.map((p) => {
           const pct = total > 0 ? (p.avg_ms / total) * 100 : 0;
           return (
-            <span key={p.stage} className="careloop-pipeline-bar__label">
-              <span className="careloop-pipeline-bar__dot" style={{ background: stageColors[p.stage] ?? "#9e9e9e" }} />
+            <span key={p.stage} className="big5loop-pipeline-bar__label">
+              <span className="big5loop-pipeline-bar__dot" style={{ background: stageColors[p.stage] ?? "#9e9e9e" }} />
               {p.stage} <strong>{fmtMs(p.avg_ms)}</strong> ({pct.toFixed(0)}%)
             </span>
           );
@@ -927,11 +927,11 @@ function PipelineBreakdown({ stages }: { stages: Analytics["pipeline_performance
 
 function HowItem({ num, title, color, desc }: { num: string; title: string; color: string; desc: string }) {
   return (
-    <div className="careloop-how-item">
-      <div className="careloop-how-item__num" style={{ background: color }}>{num}</div>
-      <div className="careloop-how-item__content">
-        <h3 className="careloop-how-item__title">{title}</h3>
-        <p className="careloop-how-item__desc">{desc}</p>
+    <div className="big5loop-how-item">
+      <div className="big5loop-how-item__num" style={{ background: color }}>{num}</div>
+      <div className="big5loop-how-item__content">
+        <h3 className="big5loop-how-item__title">{title}</h3>
+        <p className="big5loop-how-item__desc">{desc}</p>
       </div>
     </div>
   );
@@ -939,11 +939,11 @@ function HowItem({ num, title, color, desc }: { num: string; title: string; colo
 
 function DataItem({ icon, title, desc }: { icon: string; title: string; desc: string }) {
   return (
-    <div className="careloop-data-item">
-      <span className="careloop-data-item__icon">{icon}</span>
+    <div className="big5loop-data-item">
+      <span className="big5loop-data-item__icon">{icon}</span>
       <div>
         <strong>{title}</strong>
-        <p className="careloop-data-item__desc">{desc}</p>
+        <p className="big5loop-data-item__desc">{desc}</p>
       </div>
     </div>
   );

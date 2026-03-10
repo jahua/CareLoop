@@ -1,4 +1,4 @@
-# CareLoop Next.js app – runs in Docker alongside db + n8n
+# Big5Loop Next.js app – runs in Docker alongside db + n8n
 FROM node:20-alpine
 
 WORKDIR /app

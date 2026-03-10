@@ -111,7 +111,7 @@ function OceanRadar({ ocean, size = 260 }: { ocean: Record<string, number>; size
   const polygon = dataPoints.map((p) => `${p.x},${p.y}`).join(" ");
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="careloop-radar">
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="big5loop-radar">
       {rings.map((ring) => (
         <polygon key={ring}
           points={TRAITS.map((_, i) => {
@@ -153,7 +153,7 @@ function OceanRadar({ ocean, size = 260 }: { ocean: Record<string, number>; size
 }
 
 function TraitTimeline({ history, trait }: { history: HistoryPoint[]; trait: Trait }) {
-  if (history.length < 2) return <p className="careloop-chart__empty">Need more data</p>;
+  if (history.length < 2) return <p className="big5loop-chart__empty">Need more data</p>;
   const values = history.map((h) => h.ocean_json[trait] ?? 0);
   const w = 340, h = 80, pad = 6;
   const stepX = (w - pad * 2) / Math.max(values.length - 1, 1);
@@ -167,7 +167,7 @@ function TraitTimeline({ history, trait }: { history: HistoryPoint[]; trait: Tra
   const line = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
 
   return (
-    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="careloop-chart-svg">
+    <svg width="100%" viewBox={`0 0 ${w} ${h}`} className="big5loop-chart-svg">
       <line x1={pad} y1={h / 2} x2={w - pad} y2={h / 2}
         stroke="var(--color-border)" strokeWidth="0.5" strokeDasharray="3 3" />
       <path d={area} fill={TRAIT_COLORS[trait]} fillOpacity={0.08} />
@@ -269,34 +269,34 @@ export default function PersonalityPage() {
 
   if (loading) {
     return (
-      <div className="careloop-page">
-        <div className="careloop-page__header"><h1>Personality Analysis</h1></div>
-        <div className="careloop-page__content"><p className="careloop-page__loading">Loading…</p></div>
+      <div className="big5loop-page">
+        <div className="big5loop-page__header"><h1>Personality Analysis</h1></div>
+        <div className="big5loop-page__content"><p className="big5loop-page__loading">Loading…</p></div>
       </div>
     );
   }
 
   return (
-    <div className="careloop-page">
-      <div className="careloop-page__header">
+    <div className="big5loop-page">
+      <div className="big5loop-page__header">
         <h1>Personality Analysis</h1>
-        <p className="careloop-page__subtitle">
+        <p className="big5loop-page__subtitle">
           OCEAN personality detection, regulation directives, and profile synthesis
         </p>
-        <div className="careloop-page__tabs">
-          <button type="button" className={`careloop-page__tab ${tab === "profile" ? "careloop-page__tab--active" : ""}`}
+        <div className="big5loop-page__tabs">
+          <button type="button" className={`big5loop-page__tab ${tab === "profile" ? "big5loop-page__tab--active" : ""}`}
             onClick={() => setTab("profile")}>Profile Summary</button>
-          <button type="button" className={`careloop-page__tab ${tab === "detection" ? "careloop-page__tab--active" : ""}`}
+          <button type="button" className={`big5loop-page__tab ${tab === "detection" ? "big5loop-page__tab--active" : ""}`}
             onClick={() => setTab("detection")}>Detection</button>
-          <button type="button" className={`careloop-page__tab ${tab === "regulation" ? "careloop-page__tab--active" : ""}`}
+          <button type="button" className={`big5loop-page__tab ${tab === "regulation" ? "big5loop-page__tab--active" : ""}`}
             onClick={() => setTab("regulation")}>Regulation</button>
         </div>
       </div>
 
-      <div className="careloop-page__content">
+      <div className="big5loop-page__content">
         {!profile ? (
-          <section className="careloop-card">
-            <p className="careloop-page__empty">No personality data yet. Start chatting to build your profile.</p>
+          <section className="big5loop-card">
+            <p className="big5loop-page__empty">No personality data yet. Start chatting to build your profile.</p>
           </section>
         ) : (
           <>
@@ -304,32 +304,32 @@ export default function PersonalityPage() {
             {tab === "profile" && (
               <>
                 {/* Project Overview */}
-                <section className="careloop-card careloop-text-section">
-                  <h2 className="careloop-card__title">About CareLoop Personality System</h2>
-                  <div className="careloop-text-block">
+                <section className="big5loop-card big5loop-text-section">
+                  <h2 className="big5loop-card__title">About Big5Loop Personality System</h2>
+                  <div className="big5loop-text-block">
                     <p>
-                      CareLoop is a personality-aware conversational assistant designed for Swiss social insurance navigation. It uses the <strong>Big Five / OCEAN model</strong> — the most widely validated personality framework in psychology — to understand each user&apos;s communication style and adapt responses accordingly.
+                      Big5Loop is a personality-aware conversational assistant designed for Swiss social insurance navigation. It uses the <strong>Big Five / OCEAN model</strong> — the most widely validated personality framework in psychology — to understand each user&apos;s communication style and adapt responses accordingly.
                     </p>
                     <p>
                       The system operates on a core thesis: <em>social insurance information is more effectively communicated when adapted to the recipient&apos;s personality traits</em>. A highly neurotic user who is anxious about their IV application receives more empathetic, reassuring responses, while a highly conscientious user receives structured, action-oriented guidance.
                     </p>
                     <p>
-                      Unlike static personality tests, CareLoop performs <strong>continuous, implicit detection</strong> — analyzing natural conversation text rather than requiring users to fill out questionnaires. The personality profile is built incrementally across multiple sessions and smoothed using exponential moving averages to ensure stability and accuracy.
+                      Unlike static personality tests, Big5Loop performs <strong>continuous, implicit detection</strong> — analyzing natural conversation text rather than requiring users to fill out questionnaires. The personality profile is built incrementally across multiple sessions and smoothed using exponential moving averages to ensure stability and accuracy.
                     </p>
                   </div>
                 </section>
 
                 {/* Methodology */}
-                <section className="careloop-card careloop-text-section">
-                  <h2 className="careloop-card__title">Methodology: OCEAN / Big Five Model</h2>
-                  <div className="careloop-text-block">
+                <section className="big5loop-card big5loop-text-section">
+                  <h2 className="big5loop-card__title">Methodology: OCEAN / Big Five Model</h2>
+                  <div className="big5loop-text-block">
                     <p>
                       The <strong>Big Five</strong> (also called OCEAN) is the dominant taxonomy in personality psychology, with decades of cross-cultural validation. It describes personality along five orthogonal dimensions, each scored on a continuous scale from -1.0 (low) to +1.0 (high):
                     </p>
-                    <div className="careloop-method-grid">
+                    <div className="big5loop-method-grid">
                       {TRAITS.map((t) => (
-                        <div key={t} className="careloop-method-item" style={{ borderLeftColor: TRAIT_COLORS[t] }}>
-                          <div className="careloop-method-item__head">
+                        <div key={t} className="big5loop-method-item" style={{ borderLeftColor: TRAIT_COLORS[t] }}>
+                          <div className="big5loop-method-item__head">
                             <span>{TRAIT_FACETS[t].icon}</span>
                             <strong style={{ color: TRAIT_COLORS[t] }}>{TRAIT_NAMES[t]} ({t})</strong>
                           </div>
@@ -339,7 +339,7 @@ export default function PersonalityPage() {
                       ))}
                     </div>
                     <p>
-                      CareLoop detects these traits through <strong>lexical analysis</strong> (keyword pattern matching), <strong>linguistic feature extraction</strong> (message length, punctuation patterns, sentiment ratios), and <strong>contextual inference</strong>. The raw per-message estimates are smoothed using a two-stage EMA process: intra-session (&#945; = {EMA_ALPHA}) for short-term stability, and cross-session (&#945; = {CROSS_SESSION_ALPHA}) for long-term profile synthesis.
+                      Big5Loop detects these traits through <strong>lexical analysis</strong> (keyword pattern matching), <strong>linguistic feature extraction</strong> (message length, punctuation patterns, sentiment ratios), and <strong>contextual inference</strong>. The raw per-message estimates are smoothed using a two-stage EMA process: intra-session (&#945; = {EMA_ALPHA}) for short-term stability, and cross-session (&#945; = {CROSS_SESSION_ALPHA}) for long-term profile synthesis.
                     </p>
                     <p>
                       A <strong>confidence score</strong> (0–100%) accompanies each trait, reflecting how certain the system is about the estimate. Low-confidence readings (below 30%) are automatically discarded to prevent noisy measurements from corrupting the stable profile. After {STABILITY_MIN_TURNS}+ turns with variance below {STABILITY_VARIANCE}, the profile is marked &quot;stable.&quot;
@@ -348,43 +348,43 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* KPI Row */}
-                <div className="careloop-page__grid careloop-page__grid--4">
-                  <div className="careloop-stat-card">
-                    <span className="careloop-stat-card__value">{profile.total_turns}</span>
-                    <span className="careloop-stat-card__label">Turns Analyzed</span>
+                <div className="big5loop-page__grid big5loop-page__grid--4">
+                  <div className="big5loop-stat-card">
+                    <span className="big5loop-stat-card__value">{profile.total_turns}</span>
+                    <span className="big5loop-stat-card__label">Turns Analyzed</span>
                   </div>
-                  <div className="careloop-stat-card">
-                    <span className={`careloop-stat-card__value ${profile.stable ? "careloop-stat-card__value--success" : ""}`}>
+                  <div className="big5loop-stat-card">
+                    <span className={`big5loop-stat-card__value ${profile.stable ? "big5loop-stat-card__value--success" : ""}`}>
                       {profile.stable ? "Stable" : "Learning"}
                     </span>
-                    <span className="careloop-stat-card__label">Profile Status</span>
+                    <span className="big5loop-stat-card__label">Profile Status</span>
                   </div>
-                  <div className="careloop-stat-card">
-                    <span className="careloop-stat-card__value" style={{ color: TRAIT_COLORS[dominantTrait ?? "O"] }}>
+                  <div className="big5loop-stat-card">
+                    <span className="big5loop-stat-card__value" style={{ color: TRAIT_COLORS[dominantTrait ?? "O"] }}>
                       {TRAIT_NAMES[dominantTrait ?? "O"]}
                     </span>
-                    <span className="careloop-stat-card__label">Dominant Trait</span>
+                    <span className="big5loop-stat-card__label">Dominant Trait</span>
                   </div>
-                  <div className="careloop-stat-card">
-                    <span className="careloop-stat-card__value">{activeDirectives.length}</span>
-                    <span className="careloop-stat-card__label">Active Directives</span>
+                  <div className="big5loop-stat-card">
+                    <span className="big5loop-stat-card__value">{activeDirectives.length}</span>
+                    <span className="big5loop-stat-card__label">Active Directives</span>
                   </div>
                 </div>
 
                 {/* Written summary */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">Profile Summary</h2>
-                  <p className="careloop-personality-summary">{profileSummary}</p>
-                  <div className="careloop-personality-tags">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">Profile Summary</h2>
+                  <p className="big5loop-personality-summary">{profileSummary}</p>
+                  <div className="big5loop-personality-tags">
                     {TRAITS.map((t) => {
                       const v = profile.ocean_scores[t] ?? 0;
                       const level = traitLevel(v);
                       return (
-                        <span key={t} className={`careloop-ptag careloop-ptag--${level}`}
+                        <span key={t} className={`big5loop-ptag big5loop-ptag--${level}`}
                           style={{ borderColor: TRAIT_COLORS[t] }}>
-                          <span className="careloop-ptag__icon">{TRAIT_FACETS[t].icon}</span>
-                          <span className="careloop-ptag__name">{TRAIT_NAMES[t]}</span>
-                          <span className="careloop-ptag__level">{level === "high" ? "High" : level === "low" ? "Low" : "Mid"}</span>
+                          <span className="big5loop-ptag__icon">{TRAIT_FACETS[t].icon}</span>
+                          <span className="big5loop-ptag__name">{TRAIT_NAMES[t]}</span>
+                          <span className="big5loop-ptag__level">{level === "high" ? "High" : level === "low" ? "Low" : "Mid"}</span>
                         </span>
                       );
                     })}
@@ -392,39 +392,39 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* Radar + Trait Bars */}
-                <div className="careloop-page__grid careloop-page__grid--2">
-                  <section className="careloop-card careloop-card--center">
-                    <h2 className="careloop-card__title">OCEAN Radar</h2>
+                <div className="big5loop-page__grid big5loop-page__grid--2">
+                  <section className="big5loop-card big5loop-card--center">
+                    <h2 className="big5loop-card__title">OCEAN Radar</h2>
                     <OceanRadar ocean={profile.ocean_scores} />
-                    <div className="careloop-card__meta">
-                      <span className={`careloop-badge ${profile.stable ? "careloop-badge--stable" : "careloop-badge--learning"}`}>
+                    <div className="big5loop-card__meta">
+                      <span className={`big5loop-badge ${profile.stable ? "big5loop-badge--stable" : "big5loop-badge--learning"}`}>
                         {profile.stable ? "Stable" : "Learning"}
                       </span>
-                      <span className="careloop-card__meta-text">{profile.total_turns} turns</span>
+                      <span className="big5loop-card__meta-text">{profile.total_turns} turns</span>
                     </div>
                   </section>
 
-                  <section className="careloop-card">
-                    <h2 className="careloop-card__title">Trait Scores & Confidence</h2>
+                  <section className="big5loop-card">
+                    <h2 className="big5loop-card__title">Trait Scores & Confidence</h2>
                     {TRAITS.map((t) => {
                       const val = profile.ocean_scores[t] ?? 0;
                       const conf = profile.confidence[t] ?? 0;
                       const pct = norm(val);
                       const level = traitLevel(val);
                       return (
-                        <div key={t} className="careloop-trait-detail">
-                          <div className="careloop-trait-detail__header">
-                            <span className="careloop-trait-detail__icon">{TRAIT_FACETS[t].icon}</span>
+                        <div key={t} className="big5loop-trait-detail">
+                          <div className="big5loop-trait-detail__header">
+                            <span className="big5loop-trait-detail__icon">{TRAIT_FACETS[t].icon}</span>
                             <span style={{ color: TRAIT_COLORS[t], fontWeight: 600, flex: 1 }}>{TRAIT_NAMES[t]}</span>
-                            <span className="careloop-trait-detail__score">{val.toFixed(2)}</span>
+                            <span className="big5loop-trait-detail__score">{val.toFixed(2)}</span>
                             <ConfidenceGauge value={conf} color={TRAIT_COLORS[t]} />
-                            <span className="careloop-trait-detail__conf">{pctStr(conf)}</span>
+                            <span className="big5loop-trait-detail__conf">{pctStr(conf)}</span>
                           </div>
-                          <div className="careloop-trait__bar">
-                            <div className="careloop-trait__bar-fill" style={{ width: `${pct}%`, background: TRAIT_COLORS[t] }} />
-                            <div className="careloop-trait__bar-mid" />
+                          <div className="big5loop-trait__bar">
+                            <div className="big5loop-trait__bar-fill" style={{ width: `${pct}%`, background: TRAIT_COLORS[t] }} />
+                            <div className="big5loop-trait__bar-mid" />
                           </div>
-                          <p className="careloop-trait-detail__desc">
+                          <p className="big5loop-trait-detail__desc">
                             {level === "high" ? TRAIT_FACETS[t].high : level === "low" ? TRAIT_FACETS[t].low : "Balanced — moderate expression of this trait"}
                           </p>
                         </div>
@@ -435,17 +435,17 @@ export default function PersonalityPage() {
 
                 {/* Trait History */}
                 {history.length > 1 && (
-                  <section className="careloop-card">
-                    <h2 className="careloop-card__title">Trait Evolution Over Time</h2>
-                    <p className="careloop-card__desc">How each OCEAN trait has changed across {history.length} personality measurements</p>
-                    <div className="careloop-history-grid">
+                  <section className="big5loop-card">
+                    <h2 className="big5loop-card__title">Trait Evolution Over Time</h2>
+                    <p className="big5loop-card__desc">How each OCEAN trait has changed across {history.length} personality measurements</p>
+                    <div className="big5loop-history-grid">
                       {TRAITS.map((t) => (
-                        <div key={t} className="careloop-history-item">
-                          <div className="careloop-history-item__head">
-                            <span className="careloop-history-item__label" style={{ color: TRAIT_COLORS[t] }}>
+                        <div key={t} className="big5loop-history-item">
+                          <div className="big5loop-history-item__head">
+                            <span className="big5loop-history-item__label" style={{ color: TRAIT_COLORS[t] }}>
                               {TRAIT_FACETS[t].icon} {TRAIT_NAMES[t]}
                             </span>
-                            <span className="careloop-history-item__current">
+                            <span className="big5loop-history-item__current">
                               {(profile.ocean_scores[t] ?? 0).toFixed(2)}
                             </span>
                           </div>
@@ -457,29 +457,29 @@ export default function PersonalityPage() {
                 )}
 
                 {/* Stability progress */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">Stability Progress</h2>
-                  <p className="careloop-card__desc">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">Stability Progress</h2>
+                  <p className="big5loop-card__desc">
                     Profile becomes &quot;stable&quot; after {STABILITY_MIN_TURNS} turns with trait variance below {STABILITY_VARIANCE}
                   </p>
-                  <div className="careloop-stability">
-                    <div className="careloop-stability__bar-wrap">
-                      <div className="careloop-stability__bar">
-                        <div className="careloop-stability__bar-fill"
+                  <div className="big5loop-stability">
+                    <div className="big5loop-stability__bar-wrap">
+                      <div className="big5loop-stability__bar">
+                        <div className="big5loop-stability__bar-fill"
                           style={{ width: `${Math.min(100, (profile.total_turns / STABILITY_MIN_TURNS) * 100)}%` }} />
                       </div>
-                      <span className="careloop-stability__label">
+                      <span className="big5loop-stability__label">
                         {profile.total_turns}/{STABILITY_MIN_TURNS} turns
                         {profile.total_turns >= STABILITY_MIN_TURNS ? " ✓" : ""}
                       </span>
                     </div>
-                    <div className="careloop-stability__status">
+                    <div className="big5loop-stability__status">
                       {profile.stable ? (
-                        <span className="careloop-badge careloop-badge--stable">Profile is stable — traits are consistent</span>
+                        <span className="big5loop-badge big5loop-badge--stable">Profile is stable — traits are consistent</span>
                       ) : profile.total_turns >= STABILITY_MIN_TURNS ? (
-                        <span className="careloop-badge careloop-badge--learning">Enough turns, but traits are still shifting</span>
+                        <span className="big5loop-badge big5loop-badge--learning">Enough turns, but traits are still shifting</span>
                       ) : (
-                        <span className="careloop-badge careloop-badge--learning">
+                        <span className="big5loop-badge big5loop-badge--learning">
                           {STABILITY_MIN_TURNS - profile.total_turns} more turns needed for stability check
                         </span>
                       )}
@@ -488,31 +488,31 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* Metric Definitions */}
-                <section className="careloop-card careloop-text-section">
-                  <h2 className="careloop-card__title">Understanding the Metrics</h2>
-                  <div className="careloop-text-block">
-                    <div className="careloop-def-grid">
-                      <div className="careloop-def-item">
+                <section className="big5loop-card big5loop-text-section">
+                  <h2 className="big5loop-card__title">Understanding the Metrics</h2>
+                  <div className="big5loop-text-block">
+                    <div className="big5loop-def-grid">
+                      <div className="big5loop-def-item">
                         <h4>Trait Score (-1.0 to +1.0)</h4>
                         <p>Each OCEAN dimension is measured on a continuous scale. Scores above +0.2 are classified as &quot;high,&quot; below -0.2 as &quot;low,&quot; and between as &quot;mid&quot; (balanced). The score represents the cumulative, smoothed estimate from all analyzed conversations.</p>
                       </div>
-                      <div className="careloop-def-item">
+                      <div className="big5loop-def-item">
                         <h4>Confidence (0–100%)</h4>
                         <p>Reflects how certain the system is about a trait estimate. Higher confidence means more consistent signals across messages. Confidence increases as more conversation turns provide trait-relevant signals. Readings below 30% confidence are automatically discarded.</p>
                       </div>
-                      <div className="careloop-def-item">
+                      <div className="big5loop-def-item">
                         <h4>EMA Smoothing</h4>
                         <p>Exponential Moving Average prevents single messages from disproportionately shifting the profile. Intra-session EMA (&#945;=0.3) smooths within a conversation; cross-session EMA (&#945;=0.2) smooths across sessions. This means older data gradually fades while recent data is weighted more.</p>
                       </div>
-                      <div className="careloop-def-item">
+                      <div className="big5loop-def-item">
                         <h4>Stability Flag</h4>
                         <p>A profile is &quot;stable&quot; when: (1) at least {STABILITY_MIN_TURNS} turns have been analyzed, AND (2) the average squared change between consecutive updates is below {STABILITY_VARIANCE}. Stable profiles use lower LLM temperature (0.55 vs 0.70) for more consistent responses.</p>
                       </div>
-                      <div className="careloop-def-item">
+                      <div className="big5loop-def-item">
                         <h4>Regulation Directives</h4>
                         <p>Natural-language instructions injected into the LLM system prompt. Only traits with &quot;high&quot; or &quot;low&quot; classification generate directives. Mid-range traits use default behavior. Directives shape tone, empathy level, structure, and communication style.</p>
                       </div>
-                      <div className="careloop-def-item">
+                      <div className="big5loop-def-item">
                         <h4>Turns Analyzed</h4>
                         <p>The total number of conversation turns (user messages) that have contributed to the personality profile. Not every turn produces trait signals — messages like greetings or simple acknowledgments may not shift scores. Quality of signal matters more than quantity.</p>
                       </div>
@@ -521,15 +521,15 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* Per-Trait Deep Interpretation */}
-                <section className="careloop-card careloop-text-section">
-                  <h2 className="careloop-card__title">Your Trait Interpretation</h2>
-                  <div className="careloop-text-block">
+                <section className="big5loop-card big5loop-text-section">
+                  <h2 className="big5loop-card__title">Your Trait Interpretation</h2>
+                  <div className="big5loop-text-block">
                     {TRAITS.map((t) => {
                       const val = profile.ocean_scores[t] ?? 0;
                       const conf = profile.confidence[t] ?? 0;
                       const level = traitLevel(val);
                       return (
-                        <div key={t} className="careloop-interp" style={{ borderLeftColor: TRAIT_COLORS[t] }}>
+                        <div key={t} className="big5loop-interp" style={{ borderLeftColor: TRAIT_COLORS[t] }}>
                           <h4>
                             {TRAIT_FACETS[t].icon}{" "}
                             <span style={{ color: TRAIT_COLORS[t] }}>{TRAIT_NAMES[t]}</span>
@@ -561,16 +561,16 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* Summary & Implications */}
-                <section className="careloop-card careloop-text-section">
-                  <h2 className="careloop-card__title">Summary & Practical Implications</h2>
-                  <div className="careloop-text-block">
+                <section className="big5loop-card big5loop-text-section">
+                  <h2 className="big5loop-card__title">Summary & Practical Implications</h2>
+                  <div className="big5loop-text-block">
                     <p>
                       Your current personality profile has been synthesized from <strong>{profile.total_turns} conversation turns</strong> using a two-stage EMA smoothing process. The profile is currently <strong>{profile.stable ? "stable" : "in the learning phase"}</strong>.
                     </p>
                     {activeDirectives.length > 0 ? (
                       <>
                         <p>Based on your trait scores, <strong>{activeDirectives.length} regulation directive{activeDirectives.length > 1 ? "s" : ""}</strong> {activeDirectives.length > 1 ? "are" : "is"} actively shaping the assistant&apos;s responses:</p>
-                        <ul className="careloop-text-list">
+                        <ul className="big5loop-text-list">
                           {activeDirectives.map((d) => (
                             <li key={d.trait}>
                               <strong>{TRAIT_NAMES[d.trait]}</strong> ({d.level}): {d.directive}
@@ -585,7 +585,7 @@ export default function PersonalityPage() {
                       The personality system is designed to make social insurance information more accessible by adapting to <em>how</em> you prefer to receive information. It does not judge or categorize — there are no &quot;good&quot; or &quot;bad&quot; trait scores. Every personality configuration leads to different adaptive strategies that aim to improve comprehension and emotional comfort.
                     </p>
                     {!profile.stable && (
-                      <p className="careloop-text-note">
+                      <p className="big5loop-text-note">
                         <strong>Note:</strong> Your profile is still learning. Trait scores may shift significantly as more data is collected. For the most accurate personality adaptation, aim for at least {STABILITY_MIN_TURNS} meaningful conversation turns across multiple sessions.
                       </p>
                     )}
@@ -598,43 +598,43 @@ export default function PersonalityPage() {
             {tab === "detection" && (
               <>
                 {/* How detection works */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">How Personality Detection Works</h2>
-                  <p className="careloop-card__desc">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">How Personality Detection Works</h2>
+                  <p className="big5loop-card__desc">
                     Every user message is analyzed through a multi-signal heuristic + LLM pipeline to estimate Big Five (OCEAN) personality traits.
                   </p>
-                  <div className="careloop-detection-flow">
-                    <div className="careloop-dflow-step">
-                      <div className="careloop-dflow-step__num" style={{ background: "#1e88e5" }}>1</div>
-                      <div className="careloop-dflow-step__content">
+                  <div className="big5loop-detection-flow">
+                    <div className="big5loop-dflow-step">
+                      <div className="big5loop-dflow-step__num" style={{ background: "#1e88e5" }}>1</div>
+                      <div className="big5loop-dflow-step__content">
                         <h3>Heuristic Analysis</h3>
                         <p>Scans user text for trait-indicative keywords: emotional words (N), social language (E), planning/structure words (C), curiosity markers (O), and cooperative language (A).</p>
                       </div>
                     </div>
-                    <div className="careloop-dflow-step">
-                      <div className="careloop-dflow-step__num" style={{ background: "#7c4dff" }}>2</div>
-                      <div className="careloop-dflow-step__content">
+                    <div className="big5loop-dflow-step">
+                      <div className="big5loop-dflow-step__num" style={{ background: "#7c4dff" }}>2</div>
+                      <div className="big5loop-dflow-step__content">
                         <h3>Signal Extraction</h3>
                         <p>Extracts linguistic signals: message length, question marks, exclamation marks, positive/negative word ratios, social references, and structural indicators.</p>
                       </div>
                     </div>
-                    <div className="careloop-dflow-step">
-                      <div className="careloop-dflow-step__num" style={{ background: "#ff9800" }}>3</div>
-                      <div className="careloop-dflow-step__content">
+                    <div className="big5loop-dflow-step">
+                      <div className="big5loop-dflow-step__num" style={{ background: "#ff9800" }}>3</div>
+                      <div className="big5loop-dflow-step__content">
                         <h3>EMA Smoothing (Intra-Session)</h3>
                         <p>Applies Exponential Moving Average (&#945; = {EMA_ALPHA}) within the session to smooth trait values: <code>new = &#945; &times; current + (1-&#945;) &times; previous</code>. Prevents single-message spikes from distorting the profile.</p>
                       </div>
                     </div>
-                    <div className="careloop-dflow-step">
-                      <div className="careloop-dflow-step__num" style={{ background: "#43a047" }}>4</div>
-                      <div className="careloop-dflow-step__content">
+                    <div className="big5loop-dflow-step">
+                      <div className="big5loop-dflow-step__num" style={{ background: "#43a047" }}>4</div>
+                      <div className="big5loop-dflow-step__content">
                         <h3>Cross-Session Synthesis</h3>
                         <p>Merges session results into the stable profile using a separate EMA (&#945; = {CROSS_SESSION_ALPHA}). Low-confidence scores (below 30%) are discarded to avoid noise.</p>
                       </div>
                     </div>
-                    <div className="careloop-dflow-step">
-                      <div className="careloop-dflow-step__num" style={{ background: "#e53935" }}>5</div>
-                      <div className="careloop-dflow-step__content">
+                    <div className="big5loop-dflow-step">
+                      <div className="big5loop-dflow-step__num" style={{ background: "#e53935" }}>5</div>
+                      <div className="big5loop-dflow-step__content">
                         <h3>Stability Assessment</h3>
                         <p>After {STABILITY_MIN_TURNS}+ turns, if trait variance between updates drops below {STABILITY_VARIANCE}, the profile is marked &quot;stable&quot; — meaning the system is confident in the personality model.</p>
                       </div>
@@ -643,41 +643,41 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* Detection signals per trait */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">Detection Signals by Trait</h2>
-                  <p className="careloop-card__desc">Keyword patterns and linguistic features used to estimate each OCEAN dimension</p>
-                  <div className="careloop-signals-grid">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">Detection Signals by Trait</h2>
+                  <p className="big5loop-card__desc">Keyword patterns and linguistic features used to estimate each OCEAN dimension</p>
+                  <div className="big5loop-signals-grid">
                     {TRAITS.map((t) => {
                       const val = profile.ocean_scores[t] ?? 0;
                       const conf = profile.confidence[t] ?? 0;
                       const level = traitLevel(val);
                       return (
-                        <div key={t} className="careloop-signal-card" style={{ borderLeftColor: TRAIT_COLORS[t] }}>
-                          <div className="careloop-signal-card__header">
-                            <span className="careloop-signal-card__icon">{TRAIT_FACETS[t].icon}</span>
-                            <span className="careloop-signal-card__name" style={{ color: TRAIT_COLORS[t] }}>{TRAIT_NAMES[t]}</span>
-                            <span className={`careloop-badge careloop-badge--sm careloop-badge--${level === "high" ? "stable" : level === "low" ? "emotional" : "learning"}`}>
+                        <div key={t} className="big5loop-signal-card" style={{ borderLeftColor: TRAIT_COLORS[t] }}>
+                          <div className="big5loop-signal-card__header">
+                            <span className="big5loop-signal-card__icon">{TRAIT_FACETS[t].icon}</span>
+                            <span className="big5loop-signal-card__name" style={{ color: TRAIT_COLORS[t] }}>{TRAIT_NAMES[t]}</span>
+                            <span className={`big5loop-badge big5loop-badge--sm big5loop-badge--${level === "high" ? "stable" : level === "low" ? "emotional" : "learning"}`}>
                               {val.toFixed(2)} ({level})
                             </span>
                           </div>
-                          <div className="careloop-signal-card__body">
-                            <div className="careloop-signal-card__section">
-                              <span className="careloop-signal-card__label">High indicators:</span>
-                              <div className="careloop-signal-keywords">
+                          <div className="big5loop-signal-card__body">
+                            <div className="big5loop-signal-card__section">
+                              <span className="big5loop-signal-card__label">High indicators:</span>
+                              <div className="big5loop-signal-keywords">
                                 {TRAIT_FACETS[t].keywords_high.map((k) => (
-                                  <span key={k} className="careloop-keyword careloop-keyword--high">{k}</span>
+                                  <span key={k} className="big5loop-keyword big5loop-keyword--high">{k}</span>
                                 ))}
                               </div>
                             </div>
-                            <div className="careloop-signal-card__section">
-                              <span className="careloop-signal-card__label">Low indicators:</span>
-                              <div className="careloop-signal-keywords">
+                            <div className="big5loop-signal-card__section">
+                              <span className="big5loop-signal-card__label">Low indicators:</span>
+                              <div className="big5loop-signal-keywords">
                                 {TRAIT_FACETS[t].keywords_low.map((k) => (
-                                  <span key={k} className="careloop-keyword careloop-keyword--low">{k}</span>
+                                  <span key={k} className="big5loop-keyword big5loop-keyword--low">{k}</span>
                                 ))}
                               </div>
                             </div>
-                            <div className="careloop-signal-card__footer">
+                            <div className="big5loop-signal-card__footer">
                               <span>Confidence: <strong>{pctStr(conf)}</strong></span>
                               <ConfidenceGauge value={conf} color={TRAIT_COLORS[t]} />
                             </div>
@@ -689,29 +689,29 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* EMA formula visualization */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">EMA Smoothing Algorithm</h2>
-                  <div className="careloop-formula-grid">
-                    <div className="careloop-formula-card">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">EMA Smoothing Algorithm</h2>
+                  <div className="big5loop-formula-grid">
+                    <div className="big5loop-formula-card">
                       <h3>Intra-Session (per turn)</h3>
-                      <div className="careloop-formula">
+                      <div className="big5loop-formula">
                         smoothed<sub>t</sub> = &#945; &times; raw<sub>t</sub> + (1 - &#945;) &times; smoothed<sub>t-1</sub>
                       </div>
-                      <p className="careloop-formula__detail">&#945; = {EMA_ALPHA} — recent messages have 30% weight, prior state has 70% weight</p>
+                      <p className="big5loop-formula__detail">&#945; = {EMA_ALPHA} — recent messages have 30% weight, prior state has 70% weight</p>
                     </div>
-                    <div className="careloop-formula-card">
+                    <div className="big5loop-formula-card">
                       <h3>Cross-Session (profile update)</h3>
-                      <div className="careloop-formula">
+                      <div className="big5loop-formula">
                         profile<sub>new</sub> = &#946; &times; session<sub>end</sub> + (1 - &#946;) &times; profile<sub>old</sub>
                       </div>
-                      <p className="careloop-formula__detail">&#946; = {CROSS_SESSION_ALPHA} — each session contributes 20% to the stable profile</p>
+                      <p className="big5loop-formula__detail">&#946; = {CROSS_SESSION_ALPHA} — each session contributes 20% to the stable profile</p>
                     </div>
-                    <div className="careloop-formula-card">
+                    <div className="big5loop-formula-card">
                       <h3>Low-Confidence Gate</h3>
-                      <div className="careloop-formula">
+                      <div className="big5loop-formula">
                         if confidence &lt; 0.3 → keep previous value
                       </div>
-                      <p className="careloop-formula__detail">Prevents noisy or ambiguous messages from shifting the profile</p>
+                      <p className="big5loop-formula__detail">Prevents noisy or ambiguous messages from shifting the profile</p>
                     </div>
                   </div>
                 </section>
@@ -722,27 +722,27 @@ export default function PersonalityPage() {
             {tab === "regulation" && (
               <>
                 {/* Active directives */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">Active Regulation Directives</h2>
-                  <p className="careloop-card__desc">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">Active Regulation Directives</h2>
+                  <p className="big5loop-card__desc">
                     Based on your personality profile, these directives are currently applied to shape the assistant&apos;s responses:
                   </p>
                   {activeDirectives.length === 0 ? (
-                    <p className="careloop-page__empty">No strong trait signals yet — responses use a balanced default tone.</p>
+                    <p className="big5loop-page__empty">No strong trait signals yet — responses use a balanced default tone.</p>
                   ) : (
-                    <div className="careloop-directives">
+                    <div className="big5loop-directives">
                       {activeDirectives.map((d) => (
-                        <div key={d.trait} className="careloop-directive" style={{ borderLeftColor: TRAIT_COLORS[d.trait] }}>
-                          <div className="careloop-directive__header">
-                            <span className="careloop-directive__icon">{TRAIT_FACETS[d.trait].icon}</span>
-                            <span className="careloop-directive__trait" style={{ color: TRAIT_COLORS[d.trait] }}>
+                        <div key={d.trait} className="big5loop-directive" style={{ borderLeftColor: TRAIT_COLORS[d.trait] }}>
+                          <div className="big5loop-directive__header">
+                            <span className="big5loop-directive__icon">{TRAIT_FACETS[d.trait].icon}</span>
+                            <span className="big5loop-directive__trait" style={{ color: TRAIT_COLORS[d.trait] }}>
                               {TRAIT_NAMES[d.trait]}
                             </span>
-                            <span className={`careloop-badge careloop-badge--sm ${d.level === "high" ? "careloop-badge--stable" : "careloop-badge--emotional"}`}>
+                            <span className={`big5loop-badge big5loop-badge--sm ${d.level === "high" ? "big5loop-badge--stable" : "big5loop-badge--emotional"}`}>
                               {d.level}
                             </span>
                           </div>
-                          <p className="careloop-directive__text">{d.directive}</p>
+                          <p className="big5loop-directive__text">{d.directive}</p>
                         </div>
                       ))}
                     </div>
@@ -750,13 +750,13 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* Full regulation map */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">Complete Regulation Map</h2>
-                  <p className="careloop-card__desc">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">Complete Regulation Map</h2>
+                  <p className="big5loop-card__desc">
                     How each trait level maps to specific response behavior. Active directives are highlighted.
                   </p>
-                  <div className="careloop-table-wrap">
-                    <table className="careloop-table">
+                  <div className="big5loop-table-wrap">
+                    <table className="big5loop-table">
                       <thead>
                         <tr>
                           <th>Trait</th>
@@ -777,14 +777,14 @@ export default function PersonalityPage() {
                                 </span>
                               </td>
                               <td>
-                                <span className={`careloop-badge careloop-badge--sm ${level === "high" ? "careloop-badge--stable" : level === "low" ? "careloop-badge--emotional" : "careloop-badge--learning"}`}>
+                                <span className={`big5loop-badge big5loop-badge--sm ${level === "high" ? "big5loop-badge--stable" : level === "low" ? "big5loop-badge--emotional" : "big5loop-badge--learning"}`}>
                                   {val.toFixed(2)}
                                 </span>
                               </td>
-                              <td className={level === "high" ? "careloop-table__highlight" : ""}>
+                              <td className={level === "high" ? "big5loop-table__highlight" : ""}>
                                 {REGULATION_MAP[t].high}
                               </td>
-                              <td className={level === "low" ? "careloop-table__highlight" : ""}>
+                              <td className={level === "low" ? "big5loop-table__highlight" : ""}>
                                 {REGULATION_MAP[t].low}
                               </td>
                             </tr>
@@ -796,46 +796,46 @@ export default function PersonalityPage() {
                 </section>
 
                 {/* How regulation works */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">How Regulation Works</h2>
-                  <div className="careloop-how-grid careloop-how-grid--2">
-                    <div className="careloop-how-item">
-                      <div className="careloop-how-item__num" style={{ background: "#1e88e5" }}>1</div>
-                      <div className="careloop-how-item__content">
-                        <h3 className="careloop-how-item__title">Trait Thresholding</h3>
-                        <p className="careloop-how-item__desc">Each OCEAN score is classified as high (&gt; 0.2), low (&lt; -0.2), or mid. Only high/low traits generate directives.</p>
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">How Regulation Works</h2>
+                  <div className="big5loop-how-grid big5loop-how-grid--2">
+                    <div className="big5loop-how-item">
+                      <div className="big5loop-how-item__num" style={{ background: "#1e88e5" }}>1</div>
+                      <div className="big5loop-how-item__content">
+                        <h3 className="big5loop-how-item__title">Trait Thresholding</h3>
+                        <p className="big5loop-how-item__desc">Each OCEAN score is classified as high (&gt; 0.2), low (&lt; -0.2), or mid. Only high/low traits generate directives.</p>
                       </div>
                     </div>
-                    <div className="careloop-how-item">
-                      <div className="careloop-how-item__num" style={{ background: "#7c4dff" }}>2</div>
-                      <div className="careloop-how-item__content">
-                        <h3 className="careloop-how-item__title">Directive Generation</h3>
-                        <p className="careloop-how-item__desc">Active traits produce natural-language directives that are injected into the LLM system prompt to shape tone, style, and empathy level.</p>
+                    <div className="big5loop-how-item">
+                      <div className="big5loop-how-item__num" style={{ background: "#7c4dff" }}>2</div>
+                      <div className="big5loop-how-item__content">
+                        <h3 className="big5loop-how-item__title">Directive Generation</h3>
+                        <p className="big5loop-how-item__desc">Active traits produce natural-language directives that are injected into the LLM system prompt to shape tone, style, and empathy level.</p>
                       </div>
                     </div>
-                    <div className="careloop-how-item">
-                      <div className="careloop-how-item__num" style={{ background: "#ff9800" }}>3</div>
-                      <div className="careloop-how-item__content">
-                        <h3 className="careloop-how-item__title">Coaching Mode Integration</h3>
-                        <p className="careloop-how-item__desc">Directives are combined with the coaching mode (emotional / practical / policy) to create a context-appropriate response strategy.</p>
+                    <div className="big5loop-how-item">
+                      <div className="big5loop-how-item__num" style={{ background: "#ff9800" }}>3</div>
+                      <div className="big5loop-how-item__content">
+                        <h3 className="big5loop-how-item__title">Coaching Mode Integration</h3>
+                        <p className="big5loop-how-item__desc">Directives are combined with the coaching mode (emotional / practical / policy) to create a context-appropriate response strategy.</p>
                       </div>
                     </div>
-                    <div className="careloop-how-item">
-                      <div className="careloop-how-item__num" style={{ background: "#43a047" }}>4</div>
-                      <div className="careloop-how-item__content">
-                        <h3 className="careloop-how-item__title">Stable vs Dynamic</h3>
-                        <p className="careloop-how-item__desc">Stable profiles use lower temperature ({0.55}) for consistent responses. Learning profiles use higher temperature ({0.7}) for exploration.</p>
+                    <div className="big5loop-how-item">
+                      <div className="big5loop-how-item__num" style={{ background: "#43a047" }}>4</div>
+                      <div className="big5loop-how-item__content">
+                        <h3 className="big5loop-how-item__title">Stable vs Dynamic</h3>
+                        <p className="big5loop-how-item__desc">Stable profiles use lower temperature ({0.55}) for consistent responses. Learning profiles use higher temperature ({0.7}) for exploration.</p>
                       </div>
                     </div>
                   </div>
                 </section>
 
                 {/* Example prompts */}
-                <section className="careloop-card">
-                  <h2 className="careloop-card__title">Generated System Prompt Fragment</h2>
-                  <p className="careloop-card__desc">This is what gets injected into the LLM based on your current profile:</p>
-                  <div className="careloop-prompt-preview">
-                    <code className="careloop-prompt-code">
+                <section className="big5loop-card">
+                  <h2 className="big5loop-card__title">Generated System Prompt Fragment</h2>
+                  <p className="big5loop-card__desc">This is what gets injected into the LLM based on your current profile:</p>
+                  <div className="big5loop-prompt-preview">
+                    <code className="big5loop-prompt-code">
                       {activeDirectives.length > 0 ? (
                         <>
                           {"## Personality-Adapted Behavior\n"}

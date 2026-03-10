@@ -5,7 +5,7 @@ import AuthProvider from "@/components/AuthProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CareLoop",
+  title: "Big5Loop",
   description: "Adaptive personality-aware caregiver assistant",
 };
 
@@ -31,7 +31,7 @@ export default function RootLayout({
                     color: "#616161",
                   }}
                 >
-                  Loading CareLoop…
+                  Loading Big5Loop…
                 </div>
               }
             >

@@ -22,51 +22,51 @@ export default function PipelineInfo({ pipeline }: PipelineInfoProps) {
   }
 
   return (
-    <details className="careloop-pipeline">
-      <summary className="careloop-pipeline__summary">
+    <details className="big5loop-pipeline">
+      <summary className="big5loop-pipeline__summary">
         Pipeline
         {pipeline.mode_confidence != null && (
-          <span className="careloop-pipeline__conf">
+          <span className="big5loop-pipeline__conf">
             {Math.round(pipeline.mode_confidence * 100)}% conf
           </span>
         )}
       </summary>
-      <div className="careloop-pipeline__body">
+      <div className="big5loop-pipeline__body">
         {pipeline.mode_routing_reason && (
-          <div className="careloop-pipeline__row">
-            <span className="careloop-pipeline__key">Routing</span>
-            <span className="careloop-pipeline__val">
+          <div className="big5loop-pipeline__row">
+            <span className="big5loop-pipeline__key">Routing</span>
+            <span className="big5loop-pipeline__val">
               {pipeline.mode_routing_reason.replace(/_/g, " ")}
             </span>
           </div>
         )}
         {pipeline.route_key && (
-          <div className="careloop-pipeline__row">
-            <span className="careloop-pipeline__key">Route key</span>
-            <span className="careloop-pipeline__val">{pipeline.route_key}</span>
+          <div className="big5loop-pipeline__row">
+            <span className="big5loop-pipeline__key">Route key</span>
+            <span className="big5loop-pipeline__val">{pipeline.route_key}</span>
           </div>
         )}
         {pipeline.isolation_scope && (
-          <div className="careloop-pipeline__row">
-            <span className="careloop-pipeline__key">Isolation</span>
-            <span className="careloop-pipeline__val">{pipeline.isolation_scope.replace(/_/g, " ")}</span>
+          <div className="big5loop-pipeline__row">
+            <span className="big5loop-pipeline__key">Isolation</span>
+            <span className="big5loop-pipeline__val">{pipeline.isolation_scope.replace(/_/g, " ")}</span>
           </div>
         )}
         {typeof pipeline.history_turns_used === "number" && (
-          <div className="careloop-pipeline__row">
-            <span className="careloop-pipeline__key">History used</span>
-            <span className="careloop-pipeline__val">
+          <div className="big5loop-pipeline__row">
+            <span className="big5loop-pipeline__key">History used</span>
+            <span className="big5loop-pipeline__val">
               {pipeline.history_turns_used}
               {pipeline.history_filtered ? " isolated" : " shared"}
             </span>
           </div>
         )}
         {hasStatus && (
-          <div className="careloop-pipeline__stages">
+          <div className="big5loop-pipeline__stages">
             {Object.entries(pipeline.pipeline_status!).map(([stage, status]) => (
               <span
                 key={stage}
-                className={`careloop-pipeline__stage careloop-pipeline__stage--${status}`}
+                className={`big5loop-pipeline__stage big5loop-pipeline__stage--${status}`}
                 title={`${stage}: ${status}`}
               >
                 {stage}
@@ -75,11 +75,11 @@ export default function PipelineInfo({ pipeline }: PipelineInfoProps) {
           </div>
         )}
         {hasTimings && (
-          <div className="careloop-pipeline__timings">
+          <div className="big5loop-pipeline__timings">
             {pipeline.stage_timings!.map((t) => (
-              <div key={t.stage} className="careloop-pipeline__row">
-                <span className="careloop-pipeline__key">{t.stage}</span>
-                <span className="careloop-pipeline__val">{t.ms}ms</span>
+              <div key={t.stage} className="big5loop-pipeline__row">
+                <span className="big5loop-pipeline__key">{t.stage}</span>
+                <span className="big5loop-pipeline__val">{t.ms}ms</span>
               </div>
             ))}
           </div>

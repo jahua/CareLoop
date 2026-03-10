@@ -114,7 +114,7 @@ async function run() {
   console.log(`Chunked ${documents.length} document(s) into ${allChunks.length} chunks.`);
 
   const client = new Client({
-    connectionString: process.env.DATABASE_URL || 'postgresql://careloop:changeme@localhost:5432/careloop',
+    connectionString: process.env.DATABASE_URL || 'postgresql://big5loop:changeme@localhost:5432/big5loop',
   });
 
   try {

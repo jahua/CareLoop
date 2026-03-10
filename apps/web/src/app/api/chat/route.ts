@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { ErrorCode, ErrorStage } from "@careloop/contracts";
-import { ERROR_CODES } from "@careloop/contracts";
+import type { ErrorCode, ErrorStage } from "@big5loop/contracts";
+import { ERROR_CODES } from "@big5loop/contracts";
 import { getSessionUser } from "@/lib/auth";
 import { auditTurn, buildAuditPayload } from "@/lib/audit";
 import { writeAuditToDb } from "@/lib/audit-db";
@@ -592,7 +592,11 @@ export async function POST(request: NextRequest) {
     };
 
     const workflowPath =
-      body?.workflow === "simple" ? "careloop-turn-simple" : "careloop-turn";
+      body?.workflow === "simple"
+        ? "big5loop-turn-simple"
+        : body?.workflow === "standard"
+        ? "big5loop-turn"
+        : "big5loop-turn-personage-benchmark";
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), N8N_TIMEOUT_MS);
     const res = await fetch(`${WEBHOOK_URL}/webhook/${workflowPath}`, {
@@ -607,7 +611,7 @@ export async function POST(request: NextRequest) {
 
     if (!res.ok) {
       const n8nHint =
-        "N8N webhook not found. Import and activate careloop-phase1-2-postgres-mvp-v2.json (or careloop-simplified.json) in N8N. Local: http://localhost:5678. Production: use SSH tunnel (see docs/DEPLOY-TO-SERVER.md).";
+        "N8N webhook not found. Import and activate big5loop-phase1-2-postgres-mvp-v2.json (or big5loop-simplified.json) in N8N. Local: http://localhost:5678. Production: use SSH tunnel (see docs/DEPLOY-TO-SERVER.md).";
       const message =
         res.status === 404
           ? n8nHint

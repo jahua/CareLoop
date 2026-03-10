@@ -1,6 +1,6 @@
-# CareLoop Next.js app – production build for deployment
-# Build: docker build -f infra/docker/Dockerfile.web.production -t careloop-web:prod .
-# Run: docker run -p 3000:3000 --env-file .env careloop-web:prod
+# Big5Loop Next.js app – production build for deployment
+# Build: docker build -f infra/docker/Dockerfile.web.production -t big5loop-web:prod .
+# Run: docker run -p 3000:3000 --env-file .env big5loop-web:prod
 
 FROM node:20-alpine
 
@@ -15,7 +15,7 @@ COPY apps/web ./apps/web
 
 # Install dependencies and build
 RUN npm ci --include-workspace-root --no-audit --no-fund \
-  && npm run build --workspace=@careloop/contracts \
+  && npm run build --workspace=@big5loop/contracts \
   && npm run build --workspace=web
 
 ENV NODE_ENV=production

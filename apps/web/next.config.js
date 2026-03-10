@@ -5,7 +5,7 @@ const monorepoRoot = path.resolve(__dirname, "../../");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["@careloop/contracts"],
+  transpilePackages: ["@big5loop/contracts"],
   experimental: {
     outputFileTracingRoot: monorepoRoot,
     serverComponentsExternalPackages: ["pg", "bcryptjs"],

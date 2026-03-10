@@ -22,7 +22,7 @@ echo "==> Installing Certbot..."
 apt install -y certbot python3-certbot-nginx
 
 echo "==> Creating app directory..."
-mkdir -p /opt/careloop
+mkdir -p /opt/big5loop
 
 echo "==> Bootstrap complete."
-echo "    Next: create /opt/careloop/.env and deploy the app."
+echo "    Next: create /opt/big5loop/.env and deploy the app."

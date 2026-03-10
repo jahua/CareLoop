@@ -10,7 +10,7 @@ data/documents/cantonal/documents.json (or --output <path>).
 The output is compatible with:
   npm run chunk:policy -- data/documents/cantonal/documents.json
 
-Usage (from the CareLoop repo root):
+Usage (from the Big5Loop repo root):
   python scripts/download-cantonal-sources.py
   python scripts/download-cantonal-sources.py --config data/sources/cantonal/sources.config.json
   python scripts/download-cantonal-sources.py --output data/documents/cantonal/documents.json
@@ -110,8 +110,8 @@ def html_to_text(html: str) -> str:
 
 HEADERS = {
     "User-Agent": (
-        "CareLoop-DataBot/1.0 "
-        "(thesis research crawler; +https://github.com/careloop)"
+        "Big5Loop-DataBot/1.0 "
+        "(thesis research crawler; +https://github.com/big5loop)"
     ),
     "Accept": "text/html,application/xhtml+xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "de,fr,it,en;q=0.5",

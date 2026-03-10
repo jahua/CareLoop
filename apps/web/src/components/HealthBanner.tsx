@@ -7,17 +7,17 @@ type HealthBannerProps = {
 export default function HealthBanner({ onDismiss }: HealthBannerProps) {
   return (
     <div
-      className="careloop-health-banner"
+      className="big5loop-health-banner"
       role="alert"
       aria-live="polite"
     >
-      <span className="careloop-health-banner__text">
+      <span className="big5loop-health-banner__text">
         Service temporarily unavailable. Check that the API and N8N are running.
       </span>
       {onDismiss && (
         <button
           type="button"
-          className="careloop-health-banner__dismiss"
+          className="big5loop-health-banner__dismiss"
           onClick={onDismiss}
           aria-label="Dismiss health warning"
         >

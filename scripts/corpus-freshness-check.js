@@ -13,7 +13,7 @@ const { appendFile } = require("fs").promises;
 const DATABASE_URL =
   process.env.DATABASE_URL ||
   process.env.AUDIT_DATABASE_URL ||
-  "postgresql://careloop:changeme@localhost:5432/careloop";
+  "postgresql://big5loop:changeme@localhost:5432/big5loop";
 const LOG_PATH = process.env.BACKGROUND_JOB_LOG_PATH || "";
 const FAIL_ON_EMPTY = process.env.CORPUS_FAIL_ON_EMPTY !== "0"; // default: fail if 0 chunks
 

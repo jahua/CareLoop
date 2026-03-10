@@ -21,13 +21,13 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
-      className="careloop-theme-toggle"
+      className="big5loop-theme-toggle"
       onClick={cycle}
       aria-label={`Theme: ${label}. Click to switch.`}
       title={`Theme: ${label}`}
     >
       {resolved === "dark" ? "🌙" : "☀️"}
-      <span className="careloop-theme-toggle__label">{label}</span>
+      <span className="big5loop-theme-toggle__label">{label}</span>
     </button>
   );
 }

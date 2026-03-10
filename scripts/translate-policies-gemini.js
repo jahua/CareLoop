@@ -156,7 +156,7 @@ async function run() {
     return !doneIds.has(doc.source_id);
   });
 
-  console.log(`\n=== CareLoop Policy Translation ===`);
+  console.log(`\n=== Big5Loop Policy Translation ===`);
   console.log(`Input:    ${INPUT_PATH}`);
   console.log(`Output:   ${OUTPUT_PATH}`);
   console.log(`Model:    ${MODEL}`);

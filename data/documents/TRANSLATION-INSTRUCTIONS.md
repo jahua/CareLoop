@@ -1,6 +1,6 @@
 # How to Translate Policy Documents Using Gemini
 
-Step-by-step guide to translate all German/French policy documents to English for CareLoop RAG retrieval.
+Step-by-step guide to translate all German/French policy documents to English for Big5Loop RAG retrieval.
 
 ---
 
@@ -26,7 +26,7 @@ Free tier limits (more than enough for 21 documents):
 ## Step 2: Add the key to your `.env`
 
 ```bash
-cd CareLoop
+cd Big5Loop
 
 # Add to .env (do NOT commit this)
 echo "" >> .env
@@ -39,13 +39,13 @@ Replace `your-key-here` with the actual key.
 ## Step 3: Preview what will be translated (dry run)
 
 ```bash
-cd CareLoop
+cd Big5Loop
 node scripts/translate-policies-gemini.js --dry-run
 ```
 
 Expected output:
 ```
-=== CareLoop Policy Translation ===
+=== Big5Loop Policy Translation ===
 Total documents:     21
 Already translated:  0
 To translate:        21
@@ -60,7 +60,7 @@ MODE: DRY RUN (no API calls)
 ## Step 4: Run the translation
 
 ```bash
-cd CareLoop
+cd Big5Loop
 
 # Load the API key
 source .env
@@ -114,13 +114,13 @@ Key things to verify:
 ## Step 6: Load English chunks into the database
 
 ```bash
-cd CareLoop
+cd Big5Loop
 
 # Make sure PostgreSQL is running
 docker compose up -d postgres
 
 # Load translated chunks
-DATABASE_URL=postgresql://careloop:changeme@localhost:5432/careloop \
+DATABASE_URL=postgresql://big5loop:changeme@localhost:5432/big5loop \
   node scripts/load-translated-policies.js
 ```
 
@@ -149,11 +149,11 @@ AND (metadata->>'language' = 'en' OR metadata->>'language' IS NULL)
 
 ```bash
 # Check chunks in database
-docker exec -i careloop-postgres psql -U careloop -d careloop -c \
+docker exec -i big5loop-postgres psql -U big5loop -d big5loop -c \
   "SELECT source_id, title, length(content), metadata->>'language' as lang FROM policy_chunks ORDER BY source_id;"
 
 # Count by language
-docker exec -i careloop-postgres psql -U careloop -d careloop -c \
+docker exec -i big5loop-postgres psql -U big5loop -d big5loop -c \
   "SELECT metadata->>'language' as lang, count(*) FROM policy_chunks GROUP BY 1;"
 ```
 

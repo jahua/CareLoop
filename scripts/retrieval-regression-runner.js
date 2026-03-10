@@ -9,7 +9,7 @@
  * Exit 0 if all pass, 1 if any fail. See docs/BACKGROUND-JOBS-DESIGN.md, PILLAR-TEST-MATRIX-EXECUTION.md.
  */
 
-const BASE_URL = process.env.BASE_URL || process.env.CARELOOP_BASE_URL || "http://localhost:3003";
+const BASE_URL = process.env.BASE_URL || process.env.BIG5LOOP_BASE_URL || "http://localhost:3003";
 const LOG_PATH = process.env.BACKGROUND_JOB_LOG_PATH || "";
 const REQUEST_TIMEOUT_MS = Number.parseInt(process.env.RETRIEVAL_REGRESSION_TIMEOUT_MS || "45000", 10);
 const fs = require("fs");

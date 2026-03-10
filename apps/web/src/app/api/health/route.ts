@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export function GET() {
   return NextResponse.json({
     ok: true,
-    service: "careloop-web",
+    service: "big5loop-web",
     timestamp: new Date().toISOString(),
   });
 }

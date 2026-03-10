@@ -1,5 +1,5 @@
 /**
- * CareLoop frontend API client (FRONTEND-IMPROVEMENTS-TODO §6.3).
+ * Big5Loop frontend API client (FRONTEND-IMPROVEMENTS-TODO §6.3).
  * Chat, feedback, health, data export/delete.
  */
 

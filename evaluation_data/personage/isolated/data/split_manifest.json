@@ -1,0 +1,19 @@
+{
+  "seed": 2026,
+  "input": "/Users/huaduojiejia/MyProject/hslu/2026/thesis project/Big5Loop/evaluation_data/personage/processed/personage_eval.jsonl",
+  "dev_size": 160,
+  "test_size": 160,
+  "exemplar_ids": [
+    "agree_high-recommend-Chimichurri_Grill-4",
+    "agree_low-recommend-Chimichurri_Grill-3",
+    "consc_high-compare2-Acacia-Marinella-6",
+    "consc_low-compare2-Caffe_Cielo-Trattoria_Spaghetto-5",
+    "ems_high-compare2-Acacia-Marinella-2",
+    "ems_low-recommend-Chimichurri_Grill-1",
+    "open_high-compare2-Caffe_Cielo-Trattoria_Spaghetto-8",
+    "open_low-compare2-Les_Routiers-Radio_Perfecto-7",
+    "random-compare2-Acacia-Marinella-11",
+    "random-recommend-Cent_anni-10",
+    "random-recommend-Flor_De_Mayo-11"
+  ]
+}

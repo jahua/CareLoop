@@ -1,4 +1,4 @@
-# Translation Inventory — CareLoop Policy Documents
+# Translation Inventory — Big5Loop Policy Documents
 
 Status of all policy documents that need English translation for RAG retrieval.
 

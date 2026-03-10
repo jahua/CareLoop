@@ -23,7 +23,7 @@ type StatusDotProps = {
 export default function StatusDot({ status }: StatusDotProps) {
   return (
     <span
-      className="careloop-status-dot"
+      className="big5loop-status-dot"
       style={{ background: COLORS[status] }}
       title={LABELS[status]}
       aria-label={LABELS[status]}

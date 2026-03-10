@@ -13,7 +13,7 @@ const { appendFile } = require("fs").promises;
 const DATABASE_URL =
   process.env.DATABASE_URL ||
   process.env.AUDIT_DATABASE_URL ||
-  "postgresql://careloop:changeme@localhost:5432/careloop";
+  "postgresql://big5loop:changeme@localhost:5432/big5loop";
 const LOG_PATH = process.env.BACKGROUND_JOB_LOG_PATH || "";
 const MAX_URLS = Number.parseInt(process.env.STALE_CITATION_MAX_URLS || "100", 10);
 const TIMEOUT_MS = Number.parseInt(process.env.STALE_CITATION_TIMEOUT_MS || "5000", 10);

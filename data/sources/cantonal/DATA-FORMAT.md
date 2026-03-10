@@ -6,7 +6,7 @@ Standards for the cantonal policy data source (side project). Your download proc
 
 ## 1. Scope
 
-- **In scope:** Cantonal (Swiss canton) policy and guidance content intended for RAG retrieval in CareLoop (policy_navigation pillar). **What** cantonal data we need (topics, content types, cantons, languages) is defined in **`CANTONAL-DATA-REQUIREMENTS.md`**.
+- **In scope:** Cantonal (Swiss canton) policy and guidance content intended for RAG retrieval in Big5Loop (policy_navigation pillar). **What** cantonal data we need (topics, content types, cantons, languages) is defined in **`CANTONAL-DATA-REQUIREMENTS.md`**.
 - **Content types:** Official canton pages, IV/EL/Hilflosenentschädigung procedure and contact, required documents, office/contact routing. Federal content belongs in a separate data source (e.g. `data/sources/federal/`) if needed.
 - **Out of scope:** User data, non‑policy content, content from outside the defined source list. Download tooling and scheduling are out of scope for this directory (script separately).
 

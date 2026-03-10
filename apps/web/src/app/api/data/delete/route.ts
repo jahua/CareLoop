@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       {
         success: false,
         message: "Data deletion not configured. Set DATABASE_URL (or AUDIT_DATABASE_URL). See docs/DATA-EXPORT-AND-DELETION.md.",
-        doc: "CareLoop/docs/DATA-EXPORT-AND-DELETION.md",
+        doc: "Big5Loop/docs/DATA-EXPORT-AND-DELETION.md",
       },
       { status: 501 }
     );

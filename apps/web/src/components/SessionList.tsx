@@ -39,15 +39,15 @@ function UserMenu() {
     .slice(0, 2);
 
   return (
-    <div className="careloop-user-menu">
-      <div className="careloop-user-menu__avatar">{initials}</div>
-      <div className="careloop-user-menu__info">
-        <div className="careloop-user-menu__name">{user.name}</div>
-        <div className="careloop-user-menu__email">{user.email}</div>
+    <div className="big5loop-user-menu">
+      <div className="big5loop-user-menu__avatar">{initials}</div>
+      <div className="big5loop-user-menu__info">
+        <div className="big5loop-user-menu__name">{user.name}</div>
+        <div className="big5loop-user-menu__email">{user.email}</div>
       </div>
       <button
         type="button"
-        className="careloop-user-menu__logout"
+        className="big5loop-user-menu__logout"
         onClick={logout}
       >
         Sign out
@@ -109,25 +109,25 @@ export default function SessionSidebar({
   };
 
   return (
-    <aside className="careloop-sidebar">
-      <div className="careloop-sidebar__header">
-        <div className="careloop-sidebar__brand">
-          <span className="careloop-sidebar__logo">CareLoop</span>
+    <aside className="big5loop-sidebar">
+      <div className="big5loop-sidebar__header">
+        <div className="big5loop-sidebar__brand">
+          <span className="big5loop-sidebar__logo">Big5Loop</span>
           <ThemeToggle />
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="careloop-sidebar__nav">
+      <nav className="big5loop-sidebar__nav">
         {NAV_ITEMS.map((item) => (
           <button
             key={item.id}
             type="button"
-            className={`careloop-nav-item ${activePage === item.id ? "careloop-nav-item--active" : ""}`}
+            className={`big5loop-nav-item ${activePage === item.id ? "big5loop-nav-item--active" : ""}`}
             onClick={() => onNavigate(item.id)}
           >
-            <span className="careloop-nav-item__icon">{item.icon}</span>
-            <span className="careloop-nav-item__label">{item.label}</span>
+            <span className="big5loop-nav-item__icon">{item.icon}</span>
+            <span className="big5loop-nav-item__label">{item.label}</span>
           </button>
         ))}
       </nav>
@@ -135,19 +135,19 @@ export default function SessionSidebar({
       {/* Sessions list (only visible on chat page) */}
       {activePage === "chat" && (
         <>
-          <div className="careloop-sidebar__section-header">
+          <div className="big5loop-sidebar__section-header">
             <span>Conversations</span>
             <button
               type="button"
-              className="careloop-sidebar__new-btn"
+              className="big5loop-sidebar__new-btn"
               onClick={onNewChat}
             >
               + New
             </button>
           </div>
-          <div className="careloop-sidebar__sessions">
+          <div className="big5loop-sidebar__sessions">
             {sessions.length === 0 ? (
-              <div className="careloop-sidebar__empty">
+              <div className="big5loop-sidebar__empty">
                 No conversations yet.
                 <br />
                 Start chatting!
@@ -157,18 +157,18 @@ export default function SessionSidebar({
                 <button
                   key={s.id}
                   type="button"
-                  className={`careloop-session-item ${s.id === currentSessionId ? "careloop-session-item--active" : ""}`}
+                  className={`big5loop-session-item ${s.id === currentSessionId ? "big5loop-session-item--active" : ""}`}
                   onClick={() => onSelectSession(s.id)}
                 >
-                  <span className="careloop-session-item__title">{s.label}</span>
-                  <span className="careloop-session-item__meta">
+                  <span className="big5loop-session-item__title">{s.label}</span>
+                  <span className="big5loop-session-item__meta">
                     <span>{s.messageCount} msgs</span>
                     <span>{timeAgo(s.lastUsed)}</span>
                     {s.id !== currentSessionId && (
                       <span
                         role="button"
                         tabIndex={0}
-                        className="careloop-session-item__delete"
+                        className="big5loop-session-item__delete"
                         onClick={(e) => handleRemove(e, s.id)}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") handleRemove(e as unknown as React.MouseEvent, s.id);

@@ -48,77 +48,77 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="careloop-page">
-      <div className="careloop-page__header">
+    <div className="big5loop-page">
+      <div className="big5loop-page__header">
         <h1>Settings</h1>
-        <p className="careloop-page__subtitle">Manage your account and preferences</p>
+        <p className="big5loop-page__subtitle">Manage your account and preferences</p>
       </div>
 
-      <div className="careloop-page__content">
+      <div className="big5loop-page__content">
         {msg && (
-          <div className={`careloop-page__alert careloop-page__alert--${msg.type}`}>
+          <div className={`big5loop-page__alert big5loop-page__alert--${msg.type}`}>
             {msg.text}
           </div>
         )}
 
-        <section className="careloop-card">
-          <h2 className="careloop-card__title">Profile</h2>
-          <div className="careloop-form-row">
+        <section className="big5loop-card">
+          <h2 className="big5loop-card__title">Profile</h2>
+          <div className="big5loop-form-row">
             <label>Email</label>
-            <input type="email" value={user?.email ?? ""} disabled className="careloop-input careloop-input--disabled" />
+            <input type="email" value={user?.email ?? ""} disabled className="big5loop-input big5loop-input--disabled" />
           </div>
-          <div className="careloop-form-row">
+          <div className="big5loop-form-row">
             <label>Display Name</label>
             <input
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="careloop-input"
+              className="big5loop-input"
             />
           </div>
-          <button className="careloop-btn careloop-btn--primary" onClick={saveProfile} disabled={saving}>
+          <button className="big5loop-btn big5loop-btn--primary" onClick={saveProfile} disabled={saving}>
             {saving ? "Saving…" : "Save Profile"}
           </button>
         </section>
 
-        <section className="careloop-card">
-          <h2 className="careloop-card__title">Change Password</h2>
-          <div className="careloop-form-row">
+        <section className="big5loop-card">
+          <h2 className="big5loop-card__title">Change Password</h2>
+          <div className="big5loop-form-row">
             <label>Current Password</label>
             <input
               type="password"
               value={currentPw}
               onChange={(e) => setCurrentPw(e.target.value)}
-              className="careloop-input"
+              className="big5loop-input"
               autoComplete="current-password"
             />
           </div>
-          <div className="careloop-form-row">
+          <div className="big5loop-form-row">
             <label>New Password</label>
             <input
               type="password"
               value={newPw}
               onChange={(e) => setNewPw(e.target.value)}
-              className="careloop-input"
+              className="big5loop-input"
               placeholder="At least 6 characters"
               autoComplete="new-password"
             />
           </div>
-          <button className="careloop-btn careloop-btn--primary" onClick={changePassword} disabled={saving}>
+          <button className="big5loop-btn big5loop-btn--primary" onClick={changePassword} disabled={saving}>
             {saving ? "Saving…" : "Change Password"}
           </button>
         </section>
 
-        <section className="careloop-card">
-          <h2 className="careloop-card__title">Account Info</h2>
-          <div className="careloop-info-grid">
-            <div className="careloop-info-item">
-              <span className="careloop-info-label">User ID</span>
-              <span className="careloop-info-value careloop-info-value--mono">{user?.id?.slice(0, 8)}…</span>
+        <section className="big5loop-card">
+          <h2 className="big5loop-card__title">Account Info</h2>
+          <div className="big5loop-info-grid">
+            <div className="big5loop-info-item">
+              <span className="big5loop-info-label">User ID</span>
+              <span className="big5loop-info-value big5loop-info-value--mono">{user?.id?.slice(0, 8)}…</span>
             </div>
-            <div className="careloop-info-item">
-              <span className="careloop-info-label">Email</span>
-              <span className="careloop-info-value">{user?.email}</span>
+            <div className="big5loop-info-item">
+              <span className="big5loop-info-label">Email</span>
+              <span className="big5loop-info-value">{user?.email}</span>
             </div>
           </div>
         </section>

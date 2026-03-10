@@ -443,7 +443,7 @@ export default function ChatPage() {
   const shortId = sessionId ? sessionId.slice(0, 8) : "";
 
   return (
-    <div className="careloop-app">
+    <div className="big5loop-app">
       {/* ── Left sidebar ── */}
       <SessionSidebar
         currentSessionId={sessionId}
@@ -459,15 +459,15 @@ export default function ChatPage() {
       {activePage === "audit" && <AuditPage />}
 
       {/* ── Center (chat) ── */}
-      {activePage === "chat" && <main className="careloop-center">
+      {activePage === "chat" && <main className="big5loop-center">
         {/* Toolbar */}
-        <div className="careloop-toolbar">
+        <div className="big5loop-toolbar">
           <StatusDot status={healthStatus} />
-          <span className="careloop-toolbar__title">
+          <span className="big5loop-toolbar__title">
             {shortId && (
               <button
                 type="button"
-                className="careloop-copy-id"
+                className="big5loop-copy-id"
                 onClick={() => navigator.clipboard.writeText(sessionId)}
                 title="Copy session ID"
                 style={{ marginRight: 8 }}
@@ -478,31 +478,31 @@ export default function ChatPage() {
             {msgCount > 0 && `${msgCount} messages`}
           </span>
 
-          <div className="careloop-toolbar__badges">
-            {useGateway && <span className="careloop-badge careloop-badge--gateway">Gateway</span>}
+          <div className="big5loop-toolbar__badges">
+            {useGateway && <span className="big5loop-badge big5loop-badge--gateway">Gateway</span>}
             {coachingMode && (
-              <span className="careloop-badge careloop-badge--mode">
+              <span className="big5loop-badge big5loop-badge--mode">
                 {coachingMode.replace(/_/g, " ")}
               </span>
             )}
             {sessionRouting?.route_key && (
-              <span className="careloop-badge careloop-badge--stable" title={sessionRouting.route_key}>
+              <span className="big5loop-badge big5loop-badge--stable" title={sessionRouting.route_key}>
                 Route {sessionRouting.route_key.split(":").slice(-1)[0]}
               </span>
             )}
             {sessionRouting?.isolation_scope && (
-              <span className="careloop-badge careloop-badge--learning">
+              <span className="big5loop-badge big5loop-badge--learning">
                 {sessionRouting.isolation_scope.replace(/_/g, " ")}
               </span>
             )}
           </div>
 
-          <div className="careloop-mode-select">
+          <div className="big5loop-mode-select">
             {(["simple", "standard", "detailed"] as const).map((m) => (
               <button
                 key={m}
                 type="button"
-                className={`careloop-mode-select__btn ${chatMode === m ? "careloop-mode-select__btn--active" : ""}`}
+                className={`big5loop-mode-select__btn ${chatMode === m ? "big5loop-mode-select__btn--active" : ""}`}
                 onClick={() => store.setChatMode(m)}
               >
                 {m.charAt(0).toUpperCase() + m.slice(1)}
@@ -513,30 +513,30 @@ export default function ChatPage() {
 
         {/* Banners */}
         {healthStatus === "offline" && (
-          <div className="careloop-banner careloop-banner--warning" role="alert">
-            <span className="careloop-banner__text">
+          <div className="big5loop-banner big5loop-banner--warning" role="alert">
+            <span className="big5loop-banner__text">
               Service unavailable. Check API and N8N are running.
             </span>
-            <button type="button" className="careloop-banner__btn" onClick={() => store.setHealthStatus("unknown")}>
+            <button type="button" className="big5loop-banner__btn" onClick={() => store.setHealthStatus("unknown")}>
               Dismiss
             </button>
           </div>
         )}
         {error && (
-          <div className="careloop-banner careloop-banner--error" role="alert">
-            <span className="careloop-banner__text">{error}</span>
-            <button type="button" className="careloop-banner__btn" onClick={() => store.setError(null)}>
+          <div className="big5loop-banner big5loop-banner--error" role="alert">
+            <span className="big5loop-banner__text">{error}</span>
+            <button type="button" className="big5loop-banner__btn" onClick={() => store.setError(null)}>
               Dismiss
             </button>
           </div>
         )}
 
         {/* Messages */}
-        <div className="careloop-messages">
+        <div className="big5loop-messages">
           {messages.length === 0 && !loading && (
-            <div className="careloop-messages__empty">
-              <p className="careloop-messages__empty-title">Start a conversation</p>
-              <p className="careloop-messages__empty-desc">
+            <div className="big5loop-messages__empty">
+              <p className="big5loop-messages__empty-title">Start a conversation</p>
+              <p className="big5loop-messages__empty-desc">
                 The assistant adapts to your personality and shows insights as you chat.
               </p>
               <ConversationStarters onSelect={handleStarterSelect} />
@@ -567,12 +567,12 @@ export default function ChatPage() {
           {/* Streaming reveal */}
           {streamingText != null && (
             <motion.div
-              className="careloop-msg careloop-msg--assistant"
+              className="big5loop-msg big5loop-msg--assistant"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <div className="careloop-msg__bubble">
-                <span className="careloop-msg__text">{streamingText}</span>
+              <div className="big5loop-msg__bubble">
+                <span className="big5loop-msg__text">{streamingText}</span>
               </div>
             </motion.div>
           )}
@@ -580,15 +580,15 @@ export default function ChatPage() {
           {/* Loading dots (before streaming starts) */}
           {loading && streamingText == null && (
             <motion.div
-              className="careloop-msg careloop-msg--assistant"
+              className="big5loop-msg big5loop-msg--assistant"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <div className="careloop-msg__bubble">
-                <div className="careloop-typing" aria-label="Thinking">
+              <div className="big5loop-msg__bubble">
+                <div className="big5loop-typing" aria-label="Thinking">
                   <span /><span /><span />
                 </div>
-                <span className="careloop-typing-label">Thinking…</span>
+                <span className="big5loop-typing-label">Thinking…</span>
               </div>
             </motion.div>
           )}
@@ -605,25 +605,25 @@ export default function ChatPage() {
       </main>}
 
       {/* ── Right panel (tabbed, chat only) ── */}
-      {activePage === "chat" && <aside className="careloop-panel">
-        <div className="careloop-panel__tabs">
+      {activePage === "chat" && <aside className="big5loop-panel">
+        <div className="big5loop-panel__tabs">
           <button
             type="button"
-            className={`careloop-panel__tab ${panelTab === "traits" ? "careloop-panel__tab--active" : ""}`}
+            className={`big5loop-panel__tab ${panelTab === "traits" ? "big5loop-panel__tab--active" : ""}`}
             onClick={() => setPanelTab("traits")}
           >
             Traits
           </button>
           <button
             type="button"
-            className={`careloop-panel__tab ${panelTab === "ops" ? "careloop-panel__tab--active" : ""}`}
+            className={`big5loop-panel__tab ${panelTab === "ops" ? "big5loop-panel__tab--active" : ""}`}
             onClick={() => setPanelTab("ops")}
           >
             Ops
           </button>
         </div>
 
-        <div className="careloop-panel__tab-content">
+        <div className="big5loop-panel__tab-content">
           {panelTab === "traits" && (
             <>
               <PersonalityPanel personality={personality} />

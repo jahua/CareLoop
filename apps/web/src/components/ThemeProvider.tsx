@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 
-const STORAGE_KEY = "careloop_theme";
+const STORAGE_KEY = "big5loop_theme";
 
 export type Theme = "light" | "dark" | "system";
 

@@ -3,9 +3,9 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
 const SECRET = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "careloop-dev-secret-change-me"
+  process.env.NEXTAUTH_SECRET || "big5loop-dev-secret-change-me"
 );
-const COOKIE_NAME = "careloop-session";
+const COOKIE_NAME = "big5loop-session";
 const MAX_AGE = 7 * 24 * 60 * 60; // 7 days
 
 const COOKIE_OPTIONS = {

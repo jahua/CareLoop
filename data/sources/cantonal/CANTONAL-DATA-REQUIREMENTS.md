@@ -1,12 +1,12 @@
 # What cantonal (Kantonal) data we need
 
-Clear definition of the cantonal data required for CareLoop policy navigation (RAG). Use this to select sources and prioritize downloads.
+Clear definition of the cantonal data required for Big5Loop policy navigation (RAG). Use this to select sources and prioritize downloads.
 
 ---
 
 ## 1. Why cantonal data
 
-CareLoop answers policy questions about **IV (Invalidenversicherung)**, **Hilflosenentschädigung**, and related benefits. Federal rules apply nationwide, but **procedures, forms, and contacts are canton-specific**. Users need: “Where do I apply in my canton?” “Which office?” “Which forms?” “What are the cantonal steps?” So we need **cantonal** content in addition to federal.
+Big5Loop answers policy questions about **IV (Invalidenversicherung)**, **Hilflosenentschädigung**, and related benefits. Federal rules apply nationwide, but **procedures, forms, and contacts are canton-specific**. Users need: “Where do I apply in my canton?” “Which office?” “Which forms?” “What are the cantonal steps?” So we need **cantonal** content in addition to federal.
 
 ---
 
@@ -51,7 +51,7 @@ Define the target list in `sources.config.json` and keep it in sync with this do
 
 ## 5. Languages
 
-CareLoop supports **de, fr, it, en** (Spec §6.1). Prefer:
+Big5Loop supports **de, fr, it, en** (Spec §6.1). Prefer:
 
 - **de** for German-speaking cantons (ZH, BE, AG, etc.),
 - **fr** for French-speaking (GE, VD, VS, etc.),

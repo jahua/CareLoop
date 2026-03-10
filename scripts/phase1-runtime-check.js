@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const API_URL = process.env.CARELOOP_API_URL || "http://localhost:3003/api/chat";
+const API_URL = process.env.BIG5LOOP_API_URL || "http://localhost:3003/api/chat";
 const sessionId = crypto.randomUUID();
 
 const turns = [

@@ -811,7 +811,7 @@ This chapter defines the software design model and compliance posture adopted fo
 
 ### 17.1 Adopted Software Design Model
 
-CareLoop adopts a **TypeScript-first, contract-driven, service-oriented architecture** with a gateway and orchestrated runtime pipeline:
+Big5Loop adopts a **TypeScript-first, contract-driven, service-oriented architecture** with a gateway and orchestrated runtime pipeline:
 
 `ingest -> detect -> EMA -> route (3 pillars) -> retrieve (RAG when needed) -> generate -> verify -> persist`
 
@@ -915,5 +915,5 @@ Execution policy:
 
 ### 17.7 Official Architecture Statement
 
-**CareLoop adopts a TypeScript-first, contract-driven service architecture with verifiable RAG grounding, policy-safe generation, and production controls aligned with mainstream industry standards for quality, security, and reliability.**
+**Big5Loop adopts a TypeScript-first, contract-driven service architecture with verifiable RAG grounding, policy-safe generation, and production controls aligned with mainstream industry standards for quality, security, and reliability.**
 

@@ -1,6 +1,6 @@
-# CareLoop – Phase 0 & Phase 1 MVP
+# Big5Loop – Phase 0 & Phase 1 MVP
 
-**Repository:** [github.com/jahua/CareLoop](https://github.com/jahua/CareLoop)
+**Repository:** [github.com/jahua/Big5Loop](https://github.com/jahua/Big5Loop)
 
 Phase 0: infrastructure, contracts, chat shell, N8N skeleton, DB schema.  
 Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Response → Respond). Personality state and coaching mode are returned and shown in the UI.
@@ -15,7 +15,7 @@ Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Respo
 
 2. **Start full stack (DB + N8N + Next.js)**
    ```bash
-   cd CareLoop
+   cd Big5Loop
    docker compose --env-file .env -f infra/docker/docker-compose.yml up --build
    ```
    For production build: `docker compose --env-file .env -f infra/docker/docker-compose.production.yml up --build -d`
@@ -31,19 +31,19 @@ Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Respo
 
 3. **Import N8N workflow(s)**
    - Open http://localhost:5678
-   - **Full pipeline (Standard/Detailed):** Import and activate `workflows/n8n/careloop-phase1-2-postgres-mvp.json` (webhook `careloop-turn`).
-   - **Simple mode (optional):** Import and activate `workflows/n8n/careloop-turn-simple.json` (webhook `careloop-turn-simple`) to use the frontend “Simple” mode. See [docs/TWO-WORKFLOWS-AND-MODE-SWITCH.md](docs/TWO-WORKFLOWS-AND-MODE-SWITCH.md).
+   - **Full pipeline (Standard/Detailed):** Import and activate `workflows/n8n/big5loop-phase1-2-postgres-mvp.json` (webhook `big5loop-turn`).
+   - **Simple mode (optional):** Import and activate `workflows/n8n/big5loop-turn-simple.json` (webhook `big5loop-turn-simple`) to use the frontend “Simple” mode. See [docs/TWO-WORKFLOWS-AND-MODE-SWITCH.md](docs/TWO-WORKFLOWS-AND-MODE-SWITCH.md).
 
 4. **Run frontend** (only if you did not start the `web` service in Docker)
    ```bash
-   cd CareLoop && npm install && npm run dev --workspace=web
+   cd Big5Loop && npm install && npm run dev --workspace=web
    ```
-   Or from `CareLoop/apps/web`: `npm install && npm run dev`
+   Or from `Big5Loop/apps/web`: `npm install && npm run dev`
    - Open http://localhost:3000 (Docker) or the port Next.js prints (local dev). Send a message; Phase 1 responses include OCEAN and coaching mode.
 
 5. **Contracts (typecheck + parse check)**
    ```bash
-   cd CareLoop && npm install && npm run typecheck && npm run test:parse --workspace=@careloop/contracts
+   cd Big5Loop && npm install && npm run typecheck && npm run test:parse --workspace=@big5loop/contracts
    ```
 
 ## Structure
@@ -73,5 +73,5 @@ Phase 1: MVP dialogue loop (Detection stub → EMA → Mode stub → Build Respo
 
 - Runtime model target: `google/gemma-3-12b-it` via OpenAI-compatible endpoint (vLLM/TGI).
 - Memory strategy: PostgreSQL audit + EMA state + vector retrieval (pgvector) for long-term personalization.
-- Workflow baseline: `workflows/n8n/careloop-phase1-2-postgres-mvp.json`.
+- Workflow baseline: `workflows/n8n/big5loop-phase1-2-postgres-mvp.json`.
 - Integration guide: `docs/GEMMA3-HYBRID-MEMORY.md`.

@@ -58,34 +58,34 @@ export default function ConversationStarters({ onSelect }: ConversationStartersP
   const modes: Mode[] = ["emotional", "practical", "policy"];
 
   return (
-    <div className="careloop-starters">
-      <div className="careloop-starters__tabs">
+    <div className="big5loop-starters">
+      <div className="big5loop-starters__tabs">
         {modes.map((m) => (
           <button
             key={m}
             type="button"
-            className={`careloop-starters__tab ${activeMode === m ? "careloop-starters__tab--active" : ""}`}
+            className={`big5loop-starters__tab ${activeMode === m ? "big5loop-starters__tab--active" : ""}`}
             onClick={() => setActiveMode(m)}
             style={activeMode === m ? { borderColor: MODE_META[m].color, color: MODE_META[m].color } : undefined}
           >
-            <span className="careloop-starters__tab-icon">{MODE_META[m].icon}</span>
+            <span className="big5loop-starters__tab-icon">{MODE_META[m].icon}</span>
             {MODE_META[m].label}
           </button>
         ))}
       </div>
 
-      <div className="careloop-starters__grid">
+      <div className="big5loop-starters__grid">
         {STARTERS[activeMode].map((s) => (
           <button
             key={s.label}
             type="button"
-            className="careloop-starters__card"
+            className="big5loop-starters__card"
             onClick={() => onSelect(s.prompt)}
           >
-            <span className="careloop-starters__label" style={{ color: MODE_META[activeMode].color }}>
+            <span className="big5loop-starters__label" style={{ color: MODE_META[activeMode].color }}>
               {s.label}
             </span>
-            <span className="careloop-starters__preview">{s.prompt}</span>
+            <span className="big5loop-starters__preview">{s.prompt}</span>
           </button>
         ))}
       </div>

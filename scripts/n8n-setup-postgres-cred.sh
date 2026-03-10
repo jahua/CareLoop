@@ -2,31 +2,31 @@
 # Create and import PostgreSQL credential in N8N.
 # Run on server: ./scripts/n8n-setup-postgres-cred.sh
 # Or: ssh -i ~/.ssh/boyig.pem root@47.108.85.216 'bash -s' < scripts/n8n-setup-postgres-cred.sh
-# Requires: /opt/careloop/.env with POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB
+# Requires: /opt/big5loop/.env with POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB
 
 set -e
 
 # When run via ssh 'bash -s' < script, $0 is bash; use APP_DIR if set
-APP_DIR="${APP_DIR:-/opt/careloop/app}"
+APP_DIR="${APP_DIR:-/opt/big5loop/app}"
 cd "$APP_DIR" 2>/dev/null || cd "$(dirname "$0")/.."
 
 # Load env
-if [[ -f /opt/careloop/.env ]]; then
+if [[ -f /opt/big5loop/.env ]]; then
   set -a
-  source /opt/careloop/.env
+  source /opt/big5loop/.env
   set +a
 fi
 
-PG_USER="${POSTGRES_USER:-careloop}"
-PG_DB="${POSTGRES_DB:-careloop}"
-PG_PASS="${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in /opt/careloop/.env}"
+PG_USER="${POSTGRES_USER:-big5loop}"
+PG_DB="${POSTGRES_DB:-big5loop}"
+PG_PASS="${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in /opt/big5loop/.env}"
 
-CRED_FILE="/tmp/careloop-n8n-postgres-cred-$$.json"
+CRED_FILE="/tmp/big5loop-n8n-postgres-cred-$$.json"
 cat > "$CRED_FILE" << CREDEOF
 [
   {
     "id": "postgres-cred-new",
-    "name": "CareLoop PostgreSQL New",
+    "name": "Big5Loop PostgreSQL New",
     "type": "postgres",
     "data": {
       "host": "db",
@@ -41,9 +41,9 @@ cat > "$CRED_FILE" << CREDEOF
 CREDEOF
 
 echo "==> Importing PostgreSQL credential into N8N..."
-docker-compose -f infra/docker/docker-compose.deploy-prebuilt.yml --env-file /opt/careloop/.env run --rm \
+docker-compose -f infra/docker/docker-compose.deploy-prebuilt.yml --env-file /opt/big5loop/.env run --rm \
   -v "$CRED_FILE:/tmp/cred.json:ro" -v docker_n8n_data:/home/node/.n8n \
   n8n import:credentials --input=/tmp/cred.json 2>&1
 
 rm -f "$CRED_FILE"
-echo "==> Done. Restart N8N if it was running: docker-compose -f infra/docker/docker-compose.deploy-prebuilt.yml --env-file /opt/careloop/.env restart n8n"
+echo "==> Done. Restart N8N if it was running: docker-compose -f infra/docker/docker-compose.deploy-prebuilt.yml --env-file /opt/big5loop/.env restart n8n"

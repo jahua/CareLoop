@@ -20,7 +20,7 @@ const path = require("path");
 const DATABASE_URL =
   process.env.DATABASE_URL ||
   process.env.AUDIT_DATABASE_URL ||
-  "postgresql://careloop:changeme@localhost:5432/careloop";
+  "postgresql://big5loop:changeme@localhost:5432/big5loop";
 const LOG_PATH = process.env.BACKGROUND_JOB_LOG_PATH || "";
 const DRY_RUN = process.env.SOURCE_RECRAWL_DRY_RUN !== "0"; // default true
 const MAX_SOURCES = Number.parseInt(process.env.SOURCE_RECRAWL_MAX_SOURCES || "100", 10);

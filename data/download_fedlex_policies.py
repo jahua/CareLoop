@@ -212,7 +212,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--timeout", type=int, default=30)
     p.add_argument("--delay", type=float, default=0.5)
     p.add_argument("--user-agent", type=str,
-                   default="CareLoopPolicyCrawler/1.0 (+https://github.com/jahua/CareLoop)")
+                   default="Big5LoopPolicyCrawler/1.0 (+https://github.com/jahua/Big5Loop)")
     p.add_argument("--verbose", action="store_true")
     return p.parse_args()
 

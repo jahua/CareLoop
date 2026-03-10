@@ -33,11 +33,11 @@ export default function ChatInput({
   }, [disabled]);
 
   return (
-    <div className="careloop-input">
+    <div className="big5loop-input">
       <input
         ref={inputRef}
         type="text"
-        className="careloop-input__field"
+        className="big5loop-input__field"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -47,7 +47,7 @@ export default function ChatInput({
       />
       <button
         type="button"
-        className="careloop-input__btn"
+        className="big5loop-input__btn"
         onClick={onSend}
         disabled={disabled || !value.trim()}
         aria-label="Send message"

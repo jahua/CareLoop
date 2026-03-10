@@ -1,4 +1,4 @@
-# CareLoop Roadmap
+# Big5Loop Roadmap
 
 **Version:** 1.5.0  
 **Last Updated:** 2026-03-06  
@@ -6,7 +6,7 @@
 
 ### Phase 1–2 completion summary (as of 2026-03-04)
 - **Pipeline:** Phase 1 + Phase 2 pipeline is implemented end-to-end (Detect → Regulate → Retrieve → Generate → Ground → Verify → Format). Coaching modes, RAG retrieval, citations, grounding verifier, and mixed mode are in place.
-- **Deferred to after Phase 3:** (1) Latency validation (p95 targets), (2) `personality_memory_embeddings` read/write path, (3) Policy benchmark suite + evaluator protocol, (4) Optional: `ENABLE_RAG_POLICY_NAV` feature flag. See §4.3 and §5.3 DoD and `CareLoop/docs/PHASE1-2-TODO.md`.
+- **Deferred to after Phase 3:** (1) Latency validation (p95 targets), (2) `personality_memory_embeddings` read/write path, (3) Policy benchmark suite + evaluator protocol, (4) Optional: `ENABLE_RAG_POLICY_NAV` feature flag. See §4.3 and §5.3 DoD and `Big5Loop/docs/PHASE1-2-TODO.md`.
 
 ---
 
@@ -123,8 +123,8 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 
 ## 6. Phase 3: Reliability, Observability, and Security (Weeks 11–13)
 
-**Implementation report:** `CareLoop/docs/reports/Phase3-Reliability-Observability-Report.md`  
-**TODO list:** `CareLoop/docs/PHASE3-TODO.md`
+**Implementation report:** `Big5Loop/docs/reports/Phase3-Reliability-Observability-Report.md`  
+**TODO list:** `Big5Loop/docs/PHASE3-TODO.md`
 
 ### Phase 3 completion summary (as of 2026-03-04)
 - **DoD 1–3 met:** Structured error envelopes (API + N8N pass-through), audit JSONL + optional `audit_log` DB write, correlation IDs, optional feedback (thumbs/score), redaction policy, health check, SLO/alert doc, security and data export/delete documentation.
@@ -160,7 +160,7 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 
 ## 7. Phase 4: Pilot Release and Evaluation (Weeks 14–16)
 
-**Checklist:** `CareLoop/docs/PHASE4-PILOT-CHECKLIST.md` (pillar test matrix, SLO targets, benchmark audit, load test, rollout).
+**Checklist:** `Big5Loop/docs/PHASE4-PILOT-CHECKLIST.md` (pillar test matrix, SLO targets, benchmark audit, load test, rollout).
 
 ### 7.1 Goals
 - Prepare for pilot deployment with real users (or internal testers).
@@ -185,18 +185,18 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 
 ## 8. Dependencies and References
 
-- **Technical spec:** `CareLoop/Technical-Specification-RAG-Policy-Navigation.md` (v1.3.0)
+- **Technical spec:** `Big5Loop/Technical-Specification-RAG-Policy-Navigation.md` (v1.3.0)
 - **Requirements:** `pmt/Preliminary-Study-V2.7.6.md` (as referenced in spec)
 - **Contracts:** Defined in spec §6 (request, detection, retrieval, response); implement in `packages/contracts`
-- **Phase 3 TODO:** `CareLoop/docs/PHASE3-TODO.md` (reliability, observability, security)
-- **Operations runbook:** `CareLoop/docs/OPERATIONS-RUNBOOK.md` (env, health, audit, export/delete, monitoring, Phase 3→4)
-- **Frontend improvements:** `CareLoop/docs/FRONTEND-IMPROVEMENTS-TODO.md` (display, KPI/metrics, logs, user history, visual design; references `pmt/MVP/frontend` and `pmt/MVP/nextchat-personality-enhanced`)
+- **Phase 3 TODO:** `Big5Loop/docs/PHASE3-TODO.md` (reliability, observability, security)
+- **Operations runbook:** `Big5Loop/docs/OPERATIONS-RUNBOOK.md` (env, health, audit, export/delete, monitoring, Phase 3→4)
+- **Frontend improvements:** `Big5Loop/docs/FRONTEND-IMPROVEMENTS-TODO.md` (display, KPI/metrics, logs, user history, visual design; references `pmt/MVP/frontend` and `pmt/MVP/nextchat-personality-enhanced`)
 
 ---
 
 ## 9. Roadmap Changelog
 
-- **1.5.0:** Codified three pipeline invariants (Spec §4.6): (1) OCEAN detection + regulation always run for every mode, (2) retrieval is conditional, (3) grounding verification mandatory for factual/policy content. Implemented hybrid LLM router (Spec §4.7) with confidence threshold, heuristic fallback, caching, and hard safety overrides. N8N workflow V2 (`careloop-phase1-2-postgres-mvp-v2.json`) now consumes `routing_hints.target_mode` from the API. API route enforces invariants with diagnostic flags (`ocean_detection_skipped`, `regulation_skipped`, `grounding_check`).
+- **1.5.0:** Codified three pipeline invariants (Spec §4.6): (1) OCEAN detection + regulation always run for every mode, (2) retrieval is conditional, (3) grounding verification mandatory for factual/policy content. Implemented hybrid LLM router (Spec §4.7) with confidence threshold, heuristic fallback, caching, and hard safety overrides. N8N workflow V2 (`big5loop-phase1-2-postgres-mvp-v2.json`) now consumes `routing_hints.target_mode` from the API. API route enforces invariants with diagnostic flags (`ocean_detection_skipped`, `regulation_skipped`, `grounding_check`).
 - **1.4.2:** Added implemented OpenClaw-inspired session isolation and routing metadata flow (`route_key`, isolation scope, history usage) across web → gateway → chat → audit, plus a web operations dashboard for session review, citation quality, degraded retrieval, feedback analysis, audit visibility, and source freshness monitoring. Updated roadmap timestamp.
 - **1.4.1:** Roadmap progress sync based on implementation evidence from `docs/PHASE1-2-TODO.md` and `docs/PHASE3-TODO.md`. Marked Phase 1 golden regression tests as completed and Phase 2 RAG degraded fallback DoD as completed. Updated roadmap timestamp.
 - **1.4.0:** Routing/intent/mode design doc (`docs/ROUTING-AND-INTENT-DESIGN.md`): clean separation — intent in N8N workflow (authoritative), model tier in gateway, workflow selection in gateway, API fallback demoted and renamed. Updated gateway, model-tier, two-workflows docs with cross-references. Phase 3 report §2.10 added. N8N `Enhanced Regulation` upgraded toward Spec §8.4.F with normalized thresholds, tie-break rules, and low-confidence clarification metadata. N8N now consumes `context.model_tier` with policy safety escalation (`light`→`medium`), dynamic retrieval top-k, and tier-aware generation params. Added stale citation detector job (`npm run job:stale-citation`) and source recrawl/re-embedding baseline job (`npm run job:source-recrawl`) with JSONL telemetry. Added gateway baseline capture (`npm run job:gateway-baseline-capture`), canary gate script (`npm run job:gateway-canary-check`), and gateway shadow response logging.

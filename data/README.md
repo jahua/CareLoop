@@ -1,6 +1,6 @@
 # Data directory
 
-CareLoop policy and document data: formats, configs, and generated outputs.
+Big5Loop policy and document data: formats, configs, and generated outputs.
 
 | Path | Purpose |
 |------|--------|

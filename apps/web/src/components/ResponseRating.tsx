@@ -32,17 +32,17 @@ function StarRow({
   const [hover, setHover] = useState(0);
 
   return (
-    <div className="careloop-rating__row">
-      <div className="careloop-rating__label">
-        <span className="careloop-rating__label-text">{label}</span>
-        <span className="careloop-rating__hint">{hint}</span>
+    <div className="big5loop-rating__row">
+      <div className="big5loop-rating__label">
+        <span className="big5loop-rating__label-text">{label}</span>
+        <span className="big5loop-rating__hint">{hint}</span>
       </div>
-      <div className="careloop-rating__stars" onMouseLeave={() => setHover(0)}>
+      <div className="big5loop-rating__stars" onMouseLeave={() => setHover(0)}>
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
             type="button"
-            className={`careloop-rating__star ${n <= (hover || value) ? "careloop-rating__star--filled" : ""}`}
+            className={`big5loop-rating__star ${n <= (hover || value) ? "big5loop-rating__star--filled" : ""}`}
             onClick={() => !disabled && onChange(n)}
             onMouseEnter={() => !disabled && setHover(n)}
             disabled={disabled}
@@ -51,7 +51,7 @@ function StarRow({
             {n <= (hover || value) ? "★" : "☆"}
           </button>
         ))}
-        {value > 0 && <span className="careloop-rating__value">{value}/5</span>}
+        {value > 0 && <span className="big5loop-rating__value">{value}/5</span>}
       </div>
     </div>
   );
@@ -66,10 +66,10 @@ export default function ResponseRating({ onSubmit, submitted }: ResponseRatingPr
   if (submitted) {
     const avg = ((submitted.relevance + submitted.tone + submitted.personality_fit) / 3).toFixed(1);
     return (
-      <div className="careloop-rating careloop-rating--submitted">
-        <span className="careloop-rating__badge">
+      <div className="big5loop-rating big5loop-rating--submitted">
+        <span className="big5loop-rating__badge">
           Rated {avg}/5
-          <span className="careloop-rating__badge-detail">
+          <span className="big5loop-rating__badge-detail">
             R:{submitted.relevance} T:{submitted.tone} P:{submitted.personality_fit}
           </span>
         </span>
@@ -81,7 +81,7 @@ export default function ResponseRating({ onSubmit, submitted }: ResponseRatingPr
     return (
       <button
         type="button"
-        className="careloop-rating__toggle"
+        className="big5loop-rating__toggle"
         onClick={() => setOpen(true)}
       >
         ☆ Rate
@@ -96,12 +96,12 @@ export default function ResponseRating({ onSubmit, submitted }: ResponseRatingPr
   };
 
   return (
-    <div className="careloop-rating">
-      <div className="careloop-rating__header">
-        <span className="careloop-rating__title">Rate this response</span>
+    <div className="big5loop-rating">
+      <div className="big5loop-rating__header">
+        <span className="big5loop-rating__title">Rate this response</span>
         <button
           type="button"
-          className="careloop-rating__close"
+          className="big5loop-rating__close"
           onClick={() => setOpen(false)}
           aria-label="Close rating"
         >
@@ -121,7 +121,7 @@ export default function ResponseRating({ onSubmit, submitted }: ResponseRatingPr
       ))}
 
       <textarea
-        className="careloop-rating__comment"
+        className="big5loop-rating__comment"
         placeholder="Optional comment..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -130,7 +130,7 @@ export default function ResponseRating({ onSubmit, submitted }: ResponseRatingPr
 
       <button
         type="button"
-        className="careloop-rating__submit"
+        className="big5loop-rating__submit"
         onClick={handleSubmit}
         disabled={!isComplete}
       >

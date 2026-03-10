@@ -51,9 +51,9 @@ type PersonalityInsightsProps = {
 export default function PersonalityInsights({ personality }: PersonalityInsightsProps) {
   if (!personality?.ocean || Object.keys(personality.ocean).length === 0) {
     return (
-      <div className="careloop-panel__section">
-        <h3 className="careloop-panel__title">Personality Insights</h3>
-        <p className="careloop-panel__hint">
+      <div className="big5loop-panel__section">
+        <h3 className="big5loop-panel__title">Personality Insights</h3>
+        <p className="big5loop-panel__hint">
           Insights will appear after a few exchanges as OCEAN traits are detected.
         </p>
       </div>
@@ -70,78 +70,78 @@ export default function PersonalityInsights({ personality }: PersonalityInsights
     : null;
 
   return (
-    <div className="careloop-panel__section">
-      <h3 className="careloop-panel__title">
+    <div className="big5loop-panel__section">
+      <h3 className="big5loop-panel__title">
         Insights
         <span
-          className={`careloop-badge ${personality.stable ? "careloop-badge--stable" : "careloop-badge--learning"}`}
+          className={`big5loop-badge ${personality.stable ? "big5loop-badge--stable" : "big5loop-badge--learning"}`}
         >
           {personality.stable ? "Stable" : "Learning"}
         </span>
       </h3>
 
       {/* Overview cards */}
-      <div className="careloop-insights__overview">
+      <div className="big5loop-insights__overview">
         {overallConf != null && (
-          <div className="careloop-insights__stat">
-            <span className="careloop-insights__stat-value">
+          <div className="big5loop-insights__stat">
+            <span className="big5loop-insights__stat-value">
               {Math.round(overallConf * 100)}%
             </span>
-            <span className="careloop-insights__stat-label">Confidence</span>
+            <span className="big5loop-insights__stat-label">Confidence</span>
           </div>
         )}
-        <div className="careloop-insights__stat">
-          <span className="careloop-insights__stat-value">
+        <div className="big5loop-insights__stat">
+          <span className="big5loop-insights__stat-value">
             {strongTraits.length}
           </span>
-          <span className="careloop-insights__stat-label">Strong traits</span>
+          <span className="big5loop-insights__stat-label">Strong traits</span>
         </div>
         {personality.history && (
-          <div className="careloop-insights__stat">
-            <span className="careloop-insights__stat-value">
+          <div className="big5loop-insights__stat">
+            <span className="big5loop-insights__stat-value">
               {personality.history.length}
             </span>
-            <span className="careloop-insights__stat-label">Snapshots</span>
+            <span className="big5loop-insights__stat-label">Snapshots</span>
           </div>
         )}
       </div>
 
       {/* Trait interpretation cards */}
-      <div className="careloop-insights__traits">
+      <div className="big5loop-insights__traits">
         {order.map((key) => {
           const value = personality.ocean[key] ?? 0;
           const meta = TRAIT_META[key];
           const level = interpret(value);
           const conf = personality.confidence_scores?.[key];
           return (
-            <div key={key} className="careloop-insights__trait-card">
-              <div className="careloop-insights__trait-top">
-                <span className="careloop-insights__trait-name">
+            <div key={key} className="big5loop-insights__trait-card">
+              <div className="big5loop-insights__trait-top">
+                <span className="big5loop-insights__trait-name">
                   {meta.name}
                 </span>
                 <span
-                  className={`careloop-insights__trait-level careloop-insights__trait-level--${level}`}
+                  className={`big5loop-insights__trait-level big5loop-insights__trait-level--${level}`}
                 >
                   {level}
                 </span>
               </div>
-              <p className="careloop-insights__trait-desc">
+              <p className="big5loop-insights__trait-desc">
                 {level === "high" ? meta.highLabel : level === "low" ? meta.lowLabel : `Between ${meta.lowLabel.toLowerCase()} and ${meta.highLabel.toLowerCase()}`}
               </p>
 
               {/* EMA visualization: raw → smoothed */}
-              <div className="careloop-insights__trait-bar-wrap">
-                <div className="careloop-insights__trait-bar">
+              <div className="big5loop-insights__trait-bar-wrap">
+                <div className="big5loop-insights__trait-bar">
                   <div
-                    className={`careloop-insights__trait-bar-fill careloop-insights__trait-bar-fill--${level}`}
+                    className={`big5loop-insights__trait-bar-fill big5loop-insights__trait-bar-fill--${level}`}
                     style={{ width: `${Math.max(0, Math.min(100, ((value + 1) / 2) * 100))}%` }}
                   />
-                  <div className="careloop-insights__trait-bar-center" />
+                  <div className="big5loop-insights__trait-bar-center" />
                 </div>
-                <div className="careloop-insights__trait-values">
+                <div className="big5loop-insights__trait-values">
                   <span>{value.toFixed(2)}</span>
                   {conf != null && (
-                    <span className="careloop-insights__trait-conf">
+                    <span className="big5loop-insights__trait-conf">
                       {Math.round(conf * 100)}% conf
                     </span>
                   )}
@@ -153,7 +153,7 @@ export default function PersonalityInsights({ personality }: PersonalityInsights
       </div>
 
       {personality.ema_applied && (
-        <p className="careloop-panel__hint" style={{ marginTop: 8 }}>
+        <p className="big5loop-panel__hint" style={{ marginTop: 8 }}>
           Values smoothed with Exponential Moving Average (EMA)
         </p>
       )}

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { ErrorCode, ErrorStage } from "@careloop/contracts";
+import type { ErrorCode, ErrorStage } from "@big5loop/contracts";
 
 /** Phase 3: structured error envelope (Spec §12). */
 function errorResponse(

@@ -32,7 +32,7 @@ export default function DataActions({ sessionId, onDeleted }: DataActionsProps) 
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `careloop-export-${sessionId.slice(0, 8)}.json`;
+    a.download = `big5loop-export-${sessionId.slice(0, 8)}.json`;
     a.click();
     URL.revokeObjectURL(url);
     setTimeout(() => { setStatus("idle"); setMessage(null); }, 2000);
@@ -61,12 +61,12 @@ export default function DataActions({ sessionId, onDeleted }: DataActionsProps) 
   const busy = status === "exporting" || status === "deleting";
 
   return (
-    <div className="careloop-panel__section">
-      <h3 className="careloop-panel__title">Session Data</h3>
-      <div className="careloop-panel-actions">
+    <div className="big5loop-panel__section">
+      <h3 className="big5loop-panel__title">Session Data</h3>
+      <div className="big5loop-panel-actions">
         <button
           type="button"
-          className="careloop-panel-actions__btn"
+          className="big5loop-panel-actions__btn"
           onClick={handleExport}
           disabled={busy}
         >
@@ -74,14 +74,14 @@ export default function DataActions({ sessionId, onDeleted }: DataActionsProps) 
         </button>
         <button
           type="button"
-          className="careloop-panel-actions__btn careloop-panel-actions__btn--danger"
+          className="big5loop-panel-actions__btn big5loop-panel-actions__btn--danger"
           onClick={handleDelete}
           disabled={busy}
         >
           {status === "deleting" ? "Deleting…" : "Delete data"}
         </button>
         {message && (
-          <p className={`careloop-panel-actions__msg ${status.endsWith("-err") ? "careloop-panel-actions__msg--err" : ""}`}>
+          <p className={`big5loop-panel-actions__msg ${status.endsWith("-err") ? "big5loop-panel-actions__msg--err" : ""}`}>
             {message}
           </p>
         )}

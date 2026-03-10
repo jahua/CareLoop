@@ -96,7 +96,7 @@ async function run() {
 
   const client = new Client({
     connectionString:
-      process.env.DATABASE_URL || "postgresql://careloop:changeme@localhost:5432/careloop",
+      process.env.DATABASE_URL || "postgresql://big5loop:changeme@localhost:5432/big5loop",
   });
 
   try {

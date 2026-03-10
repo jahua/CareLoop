@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-const COOKIE_NAME = "careloop-session";
+const COOKIE_NAME = "big5loop-session";
 const PUBLIC_PATHS = ["/login", "/api/auth/", "/api/health", "/api/chat", "/api/gateway/", "/api/feedback"];
 
 const SECRET = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "careloop-dev-secret-change-me"
+  process.env.NEXTAUTH_SECRET || "big5loop-dev-secret-change-me"
 );
 
 async function verifyJwt(token: string): Promise<boolean> {

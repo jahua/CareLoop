@@ -11,8 +11,8 @@ from pathlib import Path
 WORKFLOW_DIR = Path(__file__).parent
 
 TARGETS = [
-    "careloop-phase1-2-postgres-mvp.json",
-    "careloop-phase1-2-postgres-mvp-v2.json",
+    "big5loop-phase1-2-postgres-mvp.json",
+    "big5loop-phase1-2-postgres-mvp-v2.json",
 ]
 
 # Runtime content of the system message (plain text with real newlines)

@@ -38,11 +38,11 @@ export default function SessionBar({
   };
 
   return (
-    <div className="careloop-session-bar">
+    <div className="big5loop-session-bar">
       {useGateway && (
-        <div className="careloop-session-bar__item">
+        <div className="big5loop-session-bar__item">
           <span
-            className="careloop-session-bar__badge careloop-session-bar__badge--gateway"
+            className="big5loop-session-bar__badge big5loop-session-bar__badge--gateway"
             title="Requests go through gateway (shadow logging may be active)"
           >
             Gateway
@@ -50,38 +50,38 @@ export default function SessionBar({
         </div>
       )}
       {healthOk === false && (
-        <div className="careloop-session-bar__item">
-          <span className="careloop-session-bar__badge careloop-session-bar__badge--error">
+        <div className="big5loop-session-bar__item">
+          <span className="big5loop-session-bar__badge big5loop-session-bar__badge--error">
             Offline
           </span>
         </div>
       )}
-      <div className="careloop-session-bar__item">
+      <div className="big5loop-session-bar__item">
         <span>Session</span>
         <button
           type="button"
-          className="careloop-session-bar__value careloop-copy-id"
+          className="big5loop-session-bar__value big5loop-copy-id"
           onClick={copySession}
           title="Copy session ID"
         >
           {shortId}
         </button>
       </div>
-      <div className="careloop-session-bar__item">
+      <div className="big5loop-session-bar__item">
         <span>Messages</span>
-        <span className="careloop-session-bar__value">{messageCount}</span>
+        <span className="big5loop-session-bar__value">{messageCount}</span>
       </div>
       {helpfulCount > 0 && (
-        <div className="careloop-session-bar__item">
+        <div className="big5loop-session-bar__item">
           <span>Helpful</span>
-          <span className="careloop-session-bar__value">{helpfulCount}</span>
+          <span className="big5loop-session-bar__value">{helpfulCount}</span>
         </div>
       )}
       {coachingMode && (
-        <div className="careloop-session-bar__item">
+        <div className="big5loop-session-bar__item">
           <span>Mode</span>
           <span
-            className="careloop-session-bar__badge careloop-session-bar__badge--mode"
+            className="big5loop-session-bar__badge big5loop-session-bar__badge--mode"
             title={`Coaching mode: ${coachingMode}`}
           >
             {coachingMode.replace(/_/g, " ")}
@@ -89,13 +89,13 @@ export default function SessionBar({
         </div>
       )}
       {personality && (
-        <div className="careloop-session-bar__item">
+        <div className="big5loop-session-bar__item">
           <span>Personality</span>
           <span
             className={
               personality.stable
-                ? "careloop-session-bar__badge careloop-session-bar__badge--stable"
-                : "careloop-session-bar__badge careloop-session-bar__badge--learning"
+                ? "big5loop-session-bar__badge big5loop-session-bar__badge--stable"
+                : "big5loop-session-bar__badge big5loop-session-bar__badge--learning"
             }
           >
             {personality.stable ? "Stable" : "Learning"}
