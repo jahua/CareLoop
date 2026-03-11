@@ -24,22 +24,16 @@ services:
     restart: unless-stopped
 
   n8n:
-    image: n8nio/n8n:latest
+    image: n8nio/n8n:2.12.0
     environment:
-      N8N_BASIC_AUTH_ACTIVE: "true"
-      N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER:-}
-      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD:-}
-      N8N_USER_MANAGEMENT_DISABLED: "true"
-      N8N_PERSONALIZATION_ENABLED: "false"
       N8N_HOST: 0.0.0.0
       N8N_PORT: 5678
       N8N_PROTOCOL: http
       WEBHOOK_URL: ${WEBHOOK_URL:-http://n8n:5678}
       GENERIC_TIMEZONE: Europe/Zurich
-      N8N_RUNNERS_ENABLED: "true"
-      N8N_RUNNERS_MODE: "internal"
       N8N_API_KEY: ${N8N_API_KEY:-big5loop-dev-api-key}
       N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"
       NVIDIA_API_URL: ${NVIDIA_API_URL:-https://integrate.api.nvidia.com/v1/chat/completions}
       NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
       NVIDIA_MODEL: ${NVIDIA_MODEL:-google/gemma-3n-e4b-it}
