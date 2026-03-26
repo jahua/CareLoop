@@ -75,7 +75,7 @@ export default function LoginPage() {
           <h1>Big5Loop</h1>
         </div>
         <p className="login-subtitle">
-          Adaptive personality-aware caregiver assistant
+          Personality-aware support for Swiss informal home caregivers
         </p>
 
         <div className="login-tabs">

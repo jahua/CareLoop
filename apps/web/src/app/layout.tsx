@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Big5Loop",
-  description: "Adaptive personality-aware caregiver assistant",
+  description: "Personality-aware support for Swiss informal home caregivers",
 };
 
 export default function RootLayout({

@@ -1,11 +1,11 @@
 # Big5Loop — Manuscript Visualizations
 
-This folder contains a single Jupyter notebook that generates **all figures** for the thesis manuscript (*manuscript_v2.md*) in **MDPI-compliant** style.
+This folder contains a single Jupyter notebook that generates **all figures** for the thesis manuscript (*manuscript_v3.tex*) in **MDPI-compliant** style.
 
 ## Notebook
 
 - **`manuscript_figures.ipynb`** — Generates:
-  - **Figure 1:** System architecture (Client → API Pre → N8N 9-stage pipeline → PostgreSQL/NVIDIA → API Post → Output)
+  - **Figure 1:** System architecture (Client → API Pre → N8N partially parallelised pipeline with detect ∥ retrieve → merge → generate → verify → persist → audit; Llama 3.3 70B via NVIDIA API; PostgreSQL/pgvector)
   - **Figure 2:** EMA trait convergence (Neuroticism: raw vs smoothed)
   - **Figure 3:** Trait stabilization trajectories (representative profiles)
   - **Figure 4:** Coaching quality comparison (adaptive vs baselines)
@@ -41,4 +41,4 @@ Figure 1 is now sourced from `figure1_architecture.dot` and exported to both PNG
 
 ### Optional figure caption (Figure 1)
 
-*Figure 1. Big5Loop system architecture. Client requests pass through an API pre-processing layer that performs routing and retrieval gating before invoking an N8N workflow implementing the nine-stage coaching pipeline. The workflow integrates personality detection, regulation, retrieval-augmented generation, and grounding verification. Persistent state and policy evidence are stored in PostgreSQL with pgvector, while response generation uses the Gemma-3 large language model via the NVIDIA API. Post-processing applies citation overlay, grounding checks, and audit logging before returning the response to the client.*
+*Figure 1. Big5Loop three-tier architecture: Next.js API route, N8N v2 orchestration pipeline with parallel detection and retrieval branches (detect ∥ retrieve → merge → regulate → generate → verify → persist → audit), and PostgreSQL/pgvector storage layer. Personality detection and EMA stabilisation run on every turn (invariant 1); retrieval activates conditionally (invariant 2); all policy content is citation-grounded (invariant 3). A detection cache bypasses the LLM API for repeated messages. Response generation uses Llama 3.3 70B via the NVIDIA API.*

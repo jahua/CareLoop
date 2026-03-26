@@ -479,7 +479,7 @@ export default function AuditPage() {
               <h2 className="big5loop-card__title">Big5Loop System Overview</h2>
               <div className="big5loop-text-block">
                 <p>
-                  <strong>Big5Loop</strong> is a personality-aware conversational assistant for Swiss social insurance (IV/AHV/EL) navigation, developed as a thesis project at HSLU. It combines <strong>RAG-based policy retrieval</strong>, <strong>Big Five personality detection</strong>, and <strong>adaptive response generation</strong> to deliver personalized guidance to users navigating complex social insurance processes.
+                  <strong>Big5Loop</strong> is a personality-aware coaching and support system for Swiss informal home caregivers, developed as a thesis project at HSLU. It combines <strong>Big Five personality detection</strong>, <strong>adaptive response generation</strong>, and <strong>RAG-based policy retrieval</strong> to support emotional needs, practical guidance, and grounded navigation of relevant Swiss care and benefits information.
                 </p>
                 <p>
                   The system architecture consists of a <strong>Next.js frontend</strong>, an <strong>n8n workflow orchestrator</strong> implementing a 6-stage pipeline (routing, detection, retrieval, grounding, generation, verification), and a <strong>PostgreSQL + pgvector</strong> backend for session persistence, personality state tracking, and policy chunk storage.
@@ -662,7 +662,7 @@ export default function AuditPage() {
                   </div>
                   <div className="big5loop-def-item">
                     <h4>Coaching Modes</h4>
-                    <p>Big5Loop classifies each user message into one of three coaching modes: <strong>Emotional Support</strong> (empathetic, feeling-focused responses), <strong>Practical Education</strong> (informational, how-to guidance), or <strong>Policy Navigation</strong> (specific IV/AHV/EL regulation lookup with citations). The mode determines which pipeline branch is prioritized.</p>
+                    <p>Big5Loop classifies each user message into one of three primary coaching modes: <strong>Emotional Support</strong> (empathetic, feeling-focused responses), <strong>Practical Education</strong> (informational, how-to guidance), or <strong>Policy Navigation</strong> (grounded retrieval of relevant Swiss policy and benefits information with citations). In mixed cases, the system can combine support and policy guidance in the same response.</p>
                   </div>
                 </div>
               </div>
@@ -701,7 +701,7 @@ export default function AuditPage() {
                       </p>
                     )}
                     <p>
-                      The coaching mode distribution reveals how users are engaging with the system — a high proportion of policy navigation queries validates the system&apos;s primary use case for social insurance guidance, while emotional support queries demonstrate the personality-adaptive features are being utilized for empathetic interactions.
+                      The coaching mode distribution reveals how users are engaging with the system across its different support functions. A higher share of emotional support turns suggests caregivers are using the system for reassurance and coping support, while practical education and policy navigation turns show demand for structured guidance and grounded factual help.
                     </p>
                   </>
                 ) : (

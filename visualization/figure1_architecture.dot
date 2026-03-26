@@ -1,160 +1,173 @@
 digraph Big5LoopArchitecture {
   graph [
     bgcolor="white",
-    pad="0.16",
+    pad="0.1",
     margin="0.02",
     rankdir="TB",
-    nodesep="0.55",
-    ranksep="0.62",
+    nodesep="0.25",
+    ranksep="0.35",
     splines="ortho",
     outputorder="edgesfirst",
-    fontname="Helvetica Neue,Arial,Helvetica,sans-serif"
+    fontname="Helvetica Neue,Arial,Helvetica,sans-serif",
+    concentrate="false"
   ];
 
   node [
     shape="plain",
     fontname="Helvetica Neue,Arial,Helvetica,sans-serif",
-    fontsize="12",
-    margin="0.08,0.06"
+    fontsize="16",
+    margin="0.08,0.05"
   ];
 
   edge [
     color="#7F8C8D",
-    penwidth="1.0",
-    arrowsize="0.75",
+    penwidth="1.4",
+    arrowsize="0.9",
     arrowhead="vee",
     fontname="Helvetica Neue,Arial,Helvetica,sans-serif",
-    fontsize="10"
+    fontsize="14"
   ];
 
-  subgraph cluster_system {
+  subgraph cluster_main {
     label="";
     color="#D8DEE2";
     penwidth="0.8";
     style="rounded";
-    margin="18";
+    margin="12";
 
+    /* ── Vertical flow: one node per rank ── */
     client [label=<
-      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#9AA8B0" BGCOLOR="#F8FAFA">
-        <TR><TD WIDTH="90"><FONT POINT-SIZE="14"><B>Client</B></FONT><BR/><FONT POINT-SIZE="12">(Next.js)</FONT></TD></TR>
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#9AA8B0" BGCOLOR="#F8FAFA">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="22"><B>Client</B></FONT><BR/><FONT POINT-SIZE="22">(Next.js)</FONT></TD></TR>
       </TABLE>
     >];
 
     api_pre [label=<
-      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#7B8C97" BGCOLOR="#F7F9FA">
-        <TR><TD WIDTH="180" BGCOLOR="#495A63"><FONT COLOR="white" POINT-SIZE="14"><B>API Pre-processing</B></FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Router</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Retrieval Gate</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Session Isolation</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">Intent Routing</FONT></TD></TR>
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B8C97" BGCOLOR="#F7F9FA">
+        <TR><TD WIDTH="220" BGCOLOR="#495A63"><FONT COLOR="white" POINT-SIZE="22"><B>API Pre-processing</B></FONT></TD></TR>
+        <TR><TD ALIGN="CENTER"><FONT POINT-SIZE="22">Hybrid LLM router · Retrieval gate · Session isolation</FONT></TD></TR>
       </TABLE>
     >];
 
-    pipeline [label=<
-      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="6" CELLPADDING="8" COLOR="#7B9A8B" BGCOLOR="#EAF2ED">
-        <TR>
-          <TD COLSPAN="3" BGCOLOR="#495A63" BORDER="0" CELLPADDING="10"><FONT COLOR="white" POINT-SIZE="14"><B>N8N 9-Stage Coaching Pipeline</B></FONT></TD>
-        </TR>
-        <TR>
-          <TD PORT="p11" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">Input Normalization</FONT></TD>
-          <TD PORT="p12" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">Context Extraction</FONT></TD>
-          <TD PORT="p13" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">Personality State Loading</FONT></TD>
-        </TR>
-        <TR>
-          <TD PORT="p21" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">OCEAN Detection</FONT></TD>
-          <TD PORT="p22" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">EMA Stabilization</FONT></TD>
-          <TD PORT="p23" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">Regulation</FONT></TD>
-        </TR>
-        <TR>
-          <TD PORT="p31" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">Policy Retrieval</FONT></TD>
-          <TD PORT="response" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">Response Generation</FONT></TD>
-          <TD PORT="exit" WIDTH="150" BGCOLOR="#F8FAF8"><FONT POINT-SIZE="12">Grounding Verification</FONT></TD>
-        </TR>
-        <TR>
-          <TD PORT="persist" COLSPAN="3" WIDTH="450" BGCOLOR="#DCE8E1" CELLPADDING="10"><FONT POINT-SIZE="12"><B>Persistence</B></FONT></TD>
-        </TR>
+    input_norm [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#F8FAF8">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="20">Input Normalization</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    context_extract [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#F8FAF8">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="20">Context Extraction</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    merge_prev [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#F8FAF8">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="20">Merge Previous State</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    /* ── Parallel branch: symmetric split ── */
+    detect [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#E8F4EA">
+        <TR><TD WIDTH="200" ALIGN="CENTER"><FONT POINT-SIZE="20"><B>OCEAN Detection</B></FONT></TD></TR>
+        <TR><TD ALIGN="CENTER"><FONT POINT-SIZE="22">EMA + cache bypass</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    retrieval [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#E8F4EA">
+        <TR><TD WIDTH="200" ALIGN="CENTER"><FONT POINT-SIZE="20"><B>Policy Retrieval</B></FONT></TD></TR>
+        <TR><TD ALIGN="CENTER"><FONT POINT-SIZE="22">FTS / pgvector</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    regulation [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#E8F4EA">
+        <TR><TD WIDTH="200" ALIGN="CENTER"><FONT POINT-SIZE="20"><B>Regulation</B></FONT></TD></TR>
+        <TR><TD ALIGN="CENTER"><FONT POINT-SIZE="22">trait → directive</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    merge [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#DCE8E1">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="20"><B>Merge</B></FONT></TD></TR>
+      </TABLE>
+    >];
+
+    generate [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#F8FAF8">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="20">Response Generation</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    verify [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#F8FAF8">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="20">Grounding Verification</FONT></TD></TR>
+      </TABLE>
+    >];
+
+    persist [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B9A8B" BGCOLOR="#DCE8E1">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="20"><B>Persistence &amp; Audit</B></FONT></TD></TR>
       </TABLE>
     >];
 
     api_post [label=<
-      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#7B8C97" BGCOLOR="#F7F9FA">
-        <TR><TD WIDTH="180" BGCOLOR="#495A63"><FONT COLOR="white" POINT-SIZE="14"><B>API Post-processing</B></FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">citation overlay</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">grounding check</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">mode override</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">audit logging</FONT></TD></TR>
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#7B8C97" BGCOLOR="#F7F9FA">
+        <TR><TD WIDTH="220" BGCOLOR="#495A63"><FONT COLOR="white" POINT-SIZE="22"><B>API Post-processing</B></FONT></TD></TR>
+        <TR><TD ALIGN="CENTER"><FONT POINT-SIZE="22">citation overlay · grounding check · audit</FONT></TD></TR>
       </TABLE>
     >];
 
     client_response [label=<
-      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#9AA8B0" BGCOLOR="#F8FAFA">
-        <TR><TD WIDTH="110"><FONT POINT-SIZE="14"><B>Client Response</B></FONT></TD></TR>
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#9AA8B0" BGCOLOR="#F8FAFA">
+        <TR><TD WIDTH="220" ALIGN="CENTER"><FONT POINT-SIZE="22"><B>Client Response</B></FONT></TD></TR>
       </TABLE>
     >];
 
-    flow_note [
-      label=<
-        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#A7B2B8" BGCOLOR="#FAFBFB">
-          <TR><TD><FONT POINT-SIZE="12"><B>Flow</B></FONT></TD></TR>
-          <TR><TD><FONT POINT-SIZE="11">Detect</FONT></TD></TR>
-          <TR><TD><FONT POINT-SIZE="11">EMA</FONT></TD></TR>
-          <TR><TD><FONT POINT-SIZE="11">Regulate</FONT></TD></TR>
-          <TR><TD><FONT POINT-SIZE="11">Retrieve</FONT></TD></TR>
-          <TR><TD><FONT POINT-SIZE="11">Generate</FONT></TD></TR>
-          <TR><TD><FONT POINT-SIZE="11">Verify</FONT></TD></TR>
-        </TABLE>
-      >
-    ];
+    /* ── Services: symmetric at bottom ── */
+    llm [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#B3A892" BGCOLOR="#FBF9F4">
+        <TR><TD WIDTH="200" BGCOLOR="#E7DECE"><FONT POINT-SIZE="20"><B>LLM Service</B></FONT></TD></TR>
+        <TR><TD ALIGN="CENTER"><FONT POINT-SIZE="22">NVIDIA API · LLM 3.0</FONT></TD></TR>
+      </TABLE>
+    >];
 
     db [label=<
-      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#B3A892" BGCOLOR="#FBF9F4">
-        <TR><TD WIDTH="170" BGCOLOR="#E7DECE"><FONT POINT-SIZE="14"><B>Storage</B></FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">PostgreSQL + pgvector</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">sessions</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">personality states</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">policy evidence</FONT></TD></TR>
-        <TR><TD ALIGN="LEFT"><FONT POINT-SIZE="12">audit logs</FONT></TD></TR>
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="10" COLOR="#B3A892" BGCOLOR="#FBF9F4">
+        <TR><TD WIDTH="200" BGCOLOR="#E7DECE"><FONT POINT-SIZE="20"><B>Storage</B></FONT></TD></TR>
+        <TR><TD ALIGN="CENTER"><FONT POINT-SIZE="22">PostgreSQL 16 + pgvector</FONT></TD></TR>
       </TABLE>
     >];
 
-    llm [label=<
-      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" COLOR="#B3A892" BGCOLOR="#FBF9F4">
-        <TR><TD WIDTH="170" BGCOLOR="#E7DECE"><FONT POINT-SIZE="14"><B>LLM Service</B></FONT></TD></TR>
-        <TR><TD><FONT POINT-SIZE="12">NVIDIA API</FONT></TD></TR>
-        <TR><TD><FONT POINT-SIZE="12">Gemma-3 LLM</FONT></TD></TR>
-      </TABLE>
-    >];
+    /* Symmetric parallel pair */
+    { rank=same; detect; retrieval; }
+    { rank=same; llm; db; }
 
-    left_pad [shape="point", width="0.18", height="0.01", label="", style="invis"];
-    bottom_anchor [shape="point", width="0.01", height="0.01", label="", style="invis"];
-    right_pad [shape="point", width="0.18", height="0.01", label="", style="invis"];
+    /* ── Vertical main flow ── */
+    client -> api_pre;
+    api_pre -> input_norm;
+    input_norm -> context_extract;
+    context_extract -> merge_prev;
 
-    { rank=same; left_pad; client; api_pre; flow_note; pipeline; api_post; client_response; right_pad; }
-    { rank=same; db; bottom_anchor; llm; }
+    merge_prev -> detect;
+    merge_prev -> retrieval;
 
-    left_pad -> client [style="invis", weight="2"];
-    client -> api_pre [weight="4"];
-    api_pre -> flow_note [arrowhead="none", color="#A7B2B8", penwidth="0.8", minlen="1"];
-    flow_note -> pipeline:p11 [minlen="1"];
-    pipeline:exit -> api_post [minlen="1"];
-    api_post -> client_response [minlen="1"];
-    client_response -> right_pad [style="invis", weight="2"];
+    detect -> regulation;
+    regulation -> merge;
+    retrieval -> merge;
 
-    pipeline:persist -> db [
-      style="dashed",
-      color="#95A5A6",
-      xlabel="data sync",
-      minlen="1",
-      weight="3"
-    ];
-    pipeline:response -> llm [
-      color="#7F8C8D",
-      minlen="1",
-      weight="3"
-    ];
+    merge -> generate;
+    generate -> verify;
+    verify -> persist;
+    persist -> api_post;
+    api_post -> client_response;
 
-    pipeline:persist -> bottom_anchor [style="invis", weight="10"];
-    db -> bottom_anchor [style="invis", weight="8"];
-    bottom_anchor -> llm [style="invis", weight="8"];
+    /* Service connections */
+    detect -> llm [style="dashed", color="#95A5A6"];
+    generate -> llm [style="dashed", color="#95A5A6"];
+    persist -> db [style="dashed", color="#95A5A6"];
+    retrieval -> db [style="dashed", color="#95A5A6"];
   }
 }

@@ -308,13 +308,13 @@ export default function PersonalityPage() {
                   <h2 className="big5loop-card__title">About Big5Loop Personality System</h2>
                   <div className="big5loop-text-block">
                     <p>
-                      Big5Loop is a personality-aware conversational assistant designed for Swiss social insurance navigation. It uses the <strong>Big Five / OCEAN model</strong> — the most widely validated personality framework in psychology — to understand each user&apos;s communication style and adapt responses accordingly.
+                      Big5Loop is a personality-aware coaching and support system for <strong>Swiss informal home caregivers</strong>. It uses the <strong>Big Five / OCEAN model</strong> to understand how each person prefers to communicate and then adapts tone, structure, and response style accordingly.
                     </p>
                     <p>
-                      The system operates on a core thesis: <em>social insurance information is more effectively communicated when adapted to the recipient&apos;s personality traits</em>. A highly neurotic user who is anxious about their IV application receives more empathetic, reassuring responses, while a highly conscientious user receives structured, action-oriented guidance.
+                      The system is broader than policy navigation alone. It supports four coaching modes: <strong>emotional support</strong>, <strong>practical education</strong>, <strong>policy navigation</strong>, and <strong>mixed support</strong>. Policy guidance is one pillar of the experience, but the overall goal is to support caregivers coping with stress, daily care demands, and difficult Swiss care and benefits information.
                     </p>
                     <p>
-                      Unlike static personality tests, Big5Loop performs <strong>continuous, implicit detection</strong> — analyzing natural conversation text rather than requiring users to fill out questionnaires. The personality profile is built incrementally across multiple sessions and smoothed using exponential moving averages to ensure stability and accuracy.
+                      Unlike static personality tests, Big5Loop performs <strong>continuous, implicit detection</strong> by analyzing natural conversation rather than asking users to complete questionnaires. The profile is refined over time across sessions and smoothed with exponential moving averages so that adaptation remains stable instead of reacting too strongly to one message.
                     </p>
                   </div>
                 </section>
@@ -339,7 +339,7 @@ export default function PersonalityPage() {
                       ))}
                     </div>
                     <p>
-                      Big5Loop detects these traits through <strong>lexical analysis</strong> (keyword pattern matching), <strong>linguistic feature extraction</strong> (message length, punctuation patterns, sentiment ratios), and <strong>contextual inference</strong>. The raw per-message estimates are smoothed using a two-stage EMA process: intra-session (&#945; = {EMA_ALPHA}) for short-term stability, and cross-session (&#945; = {CROSS_SESSION_ALPHA}) for long-term profile synthesis.
+                      Big5Loop estimates these traits from multi-turn dialogue using a combination of conversational cues, heuristic signals, and contextual inference. The raw per-message estimates are smoothed using a two-stage EMA process: intra-session (&#945; = {EMA_ALPHA}) for short-term stability, and cross-session (&#945; = {CROSS_SESSION_ALPHA}) for longer-term profile synthesis.
                     </p>
                     <p>
                       A <strong>confidence score</strong> (0–100%) accompanies each trait, reflecting how certain the system is about the estimate. Low-confidence readings (below 30%) are automatically discarded to prevent noisy measurements from corrupting the stable profile. After {STABILITY_MIN_TURNS}+ turns with variance below {STABILITY_VARIANCE}, the profile is marked &quot;stable.&quot;
@@ -582,7 +582,7 @@ export default function PersonalityPage() {
                       <p>No regulation directives are currently active — all traits are in the balanced range. The assistant is using its default communication style. Continue conversing to refine the profile and potentially activate personality-specific adaptations.</p>
                     )}
                     <p>
-                      The personality system is designed to make social insurance information more accessible by adapting to <em>how</em> you prefer to receive information. It does not judge or categorize — there are no &quot;good&quot; or &quot;bad&quot; trait scores. Every personality configuration leads to different adaptive strategies that aim to improve comprehension and emotional comfort.
+                      The personality system is designed to make caregiver support more accessible by adapting to <em>how</em> you prefer to receive information and encouragement. It does not judge or categorize — there are no &quot;good&quot; or &quot;bad&quot; trait scores. Different trait patterns simply lead to different communication strategies that aim to improve comprehension, emotional comfort, and practical usefulness.
                     </p>
                     {!profile.stable && (
                       <p className="big5loop-text-note">

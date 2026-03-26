@@ -49,7 +49,7 @@ export default function SplashScreen({ onDone, duration = 1800 }: SplashScreenPr
             </div>
             <h1 className="big5loop-splash__title">Big5Loop</h1>
             <p className="big5loop-splash__sub">
-              Adaptive personality-aware caregiver assistant
+              Personality-aware support for Swiss informal home caregivers
             </p>
             <div className="big5loop-splash__loader">
               <motion.div
