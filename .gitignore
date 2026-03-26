@@ -2,3 +2,17 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Thesis writing, drafts, and literature (keep local only; do not push to GitHub)
+thesis project/paper/
+thesis project/v4/
+thesis project/pmt/Preliminary*.pdf
+thesis project/pmt/Preliminary*.docx
+thesis project/pmt/Preliminary*.md
+thesis project/pmt/Preliminary Study*.pdf
+Jiahua_Duojie_Thesis_Project.pptx
+
+# Nested repos and survey outputs (pushed from their own remotes or kept local)
+thesis project/big5loop/
+thesis project/AutoSurvey/
+thesis project/*.pdf
