@@ -1,3 +1,9 @@
+# Big5Loop .gitignore
+#
+# What belongs here: machine-specific output, secrets, large regenerated data, and local-only
+# docs/notes — not a full list of “every personal file type” (that is endless). Add patterns
+# below when something keeps reappearing as an accidental `git add`.
+
 # Dependencies
 node_modules/
 
@@ -8,6 +14,10 @@ node_modules/
 !.env.example
 **/credentials*.json
 DEPLOYMENT-CREDENTIALS.md
+*.pem
+id_rsa
+id_rsa.pub
+*.p12
 
 # Build and runtime
 dist/
@@ -19,12 +29,40 @@ database.sqlite
 # Python virtual environment
 data/venv/
 __pycache__/
+*.py[cod]
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Local documentation, reports, and notes
-docs/
+# OS junk
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# Editor / IDE (local overrides only; commit shared .vscode if the team uses it)
+.idea/
+*.swp
+*.swo
+*~
+
+# Local documentation (default: not committed). Tracked exception: docs/phase5/ (Phase 5 index for GitHub).
+docs/*
+!docs/phase5/
+!docs/phase5/**
+/scratch/
+/private/
+**/private-notes/
+*.private.md
+*.local.md
 
 # Phase 3 audit and feedback logs
 logs/
 *.audit.jsonl
 audit.jsonl
 feedback.jsonl
+
+# Phase 5: Hugging Face PANDORA downloads (large; regenerate via scripts/download_pandora.py)
+evaluation_data/pandora/raw/

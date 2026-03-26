@@ -13,6 +13,8 @@ This document describes the data sources used for simulated evaluation of Big5Lo
 | BFI2 | `raw/bfi2_dataset.csv` | 1,733 | Personality profiles (60 items) |
 | PERSONAGE | `raw/predefinedParams.*`, `raw/randomParams.*` | 580 | Utterances with human personality ratings |
 | NEO-PI-R | `raw/35840_*` | — | Validated NEO personality instrument |
+| **PANDORA Big5** | `pandora/raw/pandora_big5_*.csv` | (HF) | Reddit text + Big Five labels — Phase 5 benchmark |
+| **APP (subset)** | `pandora/raw/app_*.csv` | (HF) | Automated Personality Prediction — optional cross-check |
 
 ---
 
@@ -163,15 +165,37 @@ Validity study data for NEO-PI-R. SPSS (`.sav`) format with codebook. Alternativ
 
 ---
 
-## 7. Version and Updates
+## 7. PANDORA (Phase 5 benchmark)
+
+### 7.1 Provenance
+
+- **Paper**: Gjurković, M., Karan, M., Vukojević, I., Šnajder, J., & Dalbelo Bašić, B. (2020). *PANDORA Talks: Personality and Demographics on Reddit*. ACL 2020. [ACL Anthology](https://aclanthology.org/2020.acl-main.614/)
+- **Hugging Face — Big5 targets**: [`jingjietan/pandora-big5`](https://huggingface.co/datasets/jingjietan/pandora-big5)
+- **Hugging Face — personality prediction subset**: [`Fatima0923/Automated-Personality-Prediction`](https://huggingface.co/datasets/Fatima0923/Automated-Personality-Prediction)
+
+### 7.2 Description
+
+Large Reddit-derived corpus with Big Five–related labels and demographics; suitable for **text → trait** benchmarking of Big5Loop’s detector against held-out ground truth.
+
+### 7.3 Local layout
+
+- Download: `python scripts/download_pandora.py` → `pandora/raw/*.csv`
+- Protocol: `PHASE5-SPECIFICATION.md` (canonical); `PHASE5-PANDORA.md` (overview)
+- Preprocess: map dataset-specific columns to `O, C, E, A, N` in `[-1, 1]` or document scaling vs Big5Loop outputs.
+
+---
+
+## 8. Version and Updates
 
 | Date | Change |
 |------|--------|
 | 2026-03 | Initial datasource description; raw/processed layout |
+| 2026-03-26 | Added PANDORA / Phase 5 references and HF datasets |
+| 2026-03-26 | Added `PHASE5-SPECIFICATION.md` (layout, transforms, workflow naming, testing, versioning) |
 
 ---
 
-## 8. Citations
+## 9. Citations
 
 ```bibtex
 @article{li2024big5chat,
@@ -193,5 +217,12 @@ Validity study data for NEO-PI-R. SPSS (`.sav`) format with codebook. Alternativ
   author={Mairesse, Fran{\c{c}}ois and Walker, Marilyn A},
   booktitle={ACL},
   year={2007}
+}
+
+@inproceedings{gjurkovic2020pandora,
+  title={{PANDORA} Talks: Personality and Demographics on {R}eddit},
+  author={Gjurkovi{\\'c}, Matej and Karan, Mladen and Vukojevi{\\'c}, Iva and others},
+  booktitle={Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
+  year={2020}
 }
 ```

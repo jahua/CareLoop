@@ -182,6 +182,7 @@ See [docs/SECRETS-AND-CREDENTIALS.md](docs/SECRETS-AND-CREDENTIALS.md) for the f
 | Phase 2 | Jan–Feb 2026 | RAG and policy navigation with citations | ✅ Done |
 | Phase 3 | Feb 2026 | Reliability, observability, and security hardening | ✅ Done |
 | Phase 4 | Feb–Mar 2026 | Pilot release and evaluation | ✅ Done |
+| Phase 5 | Mar 2026+ | PANDORA (Reddit Big Five) external evaluation | 🔄 In progress |
 
 See [ROADMAP.md](ROADMAP.md) for detailed phase breakdowns and Definition of Done.
 
@@ -198,6 +199,9 @@ See [ROADMAP.md](ROADMAP.md) for detailed phase breakdowns and Definition of Don
 | [docs/OPERATIONS-RUNBOOK.md](docs/OPERATIONS-RUNBOOK.md) | Operations and monitoring runbook |
 | [docs/POLICY-CORPUS-INGESTION.md](docs/POLICY-CORPUS-INGESTION.md) | Policy corpus ingestion and RAG setup |
 | [docs/reports/](docs/reports/) | Phase completion reports |
+| [evaluation_data/PHASE5-SPECIFICATION.md](evaluation_data/PHASE5-SPECIFICATION.md) | Phase 5: layout, data transforms, workflow name/version, tests |
+| [evaluation_data/PHASE5-PANDORA.md](evaluation_data/PHASE5-PANDORA.md) | Phase 5: short overview (links to spec) |
+| [docs/phase5/README.md](docs/phase5/README.md) | Phase 5: docs index (links to spec; tracked under `docs/` exception) |
 
 ---
 

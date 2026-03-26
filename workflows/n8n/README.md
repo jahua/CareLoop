@@ -58,3 +58,15 @@ Recommended production direction for this repo:
 1. Keep `big5loop-phase1-2-postgres-mvp.json` as core runtime workflow.
 2. Serve Gemma 3 (`google/gemma-3-12b-it`) via OpenAI-compatible API (vLLM/TGI).
 3. Keep PostgreSQL for audit + EMA state; add pgvector retrieval for long-term memory recall.
+
+---
+
+## Phase 5 — PANDORA evaluation (v4)
+
+Import `big5loop-pandora-eval-v4.json`:
+
+1. **Workflow → Import from File** → select `big5loop-pandora-eval-v4.json`.
+2. Activate the workflow.
+3. POST to `http://localhost:5678/webhook/big5loop-pandora-eval-v4` (same body shape as parallel v3; optional `ground_truth_ocean` and `pandora_sample_id` for benchmark runs).
+
+This export is derived from `big5loop-phase1-2-parallel-v3.json` with a dedicated webhook path and `pandora_evaluation: true` in ingest. See **`evaluation_data/PHASE5-SPECIFICATION.md`** (naming, testing, versioning), `evaluation_data/PHASE5-PANDORA.md`, and `ROADMAP.md` §8.

@@ -13,6 +13,10 @@ This folder contains personality-related datasets used as **ground truth** for s
 | **PERSONAGE** | ✅ Present | TAB/XML | Utterances with human Big Five ratings (1–7 scale) |
 | **NEO-PI-R** | ✅ Partial | SAV/CSV | Validated personality instrument; alternative gold profiles |
 | **BFI-2-R** | ❌ Restricted | — | IEEE DataPort; requires subscription |
+| **PANDORA Big5** | 📥 HF | CSV (download) | Phase 5 Reddit Big Five benchmark — [`jingjietan/pandora-big5`](https://huggingface.co/datasets/jingjietan/pandora-big5) |
+| **APP (subset)** | 📥 HF | CSV (download) | Optional cross-check — [`Fatima0923/Automated-Personality-Prediction`](https://huggingface.co/datasets/Fatima0923/Automated-Personality-Prediction) |
+
+See [PHASE5-SPECIFICATION.md](./PHASE5-SPECIFICATION.md) (canonical), [PHASE5-PANDORA.md](./PHASE5-PANDORA.md) (overview), and [DATASOURCE-DESCRIPTION.md](./DATASOURCE-DESCRIPTION.md) §7.
 
 ---
 

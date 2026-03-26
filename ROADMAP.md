@@ -1,7 +1,7 @@
 # Big5Loop Roadmap
 
-**Version:** 1.5.0  
-**Last Updated:** 2026-03-06  
+**Version:** 1.6.0  
+**Last Updated:** 2026-03-26  
 **Scope:** Implementation roadmap aligned with `Technical-Specification-RAG-Policy-Navigation.md` (Spec v1.3.0)
 
 ### Phase 1–2 completion summary (as of 2026-03-04)
@@ -36,6 +36,7 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 | **Phase 2** | Jan–Feb 2026 (Weeks 7–10) | RAG and policy navigation |
 | **Phase 3** | Feb 2026 (Weeks 11–13) | Reliability, observability, and security |
 | **Phase 4** | Feb–Mar 2026 (Weeks 14–16) | Pilot release and evaluation |
+| **Phase 5** | Mar 2026+ (ongoing) | External benchmark: PANDORA (Reddit Big Five) |
 
 ---
 
@@ -183,19 +184,57 @@ This roadmap defines a phased implementation plan for the **Adaptive Personality
 
 ---
 
-## 8. Dependencies and References
+## 8. Phase 5: PANDORA Dataset Evaluation (Mar 2026+)
+
+**Workflow export:** `workflows/n8n/big5loop-pandora-eval-v4.json` (webhook: `big5loop-pandora-eval-v4`)  
+**Specification (layout, transforms, workflow naming, testing, versioning):** `evaluation_data/PHASE5-SPECIFICATION.md`  
+**Short overview:** `evaluation_data/PHASE5-PANDORA.md`
+
+### 8.1 Goals
+
+- Run **offline and API-driven evaluation** of Big5Loop OCEAN detection against **PANDORA**, a large Reddit-based corpus with Big Five and demographic labels (Matej Gjurković et al., ACL 2020).
+- Compare inferred traits (and confidence) to dataset ground truth using the same metrics as PERSONAGE/BIG5-CHAT (correlation, MAE, per-trait agreement).
+- Keep evaluation traffic **separate** from production caregiver sessions via dedicated webhook + `pandora_evaluation: true` in N8N ingest.
+
+### 8.2 Data sources (Hugging Face)
+
+| Dataset | HF repo | Role |
+|---------|---------|------|
+| **PANDORA Big5** | [`jingjietan/pandora-big5`](https://huggingface.co/datasets/jingjietan/pandora-big5) | Primary: Reddit text + Big Five targets |
+| **Automated Personality Prediction (subset)** | [`Fatima0923/Automated-Personality-Prediction`](https://huggingface.co/datasets/Fatima0923/Automated-Personality-Prediction) | Secondary / cross-check (personality prediction benchmark) |
+
+**Paper (original PANDORA):** *PANDORA Talks: Personality and Demographics on Reddit* (ACL 2020). Use this citation for academic reporting; see also dataset cards on Hugging Face for derived splits.
+
+### 8.3 Tasks
+
+- **Ingest:** Download HF snapshots into `evaluation_data/pandora/raw/` (see `scripts/download_pandora.py`); document schema in `evaluation_data/DATASOURCE-DESCRIPTION.md`.
+- **Preprocess:** Map dataset labels to OCEAN keys `O, C, E, A, N` consistent with Big5Loop contracts; build JSONL with `text`, `ground_truth_ocean`, `sample_id`.
+- **Run:** Batch calls to N8N v4 webhook or `run_big5_eval`-style API with `ground_truth_ocean` in the request body for logging/metrics.
+- **Report:** Export `eval_summary.csv` + per-trait Pearson/Spearman; store under `evaluation_data/pandora/processed/`.
+
+### 8.4 Deliverables (DoD)
+
+- [ ] Documented reproducible download + preprocess path (pinned HF revision or date).
+- [ ] At least one full evaluation run logged with metrics (sample size documented).
+- [ ] N8N v4 workflow imported and callable; responses include detection output for alignment with ground truth.
+
+---
+
+## 9. Dependencies and References
 
 - **Technical spec:** `Big5Loop/Technical-Specification-RAG-Policy-Navigation.md` (v1.3.0)
 - **Requirements:** `pmt/Preliminary-Study-V2.7.6.md` (as referenced in spec)
 - **Contracts:** Defined in spec §6 (request, detection, retrieval, response); implement in `packages/contracts`
 - **Phase 3 TODO:** `Big5Loop/docs/PHASE3-TODO.md` (reliability, observability, security)
+- **Phase 5 PANDORA:** `evaluation_data/PHASE5-SPECIFICATION.md`, `evaluation_data/PHASE5-PANDORA.md`, workflow `workflows/n8n/big5loop-pandora-eval-v4.json`
 - **Operations runbook:** `Big5Loop/docs/OPERATIONS-RUNBOOK.md` (env, health, audit, export/delete, monitoring, Phase 3→4)
 - **Frontend improvements:** `Big5Loop/docs/FRONTEND-IMPROVEMENTS-TODO.md` (display, KPI/metrics, logs, user history, visual design; references `pmt/MVP/frontend` and `pmt/MVP/nextchat-personality-enhanced`)
 
 ---
 
-## 9. Roadmap Changelog
+## 10. Roadmap Changelog
 
+- **1.6.0:** Added **Phase 5 — PANDORA evaluation** (Reddit Big Five benchmark): HF datasets `jingjietan/pandora-big5`, `Fatima0923/Automated-Personality-Prediction`; N8N export `big5loop-pandora-eval-v4.json` (webhook `big5loop-pandora-eval-v4`); canonical spec `evaluation_data/PHASE5-SPECIFICATION.md` (file layout, transforms, workflow naming, testing, versioning); overview `evaluation_data/PHASE5-PANDORA.md`.
 - **1.5.0:** Codified three pipeline invariants (Spec §4.6): (1) OCEAN detection + regulation always run for every mode, (2) retrieval is conditional, (3) grounding verification mandatory for factual/policy content. Implemented hybrid LLM router (Spec §4.7) with confidence threshold, heuristic fallback, caching, and hard safety overrides. N8N workflow V2 (`big5loop-phase1-2-postgres-mvp-v2.json`) now consumes `routing_hints.target_mode` from the API. API route enforces invariants with diagnostic flags (`ocean_detection_skipped`, `regulation_skipped`, `grounding_check`).
 - **1.4.2:** Added implemented OpenClaw-inspired session isolation and routing metadata flow (`route_key`, isolation scope, history usage) across web → gateway → chat → audit, plus a web operations dashboard for session review, citation quality, degraded retrieval, feedback analysis, audit visibility, and source freshness monitoring. Updated roadmap timestamp.
 - **1.4.1:** Roadmap progress sync based on implementation evidence from `docs/PHASE1-2-TODO.md` and `docs/PHASE3-TODO.md`. Marked Phase 1 golden regression tests as completed and Phase 2 RAG degraded fallback DoD as completed. Updated roadmap timestamp.
