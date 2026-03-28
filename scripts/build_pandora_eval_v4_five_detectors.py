@@ -158,81 +158,109 @@ return [{{
 }}];"""
 
 
-def stamp_parallel_detection_js() -> str:
-    return """// Shared wall-clock start for all parallel trait branches.
+def concurrent_five_trait_detection_js() -> str:
+    """Single Code node: fires 5 NVIDIA calls with Promise.all → true parallelism."""
+    prompt_entries = []
+    for trait in ["O", "C", "E", "A", "N"]:
+        sys_prompt = PROMPTS[trait].replace("\\", "\\\\").replace("\n", "\\n").replace("\r", "").replace("`", "\\`")
+        prompt_entries.append(f"  {trait}: `{sys_prompt}`")
+    prompts_obj = ",\n".join(prompt_entries)
+
+    return """// ── Concurrent 5-trait OCEAN detection (Promise.all) ──
 const d = $input.first().json;
 if (d && d.success === false && d.error) return $input.all();
-return [{ json: { ...d, _detection_chain_start: Date.now() } }];"""
+const userText = String(d.clean_msg || d.user_message || '').trim();
 
+let apiKey = '';
+try { apiKey = process.env.NVIDIA_API_KEY || ''; } catch (_) {}
+if (!apiKey) try { apiKey = (typeof $env !== 'undefined' && $env.NVIDIA_API_KEY) || ''; } catch (_) {}
+let apiUrl = '';
+try { apiUrl = process.env.NVIDIA_API_URL || ''; } catch (_) {}
+if (!apiUrl) apiUrl = 'https://integrate.api.nvidia.com/v1/chat/completions';
+let model = 'meta/llama-3.1-70b-instruct';
+try { model = process.env.NVIDIA_MODEL || model; } catch (_) {}
+if (!model) try { model = (typeof $env !== 'undefined' && $env.NVIDIA_MODEL) || model; } catch (_) {}
 
-def assemble_parallel_traits_js() -> str:
-    """Merge outputs of Merge (append): O, C, E, A, N items → one regulation payload."""
-    return """// Assemble OCEAN from five parallel trait branches (Merge append → 5 items).
-const items = $input.all();
-if (!items.length) {
-  return [{
-    json: {
-      success: false,
-      error: {
-        error_code: 'internal_error',
-        message: 'No parallel detection items returned.',
-        stage: 'detection',
-        retryable: true
-      }
-    }
-  }];
-}
-const first = items[0].json;
-if (first && first.success === false && first.error) return [{ json: first }];
-
-let oceanScores = {};
-let agentDetails = {};
-let chainStart = first._detection_chain_start;
-for (const item of items) {
-  const j = item.json || {};
-  if (j.success === false && j.error) continue;
-  if (j._partial_ocean && typeof j._partial_ocean === 'object') {
-    oceanScores = { ...oceanScores, ...j._partial_ocean };
-  }
-  if (j._partial_agent_details && typeof j._partial_agent_details === 'object') {
-    agentDetails = { ...agentDetails, ...j._partial_agent_details };
-  }
-  if (chainStart == null && j._detection_chain_start != null) chainStart = j._detection_chain_start;
-}
-if (chainStart == null) chainStart = Date.now();
+const PROMPTS = {
+""" + prompts_obj + """
+};
 
 const TRAITS = ['O', 'C', 'E', 'A', 'N'];
-for (const t of TRAITS) {
-  if (oceanScores[t] === undefined) oceanScores[t] = 0;
+const chainStart = Date.now();
+const oceanScores = {};
+const agentDetails = {};
+
+async function detectTrait(trait) {
+  const started = Date.now();
+  let score = 0, ok = false, err = null;
+  if (!apiKey || apiKey.length <= 10) { err = 'missing_api_key'; }
+  else {
+    try {
+      const body = await this.helpers.httpRequest({
+        url: apiUrl,
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },
+        body: {
+          model,
+          messages: [
+            { role: 'system', content: PROMPTS[trait] },
+            { role: 'user', content: 'Analyze this user message (Reddit-style):\\n' + userText }
+          ],
+          temperature: 0.25,
+          max_tokens: 120
+        },
+        timeout: 30000,
+        json: true
+      });
+      const raw = String(body?.choices?.[0]?.message?.content || '');
+      const re = new RegExp('"' + trait + '"\\\\s*:\\\\s*(-?[0-9]+\\\\.?[0-9]*)');
+      const m = raw.match(re);
+      if (m) {
+        score = Math.max(-1, Math.min(1, parseFloat(m[1])));
+        ok = true;
+      } else {
+        const i = raw.indexOf('{');
+        const j = raw.lastIndexOf('}');
+        if (i >= 0 && j > i) {
+          const o = JSON.parse(raw.slice(i, j + 1));
+          if (typeof o[trait] === 'number') {
+            score = Math.max(-1, Math.min(1, o[trait]));
+            ok = true;
+          }
+        }
+      }
+    } catch (e) { err = String(e.message || e); }
+  }
+  const dur = Math.max(0, Date.now() - started);
+  return { trait, score: ok ? score : 0, success: ok, error: err, duration_ms: dur };
+}
+
+const results = await Promise.all(
+  TRAITS.map(t => detectTrait.call(this, t))
+);
+
+let anyFail = false, firstErr = null;
+for (const r of results) {
+  oceanScores[r.trait] = r.score;
+  agentDetails[r.trait] = {
+    score: r.score, success: r.success, error: r.error,
+    agent: r.trait + '-Agent', duration_ms: r.duration_ms
+  };
+  if (!r.success) { anyFail = true; if (!firstErr) firstErr = r.error; }
 }
 
 const detectionEndedAt = Date.now();
 const timing = {
-  ...(first.timing || {}),
+  ...(d.timing || {}),
   detection: {
     status: 'five_trait_nodes_v4',
     started_at: new Date(chainStart).toISOString(),
     ended_at: new Date(detectionEndedAt).toISOString(),
     duration_ms: Math.max(0, detectionEndedAt - chainStart),
-    method: 'five_parallel_nvidia_calls',
+    method: 'promise_all_five_concurrent',
     num_agents: 5
   }
 };
-
-const d = { ...first };
-delete d._detection_chain_start;
-delete d._partial_ocean;
-delete d._partial_agent_details;
-
-let anyFail = false;
-let firstErr = null;
-for (const t of TRAITS) {
-  const ad = agentDetails[t];
-  if (ad && !ad.success) {
-    anyFail = true;
-    if (!firstErr) firstErr = ad.error || 'trait_call_failed';
-  }
-}
 
 return [{
   json: {
@@ -270,17 +298,6 @@ def code_node(node_id: str, name: str, x: int, y: int, js: str) -> dict:
     }
 
 
-def merge_parallel_node(node_id: str, name: str, x: int, y: int) -> dict:
-    return {
-        "parameters": {"mode": "append", "numberInputs": 5, "options": {}},
-        "id": node_id,
-        "name": name,
-        "type": "n8n-nodes-base.merge",
-        "position": [x, y],
-        "typeVersion": 3.2,
-    }
-
-
 def main() -> None:
     data = json.loads(SRC.read_text())
     wf = data[0]
@@ -289,24 +306,11 @@ def main() -> None:
     nodes = wf["nodes"]
     new_nodes = [n for n in nodes if n.get("id") != old_id]
 
-    # Parallel layout: stamp → O,C,E,A,N (same x) → merge (append) → assemble → regulation
-    stamp_id = str(uuid.uuid4())
-    merge_id = str(uuid.uuid4())
-    assemble_id = str(uuid.uuid4())
-    chain = [
-        ("Detect Trait O (NVIDIA)", intermediate_detector_js("O"), -1040),
-        ("Detect Trait C (NVIDIA)", intermediate_detector_js("C"), -920),
-        ("Detect Trait E (NVIDIA)", intermediate_detector_js("E"), -800),
-        ("Detect Trait A (NVIDIA)", intermediate_detector_js("A"), -680),
-        ("Detect Trait N (NVIDIA)", intermediate_detector_js("N"), -560),
-    ]
-    new_nodes.append(code_node(stamp_id, "Stamp parallel detection start", 128, -896, stamp_parallel_detection_js()))
-    for label, js, y in chain:
-        nid = str(uuid.uuid4())
-        new_nodes.append(code_node(nid, label, 280, y, js))
-    new_nodes.append(merge_parallel_node(merge_id, "Merge parallel trait branches", 520, -896))
+    # Single node with Promise.all for true concurrent 5-trait detection
+    detect_all_id = str(uuid.uuid4())
+    detect_all_name = "Detect All OCEAN (Promise.all)"
     new_nodes.append(
-        code_node(assemble_id, "Assemble OCEAN (parallel)", 720, -896, assemble_parallel_traits_js())
+        code_node(detect_all_id, detect_all_name, 240, -896, concurrent_five_trait_detection_js())
     )
 
     wf["nodes"] = new_nodes
@@ -332,32 +336,26 @@ def main() -> None:
                 if payload is not None and webhook_name not in con:
                     con[webhook_name] = payload
                 break
-    stamp_name = "Stamp parallel detection start"
-    merge_name = "Merge parallel trait branches"
-    assemble_name = "Assemble OCEAN (parallel)"
-
-    con["Merge Previous State"] = {"main": [[{"node": stamp_name, "type": "main", "index": 0}]]}
-    con[stamp_name] = {
-        "main": [
-            [
-                {"node": chain[0][0], "type": "main", "index": 0},
-                {"node": chain[1][0], "type": "main", "index": 0},
-                {"node": chain[2][0], "type": "main", "index": 0},
-                {"node": chain[3][0], "type": "main", "index": 0},
-                {"node": chain[4][0], "type": "main", "index": 0},
-            ]
-        ]
+    con["Merge Previous State"] = {
+        "main": [[{"node": detect_all_name, "type": "main", "index": 0}]]
     }
-    for merge_input_idx, (detector_name, _, _) in enumerate(chain):
-        con[detector_name] = {
-            "main": [[{"node": merge_name, "type": "main", "index": merge_input_idx}]]
-        }
-    con[merge_name] = {"main": [[{"node": assemble_name, "type": "main", "index": 0}]]}
-    con[assemble_name] = {
+    con[detect_all_name] = {
         "main": [[{"node": "Enhanced Regulation (Implemented)", "type": "main", "index": 0}]]
     }
-    if "Zurich Model Detection (EMA)" in con:
-        del con["Zurich Model Detection (EMA)"]
+    stale_keys = [
+        "Zurich Model Detection (EMA)",
+        "Stamp parallel detection start",
+        "Detect Trait O (NVIDIA)",
+        "Detect Trait C (NVIDIA)",
+        "Detect Trait E (NVIDIA)",
+        "Detect Trait A (NVIDIA)",
+        "Detect Trait N (NVIDIA)",
+        "Detect Trait N + Assemble (NVIDIA)",
+        "Merge parallel trait branches",
+        "Assemble OCEAN (parallel)",
+    ]
+    for k in stale_keys:
+        con.pop(k, None)
 
     OUT.write_text(json.dumps([wf], indent=2) + "\n")
     print(f"Wrote {OUT}")

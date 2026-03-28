@@ -11,7 +11,7 @@
           "responseMode": "lastNode",
           "options": {}
         },
-        "id": "ca0e5e31-29ec-492e-874e-5d5d0aa3a390",
+        "id": "d46a445a-50a8-4b0a-851d-3b1ee76b8335",
         "name": "Webhook Trigger (POST PANDORA eval v4 five detectors)",
         "type": "n8n-nodes-base.webhook",
         "position": [
@@ -19,7 +19,7 @@
           -800
         ],
         "typeVersion": 2,
-        "webhookId": "531b1393-b355-4f58-9c14-3ed809926f48"
+        "webhookId": "e68dd6bb-6778-437a-8555-9c71bdc52638"
       },
       {
         "parameters": {
@@ -344,106 +344,13 @@
       },
       {
         "parameters": {
-          "jsCode": "// Shared wall-clock start for all parallel trait branches.\nconst d = $input.first().json;\nif (d && d.success === false && d.error) return $input.all();\nreturn [{ json: { ...d, _detection_chain_start: Date.now() } }];"
+          "jsCode": "// \u2500\u2500 Concurrent 5-trait OCEAN detection (Promise.all) \u2500\u2500\nconst d = $input.first().json;\nif (d && d.success === false && d.error) return $input.all();\nconst userText = String(d.clean_msg || d.user_message || '').trim();\n\nlet apiKey = '';\ntry { apiKey = process.env.NVIDIA_API_KEY || ''; } catch (_) {}\nif (!apiKey) try { apiKey = (typeof $env !== 'undefined' && $env.NVIDIA_API_KEY) || ''; } catch (_) {}\nlet apiUrl = '';\ntry { apiUrl = process.env.NVIDIA_API_URL || ''; } catch (_) {}\nif (!apiUrl) apiUrl = 'https://integrate.api.nvidia.com/v1/chat/completions';\nlet model = 'meta/llama-3.1-70b-instruct';\ntry { model = process.env.NVIDIA_MODEL || model; } catch (_) {}\nif (!model) try { model = (typeof $env !== 'undefined' && $env.NVIDIA_MODEL) || model; } catch (_) {}\n\nconst PROMPTS = {\n  O: `You are an Openness detection specialist. Analyze the linguistic style of this Reddit-style message for Openness ONLY.\\n\\nFocus on: abstract thinking, novelty-seeking, intellectual curiosity, unconventional framing, exploration of ideas vs concrete, literal, repetitive, or rigid thinking patterns.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly abstract, philosophical, curious, novel thinking\\n- +0.3 to +0.7 = moderately open, some intellectual curiosity\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = highly concrete, literal, repetitive, rigid thinking\\n\\nOutput ONLY a JSON object with key \"O\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for strong linguistic evidence of cognitive style.`,\n  C: `You are a Conscientiousness detection specialist. Analyze the linguistic style of this Reddit-style message for Conscientiousness ONLY.\\n\\nFocus on: structured, planful, disciplined, organized language vs impulsive, disorganized, inconsistent, or scattered expression.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly structured, planful, disciplined, organized communication\\n- +0.3 to +0.7 = moderately conscientious, some self-regulation\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = highly impulsive, disorganized, inconsistent, scattered\\n\\nOutput ONLY a JSON object with key \"C\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for linguistic evidence of self-regulation and structure.`,\n  E: `You are an Extraversion detection specialist. Analyze the linguistic style of this Reddit-style message for Extraversion ONLY.\\n\\nFocus on: energetic, assertive, socially engaging, outgoing style vs restrained, withdrawn, low-energy, or avoidant communication.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly energetic, assertive, socially engaging, outgoing style\\n- +0.3 to +0.7 = moderately extraverted, some social energy\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = restrained, withdrawn, low-energy, avoidant communication\\n\\nOutput ONLY a JSON object with key \"E\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for linguistic markers of social activation and energy.`,\n  A: `You are an Agreeableness detection specialist. Analyze the linguistic style of this Reddit-style message for Agreeableness ONLY.\\n\\nFocus on: empathetic, cooperative, warm, tactful stance vs hostile, contemptuous, combative, or self-centered tone.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly empathetic, cooperative, warm, tactful communication\\n- +0.3 to +0.7 = moderately agreeable, some warmth\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = hostile, contemptuous, combative, self-centered tone\\n\\nOutput ONLY a JSON object with key \"A\" containing a float from -1.0 to 1.0.\\nBe decisive. Focus on interpersonal stance and emotional tone.`,\n  N: `You are a Neuroticism detection specialist. Analyze the linguistic style of this Reddit-style message for Neuroticism ONLY.\\n\\nFocus on: anxious, reactive, ruminative, emotionally volatile language vs calm, regulated, steady, emotionally stable expression.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = high emotional volatility, rumination, anxiety markers\\n- +0.3 to +0.7 = moderately emotionally reactive\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = calm, regulated, steady, emotionally stable communication\\n\\nOutput ONLY a JSON object with key \"N\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for linguistic markers of emotional regulation.`\n};\n\nconst TRAITS = ['O', 'C', 'E', 'A', 'N'];\nconst chainStart = Date.now();\nconst oceanScores = {};\nconst agentDetails = {};\n\nasync function detectTrait(trait) {\n  const started = Date.now();\n  let score = 0, ok = false, err = null;\n  if (!apiKey || apiKey.length <= 10) { err = 'missing_api_key'; }\n  else {\n    try {\n      const body = await this.helpers.httpRequest({\n        url: apiUrl,\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },\n        body: {\n          model,\n          messages: [\n            { role: 'system', content: PROMPTS[trait] },\n            { role: 'user', content: 'Analyze this user message (Reddit-style):\\n' + userText }\n          ],\n          temperature: 0.25,\n          max_tokens: 120\n        },\n        timeout: 30000,\n        json: true\n      });\n      const raw = String(body?.choices?.[0]?.message?.content || '');\n      const re = new RegExp('\"' + trait + '\"\\\\s*:\\\\s*(-?[0-9]+\\\\.?[0-9]*)');\n      const m = raw.match(re);\n      if (m) {\n        score = Math.max(-1, Math.min(1, parseFloat(m[1])));\n        ok = true;\n      } else {\n        const i = raw.indexOf('{');\n        const j = raw.lastIndexOf('}');\n        if (i >= 0 && j > i) {\n          const o = JSON.parse(raw.slice(i, j + 1));\n          if (typeof o[trait] === 'number') {\n            score = Math.max(-1, Math.min(1, o[trait]));\n            ok = true;\n          }\n        }\n      }\n    } catch (e) { err = String(e.message || e); }\n  }\n  const dur = Math.max(0, Date.now() - started);\n  return { trait, score: ok ? score : 0, success: ok, error: err, duration_ms: dur };\n}\n\nconst results = await Promise.all(\n  TRAITS.map(t => detectTrait.call(this, t))\n);\n\nlet anyFail = false, firstErr = null;\nfor (const r of results) {\n  oceanScores[r.trait] = r.score;\n  agentDetails[r.trait] = {\n    score: r.score, success: r.success, error: r.error,\n    agent: r.trait + '-Agent', duration_ms: r.duration_ms\n  };\n  if (!r.success) { anyFail = true; if (!firstErr) firstErr = r.error; }\n}\n\nconst detectionEndedAt = Date.now();\nconst timing = {\n  ...(d.timing || {}),\n  detection: {\n    status: 'five_trait_nodes_v4',\n    started_at: new Date(chainStart).toISOString(),\n    ended_at: new Date(detectionEndedAt).toISOString(),\n    duration_ms: Math.max(0, detectionEndedAt - chainStart),\n    method: 'promise_all_five_concurrent',\n    num_agents: 5\n  }\n};\n\nreturn [{\n  json: {\n    ...d,\n    timing,\n    detector: {\n      api_status: anyFail ? 'degraded' : 'five_trait_nodes_v4',\n      error: anyFail ? (firstErr || 'one_or_more_trait_calls_failed') : null,\n      method: 'five_trait_nodes_v4',\n      num_agents: 5,\n      traits_covered: TRAITS,\n      ocean_detected: oceanScores,\n      agent_details: agentDetails,\n      personality_stable: true,\n      smoothed_ocean: oceanScores,\n      smoothed_confidence: { O: 0.75, C: 0.75, E: 0.75, A: 0.75, N: 0.75 },\n      timestamp: new Date().toISOString()\n    },\n    ocean_disc: oceanScores,\n    predicted_ocean: oceanScores,\n    agent_details: agentDetails,\n    method: 'five_trait_nodes_v4'\n  }\n}];"
         },
-        "id": "3d975e01-dfc1-4543-b0e2-ded2c4dc1503",
-        "name": "Stamp parallel detection start",
+        "id": "6376851c-3678-445d-b90d-1f7145de35e3",
+        "name": "Detect All OCEAN (Promise.all)",
         "type": "n8n-nodes-base.code",
         "position": [
-          128,
-          -896
-        ],
-        "typeVersion": 2
-      },
-      {
-        "parameters": {
-          "jsCode": "// Trait detector O (1/5) \u2014 NVIDIA single-trait call\nconst TRAIT = 'O';\nconst d = $input.first().json;\nif (d && d.success === false && d.error) return $input.all();\nconst userText = String(d.clean_msg || d.user_message || '').trim();\n\nlet apiKey = '';\ntry { apiKey = process.env.NVIDIA_API_KEY || ''; } catch (_) {}\nif (!apiKey) try { apiKey = (typeof $env !== 'undefined' && $env.NVIDIA_API_KEY) || ''; } catch (_) {}\nlet apiUrl = '';\ntry { apiUrl = process.env.NVIDIA_API_URL || ''; } catch (_) {}\nif (!apiUrl) apiUrl = 'https://integrate.api.nvidia.com/v1/chat/completions';\nlet model = 'meta/llama-3.1-70b-instruct';\ntry { model = process.env.NVIDIA_MODEL || model; } catch (_) {}\nif (!model) try { model = (typeof $env !== 'undefined' && $env.NVIDIA_MODEL) || model; } catch (_) {}\n\nconst systemPrompt = `You are an Openness detection specialist. Analyze the linguistic style of this Reddit-style message for Openness ONLY.\\n\\nFocus on: abstract thinking, novelty-seeking, intellectual curiosity, unconventional framing, exploration of ideas vs concrete, literal, repetitive, or rigid thinking patterns.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly abstract, philosophical, curious, novel thinking\\n- +0.3 to +0.7 = moderately open, some intellectual curiosity\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = highly concrete, literal, repetitive, rigid thinking\\n\\nOutput ONLY a JSON object with key \"O\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for strong linguistic evidence of cognitive style.`;\n\nconst started = Date.now();\nlet score = 0;\nlet ok = false;\nlet err = null;\nif (apiKey && apiKey.length > 10) {\n  try {\n    const body = await this.helpers.httpRequest({\n      url: apiUrl,\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },\n      body: {\n        model,\n        messages: [\n          { role: 'system', content: systemPrompt },\n          { role: 'user', content: 'Analyze this user message (Reddit-style):\\n' + userText }\n        ],\n        temperature: 0.25,\n        max_tokens: 120\n      },\n      timeout: 30000,\n      json: true\n    });\n    const raw = String(body?.choices?.[0]?.message?.content || '');\n    const re = new RegExp('\"' + TRAIT + '\"\\\\s*:\\\\s*(-?[0-9]+\\\\.?[0-9]*)');\n    const m = raw.match(re);\n    if (m) {\n      score = Math.max(-1, Math.min(1, parseFloat(m[1])));\n      ok = true;\n    } else {\n      const i = raw.indexOf('{');\n      const j = raw.lastIndexOf('}');\n      if (i >= 0 && j > i) {\n        const o = JSON.parse(raw.slice(i, j + 1));\n        if (typeof o[TRAIT] === 'number') {\n          score = Math.max(-1, Math.min(1, o[TRAIT]));\n          ok = true;\n        }\n      }\n    }\n  } catch (e) { err = String(e.message || e); }\n} else { err = 'missing_api_key'; }\n\nconst chainStart = d._detection_chain_start != null ? d._detection_chain_start : started;\nconst dur = Math.max(0, Date.now() - started);\nconst partial = { ...(d._partial_ocean || {}) };\npartial[TRAIT] = ok ? score : 0;\nconst details = { ...(d._partial_agent_details || {}) };\ndetails[TRAIT] = { score: partial[TRAIT], success: ok, error: err, agent: TRAIT + '-Agent', duration_ms: dur };\n\nreturn [{\n  json: {\n    ...d,\n    _detection_chain_start: chainStart,\n    _partial_ocean: partial,\n    _partial_agent_details: details\n  }\n}];"
-        },
-        "id": "0340bb4d-4158-4dd2-9867-5274de570ae4",
-        "name": "Detect Trait O (NVIDIA)",
-        "type": "n8n-nodes-base.code",
-        "position": [
-          280,
-          -1040
-        ],
-        "typeVersion": 2
-      },
-      {
-        "parameters": {
-          "jsCode": "// Trait detector C (1/5) \u2014 NVIDIA single-trait call\nconst TRAIT = 'C';\nconst d = $input.first().json;\nif (d && d.success === false && d.error) return $input.all();\nconst userText = String(d.clean_msg || d.user_message || '').trim();\n\nlet apiKey = '';\ntry { apiKey = process.env.NVIDIA_API_KEY || ''; } catch (_) {}\nif (!apiKey) try { apiKey = (typeof $env !== 'undefined' && $env.NVIDIA_API_KEY) || ''; } catch (_) {}\nlet apiUrl = '';\ntry { apiUrl = process.env.NVIDIA_API_URL || ''; } catch (_) {}\nif (!apiUrl) apiUrl = 'https://integrate.api.nvidia.com/v1/chat/completions';\nlet model = 'meta/llama-3.1-70b-instruct';\ntry { model = process.env.NVIDIA_MODEL || model; } catch (_) {}\nif (!model) try { model = (typeof $env !== 'undefined' && $env.NVIDIA_MODEL) || model; } catch (_) {}\n\nconst systemPrompt = `You are a Conscientiousness detection specialist. Analyze the linguistic style of this Reddit-style message for Conscientiousness ONLY.\\n\\nFocus on: structured, planful, disciplined, organized language vs impulsive, disorganized, inconsistent, or scattered expression.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly structured, planful, disciplined, organized communication\\n- +0.3 to +0.7 = moderately conscientious, some self-regulation\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = highly impulsive, disorganized, inconsistent, scattered\\n\\nOutput ONLY a JSON object with key \"C\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for linguistic evidence of self-regulation and structure.`;\n\nconst started = Date.now();\nlet score = 0;\nlet ok = false;\nlet err = null;\nif (apiKey && apiKey.length > 10) {\n  try {\n    const body = await this.helpers.httpRequest({\n      url: apiUrl,\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },\n      body: {\n        model,\n        messages: [\n          { role: 'system', content: systemPrompt },\n          { role: 'user', content: 'Analyze this user message (Reddit-style):\\n' + userText }\n        ],\n        temperature: 0.25,\n        max_tokens: 120\n      },\n      timeout: 30000,\n      json: true\n    });\n    const raw = String(body?.choices?.[0]?.message?.content || '');\n    const re = new RegExp('\"' + TRAIT + '\"\\\\s*:\\\\s*(-?[0-9]+\\\\.?[0-9]*)');\n    const m = raw.match(re);\n    if (m) {\n      score = Math.max(-1, Math.min(1, parseFloat(m[1])));\n      ok = true;\n    } else {\n      const i = raw.indexOf('{');\n      const j = raw.lastIndexOf('}');\n      if (i >= 0 && j > i) {\n        const o = JSON.parse(raw.slice(i, j + 1));\n        if (typeof o[TRAIT] === 'number') {\n          score = Math.max(-1, Math.min(1, o[TRAIT]));\n          ok = true;\n        }\n      }\n    }\n  } catch (e) { err = String(e.message || e); }\n} else { err = 'missing_api_key'; }\n\nconst chainStart = d._detection_chain_start != null ? d._detection_chain_start : started;\nconst dur = Math.max(0, Date.now() - started);\nconst partial = { ...(d._partial_ocean || {}) };\npartial[TRAIT] = ok ? score : 0;\nconst details = { ...(d._partial_agent_details || {}) };\ndetails[TRAIT] = { score: partial[TRAIT], success: ok, error: err, agent: TRAIT + '-Agent', duration_ms: dur };\n\nreturn [{\n  json: {\n    ...d,\n    _detection_chain_start: chainStart,\n    _partial_ocean: partial,\n    _partial_agent_details: details\n  }\n}];"
-        },
-        "id": "9146d028-d859-47a4-b631-9fcd05906483",
-        "name": "Detect Trait C (NVIDIA)",
-        "type": "n8n-nodes-base.code",
-        "position": [
-          280,
-          -920
-        ],
-        "typeVersion": 2
-      },
-      {
-        "parameters": {
-          "jsCode": "// Trait detector E (1/5) \u2014 NVIDIA single-trait call\nconst TRAIT = 'E';\nconst d = $input.first().json;\nif (d && d.success === false && d.error) return $input.all();\nconst userText = String(d.clean_msg || d.user_message || '').trim();\n\nlet apiKey = '';\ntry { apiKey = process.env.NVIDIA_API_KEY || ''; } catch (_) {}\nif (!apiKey) try { apiKey = (typeof $env !== 'undefined' && $env.NVIDIA_API_KEY) || ''; } catch (_) {}\nlet apiUrl = '';\ntry { apiUrl = process.env.NVIDIA_API_URL || ''; } catch (_) {}\nif (!apiUrl) apiUrl = 'https://integrate.api.nvidia.com/v1/chat/completions';\nlet model = 'meta/llama-3.1-70b-instruct';\ntry { model = process.env.NVIDIA_MODEL || model; } catch (_) {}\nif (!model) try { model = (typeof $env !== 'undefined' && $env.NVIDIA_MODEL) || model; } catch (_) {}\n\nconst systemPrompt = `You are an Extraversion detection specialist. Analyze the linguistic style of this Reddit-style message for Extraversion ONLY.\\n\\nFocus on: energetic, assertive, socially engaging, outgoing style vs restrained, withdrawn, low-energy, or avoidant communication.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly energetic, assertive, socially engaging, outgoing style\\n- +0.3 to +0.7 = moderately extraverted, some social energy\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = restrained, withdrawn, low-energy, avoidant communication\\n\\nOutput ONLY a JSON object with key \"E\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for linguistic markers of social activation and energy.`;\n\nconst started = Date.now();\nlet score = 0;\nlet ok = false;\nlet err = null;\nif (apiKey && apiKey.length > 10) {\n  try {\n    const body = await this.helpers.httpRequest({\n      url: apiUrl,\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },\n      body: {\n        model,\n        messages: [\n          { role: 'system', content: systemPrompt },\n          { role: 'user', content: 'Analyze this user message (Reddit-style):\\n' + userText }\n        ],\n        temperature: 0.25,\n        max_tokens: 120\n      },\n      timeout: 30000,\n      json: true\n    });\n    const raw = String(body?.choices?.[0]?.message?.content || '');\n    const re = new RegExp('\"' + TRAIT + '\"\\\\s*:\\\\s*(-?[0-9]+\\\\.?[0-9]*)');\n    const m = raw.match(re);\n    if (m) {\n      score = Math.max(-1, Math.min(1, parseFloat(m[1])));\n      ok = true;\n    } else {\n      const i = raw.indexOf('{');\n      const j = raw.lastIndexOf('}');\n      if (i >= 0 && j > i) {\n        const o = JSON.parse(raw.slice(i, j + 1));\n        if (typeof o[TRAIT] === 'number') {\n          score = Math.max(-1, Math.min(1, o[TRAIT]));\n          ok = true;\n        }\n      }\n    }\n  } catch (e) { err = String(e.message || e); }\n} else { err = 'missing_api_key'; }\n\nconst chainStart = d._detection_chain_start != null ? d._detection_chain_start : started;\nconst dur = Math.max(0, Date.now() - started);\nconst partial = { ...(d._partial_ocean || {}) };\npartial[TRAIT] = ok ? score : 0;\nconst details = { ...(d._partial_agent_details || {}) };\ndetails[TRAIT] = { score: partial[TRAIT], success: ok, error: err, agent: TRAIT + '-Agent', duration_ms: dur };\n\nreturn [{\n  json: {\n    ...d,\n    _detection_chain_start: chainStart,\n    _partial_ocean: partial,\n    _partial_agent_details: details\n  }\n}];"
-        },
-        "id": "ce643c04-5b84-4da4-8e8c-2849942c0d36",
-        "name": "Detect Trait E (NVIDIA)",
-        "type": "n8n-nodes-base.code",
-        "position": [
-          280,
-          -800
-        ],
-        "typeVersion": 2
-      },
-      {
-        "parameters": {
-          "jsCode": "// Trait detector A (1/5) \u2014 NVIDIA single-trait call\nconst TRAIT = 'A';\nconst d = $input.first().json;\nif (d && d.success === false && d.error) return $input.all();\nconst userText = String(d.clean_msg || d.user_message || '').trim();\n\nlet apiKey = '';\ntry { apiKey = process.env.NVIDIA_API_KEY || ''; } catch (_) {}\nif (!apiKey) try { apiKey = (typeof $env !== 'undefined' && $env.NVIDIA_API_KEY) || ''; } catch (_) {}\nlet apiUrl = '';\ntry { apiUrl = process.env.NVIDIA_API_URL || ''; } catch (_) {}\nif (!apiUrl) apiUrl = 'https://integrate.api.nvidia.com/v1/chat/completions';\nlet model = 'meta/llama-3.1-70b-instruct';\ntry { model = process.env.NVIDIA_MODEL || model; } catch (_) {}\nif (!model) try { model = (typeof $env !== 'undefined' && $env.NVIDIA_MODEL) || model; } catch (_) {}\n\nconst systemPrompt = `You are an Agreeableness detection specialist. Analyze the linguistic style of this Reddit-style message for Agreeableness ONLY.\\n\\nFocus on: empathetic, cooperative, warm, tactful stance vs hostile, contemptuous, combative, or self-centered tone.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = highly empathetic, cooperative, warm, tactful communication\\n- +0.3 to +0.7 = moderately agreeable, some warmth\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = hostile, contemptuous, combative, self-centered tone\\n\\nOutput ONLY a JSON object with key \"A\" containing a float from -1.0 to 1.0.\\nBe decisive. Focus on interpersonal stance and emotional tone.`;\n\nconst started = Date.now();\nlet score = 0;\nlet ok = false;\nlet err = null;\nif (apiKey && apiKey.length > 10) {\n  try {\n    const body = await this.helpers.httpRequest({\n      url: apiUrl,\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },\n      body: {\n        model,\n        messages: [\n          { role: 'system', content: systemPrompt },\n          { role: 'user', content: 'Analyze this user message (Reddit-style):\\n' + userText }\n        ],\n        temperature: 0.25,\n        max_tokens: 120\n      },\n      timeout: 30000,\n      json: true\n    });\n    const raw = String(body?.choices?.[0]?.message?.content || '');\n    const re = new RegExp('\"' + TRAIT + '\"\\\\s*:\\\\s*(-?[0-9]+\\\\.?[0-9]*)');\n    const m = raw.match(re);\n    if (m) {\n      score = Math.max(-1, Math.min(1, parseFloat(m[1])));\n      ok = true;\n    } else {\n      const i = raw.indexOf('{');\n      const j = raw.lastIndexOf('}');\n      if (i >= 0 && j > i) {\n        const o = JSON.parse(raw.slice(i, j + 1));\n        if (typeof o[TRAIT] === 'number') {\n          score = Math.max(-1, Math.min(1, o[TRAIT]));\n          ok = true;\n        }\n      }\n    }\n  } catch (e) { err = String(e.message || e); }\n} else { err = 'missing_api_key'; }\n\nconst chainStart = d._detection_chain_start != null ? d._detection_chain_start : started;\nconst dur = Math.max(0, Date.now() - started);\nconst partial = { ...(d._partial_ocean || {}) };\npartial[TRAIT] = ok ? score : 0;\nconst details = { ...(d._partial_agent_details || {}) };\ndetails[TRAIT] = { score: partial[TRAIT], success: ok, error: err, agent: TRAIT + '-Agent', duration_ms: dur };\n\nreturn [{\n  json: {\n    ...d,\n    _detection_chain_start: chainStart,\n    _partial_ocean: partial,\n    _partial_agent_details: details\n  }\n}];"
-        },
-        "id": "a8fce24f-f839-4530-b2a2-3fc57b028af5",
-        "name": "Detect Trait A (NVIDIA)",
-        "type": "n8n-nodes-base.code",
-        "position": [
-          280,
-          -680
-        ],
-        "typeVersion": 2
-      },
-      {
-        "parameters": {
-          "jsCode": "// Trait detector N (1/5) \u2014 NVIDIA single-trait call\nconst TRAIT = 'N';\nconst d = $input.first().json;\nif (d && d.success === false && d.error) return $input.all();\nconst userText = String(d.clean_msg || d.user_message || '').trim();\n\nlet apiKey = '';\ntry { apiKey = process.env.NVIDIA_API_KEY || ''; } catch (_) {}\nif (!apiKey) try { apiKey = (typeof $env !== 'undefined' && $env.NVIDIA_API_KEY) || ''; } catch (_) {}\nlet apiUrl = '';\ntry { apiUrl = process.env.NVIDIA_API_URL || ''; } catch (_) {}\nif (!apiUrl) apiUrl = 'https://integrate.api.nvidia.com/v1/chat/completions';\nlet model = 'meta/llama-3.1-70b-instruct';\ntry { model = process.env.NVIDIA_MODEL || model; } catch (_) {}\nif (!model) try { model = (typeof $env !== 'undefined' && $env.NVIDIA_MODEL) || model; } catch (_) {}\n\nconst systemPrompt = `You are a Neuroticism detection specialist. Analyze the linguistic style of this Reddit-style message for Neuroticism ONLY.\\n\\nFocus on: anxious, reactive, ruminative, emotionally volatile language vs calm, regulated, steady, emotionally stable expression.\\n\\nYou MUST use the FULL range [-1.0, 1.0]. Do not be conservative.\\n- +0.8 to +1.0 = high emotional volatility, rumination, anxiety markers\\n- +0.3 to +0.7 = moderately emotionally reactive\\n- -0.3 to +0.2 = neutral or mixed evidence\\n- -0.8 to -1.0 = calm, regulated, steady, emotionally stable communication\\n\\nOutput ONLY a JSON object with key \"N\" containing a float from -1.0 to 1.0.\\nBe decisive. Look for linguistic markers of emotional regulation.`;\n\nconst started = Date.now();\nlet score = 0;\nlet ok = false;\nlet err = null;\nif (apiKey && apiKey.length > 10) {\n  try {\n    const body = await this.helpers.httpRequest({\n      url: apiUrl,\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },\n      body: {\n        model,\n        messages: [\n          { role: 'system', content: systemPrompt },\n          { role: 'user', content: 'Analyze this user message (Reddit-style):\\n' + userText }\n        ],\n        temperature: 0.25,\n        max_tokens: 120\n      },\n      timeout: 30000,\n      json: true\n    });\n    const raw = String(body?.choices?.[0]?.message?.content || '');\n    const re = new RegExp('\"' + TRAIT + '\"\\\\s*:\\\\s*(-?[0-9]+\\\\.?[0-9]*)');\n    const m = raw.match(re);\n    if (m) {\n      score = Math.max(-1, Math.min(1, parseFloat(m[1])));\n      ok = true;\n    } else {\n      const i = raw.indexOf('{');\n      const j = raw.lastIndexOf('}');\n      if (i >= 0 && j > i) {\n        const o = JSON.parse(raw.slice(i, j + 1));\n        if (typeof o[TRAIT] === 'number') {\n          score = Math.max(-1, Math.min(1, o[TRAIT]));\n          ok = true;\n        }\n      }\n    }\n  } catch (e) { err = String(e.message || e); }\n} else { err = 'missing_api_key'; }\n\nconst chainStart = d._detection_chain_start != null ? d._detection_chain_start : started;\nconst dur = Math.max(0, Date.now() - started);\nconst partial = { ...(d._partial_ocean || {}) };\npartial[TRAIT] = ok ? score : 0;\nconst details = { ...(d._partial_agent_details || {}) };\ndetails[TRAIT] = { score: partial[TRAIT], success: ok, error: err, agent: TRAIT + '-Agent', duration_ms: dur };\n\nreturn [{\n  json: {\n    ...d,\n    _detection_chain_start: chainStart,\n    _partial_ocean: partial,\n    _partial_agent_details: details\n  }\n}];"
-        },
-        "id": "c646de38-de33-491a-94d3-4289194811c0",
-        "name": "Detect Trait N (NVIDIA)",
-        "type": "n8n-nodes-base.code",
-        "position": [
-          280,
-          -560
-        ],
-        "typeVersion": 2
-      },
-      {
-        "parameters": {
-          "mode": "append",
-          "numberInputs": 5,
-          "options": {}
-        },
-        "id": "23221fec-b970-45c8-a087-05de466803e9",
-        "name": "Merge parallel trait branches",
-        "type": "n8n-nodes-base.merge",
-        "position": [
-          520,
-          -896
-        ],
-        "typeVersion": 3.2
-      },
-      {
-        "parameters": {
-          "jsCode": "// Assemble OCEAN from five parallel trait branches (Merge append \u2192 5 items).\nconst items = $input.all();\nif (!items.length) {\n  return [{\n    json: {\n      success: false,\n      error: {\n        error_code: 'internal_error',\n        message: 'No parallel detection items returned.',\n        stage: 'detection',\n        retryable: true\n      }\n    }\n  }];\n}\nconst first = items[0].json;\nif (first && first.success === false && first.error) return [{ json: first }];\n\nlet oceanScores = {};\nlet agentDetails = {};\nlet chainStart = first._detection_chain_start;\nfor (const item of items) {\n  const j = item.json || {};\n  if (j.success === false && j.error) continue;\n  if (j._partial_ocean && typeof j._partial_ocean === 'object') {\n    oceanScores = { ...oceanScores, ...j._partial_ocean };\n  }\n  if (j._partial_agent_details && typeof j._partial_agent_details === 'object') {\n    agentDetails = { ...agentDetails, ...j._partial_agent_details };\n  }\n  if (chainStart == null && j._detection_chain_start != null) chainStart = j._detection_chain_start;\n}\nif (chainStart == null) chainStart = Date.now();\n\nconst TRAITS = ['O', 'C', 'E', 'A', 'N'];\nfor (const t of TRAITS) {\n  if (oceanScores[t] === undefined) oceanScores[t] = 0;\n}\n\nconst detectionEndedAt = Date.now();\nconst timing = {\n  ...(first.timing || {}),\n  detection: {\n    status: 'five_trait_nodes_v4',\n    started_at: new Date(chainStart).toISOString(),\n    ended_at: new Date(detectionEndedAt).toISOString(),\n    duration_ms: Math.max(0, detectionEndedAt - chainStart),\n    method: 'five_parallel_nvidia_calls',\n    num_agents: 5\n  }\n};\n\nconst d = { ...first };\ndelete d._detection_chain_start;\ndelete d._partial_ocean;\ndelete d._partial_agent_details;\n\nlet anyFail = false;\nlet firstErr = null;\nfor (const t of TRAITS) {\n  const ad = agentDetails[t];\n  if (ad && !ad.success) {\n    anyFail = true;\n    if (!firstErr) firstErr = ad.error || 'trait_call_failed';\n  }\n}\n\nreturn [{\n  json: {\n    ...d,\n    timing,\n    detector: {\n      api_status: anyFail ? 'degraded' : 'five_trait_nodes_v4',\n      error: anyFail ? (firstErr || 'one_or_more_trait_calls_failed') : null,\n      method: 'five_trait_nodes_v4',\n      num_agents: 5,\n      traits_covered: TRAITS,\n      ocean_detected: oceanScores,\n      agent_details: agentDetails,\n      personality_stable: true,\n      smoothed_ocean: oceanScores,\n      smoothed_confidence: { O: 0.75, C: 0.75, E: 0.75, A: 0.75, N: 0.75 },\n      timestamp: new Date().toISOString()\n    },\n    ocean_disc: oceanScores,\n    predicted_ocean: oceanScores,\n    agent_details: agentDetails,\n    method: 'five_trait_nodes_v4'\n  }\n}];"
-        },
-        "id": "a312160d-45c7-4d5c-8011-c8d73b345db7",
-        "name": "Assemble OCEAN (parallel)",
-        "type": "n8n-nodes-base.code",
-        "position": [
-          720,
+          240,
           -896
         ],
         "typeVersion": 2
@@ -481,7 +388,7 @@
         "main": [
           [
             {
-              "node": "Stamp parallel detection start",
+              "node": "Detect All OCEAN (Promise.all)",
               "type": "main",
               "index": 0
             }
@@ -668,104 +575,7 @@
           ]
         ]
       },
-      "Stamp parallel detection start": {
-        "main": [
-          [
-            {
-              "node": "Detect Trait O (NVIDIA)",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Detect Trait C (NVIDIA)",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Detect Trait E (NVIDIA)",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Detect Trait A (NVIDIA)",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Detect Trait N (NVIDIA)",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Detect Trait O (NVIDIA)": {
-        "main": [
-          [
-            {
-              "node": "Merge parallel trait branches",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Detect Trait C (NVIDIA)": {
-        "main": [
-          [
-            {
-              "node": "Merge parallel trait branches",
-              "type": "main",
-              "index": 1
-            }
-          ]
-        ]
-      },
-      "Detect Trait E (NVIDIA)": {
-        "main": [
-          [
-            {
-              "node": "Merge parallel trait branches",
-              "type": "main",
-              "index": 2
-            }
-          ]
-        ]
-      },
-      "Detect Trait A (NVIDIA)": {
-        "main": [
-          [
-            {
-              "node": "Merge parallel trait branches",
-              "type": "main",
-              "index": 3
-            }
-          ]
-        ]
-      },
-      "Detect Trait N (NVIDIA)": {
-        "main": [
-          [
-            {
-              "node": "Merge parallel trait branches",
-              "type": "main",
-              "index": 4
-            }
-          ]
-        ]
-      },
-      "Merge parallel trait branches": {
-        "main": [
-          [
-            {
-              "node": "Assemble OCEAN (parallel)",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Assemble OCEAN (parallel)": {
+      "Detect All OCEAN (Promise.all)": {
         "main": [
           [
             {
