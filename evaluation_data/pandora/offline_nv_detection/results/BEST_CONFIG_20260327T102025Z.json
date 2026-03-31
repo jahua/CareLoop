@@ -1,0 +1,112 @@
+{
+  "run_id": "20260327T102025Z",
+  "selected_at": "2026-03-27T10:22:42.744737+00:00",
+  "model": "meta/llama-3.3-70b-instruct",
+  "prompt_set": "minimal_instruction_v1",
+  "n_shots": 5,
+  "composite_score": 0.673170759674773,
+  "metrics": {
+    "macro_pearson": 0.5113192971273238,
+    "macro_spearman": 0.2,
+    "macro_mae": 0.41244444444444445,
+    "macro_bias": 0.1457777777777778,
+    "coverage": 1.0,
+    "bootstrap_ci_95": [
+      NaN,
+      NaN
+    ],
+    "per_trait": {
+      "O": {
+        "pearson": 0.9965701682014142,
+        "spearman": 0.5,
+        "mae": 0.5622222222222223,
+        "bias": 0.5622222222222223,
+        "gt_mean": -0.54,
+        "gt_std": 0.5546169849544819,
+        "pred_mean": 0.022222222222222237,
+        "pred_std": 0.35642255405212087
+      },
+      "C": {
+        "pearson": 1.326181163023148e-17,
+        "spearman": 0.0,
+        "mae": 0.45555555555555555,
+        "bias": -0.07777777777777778,
+        "gt_mean": -0.10000000000000002,
+        "gt_std": 0.1,
+        "pred_mean": -0.1777777777777778,
+        "pred_std": 0.5581052602166382
+      },
+      "E": {
+        "pearson": 0.5731425544776474,
+        "spearman": 0.5,
+        "mae": 0.6444444444444445,
+        "bias": 0.6444444444444445,
+        "gt_mean": -0.46666666666666673,
+        "gt_std": 0.2193931022920578,
+        "pred_mean": 0.17777777777777778,
+        "pred_std": 0.3746603400019414
+      },
+      "A": {
+        "pearson": 0.982112327445146,
+        "spearman": 0.5,
+        "mae": 0.1911111111111111,
+        "bias": -0.1911111111111111,
+        "gt_mean": 0.41333333333333333,
+        "gt_std": 0.7777746031681244,
+        "pred_mean": 0.22222222222222224,
+        "pred_std": 0.7726817178094982
+      },
+      "N": {
+        "pearson": 0.004771435512411564,
+        "spearman": -0.5,
+        "mae": 0.2088888888888889,
+        "bias": -0.2088888888888889,
+        "gt_mean": 0.6866666666666666,
+        "gt_std": 0.20526405757787536,
+        "pred_mean": 0.47777777777777786,
+        "pred_std": 0.22689530951846823
+      }
+    }
+  },
+  "prompt_variants": [
+    {
+      "name": "minimal_main",
+      "system": "Rate O,C,E,A,N from this message. Each trait in [-1,1].\nReturn JSON only: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "minimal_style",
+      "system": "Rate Big Five personality from writing style. JSON only: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "minimal_no_bias",
+      "system": "Big Five O,C,E,A,N from text. Style only, not topic. Each in [-1,1]. JSON only."
+    }
+  ],
+  "few_shots": [
+    {
+      "user": "I mapped my week, blocked time by priority, and completed tasks early with minimal drift.",
+      "assistant": "{\"O\": 0.1, \"C\": 0.9, \"E\": 0.0, \"A\": 0.2, \"N\": -0.4}"
+    },
+    {
+      "user": "I keep changing plans mid-day, miss deadlines, and post before thinking.",
+      "assistant": "{\"O\": -0.1, \"C\": -0.85, \"E\": 0.1, \"A\": -0.2, \"N\": 0.5}"
+    },
+    {
+      "user": "I like reframing problems from odd angles and exploring ideas just to test possibilities.",
+      "assistant": "{\"O\": 0.85, \"C\": 0.2, \"E\": 0.1, \"A\": 0.1, \"N\": -0.1}"
+    },
+    {
+      "user": "I do not see the point of abstract theories; practical routines are enough.",
+      "assistant": "{\"O\": -0.8, \"C\": 0.2, \"E\": -0.1, \"A\": 0.0, \"N\": 0.1}"
+    },
+    {
+      "user": "I start conversations easily and leave social events feeling energized.",
+      "assistant": "{\"O\": 0.2, \"C\": 0.1, \"E\": 0.9, \"A\": 0.3, \"N\": -0.2}"
+    }
+  ],
+  "deployment_config": {
+    "temperature": 0.05,
+    "max_tokens": 200,
+    "api_endpoint": "https://integrate.api.nvidia.com/v1/chat/completions"
+  }
+}

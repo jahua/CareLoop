@@ -45,6 +45,14 @@ function errorResponse(
 
 const WEBHOOK_URL =
   process.env.N8N_WEBHOOK_URL || process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "http://localhost:5678";
+/**
+ * Full chat pipeline → N8N workflow:
+ * **Big5Loop Eval v5 (trait_first 11-shot + E-calibration)** — workflow id `12ad1b2c-cefe-4490-8a93-1fa22da7d5f8`,
+ * webhook path `big5loop-eval-v5` (export: `workflows/n8n/big5loop-eval-v5.json`).
+ * Override with `N8N_DEFAULT_WORKFLOW_PATH` if needed.
+ */
+const DEFAULT_N8N_WORKFLOW_PATH =
+  process.env.N8N_DEFAULT_WORKFLOW_PATH || "big5loop-eval-v5";
 const N8N_TIMEOUT_MS = Number.parseInt(process.env.N8N_TIMEOUT_MS ?? "60000", 10);
 const API_LLM_REGEN_TIMEOUT_MS = Number.parseInt(
   process.env.API_LLM_REGEN_TIMEOUT_MS ?? "8000",
@@ -501,6 +509,140 @@ function generateRequestId(): string {
   });
 }
 
+/** n8n execution items often wrap the payload as `{ json: { ... } }`; unwrap a few levels. */
+function unwrapN8nExecutionItem(item: unknown): unknown {
+  let cur: unknown = item;
+  for (let d = 0; d < 4; d++) {
+    if (cur === null || cur === undefined) break;
+    if (typeof cur !== "object" || Array.isArray(cur)) break;
+    const o = cur as Record<string, unknown>;
+    if (
+      "json" in o &&
+      o.json !== null &&
+      typeof o.json === "object" &&
+      !Array.isArray(o.json)
+    ) {
+      cur = o.json;
+      continue;
+    }
+    break;
+  }
+  return cur;
+}
+
+function coerceN8nSessionId(v: unknown): string | null {
+  if (v === null || v === undefined) return null;
+  const s = typeof v === "string" ? v : String(v);
+  const t = s.trim();
+  return t.length > 0 ? t : null;
+}
+
+/** Resolve assistant text from common n8n / LLM shapes (string content, numeric, or content[]). */
+function extractN8nAssistantText(o: Record<string, unknown>): string | null {
+  const msg = o.message;
+  if (typeof msg === "string" && msg.trim()) return msg.trim();
+  if (msg && typeof msg === "object" && !Array.isArray(msg)) {
+    const m = msg as Record<string, unknown>;
+    const c = m.content;
+    if (typeof c === "string" && c.trim()) return c.trim();
+    if (typeof c === "number" && String(c).trim()) return String(c);
+    if (Array.isArray(c)) {
+      const parts = c.map((p) => {
+        if (typeof p === "string") return p;
+        if (p && typeof p === "object" && typeof (p as { text?: unknown }).text === "string") {
+          return (p as { text: string }).text;
+        }
+        return "";
+      });
+      const joined = parts.join("").trim();
+      if (joined) return joined;
+    }
+  }
+  const topKeys = ["reply", "text", "assistant_msg"] as const;
+  for (const key of topKeys) {
+    const v = o[key];
+    if (typeof v === "string" && v.trim()) return v.trim();
+  }
+  const vr = o.verifier;
+  if (vr && typeof vr === "object" && !Array.isArray(vr)) {
+    const vrs = (vr as { verified_response?: unknown }).verified_response;
+    if (typeof vrs === "string" && vrs.trim()) return vrs.trim();
+  }
+  const gen = o.generator;
+  if (gen && typeof gen === "object" && !Array.isArray(gen)) {
+    const rawc = (gen as { raw_content?: unknown }).raw_content;
+    if (typeof rawc === "string" && rawc.trim()) return rawc.trim();
+  }
+  return null;
+}
+
+function collectN8nResponseRoots(raw: unknown): unknown[] {
+  const out: unknown[] = [];
+  const visit = (x: unknown) => {
+    if (x === undefined || x === null) return;
+    if (Array.isArray(x)) {
+      for (const el of x) visit(el);
+      return;
+    }
+    out.push(x);
+    if (typeof x === "object") {
+      const o = x as Record<string, unknown>;
+      if (o.body !== undefined) visit(o.body);
+      if (o.data !== undefined) visit(o.data);
+    }
+  };
+  visit(raw);
+  return out;
+}
+
+/**
+ * First matching execution payload: supports wrapped `{ json }`, webhook echo `{ body }`,
+ * merged multi-item arrays, and coerced session_id / message content types.
+ */
+function normalizeN8nChatPayload(raw: unknown): Record<string, unknown> | null {
+  const roots = collectN8nResponseRoots(raw);
+  for (const root of roots) {
+    const u = unwrapN8nExecutionItem(root);
+    if (!u || typeof u !== "object" || Array.isArray(u)) continue;
+    const o = u as Record<string, unknown>;
+    if (o.success === false && o.error) continue;
+    const sid = coerceN8nSessionId(o.session_id);
+    const text = extractN8nAssistantText(o);
+    if (!sid || !text) continue;
+    const baseMsg =
+      o.message && typeof o.message === "object" && !Array.isArray(o.message)
+        ? { ...(o.message as Record<string, unknown>) }
+        : {};
+    const role =
+      typeof baseMsg.role === "string" && baseMsg.role
+        ? baseMsg.role
+        : "assistant";
+    return {
+      ...o,
+      session_id: sid,
+      message: { ...baseMsg, role, content: text },
+    };
+  }
+  return null;
+}
+
+function findN8nErrorEnvelopeAcrossItems(raw: unknown): Record<string, unknown> | null {
+  for (const root of collectN8nResponseRoots(raw)) {
+    const u = unwrapN8nExecutionItem(root);
+    if (!u || typeof u !== "object" || Array.isArray(u)) continue;
+    const o = u as Record<string, unknown>;
+    if (
+      o.success === false &&
+      o.error &&
+      typeof o.error === "object" &&
+      !Array.isArray(o.error)
+    ) {
+      return o;
+    }
+  }
+  return null;
+}
+
 export async function POST(request: NextRequest) {
   let request_id: string = generateRequestId();
   const startedAt = Date.now();
@@ -598,7 +740,7 @@ export async function POST(request: NextRequest) {
         ? "big5loop-turn"
         : body?.workflow === "benchmark"
         ? "big5loop-turn-personage-benchmark"
-        : "big5loop-turn-parallel-v3";
+        : DEFAULT_N8N_WORKFLOW_PATH;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), N8N_TIMEOUT_MS);
     const res = await fetch(`${WEBHOOK_URL}/webhook/${workflowPath}`, {
@@ -609,15 +751,25 @@ export async function POST(request: NextRequest) {
     });
     clearTimeout(timeoutId);
     const raw = await res.json().catch(() => ({}));
-    const data = Array.isArray(raw) ? raw[0] : raw;
+    const firstItem = Array.isArray(raw) ? raw[0] : raw;
+    const unwrappedFirst = unwrapN8nExecutionItem(firstItem) as Record<string, unknown> | undefined;
 
     if (!res.ok) {
       const n8nHint =
-        `N8N webhook "${workflowPath}" not found. Import and activate big5loop-phase1-2-parallel-v3.json in N8N. Local: http://localhost:5678. Production: use SSH tunnel (see docs/DEPLOY-TO-SERVER.md).`;
+        `N8N webhook "${workflowPath}" not found. Import and activate the matching workflow JSON in N8N (default: big5loop-eval-v5.json). Local: http://localhost:5678. Production: use SSH tunnel (see docs/DEPLOY-TO-SERVER.md).`;
+      const errObj = unwrappedFirst && typeof unwrappedFirst === "object" ? unwrappedFirst : {};
+      const errField = errObj.error as { message?: string } | string | undefined;
+      const fromErrObject =
+        typeof errField === "object" && errField !== null && typeof errField.message === "string"
+          ? errField.message
+          : undefined;
       const message =
         res.status === 404
           ? n8nHint
-          : (data?.error?.message ?? data?.error ?? data?.message ?? `Upstream ${res.status}`);
+          : fromErrObject ??
+            (typeof errField === "string" ? errField : undefined) ??
+            (typeof errObj.message === "string" ? errObj.message : undefined) ??
+            `Upstream ${res.status}`;
       return errorResponse(
         "internal_error",
         message,
@@ -626,22 +778,46 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // N8N returned 200 but body is error envelope
-    if (data && typeof data === "object" && data.success === false && data.error && typeof data.error === "object") {
-      const err = data.error as { error_code?: string; message?: string; stage?: string };
+    // N8N returned 200 but body is error envelope (possibly under .json)
+    const envelope =
+      unwrappedFirst && typeof unwrappedFirst === "object"
+        ? unwrappedFirst
+        : ({} as Record<string, unknown>);
+    if (
+      envelope.success === false &&
+      envelope.error &&
+      typeof envelope.error === "object" &&
+      !Array.isArray(envelope.error)
+    ) {
+      const err = envelope.error as { error_code?: string; message?: string; stage?: string };
       const code = isErrorCode(err.error_code) ? err.error_code : "internal_error";
       const message = typeof err.message === "string" ? err.message : "Workflow returned an error.";
       return errorResponse(code, message, 503, {
         stage: "generation",
         retryable: true,
         session_id: body?.session_id,
-        request_id: (data as { request_id?: string }).request_id ?? request_id,
-        fallback_content: (data as { fallback_content?: string }).fallback_content,
+        request_id: (envelope.request_id as string | undefined) ?? request_id,
+        fallback_content: envelope.fallback_content as string | undefined,
       });
     }
 
+    const data = normalizeN8nChatPayload(raw);
+
     // Malformed or empty response
     if (!data || typeof data !== "object") {
+      const lateErr = findN8nErrorEnvelopeAcrossItems(raw);
+      if (lateErr) {
+        const err = lateErr.error as { error_code?: string; message?: string; stage?: string };
+        const code = isErrorCode(err.error_code) ? err.error_code : "internal_error";
+        const message = typeof err.message === "string" ? err.message : "Workflow returned an error.";
+        return errorResponse(code, message, 503, {
+          stage: "generation",
+          retryable: true,
+          session_id: body?.session_id,
+          request_id: (lateErr.request_id as string | undefined) ?? request_id,
+          fallback_content: lateErr.fallback_content as string | undefined,
+        });
+      }
       return errorResponse(
         "internal_error",
         "Invalid response from workflow (no data).",

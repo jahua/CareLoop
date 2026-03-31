@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-03-28T15:15:20.784571+00:00",
+  "input_files": [
+    "multi_agent_ocean_20260328T030022Z.jsonl",
+    "multi_agent_ocean_20260328T030042Z.jsonl",
+    "multi_agent_ocean_20260328T030246Z.jsonl",
+    "multi_agent_ocean_20260328T030702Z.jsonl",
+    "multi_agent_ocean_20260328T030914Z.jsonl",
+    "multi_agent_ocean_20260328T030928Z.jsonl",
+    "multi_agent_ocean_20260328T031020Z.jsonl",
+    "multi_agent_ocean_20260328T031244Z.jsonl",
+    "multi_agent_ocean_20260328T031559Z.jsonl",
+    "multi_agent_ocean_20260328T031718Z.jsonl",
+    "multi_agent_ocean_20260328T031732Z.jsonl",
+    "multi_agent_ocean_20260328T031750Z.jsonl",
+    "multi_agent_ocean_20260328T074257Z.jsonl",
+    "multi_agent_ocean_20260328T074735Z.jsonl"
+  ],
+  "unique_sample_ids": 50,
+  "sample_ids_with_duplicate_inputs": 50,
+  "merged_path": "/Users/huaduojiejia/MyProject/hslu/2026/thesis project/big5loop/evaluation_data/pandora/offline_nv_detection/results/merged_multi_agent_ocean_20260328T151520Z.jsonl",
+  "all_merged_including_dry_run": {
+    "n_samples": 50,
+    "macro_pearson": 0.8554761847460173,
+    "macro_mae": 0.20692,
+    "per_trait": {
+      "O": {
+        "n": 50,
+        "pearson": 0.9153077075646766,
+        "mae": 0.18780000000000002
+      },
+      "C": {
+        "n": 50,
+        "pearson": 0.8654116318652872,
+        "mae": 0.1998
+      },
+      "E": {
+        "n": 50,
+        "pearson": 0.8250332571260874,
+        "mae": 0.205
+      },
+      "A": {
+        "n": 50,
+        "pearson": 0.8282309669410519,
+        "mae": 0.2194
+      },
+      "N": {
+        "n": 50,
+        "pearson": 0.8433973602329828,
+        "mae": 0.22260000000000002
+      }
+    }
+  },
+  "live_api_only": {
+    "n_samples": 5,
+    "macro_pearson": -0.21019411737826363,
+    "macro_mae": 0.6232,
+    "per_trait": {
+      "O": {
+        "n": 5,
+        "pearson": 0.6326065206997264,
+        "mae": 0.492
+      },
+      "C": {
+        "n": 5,
+        "pearson": 0.14335365966423896,
+        "mae": 0.48
+      },
+      "E": {
+        "n": 5,
+        "pearson": -0.1790712380968513,
+        "mae": 0.748
+      },
+      "A": {
+        "n": 5,
+        "pearson": -0.9816459149849116,
+        "mae": 0.74
+      },
+      "N": {
+        "n": 5,
+        "pearson": -0.6662136141735208,
+        "mae": 0.656
+      }
+    }
+  },
+  "success_counts": {
+    "full_success": 46,
+    "any_trait_fail": 4
+  },
+  "method_breakdown": {
+    "multi_agent_dry_run": 45,
+    "multi_agent": 5
+  }
+}

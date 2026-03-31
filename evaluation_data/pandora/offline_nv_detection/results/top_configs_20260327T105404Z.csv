@@ -1,0 +1,9 @@
+model,prompt_set,n_shots,n,total,coverage,macro_pearson,macro_mae,composite
+meta/llama-3.1-70b-instruct,workflow_current,5,20,20,1.0,0.1563393745308298,0.6101333333333332,0.45614302059874823
+meta/llama-3.1-70b-instruct,minimal_instruction_v1,20,19,20,0.95,0.15726245105474962,0.5689649122807017,0.4498382430712345
+meta/llama-3.1-70b-instruct,minimal_instruction_v1,5,20,20,1.0,0.11674767451370067,0.5945,0.43947383725685035
+meta/llama-3.1-70b-instruct,workflow_current,20,20,20,1.0,0.05576223989835512,0.6011666666666666,0.4076477866158442
+meta/llama-3.3-70b-instruct,minimal_instruction_v1,5,4,20,0.2,0.445105933217932,0.4720000000000001,0.388152966608966
+meta/llama-3.3-70b-instruct,workflow_current,5,4,20,0.2,0.05865398399048298,0.634,0.1625269919952415
+meta/llama-3.3-70b-instruct,workflow_current,20,2,20,0.1,,,0.03
+meta/llama-3.3-70b-instruct,minimal_instruction_v1,20,1,20,0.05,,,0.015

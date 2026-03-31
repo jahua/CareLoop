@@ -60,6 +60,8 @@ services:
       NEXT_TELEMETRY_DISABLED: "1"
       N8N_WEBHOOK_URL: http://n8n:5678
       NEXT_PUBLIC_N8N_WEBHOOK_URL: http://localhost:5678
+      # Full pipeline: "Big5Loop Phase 5 PANDORA Evaluation v4 (5 detector nodes)" → webhook path below
+      N8N_DEFAULT_WORKFLOW_PATH: ${N8N_DEFAULT_WORKFLOW_PATH:-big5loop-eval-v5}
       DATABASE_URL: postgresql://${POSTGRES_USER:-big5loop}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-big5loop}
       NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
       NVIDIA_API_URL: ${NVIDIA_API_URL:-https://integrate.api.nvidia.com/v1/chat/completions}

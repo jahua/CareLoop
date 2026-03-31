@@ -1,0 +1,112 @@
+{
+  "run_id": "20260327T105404Z",
+  "selected_at": "2026-03-27T12:00:34.941572+00:00",
+  "model": "meta/llama-3.1-70b-instruct",
+  "prompt_set": "workflow_current",
+  "n_shots": 5,
+  "composite_score": 0.45614302059874823,
+  "metrics": {
+    "macro_pearson": 0.1563393745308298,
+    "macro_spearman": 0.18678839045919504,
+    "macro_mae": 0.6101333333333332,
+    "macro_bias": 0.13186666666666663,
+    "coverage": 1.0,
+    "bootstrap_ci_95": [
+      -0.029076748821060757,
+      0.35553257649821396
+    ],
+    "per_trait": {
+      "O": {
+        "pearson": 0.32453685512677444,
+        "spearman": 0.5226903719829892,
+        "mae": 0.5273333333333332,
+        "bias": 0.33999999999999997,
+        "gt_mean": -0.295,
+        "gt_std": 0.5786326895999605,
+        "pred_mean": 0.045,
+        "pred_std": 0.2562151416884048
+      },
+      "C": {
+        "pearson": 0.19894569205912807,
+        "spearman": 0.23759137789294665,
+        "mae": 0.5246666666666666,
+        "bias": -0.20066666666666663,
+        "gt_mean": 0.25899999999999995,
+        "gt_std": 0.5443866659877546,
+        "pred_mean": 0.05833333333333333,
+        "pred_std": 0.3310226931674215
+      },
+      "E": {
+        "pearson": 0.15413897378274627,
+        "spearman": 0.06365348850752343,
+        "mae": 0.7133333333333333,
+        "bias": 0.5999999999999999,
+        "gt_mean": -0.285,
+        "gt_std": 0.5323582094397482,
+        "pred_mean": 0.31499999999999995,
+        "pred_std": 0.36442295971474065
+      },
+      "A": {
+        "pearson": 0.09222401483430478,
+        "spearman": 0.12057275465756194,
+        "mae": 0.6779999999999999,
+        "bias": -0.12733333333333335,
+        "gt_mean": -0.026000000000000013,
+        "gt_std": 0.6796005018430041,
+        "pred_mean": -0.15333333333333338,
+        "pred_std": 0.5012732326797129
+      },
+      "N": {
+        "pearson": 0.011851336851195517,
+        "spearman": -0.010566040745045854,
+        "mae": 0.6073333333333332,
+        "bias": 0.047333333333333324,
+        "gt_mean": 0.21599999999999997,
+        "gt_std": 0.6771021846228622,
+        "pred_mean": 0.2633333333333333,
+        "pred_std": 0.34368147908248925
+      }
+    }
+  },
+  "prompt_variants": [
+    {
+      "name": "pandora_calibrated_v2",
+      "system": "You are a psychometric rater estimating Big Five (O,C,E,A,N) from a single Reddit-style message.\n\nRate STYLE and interpersonal stance, not factual correctness, topic, or overall positivity. Traits are independent.\n\nOutput constraints:\n- Return only JSON with keys O,C,E,A,N\n- Each value is a float in [-1,1]\n- Use 0 when evidence is weak\n\nTrait rubric:\nO: abstract/novel/curious framing (+) vs rigid/literal/repetitive framing (-).\nC: structured, planful, disciplined language (+) vs impulsive/disorganized/inconsistent language (-).\nE: social energy/assertive activation (+) vs restrained/withdrawn/low-energy style (-).\nA: empathic/cooperative/tactful stance (+) vs contempt/hostility/combative stance (-).\nN: anxious/reactive/ruminative/volatile language (+) vs calm/regulated/steady language (-).\n\nCritical anti-confounds:\n- Positive sentiment does NOT imply high A.\n- Long text does NOT imply high O or high C.\n- Politeness does NOT imply high E.\n- Discussing stress topic does NOT imply high N unless style shows dysregulation.\n- Normative/controlling/judgmental tone often lowers A even without profanity.\n\nCalibration anchors:\n- Strong evidence: |score| >= 0.6\n- Moderate evidence: 0.25 to 0.6\n- Weak/mixed: near 0\n\nReturn exactly: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "pandora_traitfirst_v2",
+      "system": "Estimate O,C,E,A,N for one message using linguistic and interpersonal cues only.\n\nInternal checklist:\n1) Identify stance: cooperative vs adversarial\n2) Identify regulation: steady vs anxious/reactive\n3) Identify structure: planful vs impulsive\n4) Identify abstraction: exploratory vs literal\n5) Identify social activation: energetic vs restrained\n\nScoring notes:\n- If message is assertive but dismissive, E may be positive while A is negative.\n- If message is coherent but moralizing/rigid, C may be positive while O/A can be negative.\n- If text is calm and decisive, N should not be positive.\n\nReturn only JSON in [-1,1]: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "pandora_antibias_v2",
+      "system": "Rate Big Five from one social-media message.\n\nAvoid these failure modes:\n- over-scoring A because tone seems polite\n- over-scoring O/C because text is long\n- over-scoring E for confident argumentation\n- under-scoring N just because no explicit anxiety words\n\nLook for concrete style evidence in wording, hedging, certainty, judgment, empathy, hostility, rumination.\n\nOutput JSON only: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    }
+  ],
+  "few_shots": [
+    {
+      "user": "I mapped my week, blocked time by priority, and completed tasks early with minimal drift.",
+      "assistant": "{\"O\": 0.1, \"C\": 0.9, \"E\": 0.0, \"A\": 0.2, \"N\": -0.4}"
+    },
+    {
+      "user": "I keep changing plans mid-day, miss deadlines, and post before thinking.",
+      "assistant": "{\"O\": -0.1, \"C\": -0.85, \"E\": 0.1, \"A\": -0.2, \"N\": 0.5}"
+    },
+    {
+      "user": "I like reframing problems from odd angles and exploring ideas just to test possibilities.",
+      "assistant": "{\"O\": 0.85, \"C\": 0.2, \"E\": 0.1, \"A\": 0.1, \"N\": -0.1}"
+    },
+    {
+      "user": "I do not see the point of abstract theories; practical routines are enough.",
+      "assistant": "{\"O\": -0.8, \"C\": 0.2, \"E\": -0.1, \"A\": 0.0, \"N\": 0.1}"
+    },
+    {
+      "user": "I start conversations easily and leave social events feeling energized.",
+      "assistant": "{\"O\": 0.2, \"C\": 0.1, \"E\": 0.9, \"A\": 0.3, \"N\": -0.2}"
+    }
+  ],
+  "deployment_config": {
+    "temperature": 0.05,
+    "max_tokens": 200,
+    "api_endpoint": "https://integrate.api.nvidia.com/v1/chat/completions"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "variants": [
+    {
+      "name": "benchmark",
+      "system": "You are a personality psychologist rating the speaker's Big Five personality from a single restaurant utterance.\n\nRate the SPEAKER from linguistic STYLE, not restaurant quality or topic sentiment.\nEach trait is independent.\n\nTrait guide:\nO (Openness): high = rich, varied, or unusual vocabulary; creative phrasing sustained across the utterance. low = repetitive, simple, filler-heavy wording. Do NOT rate O high from a single adjective like 'nice' or 'good'.\nC (Conscientiousness): high = structured, formal, careful, comparative, organized phrasing. low = disorganized, vague, repetitive, hedging, scattered delivery.\nE (Extraversion): high = enthusiastic, energetic, engaging, assertive, lively. low = flat, withdrawn, hesitant, low-energy, minimal. Do NOT rate E high just because the speaker is polite or says 'you would like it'.\nA (Agreeableness): high = polite, warm, collaborative, accommodating. low = blunt, rude, dismissive, profane, harsh.\nN (Neuroticism): high = anxious uncertainty, stuttering, self-correction, unstable delivery, distressed hedging. low = calm, composed, assured, steady delivery.\n\nImportant calibration rules:\n- Rate STYLE, not whether the restaurant is good or bad.\n- A speaker can be high in A and low in N at the same time.\n- A short positive recommendation can still be low or moderate O and E.\n- Friendly recommendation language often signals A more than E.\n- Repetition, fillers, and broken delivery reduce O and C even when the speaker sounds positive.\n- Use the full range [-1.0, 1.0] when the evidence is strong.\n- Return only valid JSON.\n\nReturn exactly:\n{\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "trait_first",
+      "system": "You are a personality psychologist rating the speaker's Big Five personality from a single restaurant utterance.\n\nJudge the speaker only from linguistic style.\nDo not infer personality from whether the restaurant sounds good or bad.\n\nWork trait by trait internally:\n1. Openness: vocabulary richness, unusual wording, variation, creativity.\n2. Conscientiousness: structure, organization, careful comparison, formal control.\n3. Extraversion: energy, enthusiasm, engagement, assertiveness.\n4. Agreeableness: warmth, politeness, collaboration versus rudeness or profanity.\n5. Neuroticism: anxious hedging, stuttering, self-correction, unstable delivery.\n\nImportant guards:\n- Friendly wording often signals Agreeableness more than Extraversion.\n- A single vivid adjective does not by itself imply high Openness.\n- Calm short recommendations can still be low Extraversion.\n- Repetition and fillers reduce Openness and Conscientiousness.\n- Traits are independent.\n\nReturn only valid JSON:\n{\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "anti_conflation",
+      "system": "You are rating Big Five personality from one restaurant-related utterance.\n\nUse only linguistic style cues.\nIgnore restaurant quality, price, cuisine, and whether the opinion is positive or negative.\n\nCalibration:\n- Openness = lexical variety and phrasing complexity, not positivity.\n- Conscientiousness = orderly, careful, structured delivery, not factual detail alone.\n- Extraversion = energy and social assertiveness, not politeness alone.\n- Agreeableness = warmth, tact, politeness; profanity and bluntness lower it.\n- Neuroticism = unstable, anxious, stuttering, self-correcting delivery; calm confidence lowers it.\n\nReturn only JSON in [-1, 1]:\n{\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    }
+  ],
+  "few_shots": [
+    [
+      "You want to know more about Chimichurri Grill? I guess you would like it buddy because this restaurant, which is in Midtown West, is a latin american place with rather nice food and quite nice waiters, you know, okay?",
+      "{\"O\": 0.4166666666666667, \"C\": 0.75, \"E\": 0.75, \"A\": 0.5833333333333334, \"N\": -0.6666666666666666}"
+    ],
+    [
+      "I am not sure! I mean, Ch-Chimichurri Grill is the only place I would recommend. It's a latin american place. Err... its price is... it's damn ex-expensive, but it pr-pr-provides like, adequate food, though. It offers bad atmosphere, even if it features nice waiters.",
+      "{\"O\": -0.25, \"C\": 0.08333333333333333, \"E\": 0.0, \"A\": 0.3333333333333333, \"N\": -0.0}"
+    ],
+    [
+      "Let's see, Acacia and Marinella... I guess Acacia offers sort of decent food. Basically, Marinella, however, just has quite adequate food.",
+      "{\"O\": -0.25, \"C\": 0.5833333333333334, \"E\": -0.75, \"A\": 0.4166666666666667, \"N\": -0.75}"
+    ]
+  ],
+  "source": "git e6c0aa1 Zurich node"
+}

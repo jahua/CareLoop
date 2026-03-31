@@ -40,8 +40,9 @@ evaluation_data/
 ├── README.md                   # Dataset index (includes Phase 5 row)
 ├── scripts/
 │   ├── download_pandora.py     # HF → pandora/raw/*.csv
-│   └── (planned) preprocess_pandora.py   # raw → processed JSONL
-│   └── (planned) run_pandora_eval.py     # batch POST + metrics
+│   ├── preprocess_pandora.py   # raw/pandora_big5_test.csv → processed eval artifacts
+│   ├── run_pandora_eval.py     # batch POST to /api/chat (sample/full)
+│   └── pandora_metrics.py      # per-trait Pearson/Spearman/MAE + macro averages
 └── pandora/
     ├── raw/                    # Gitignored — large CSVs from HF
     │   ├── pandora_big5_<split>.csv
@@ -109,17 +110,17 @@ Transforms are **offline** (Python) before N8N/API calls. The N8N workflow does 
 |-------|--------|--------|----------------|
 | **D1 — Download** | Hugging Face Hub | `pandora/raw/*.csv` | `download_pandora.py` |
 | **D2 — Inspect** | Raw CSV | Column mapping doc in code or README | Human / one-time notebook |
-| **D3 — Preprocess** | Raw CSV | `processed/pandora_eval.jsonl` | `preprocess_pandora.py` (planned) |
-| **D4 — Evaluate** | JSONL + N8N or `/api/chat` | `pandora_eval_results.jsonl`, `metrics.json` | `run_pandora_eval.py` (planned) |
+| **D3 — Preprocess** | Raw CSV | `processed/pandora_eval_test.jsonl` | `preprocess_pandora.py` |
+| **D4 — Evaluate** | JSONL + N8N or `/api/chat` | `pandora_eval_results_*.jsonl`, `metrics_*.json` | `run_pandora_eval.py` + `pandora_metrics.py` |
 
-### 5.2 Canonical JSONL record (`processed/pandora_eval.jsonl`)
+### 5.2 Canonical JSONL record (`processed/pandora_eval_test.jsonl`)
 
 One JSON object per line:
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `sample_id` | string | yes | Stable ID (HF row id or hash). |
-| `text` | string | yes | User/Reddit text passed as `message` to the workflow. |
+| `input` | string | yes | User/Reddit text passed as `message` to the workflow. |
 | `ground_truth_ocean` | object | yes | Keys **`O`,`C`,`E`,`A`,`N`**, floats in **[-1, 1]** after normalization (§5.3). |
 | `meta` | object | no | Subreddit, demographics, original columns (for analysis only). |
 

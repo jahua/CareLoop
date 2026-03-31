@@ -1,0 +1,9 @@
+{
+  "seed": 2026,
+  "source": "/Users/huaduojiejia/MyProject/hslu/2026/thesis project/big5loop/evaluation_data/personage/processed/personage_eval.jsonl",
+  "total": 580,
+  "dev_size": 292,
+  "test_size": 288,
+  "full_ocean_dev": 160,
+  "full_ocean_test": 160
+}

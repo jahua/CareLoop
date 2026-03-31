@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  multi-agent-eval:
+    build: .
+    container_name: big5loop-multi-agent
+    volumes:
+      - ./results:/app/results
+      - ./:/app
+    environment:
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
+      - NVIDIA_API_URL=https://integrate.api.nvidia.com/v1/chat/completions
+    command: >
+      sh -c '
+        echo "🚀 Big5Loop Multi-Agent Evaluation Docker Container";
+        echo "============================================================";
+        echo "Available scripts:";
+        echo "  • multi_agent_ocean.py - 5 specialized trait agents";
+        echo "  • quick_llama31_5shot_eval.py - Quick evaluation";
+        echo "  • benchmark_llama31_prompt_tuning.py - Systematic testing";
+        echo "";
+        echo "Usage examples:";
+        echo "  docker exec -it big5loop-multi-agent python3 multi_agent_ocean.py --dry-run --limit 10";
+        echo "  docker exec -it big5loop-multi-agent python3 quick_llama31_5shot_eval.py --limit 20 --dry-run";
+        echo "";
+        echo "📁 Results will be saved to: /app/results/";
+        echo "💡 Set NVIDIA_API_KEY environment variable for real API calls";
+        echo "============================================================";
+        echo "Ready to run evaluations!";
+        echo "";
+        echo "To run a test now, use:";
+        echo "  docker exec -it big5loop-multi-agent python3 multi_agent_ocean.py --dry-run --limit 5";
+      '

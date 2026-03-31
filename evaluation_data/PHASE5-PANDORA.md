@@ -23,8 +23,10 @@ This page is a short overview; use the spec for implementation details.
 | **Workflow export** | `workflows/n8n/big5loop-pandora-eval-v4.json` |
 | **Webhook path** | `big5loop-pandora-eval-v4` (POST) |
 | **Raw data (local)** | `evaluation_data/pandora/raw/` (gitignored) |
-| **Processed eval rows** | `evaluation_data/pandora/processed/pandora_eval.jsonl` (see spec §5.2) |
+| **Processed eval rows** | `evaluation_data/pandora/processed/pandora_eval_test.jsonl` (see spec §5.2) |
 | **Download** | `python scripts/download_pandora.py` |
+| **Run eval (sample)** | `python scripts/run_pandora_eval.py --limit 100` |
+| **Compute metrics** | `python scripts/pandora_metrics.py --input pandora/processed/pandora_eval_results_sample100.jsonl` |
 
 ---
 

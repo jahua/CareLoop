@@ -1,0 +1,172 @@
+{
+  "run_id": "20260327T103447Z",
+  "selected_at": "2026-03-27T12:33:14.998189+00:00",
+  "model": "meta/llama-3.3-70b-instruct",
+  "prompt_set": "workflow_current",
+  "n_shots": 20,
+  "composite_score": 0.19744380968482592,
+  "metrics": {
+    "macro_pearson": 0.05416380984584233,
+    "macro_spearman": 0.0652289885772555,
+    "macro_mae": 0.5681904761904762,
+    "macro_bias": 0.06857142857142856,
+    "coverage": 0.28,
+    "bootstrap_ci_95": [
+      -0.10555664655200807,
+      0.22733179382369995
+    ],
+    "per_trait": {
+      "O": {
+        "pearson": -0.1726590635171344,
+        "spearman": -0.23520608111293528,
+        "mae": 0.6020238095238095,
+        "bias": 0.15630952380952381,
+        "gt_mean": 0.005000000000000003,
+        "gt_std": 0.5593018134411138,
+        "pred_mean": 0.16130952380952376,
+        "pred_std": 0.3387538763062676
+      },
+      "C": {
+        "pearson": -0.05908284766666312,
+        "spearman": -0.03498880749267617,
+        "mae": 0.5713095238095238,
+        "bias": -0.28654761904761905,
+        "gt_mean": 0.3764285714285714,
+        "gt_std": 0.4437901930526805,
+        "pred_mean": 0.08988095238095238,
+        "pred_std": 0.36586161019304986
+      },
+      "E": {
+        "pearson": 0.1059027051425773,
+        "spearman": 0.11225035122568217,
+        "mae": 0.6032142857142858,
+        "bias": 0.37607142857142856,
+        "gt_mean": -0.19214285714285714,
+        "gt_std": 0.5952986000994991,
+        "pred_mean": 0.18392857142857144,
+        "pred_std": 0.23295746370138024
+      },
+      "A": {
+        "pearson": 0.23113709315821965,
+        "spearman": 0.21969726158716282,
+        "mae": 0.5588095238095238,
+        "bias": 0.13190476190476189,
+        "gt_mean": -0.13428571428571429,
+        "gt_std": 0.6608604299975207,
+        "pred_mean": -0.0023809523809523833,
+        "pred_std": 0.4563388542649163
+      },
+      "N": {
+        "pearson": 0.16552116211221216,
+        "spearman": 0.264392218679044,
+        "mae": 0.5055952380952381,
+        "bias": -0.03488095238095239,
+        "gt_mean": 0.1557142857142857,
+        "gt_std": 0.5761521697879153,
+        "pred_mean": 0.12083333333333333,
+        "pred_std": 0.3653913004836538
+      }
+    }
+  },
+  "prompt_variants": [
+    {
+      "name": "pandora_calibrated_v2",
+      "system": "You are a psychometric rater estimating Big Five (O,C,E,A,N) from a single Reddit-style message.\n\nRate STYLE and interpersonal stance, not factual correctness, topic, or overall positivity. Traits are independent.\n\nOutput constraints:\n- Return only JSON with keys O,C,E,A,N\n- Each value is a float in [-1,1]\n- Use 0 when evidence is weak\n\nTrait rubric:\nO: abstract/novel/curious framing (+) vs rigid/literal/repetitive framing (-).\nC: structured, planful, disciplined language (+) vs impulsive/disorganized/inconsistent language (-).\nE: social energy/assertive activation (+) vs restrained/withdrawn/low-energy style (-).\nA: empathic/cooperative/tactful stance (+) vs contempt/hostility/combative stance (-).\nN: anxious/reactive/ruminative/volatile language (+) vs calm/regulated/steady language (-).\n\nCritical anti-confounds:\n- Positive sentiment does NOT imply high A.\n- Long text does NOT imply high O or high C.\n- Politeness does NOT imply high E.\n- Discussing stress topic does NOT imply high N unless style shows dysregulation.\n- Normative/controlling/judgmental tone often lowers A even without profanity.\n\nCalibration anchors:\n- Strong evidence: |score| >= 0.6\n- Moderate evidence: 0.25 to 0.6\n- Weak/mixed: near 0\n\nReturn exactly: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "pandora_traitfirst_v2",
+      "system": "Estimate O,C,E,A,N for one message using linguistic and interpersonal cues only.\n\nInternal checklist:\n1) Identify stance: cooperative vs adversarial\n2) Identify regulation: steady vs anxious/reactive\n3) Identify structure: planful vs impulsive\n4) Identify abstraction: exploratory vs literal\n5) Identify social activation: energetic vs restrained\n\nScoring notes:\n- If message is assertive but dismissive, E may be positive while A is negative.\n- If message is coherent but moralizing/rigid, C may be positive while O/A can be negative.\n- If text is calm and decisive, N should not be positive.\n\nReturn only JSON in [-1,1]: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    },
+    {
+      "name": "pandora_antibias_v2",
+      "system": "Rate Big Five from one social-media message.\n\nAvoid these failure modes:\n- over-scoring A because tone seems polite\n- over-scoring O/C because text is long\n- over-scoring E for confident argumentation\n- under-scoring N just because no explicit anxiety words\n\nLook for concrete style evidence in wording, hedging, certainty, judgment, empathy, hostility, rumination.\n\nOutput JSON only: {\"O\": float, \"C\": float, \"E\": float, \"A\": float, \"N\": float}"
+    }
+  ],
+  "few_shots": [
+    {
+      "user": "I mapped my week, blocked time by priority, and completed tasks early with minimal drift.",
+      "assistant": "{\"O\": 0.1, \"C\": 0.9, \"E\": 0.0, \"A\": 0.2, \"N\": -0.4}"
+    },
+    {
+      "user": "I keep changing plans mid-day, miss deadlines, and post before thinking.",
+      "assistant": "{\"O\": -0.1, \"C\": -0.85, \"E\": 0.1, \"A\": -0.2, \"N\": 0.5}"
+    },
+    {
+      "user": "I like reframing problems from odd angles and exploring ideas just to test possibilities.",
+      "assistant": "{\"O\": 0.85, \"C\": 0.2, \"E\": 0.1, \"A\": 0.1, \"N\": -0.1}"
+    },
+    {
+      "user": "I do not see the point of abstract theories; practical routines are enough.",
+      "assistant": "{\"O\": -0.8, \"C\": 0.2, \"E\": -0.1, \"A\": 0.0, \"N\": 0.1}"
+    },
+    {
+      "user": "I start conversations easily and leave social events feeling energized.",
+      "assistant": "{\"O\": 0.2, \"C\": 0.1, \"E\": 0.9, \"A\": 0.3, \"N\": -0.2}"
+    },
+    {
+      "user": "I avoid group chats and need a lot of recovery time after social interaction.",
+      "assistant": "{\"O\": 0.0, \"C\": 0.1, \"E\": -0.9, \"A\": 0.1, \"N\": 0.0}"
+    },
+    {
+      "user": "I hear your concern and want an outcome that works for everyone involved.",
+      "assistant": "{\"O\": 0.1, \"C\": 0.3, \"E\": 0.1, \"A\": 0.9, \"N\": -0.2}"
+    },
+    {
+      "user": "You are wrong, and I do not care who this hurts as long as I win.",
+      "assistant": "{\"O\": -0.2, \"C\": 0.1, \"E\": 0.3, \"A\": -0.95, \"N\": 0.2}"
+    },
+    {
+      "user": "My thoughts keep spiraling and every small issue feels like disaster.",
+      "assistant": "{\"O\": 0.0, \"C\": -0.2, \"E\": -0.2, \"A\": 0.0, \"N\": 0.95}"
+    },
+    {
+      "user": "Even with pressure I stay steady, breathe, and take one step at a time.",
+      "assistant": "{\"O\": 0.1, \"C\": 0.5, \"E\": 0.0, \"A\": 0.2, \"N\": -0.9}"
+    },
+    {
+      "user": "I waited months, compared risks, and made a deliberate decision after observing behavior.",
+      "assistant": "{\"O\": -0.3, \"C\": 0.7, \"E\": -0.1, \"A\": -0.2, \"N\": -0.2}"
+    },
+    {
+      "user": "People rush into things and then complain. Slow down and use your brain.",
+      "assistant": "{\"O\": -0.4, \"C\": 0.5, \"E\": 0.1, \"A\": -0.5, \"N\": -0.2}"
+    },
+    {
+      "user": "I appreciate your view, but I am open to revising mine if evidence changes.",
+      "assistant": "{\"O\": 0.4, \"C\": 0.4, \"E\": 0.0, \"A\": 0.6, \"N\": -0.2}"
+    },
+    {
+      "user": "Honestly, everyone here is clueless and exhausting.",
+      "assistant": "{\"O\": -0.2, \"C\": 0.0, \"E\": 0.1, \"A\": -0.9, \"N\": 0.3}"
+    },
+    {
+      "user": "I am not panicking; I just want a clear plan and realistic expectations.",
+      "assistant": "{\"O\": 0.1, \"C\": 0.7, \"E\": 0.0, \"A\": 0.1, \"N\": -0.3}"
+    },
+    {
+      "user": "I keep checking messages because I am sure something bad is about to happen.",
+      "assistant": "{\"O\": 0.0, \"C\": -0.1, \"E\": -0.1, \"A\": 0.0, \"N\": 0.85}"
+    },
+    {
+      "user": "I am friendly, but I prefer short direct replies and minimal social noise.",
+      "assistant": "{\"O\": -0.1, \"C\": 0.2, \"E\": -0.5, \"A\": 0.4, \"N\": -0.1}"
+    },
+    {
+      "user": "I write long comments, but mostly to repeat the same point from different angles.",
+      "assistant": "{\"O\": -0.4, \"C\": -0.1, \"E\": 0.1, \"A\": 0.0, \"N\": 0.1}"
+    },
+    {
+      "user": "I changed my mind after reading counterarguments and updated my position.",
+      "assistant": "{\"O\": 0.6, \"C\": 0.4, \"E\": 0.0, \"A\": 0.4, \"N\": -0.2}"
+    },
+    {
+      "user": "Whatever, do what you want. I am done explaining this.",
+      "assistant": "{\"O\": -0.2, \"C\": -0.2, \"E\": -0.1, \"A\": -0.6, \"N\": 0.1}"
+    }
+  ],
+  "deployment_config": {
+    "temperature": 0.05,
+    "max_tokens": 200,
+    "api_endpoint": "https://integrate.api.nvidia.com/v1/chat/completions"
+  }
+}
