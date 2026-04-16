@@ -1,0 +1,16 @@
+digraph DetectionPipeline {
+  graph [rankdir=LR, bgcolor="white", fontname="Helvetica", fontsize=18, labelloc="t",
+         label="Figure 14. Personality detection pipeline (OCEAN inference)"];
+  node  [shape=box, style="rounded,filled", fillcolor="#F3F7FF", color="#2B4C7E",
+         fontname="Helvetica", fontsize=14];
+  edge  [color="#2B4C7E", penwidth=1.6, arrowsize=0.8];
+
+  input     [label="User message + dialogue history"];
+  assemble  [label="Assemble detection prompts\n(5 trait-specific prompts)"];
+  infer     [label="LLM inference\n(score each trait: -1 / 0 / +1)"];
+  parse     [label="Parse output -> OCEAN vector\nP_hat = (O,C,E,A,N)"];
+  update    [label="Update personality state\n(cumulative, conservative thresholds)"];
+  handoff   [label="Transmit P_hat to regulation module"];
+
+  input -> assemble -> infer -> parse -> update -> handoff;
+}

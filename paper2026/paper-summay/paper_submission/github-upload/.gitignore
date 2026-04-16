@@ -1,0 +1,31 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.blg
+*.bbl
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+
+# macOS system files
+.DS_Store
+**/.DS_Store
+
+# Python cache (if any scripts added later)
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+~$*
+*.backup
+*.bak
