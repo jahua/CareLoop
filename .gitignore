@@ -16,3 +16,8 @@ Jiahua_Duojie_Thesis_Project.pptx
 thesis project/big5loop/
 thesis project/AutoSurvey/
 thesis project/*.pdf
+
+# Node.js modules (too large for GitHub)
+node_modules/
+**/node_modules/
+*.node
