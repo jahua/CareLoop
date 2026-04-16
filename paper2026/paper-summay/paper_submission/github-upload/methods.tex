@@ -1,3 +1,4 @@
+% !TEX root = main.tex
 \section{Materials and Methods}\label{materials-and-methods}
 
 This section presents simulation-based experimental methodology testing whether dynamic personality modeling, theoretically grounded regulation, and validated evaluation produce measurable improvements in conversational personalization. We employ a $2 \times 2$ factorial design comparing personality-adaptive (regulated) agents against non-adaptive (baseline) agents across two extreme personality profiles.
@@ -27,12 +28,7 @@ Regulated agents implemented dynamic personality detection and trait-aligned beh
 The workflow encompassed four phases: (1) system configuration and personality profile implementation, (2) simulated dialogue generation following standardized protocols, (3) evaluation using a structured LLM-based assessor (with author-conducted qualitative review), and (4) statistical analysis (Figure~\ref{fig:1}).
 
 
-\begin{figure}[H]
-\centering
-\includegraphics{figures/mdpi/study_design_mdpi.png}
-\caption{Study workflow integrating system configuration, dialogue generation, structured LLM-based evaluation (with author-conducted qualitative review), and statistical analysis.}
-\label{fig:1}
-\end{figure}
+\input{figs/1}
 
 \subsubsection{Sample Size Considerations}\label{sample-size-considerations}
 
@@ -67,12 +63,7 @@ We embed the core D--R--E pipeline into PROMISE's state-orchestrated architectur
 
 This mapping allows the full pipeline to be inspected through PROMISE's explicit state/transition structure and logged decisions/actions, improving reproducibility and auditability of adaptation behavior. The proposed detection--regulation--evaluation logic is conceptually framework-agnostic and could be instantiated in alternative orchestration systems; PROMISE is used here because its declarative state modeling facilitates systematic traceability.
 
-\begin{figure}[H]
-\centering
-\includegraphics{figures/mdpi/system_architecture_mdpi.png}
-\caption{System architecture integrating personality detection (D-module), regulation (R-module), and evaluation (E-module).}
-\label{fig:2}
-\end{figure}
+\input{figs/2}
 
 \subsubsection{Design Principles}\label{design-principles}
 
@@ -92,12 +83,7 @@ The architecture follows three core principles:
 
 The system processes messages through a sequential pipeline (Figure~\ref{fig:3}): (1) User input and dialogue history capture, (2) Personality detection analyzes linguistic cues to infer OCEAN traits, (3) Trait-to-regulation mapping translates personality into behavioral adaptation instructions, (4) Prompt assembly combines regulation with dialogue context, (5) GPT-4 generates personality-adaptive response, (6) Evaluation assesses response quality, and (7) Outputs are logged.
 
-\begin{figure}[H]
-\centering
-\includegraphics{figures/mdpi/data_flow_mdpi.png}
-\caption{End-to-end data flow pipeline.}
-\label{fig:3}
-\end{figure}
+\input{figs/3}
 
 \subsubsection{PROMISE Integration}\label{promise-integration}
 
@@ -137,12 +123,7 @@ Neuroticism* & Calm, emotionally stable, resilient & Anxious, emotionally sensit
 
 After each user input, the system updates (P) using cumulative evidence across dialogue history, following a belief-updating logic similar to Bayesian belief updating {[}43{]}. PROMISE orchestrates this pipeline via hierarchical state machines, parallel trait detectors, and explicit transition logic (Section~\ref{personality-adaptive-system-architecture}). Inference produces trait values (-1/0/+1) and confidence scores, with trait state transitions triggered when confidence exceeds $\tau$ = 0.7 (Figure~\ref{fig:4}).
 
-\begin{figure}[H]
-\centering
-\includegraphics{figures/mdpi/detection_pipeline_mdpi.png}
-\caption{Personality detection pipeline implementing turn-by-turn Big Five inference.}
-\label{fig:4}
-\end{figure}
+\input{figs/4}
 
 The detection component is implemented as a modular service integrated into PROMISE. It uses GPT-4 (gpt-4-0613) with trait-specific prompts grounded in personality psychology {[}44--50{]}. The pipeline executes the following stages: (1) message processing, (2) prompt assembly, (3) parallel LLM inference across traits, (4) response parsing and confidence assessment, (5) state update, and (6) downstream transmission to the regulation module.
 
@@ -152,12 +133,7 @@ Average processing time was 2.3 ± 0.8 seconds per turn (measured across 120 tur
 
 Regulation translates detected traits into behavioral adaptations grounded in the Zurich Model of Social Motivation {[}10,26--29{]}, which links personality to three motivational domains: Security, Arousal, and Affiliation (Section~\ref{from-affective-computing-to-personality-aware-digital-support}). Table~\ref{tab:2} and Figure~\ref{fig:5} present the mapping from Big Five traits to motivational domains and corresponding behavioral adjustment strategies.
 
-\begin{figure}[H]
-\centering
-\includegraphics{figures/mdpi/trait_mapping_mdpi.png}
-\caption{Mapping from Big Five traits to motivational domains to conversational behavior effects.}
-\label{fig:5}
-\end{figure}
+\input{figs/5}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1300}}
@@ -188,12 +164,7 @@ Cross-cutting & Conscientiousness (C) & Provide organized, structured guidance &
 
 After each personality update, PROMISE composes an integrated regulation instruction by concatenating trait-relevant behavior prompts for all non-neutral traits (Figure~\ref{fig:6}). When trait recommendations conflict, the system prioritizes emotional safety (Security domain) over stimulation (Arousal domain), consistent with clinical guidance {[}51{]}.
 
-\begin{figure}[H]
-\centering
-\includegraphics{figures/mdpi/regulation_workflow_mdpi.png}
-\caption{Regulation workflow: after each personality update, PROMISE concatenates trait-relevant behavior prompts for all non-neutral traits and assembles an integrated regulation instruction, prioritizing the Security domain over Arousal in cases of conflict.}
-\label{fig:6}
-\end{figure}
+\input{figs/6}
 
 \subsection{Experimental Materials and Procedure}\label{experimental-materials-and-procedure}
 
@@ -225,12 +196,7 @@ The evaluation measured effectiveness of personality-regulated assistant interac
 
 Baseline assistants were assessed on three criteria only (Emotional Tone, Relevance \& Coherence, Personality Needs), as detection and regulation were not implemented. All criteria used a trinary scoring scale (\textit{Yes} = 2, \textit{Not Sure} = 1, \textit{No} = 0) {[}54{]}. Figure~\ref{fig:7} illustrates the full evaluation framework and scoring pipeline.
 
-\begin{figure}[H]
-\centering
-\includegraphics{figures/mdpi/evaluation_framework_mdpi.png}
-\caption{Evaluation framework and scoring pipeline.}
-\label{fig:7}
-\end{figure}
+\input{figs/7}
 
 \subsubsection{LLM-Based Evaluator System}\label{llm-based-evaluator-system}
 
