@@ -2,30 +2,15 @@
 *.aux
 *.log
 *.out
-*.fls
-*.fdb_latexmk
-*.synctex.gz
 *.toc
 *.lof
 *.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 *.blg
 *.bbl
-*.bcf
-*.run.xml
-*.nav
-*.snm
-*.vrb
 
-# macOS system files
-.DS_Store
-**/.DS_Store
-
-# Python cache (if any scripts added later)
+# Python cache
 __pycache__/
 *.pyc
-*.pyo
-
-# Temporary files
-~$*
-*.backup
-*.bak

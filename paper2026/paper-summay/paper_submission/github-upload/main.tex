@@ -1,0 +1,62 @@
+% V8.3.1 — derived from V8.3.0 (MDPI APA template)
+\documentclass[apajournal,article,submit,moreauthors]{Definitions/mdpi}
+
+% MDPI internal metadata (keep, may be empty)
+\firstpage{1}
+\makeatletter
+\setcounter{page}{\@firstpage}
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2026}
+\copyrightyear{2026}
+\datereceived{}
+\daterevised{}
+\dateaccepted{}
+\datepublished{}
+
+% Pandoc helpers
+\providecommand\tightlist{}
+\newcommand\real[1]{#1}
+\providecommand{\pandocbounded}[1]{#1}
+
+% Fix fancyhdr headheight warning (MDPI template default is too small)
+\setlength{\headheight}{20.0pt}
+\addtolength{\topmargin}{-8.0pt}
+
+% Packages needed by pandoc tables
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xurl}  % allow URLs to break across lines at any character
+\setkeys{Gin}{width=0.95\linewidth,keepaspectratio}
+\usepackage{caption}
+\captionsetup[figure]{labelfont=bf,labelsep=period,skip=8pt,belowskip=4pt}
+
+\Title{Personality-Adaptive Conversational AI for Emotional Support: A Simulation Study Integrating Big Five Detection with Zurich Model Regulation}
+\Author{Jiahua Duojie $^{1}$, Samuel Devdas $^{1}$, Dr.~Guang Lu $^{1}$ and Dr.~Alexandre de Spindler $^{2}$*}
+\AuthorNames{Jiahua Duojie; Samuel Devdas; Guang Lu; Alexandre de Spindler}
+\address{%
+$^{1}$ \quad Lucerne University of Applied Sciences and Arts (HSLU), 6002 Luzern, Switzerland; duojie.jiahua@stud.hslu.ch (J.~Duojie); samuel.devdas@hslu.ch (S.~Devdas); guang.lu@hslu.ch (G.~Lu)\\
+$^{2}$ \quad Zurich University of Applied Sciences (ZHAW), 8400 Winterthur, Switzerland; alexandre.despindler@zhaw.ch}
+\corres{Correspondence: alexandre.despindler@zhaw.ch}
+
+\abstract{We propose a theory-grounded personality-adaptive conversational AI pipeline that performs turn-by-turn Big Five trait detection and applies Zurich Model-aligned behavioral regulation, orchestrated with PROMISE (a model-driven framework for state-based LLM orchestration). We generated 20 simulated dialogue sessions (120 turns total) comparing regulated and non-adaptive conversational AI agents across two boundary-condition Big Five profiles (all traits set to +1 vs.~$-1$), evaluated using a structured LLM-based evaluator complemented by author-conducted qualitative review. The system achieved near-perfect implementation fidelity (98.3\% detection accuracy; 100\% regulation adherence). In the regulated condition, personality needs were consistently addressed compared to minimal fulfillment in the baseline condition (8.3\%; Cohen's \(d\) = 4.42, \(p < 0.001\)), reflecting a \textbf{binary architectural difference} rather than a graded dose--response improvement. Emotional tone and relevance did not differ between conditions (\(d\) = 0.000 and \(d\) = 0.183, ns), confirming \textbf{selective enhancement} of personalization without degrading generic conversational quality. These findings establish a reproducible detection $\rightarrow$ regulation $\rightarrow$ evaluation framework for future empirical validation of personality-adaptive AI-augmented mental health support with human participants.}
+\keyword{digital mental health; conversational agents; large language models; Big Five personality detection; Zurich Model}
+
+\begin{document}
+
+\input{introduction}
+\input{relatedwork}
+\input{methods}
+\input{results}
+\input{discussion}
+\input{conclusions}
+\input{backmatter}
+\input{references}
+\input{supplementary}
+
+\end{document}
